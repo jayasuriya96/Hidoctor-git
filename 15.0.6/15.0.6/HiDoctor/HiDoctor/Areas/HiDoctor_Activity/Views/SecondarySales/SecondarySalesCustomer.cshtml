@@ -1,0 +1,411 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<style>
+    .divstockList {
+        /*float: left;
+        width: 49.5%;*/
+    }
+
+    .listheaderbar {
+        /* background-color: #0072C6 !important;*/
+        /*background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/header-bg.png') repeat-x !important;*/
+        /*background:#E0E0E0;*/
+        height: 30px;
+        font-size: 12px;
+        border-left: 1px solid #BCBCBC;
+        border-top: 1px solid #BCBCBC;
+        border-right: 1px solid #BCBCBC;
+        border-bottom: 1px solid #BCBCBC;
+        cursor: pointer;
+        background-color: #EFEFEF !important;
+    }
+
+    .selectboxWidth {
+        width: 49%;
+    }
+
+
+    .fontweightbold {
+        font-weight: bold;
+        text-align: left !important;
+        font-style: italic;
+    }
+
+    .grdRow {
+        cursor: pointer;
+        padding: 0px;
+        margin: 0px;
+        font-size: 12px;
+        border-bottom: 1px solid #E7E7E7;
+        color: #444;
+        vertical-align: middle;
+        line-height: 30px;
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+        border-right: 1px solid #c0c1c0;
+        border-left: 1px solid #c0c1c0;
+        border-bottom: 1px solid #c0c1c0;
+        height: 37px;
+    }
+
+        .grdRow td {
+            border: 0px;
+            vertical-align: top;
+        }
+
+    .grdRowSelected {
+        font-weight: bold;
+        -webkit-box-shadow: 0 6px 6px -6px black;
+        -moz-box-shadow: 0 6px 6px -6px black;
+        box-shadow: 0 6px 6px -6px black;
+        background: none !important;
+        background-color: #fafafa !important;
+        border-right: none;
+        width: 100%;
+        font-family: Segoe UI;
+    }
+
+    .doctorDetailsbox {
+        height: 225px;
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+    }
+
+    .dcr_product_header {
+        background: #F9F9F9 !important;
+        line-height: 25px;
+        font-family: Segoe UI;
+        font-size: 13px;
+        border: 0px !important;
+        color: #444;
+        text-align: center;
+    }
+
+    .spnProducts {
+        padding: 5px;
+        text-align: left !important;
+        font-family: Segoe UI;
+        padding-left: 15px;
+        font-weight: bold;
+        float: left;
+    }
+
+    .collapse {
+        background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/arrow1.png') no-repeat left center !important;
+        margin-left: 3px;
+        display: block !important;
+    }
+
+    .autofillLoadingIcon {
+        float: left;
+        padding-left: 5px;
+    }
+
+    .loadingcaption {
+        font-style: italic;
+        font-weight: bold;
+        padding-left: 5px;
+    }
+
+    .listheaderbarforcustomer {
+        /* background-color: #0072C6 !important; */
+        /* background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/header-bg.png') repeat-x !important; */
+        /* background: #E0E0E0; */
+        height: 150px;
+        font-size: 12px;
+        border-left: 1px solid #BCBCBC;
+        border-top: 1px solid #BCBCBC;
+        border-right: 1px solid #BCBCBC;
+        border-bottom: 1px solid #BCBCBC;
+        cursor: pointer;
+        background-color: #EFEFEF !important;
+        overflow: scroll;
+    }
+
+    .expand {
+        background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/arrow.png') no-repeat left center !important;
+        margin-left: 3px;
+    }
+
+    .lstStock {
+        font-weight:bold;
+    }
+</style>
+
+<div id="divMainSS">
+    <div class="col-lg-12">
+        <div>
+                <span id="spnTreeToggle"  style='display: none; color: #039; cursor: pointer; text-decoration: underline'
+                    onclick="fnToggleTree()" >Show Tree</span>
+            </div>
+        <div class='col-xs-3 leftNav' id='leftNav'>
+            <div id="regiontree" style="float: left; height: auto; width: 100%">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+          @*  <span id="spnTreeToggle" style='color: #039; cursor: pointer; text-decoration: underline'
+                    onclick="fnToggleTree()">Hide Tree</span>*@
+            @*<span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+            <div style="width: 1px;"></div>
+        </div>
+        <div class="col-xs-9" id="dvPage" style="display: none">
+            <div class="col-xs-6" id="dvstockPage" style="display: none; width: 42%;">
+                <div class="col-xs-12">
+                    <span class="fontweightbold" id="lblRegion"></span>
+                </div>
+                <div class="col-xs-12">
+                    <table id="tblstockselect">
+                        <tr>
+                            <td>
+                                <label>Sales Month & Year</label></td>
+                            <td>
+                                <select id="drpMonth" class="input-large selectboxWidth"></select>
+                                <select id="drpYear" class="input-large selectboxWidth"></select>
+                            </td>
+                            <td>
+                                <input type="button" value="Go" onclick='SSSCUSTOMER.fnGetApprovedStockiestandCustomer();' class="btn btn-primary">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-12 divstockList" style="display: none; background: #EFF3F6;" id="divstockList">
+                    <div id="div-stockiest-list">
+                        <div class="lstStock">
+                            <div style="text-align: left; padding: 2px; font-family: Segoe UI; float: left">
+                                Stockiest Details for the Region
+                   @*
+                            <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddDOCLST"><span id="docLSTLoadingTitle" class="loadingcaption"> Retrieving Doctors List</span>*@
+                            </div>
+                        </div>
+                        <table id="tbl_Stockiest_list" runat="server" cellpadding="0" cellspacing="0" style="width: 100%;"
+                            class="">
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+<div class="col-xs-6 form-group clearfix"></div>
+            <div class="col-lg-6" id="dvProductForm" style="display: none; width: 58% !important;">
+                @*<form id="frmProduct" onkeydown="SSSCUSTOMER.fnSetFormMode(event)" onclick="SSSCUSTOMER.fnSetFormMode(event)" onkeypress="SSSCUSTOMER.fnSetFormMode(event)" ondblclick="SSSCUSTOMER.fnSetFormMode(event)" style='display:none;'>*@
+                     <form id="frmProduct" style='display:none;'>
+                    <div id="div_Product_form" style="float: left; width: 99%; border: 1px solid #c0c0c0; padding: 5px; background: #fafafa">
+                        <span class="fontweightbold" style="float: left">Product/Customer Details</span>
+                    </div>
+                    <div id="div_procustomerdetails_entry"></div>
+                    @* 
+                            <center>
+            <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_Produts','spnproducts')">
+                <div class="collapse" id="spnproducts" >
+                <div style="float:left" id="dvProductName"></div> 
+               @* <img src="/Images/load.gif" class="autofillLoadingIcon"  id="imgloadInputs">*@
+                    @* <span id="inputsLoadingTitle" class="loadingcaption">Sample/Promotional items autofill setting</span>
+                    </div>*@
+                    @*<div class="helpIconmargin">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                     </div>
+            </div>
+
+            <table id="tbl_Produts" style="width: 98.5%; margin-bottom: 10px;">
+                <tr>
+                    <td class="dcr_product_header" style="text-align: left;">Customer Name
+                    </td>
+                    <td class="dcr_product_header txtqty" style="text-align: left; padding-left: 30px">QTY
+                    </td>
+                    <td class="dcr_product_header"></td>
+                </tr>
+            </table>
+
+
+            </center>*@
+
+            <div></div>
+                    <div id="buttondiv" style="float: right">
+                        <input type="button" id="btnSave" value="Save" class="btn btn-primary" onclick="SSSCUSTOMER.fnInsertCustomerProductDetails();" />
+                        <input type="button" value="Reset" onclick="SSSCUSTOMER.fncancel()" class="btn btn-primary" />
+                    </div>
+
+            </form>
+        </div>        
+    </div>
+</div>
+<input type="hidden" id="hdnTitle" />
+<input type="hidden" id="hdnRegionCode" />
+<input type="hidden" id="hdnbindRowNumber" />
+</div>
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/SecondarySales12.7.1.js?v=@HiDoctor.BuildNo.Build_No" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#divMainSS').block({
+            message: 'Loading data...',
+            css: { border: '1px solid #ddd' }
+        });
+        $('#drpMonth').attr('disabled', false);
+        $('#drpYear').attr('disabled', false);
+
+        $("#dvAjaxLoad").hide();
+        currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));           
+        if(currentRegionCode_g != null && currentRegionCode_g != '')
+        {     
+            $("#leftNav").show();
+            fnRegionTreePosition("regiontree");                                         
+            fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+            $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {                       
+                    fnSearchRegions();
+                    return false;
+                }
+            });              
+        }
+    });
+
+    function fnToggleTree() {
+        if($('#spnTreeToggle').html() == "Show Tree"){
+            $('#leftNav').show();
+            $('#spnTreeToggle').html('Hide Tree');
+        }else{
+            $('#leftNav').hide();
+            $('#spnTreeToggle').html('Show Tree');
+        }
+    }
+
+    function fnRegionTreePostInit() {
+        $("#divMainSS").unblock();
+    }
+
+    function fnRegionTreeNodeClick(node) {   
+        debugger;
+
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnTitle').val(node.data.title);     
+        SSSCUSTOMER.fnMonthAndYear(); 
+        $('#tbl_Stockiest_list').hide();
+        //$('#regiontree').hide();
+        $('#dvPage').show();
+        //$('#leftNav').addClass('col-xs-3');
+        $('#dvPage').removeClass('col-xs-9');
+        $('#dvPage').addClass('col-xs-12'); 
+        $('#dvProductForm').addClass('col-xs-6');
+        $('#dvstockPage').show();      
+ 
+        var regionName = $('#hdnTitle').val();
+        $('#lblRegion').html(regionName);
+        //$('#frmProduct').hide();
+        $('#dvProductForm').hide();
+        //  var regionType = $('#hdnUseractivity').val().split('-')[1];
+        //  SSSCUSTOMER.fnInitializeEvents();    
+        $('#leftNav').hide(); 
+        $('#spnTreeToggle').show();
+    }
+
+
+    function fnRegionTreeActivate(node) {       
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnTitle').val(node.data.title);     
+        SSSCUSTOMER.fnMonthAndYear();    
+        $('#regiontree').hide();
+        $('#dvPage').show();
+        $('#leftNav').removeClass('col-xs-3');
+        $('#dvPage').addClass('col-xs-12'); 
+        $('#dvProductForm').addClass('col-xs-6');
+        $('#dvstockPage').show();       
+        var regionName = $('#hdnTitle').val();
+        $('#lblRegion').html(regionName);
+        //$('#frmProduct').hide();
+        $('#dvProductForm').hide();
+        //  var regionType = $('#hdnUseractivity').val().split('-')[1];
+        //  SSSCUSTOMER.fnInitializeEvents(); 
+        $("#divTree").hide();
+        $("#main").css('width', '100%');
+        $("#spnTreeToggle").html('Show Tree');           
+    }
+
+    //Used To Resize the Tree
+    //function fnRegionTreeResize(obj) { 
+    //    if (treeExpandLevel == 2) {
+    //        treeExpandLevel = -1;
+    //    }
+    //    else {
+    //        treeExpandLevel = parseInt(treeExpandLevel) + 1;
+    //    }
+    //    fnExpandCollapseRegion(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    //}
+
+    function fnExpandCollapseRegion(treeExpandLevel, mainDivId, treeNavId, obj, mainReptId, treeId) {
+        //leftNav
+        $('#' + treeNavId).show();
+
+        if (treeExpandLevel == 0) {
+            $('#' + mainDivId).show();
+            $(obj).removeAttr('title');
+            $('#' + mainDivId).removeClass('col-xs-5');
+            $('#' + mainDivId).addClass('col-xs-3');
+            $('#' + treeId).show();
+            $('#dvStatus').show();
+            $('#' + mainReptId).removeClass('col-xs-7');
+            $('#' + mainReptId).addClass('col-xs-9');
+            $("#spnTreeToggle").html('Hide Tree');
+            treeExpandLevel = treeExpandLevel + 1;
+            $(obj).attr('title', 'Click here to expand tree');
+            $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if (treeExpandLevel == 1) {
+            $('#' + mainDivId).show();
+            $(obj).removeAttr('title');
+
+            $('#' + mainDivId).removeClass('col-xs-3');
+            $('#' + mainDivId).addClass('col-xs-4');
+            $('#' + treeId).show();
+            $('#dvStatus').show();
+            $('#' + mainReptId).removeClass('col-xs-9');
+            $('#' + mainReptId).addClass('col-xs-8');
+            //treeExpandLevel = treeExpandLevel + 1;
+            treeExpandLevel = 0;
+            $("#spnTreeToggle").html('Hide Tree');
+            $(obj).attr('title', 'Click here to collapse tree');
+            $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+
+            //$('#' + mainDivId).removeClass('col-xs-4');
+            //$('#' + mainDivId).addClass('col-xs-5');
+            //$('#' + treeId).show();
+            //$('#dvStatus').show();
+            //$('#' + mainReptId).removeClass('col-xs-8');
+            //$('#' + mainReptId).addClass('col-xs-7');
+            //treeExpandLevel = treeExpandLevel + 1;
+            //$("#spnTreeToggle").html('Hide Tree');
+            //$(obj).html('<i class="fa fa-chevron-circle-left fa-lg"></i>');
+            //$(obj).attr('title', 'Click here to collapse tree');
+        }        
+        else {
+            $('#' + mainDivId).removeClass('col-xs-5');
+            $('#' + mainDivId).removeClass('col-xs-4');
+            $('#' + mainDivId).removeClass('col-xs-3');
+            $('#' + treeId).hide();
+            $('#dvStatus').hide();
+            $('#' + mainReptId).removeClass('col-xs-7');
+            $('#' + mainReptId).removeClass('col-xs-8');
+            $('#' + mainReptId).removeClass('col-xs-9');
+            $('#' + mainReptId).addClass('col-xs-11');
+            $("#spnTreeToggle").html('Show Tree');
+            $(obj).removeAttr('title');
+            $(obj).removeAttr('title');
+            treeExpandLevel = -1;
+            $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+            $(obj).attr('title', 'Click here to expand tree');
+        }
+    }
+</script>

@@ -1,0 +1,1771 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<style type="text/css">
+    .fadeout {
+        background: #666;
+    }
+
+    .chemistDay {
+        background-color: #e4ecf3;
+    }
+
+    .chemistheader {
+        height: 30px;
+        font-size: 12px;
+        border-left: 1px solid #BCBCBC;
+        border-top: 1px solid #BCBCBC;
+        border-right: 1px solid #BCBCBC;
+        border-bottom: 1px solid #BCBCBC;
+        cursor: pointer;
+        background-color: #9ec8e2;
+    }
+
+    .Hospitalheader {
+        height: 30px;
+        font-size: 12px;
+        border-left: 1px solid #BCBCBC;
+        border-top: 1px solid #BCBCBC;
+        border-right: 1px solid #BCBCBC;
+        border-bottom: 1px solid #BCBCBC;
+        cursor: pointer;
+        background-color: #9ec8e2;
+    }
+
+    .rowdiv {
+        height: 30px;
+        width: 100%;
+        padding-bottom: 5px;
+        text-align: left;
+    }
+
+    .column1 {
+        width: 25% !important;
+        float: left;
+        padding-left: 3px;
+    }
+
+    .column3 {
+        width: 11% !important;
+        float: left;
+        padding-left: 3px;
+    }
+
+    .column2 {
+        width: 73% !important;
+        float: left;
+    }
+
+    .clearboth {
+        clear: both;
+    }
+
+    .doctorDetailsbox {
+        height: auto;
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+        padding-bottom: 11px;
+    }
+
+    .doctorAccDetailsBox {
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+    }
+
+    .doctorProductDetailsBox {
+        min-height: 100px;
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+    }
+
+    .doctorDetailsHeading {
+        width: 100%;
+    }
+
+    table td {
+        border: none !important;
+    }
+
+    .deleteRowIcon {
+        text-align: right;
+        padding-right: 13px;
+    }
+
+    .fontweightbold {
+        font-weight: bold;
+        text-align: left !important;
+    }
+
+    .rcpaTable tr td {
+        background-color: #999;
+    }
+
+    .rcpaTable_CV tr td {
+        background-color: #e4ecf3;
+    }
+
+    .rcpaTable_CV td {
+        background: #e4ecf3 !important;
+    }
+
+    .autofillLoadingIcon {
+        float: left;
+        padding-left: 5px;
+    }
+
+    .loadingcaption {
+        font-style: italic;
+        font-weight: normal;
+        padding-left: 5px;
+    }
+
+    .rcpaTable td {
+        background: #999 !important;
+    }
+
+    .popUpTitle {
+        background-color: #2196F3 !important;
+        color: #fff !important;
+    }
+
+    .cls_fontweight {
+        font-weight: bold;
+    }
+
+    #dvAllDetailedProduct table {
+        width: 100%;
+    }
+
+    #dvAllDetailedProduct_Chemist table {
+        width: 100%;
+    }
+
+    .cls_selectedProdsContent {
+        min-height: 30px;
+        padding: 3px;
+        background-color: #E3F2FD;
+    }
+
+    #dvAllPro {
+        overflow: auto;
+        height: 300px;
+    }
+
+    .textalignRight {
+        text-align: right;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    /*#dZUpload {
+        min-height: 300px;
+    }*/
+    .dz-preview {
+        width: 50% !important;
+        float: right !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        height: 100% !important;
+    }
+
+        .dz-preview .dz-details {
+            width: 100% !important;
+            margin: 0 auto !important;
+            border: none !important;
+            height: auto !important;
+            background: #ffffff !important;
+        }
+
+            .dz-preview .dz-details .dz-size {
+                width: 100% !important;
+                text-align: right !important;
+                padding: 10px 0px 0px !important;
+            }
+
+            .dz-preview .dz-details .dz-filename {
+                width: 100% !important;
+                height: auto !important;
+                background: #ffffff !important;
+                border: none !important;
+            }
+
+                .dz-preview .dz-details .dz-filename span {
+                    text-align: left !important;
+                    display: block !important;
+                    background: #ffffff !important;
+                    white-space: nowrap !important;
+                    text-overflow: ellipsis !important;
+                    font-weight: bold !important;
+                    overflow: hidden !important;
+                }
+
+        .dz-preview .dz-progress {
+            position: absolute !important;
+            top: 40px !important;
+        }
+
+    .dropzone .dz-preview, .dropzone-previews .dz-preview {
+        background: #ffffff !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #dZUpload {
+        max-height: 300px !important;
+        overflow-y: scroll !important;
+    }
+
+    .dz-image {
+        display: none;
+    }
+
+    .salesProduct_CV {
+        background-color: #e4ecf3;
+        padding: 10px;
+        border-bottom: none;
+        /* border-top: 1px solid #aaa !important; */
+        /* border-left: 1px solid #aaa !important; */
+        /* border-right: 1px solid #aaa !important; */
+    }
+
+
+    .salesRemark_CV {
+        background-color: #e4ecf3;
+        padding: 10px;
+        /*border-bottom: 1px solid #aaa !important;
+    border-left: 1px solid #aaa !important;
+    border-right: 1px solid #aaa !important;*/
+    }
+
+    #dZUpload {
+        background: #ffffff;
+    }
+
+    .dropzone .dz-preview .dz-progress .dz-upload, .dropzone-previews .dz-preview .dz-progress .dz-upload {
+        background-color: #4d90fe !important;
+    }
+
+    .dropzone .dz-preview .dz-details, .dropzone-previews .dz-preview .dz-details {
+        padding: 5px 0px !important;
+    }
+
+    .dropzone .dz-preview, .dropzone-previews .dz-preview {
+        border-bottom: 1px solid #acacac !important;
+        padding: 6px 3px 40px 1px !important;
+        margin: 10px 10px !important;
+    }
+
+        .dropzone .dz-preview .dz-progress, .dropzone-previews .dz-preview .dz-progress {
+            left: 0px !important;
+            right: 0px !important;
+        }
+
+    .dropzone.dz-started .dz-message {
+        margin: 0;
+        top: 15% !important;
+        left: 1% !important;
+        width: 45% !important;
+        border: 4px dashed #ddd;
+        background: rgba(221, 221, 221, 0.24) !important;
+        height: 200px !important;
+    }
+
+    .dropzone .dz-default.dz-message span {
+        display: block !important;
+        bottom: 0px;
+        position: relative;
+        font-size: 16px;
+        top: 50%;
+    }
+
+    .dropzone .dz-default.dz-message {
+        width: 40% !important;
+        float: left !important;
+        border: 4px dashed #ddd !important;
+        height: 230px !important;
+        display: block !important;
+        text-align: center !important;
+        margin: 0px !important;
+        top: 7% !important;
+        left: 3% !important;
+        background: rgba(221, 221, 221, 0.24) !important;
+    }
+
+    .dropzone.dz-started .dz-message {
+        opacity: 1 !important;
+    }
+
+    .fileCont {
+        width: 52%;
+        float: right;
+        text-align: left;
+        padding: 0px;
+        font-size: 14px;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .productHeader {
+        width: 100%;
+        float: left;
+        margin: 5px 0px;
+    }
+
+    .attachementDisplay {
+        width: 100%;
+        float: left;
+        background: #eee;
+        padding: 5px;
+        border-radius: 3px;
+        margin-bottom: 3px;
+    }
+
+    .attachementImgname {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 90%;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .attachementImgDel {
+        margin-left: 15px;
+        position: absolute;
+    }
+
+    .dropzone a.dz-remove, .dropzone-previews a.dz-remove {
+        position: absolute !important;
+        right: -6px !important;
+        top: 0 !important;
+        background-image: url('../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif') !important;
+        background-repeat: no-repeat;
+        height: 20% !important;
+        width: 5% !important;
+        cursor: pointer;
+        margin-top: 0px !important;
+        border: none !important;
+        font-size: 0 !important;
+        color: transparent !important;
+    }
+
+    .Upload_box {
+        border-left: 1px solid rgb(188, 188, 188);
+        border-top: 1px solid rgb(188, 188, 188);
+        border-right: 1px solid rgb(188, 188, 188);
+        border-bottom: 1px solid rgb(188, 188, 188);
+        margin: 0px 7px 0px 5px;
+    }
+
+    .salesProduct {
+        background: #f4f4f4;
+        padding: 10px;
+        border-bottom: none;
+        border-top: 1px solid #aaa !important;
+        border-left: 1px solid #aaa !important;
+        border-right: 1px solid #aaa !important;
+    }
+
+    .salesRemark {
+        background: #f4f4f4;
+        padding: 10px;
+        border-bottom: 1px solid #aaa !important;
+        border-left: 1px solid #aaa !important;
+        border-right: 1px solid #aaa !important;
+    }
+
+    .dcr_doctor_name_doc {
+        width: 76% !important;
+    }
+
+    .auto_Chemist_Visit {
+        width: 76% !important;
+    }
+
+    .helpIconmargin {
+        display: none;
+    }
+
+    .spnDcoCus {
+        margin-left: 3px;
+    }
+
+    .spnDcoCuss {
+        margin-left: 3px;
+    }
+
+    .dropzone {
+        min-height: 270px !important;
+    }
+
+    .DetailsBox {
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+    }
+
+    .cvtable {
+        width: 100%;
+    }
+
+    .addNewBtn {
+        text-align: right;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+
+    .addNewBtnDoc {
+        text-align: right;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        position: relative;
+        /* right: 77%; */
+        left: 21%;
+    }
+
+    .accordionWrapper {
+        padding: 30px;
+        background: #fff;
+        float: left;
+        width: 80%;
+        box-sizing: border-box;
+        margin: 10%;
+        box-shadow: 0 1.5em 85px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .accordionItem {
+        float: left;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'Open-sans',Arial,sans-serif;
+    }
+
+    .accordionItemHeading {
+        cursor: pointer;
+        margin: 0px 0px 10px 0px;
+        padding: 10px;
+        background: #2980b9;
+        color: #fff;
+        width: 100%;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    .close .accordionItemContent {
+        height: 0px;
+        transition: height 1s ease-out;
+        -webkit-transform: scaleY(0);
+        -o-transform: scaleY(0);
+        -ms-transform: scaleY(0);
+        transform: scaleY(0);
+        float: left;
+        display: block;
+    }
+
+    .open .accordionItemContent {
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        width: 100%;
+        margin: 0px 0px 10px 0px;
+        display: block;
+        -webkit-transform: scaleY(1);
+        -o-transform: scaleY(1);
+        -ms-transform: scaleY(1);
+        transform: scaleY(1);
+        -webkit-transform-origin: top;
+        -o-transform-origin: top;
+        -ms-transform-origin: top;
+        transform-origin: top;
+        -webkit-transition: -webkit-transform 0.4s ease-out;
+        -o-transition: -o-transform 0.4s ease;
+        -ms-transition: -ms-transform 0.4s ease;
+        transition: transform 0.4s ease;
+        box-sizing: border-box;
+    }
+
+    .open .accordionItemHeading {
+        margin: 0px;
+        -webkit-border-top-left-radius: 3px;
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 0px;
+        -webkit-border-bottom-left-radius: 0px;
+        -moz-border-radius-bottomright: 0px;
+        -moz-border-radius-bottomleft: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        background-color: #bdc3c7;
+        color: #7f8c8d;
+    }
+</style>
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/SurveyCoreREST.js"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4DoctorVisit12.7.0.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRAllowedSpecialCharacters.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
+
+<script src="~/Scripts/dropzone.js"></script>
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css" rel="stylesheet" />
+<link href="../Areas/HiDoctor_Activity/Content/dropzone.css" rel="stylesheet" />
+
+<div id="div_doctorvisit" style="min-height: 600px; width: 100%; float: left">
+    <br />
+    <div id="prog-bar">
+        <div class="stepno1  ">
+            <a href="#" id="aDCR" title="click here to redirect to header" onclick="javascript:fnRedirectToHeader()">DCR</a>
+        </div>
+        <div style="width: 15%; float: left;">
+            &nbsp
+        </div>
+        <div class=" stepno2 step2Selected">
+            <div style="float: left"><span class="spnDcoCustitle"> Doctors, Chemist & Hospital </span> - Visit Details</div>
+            <div class="helpIcon">
+                <img src="/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','PAGE')" />
+            </div>
+        </div>
+        <div style="width: 4.5%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno3">
+            <span id="spnStockist">Stockist</span> Visit & Expense Details
+        </div>
+    </div>
+    <input type="hidden" id="hdnAction" />
+    <input type="hidden" id="hdnbindRowNumber" />
+
+    <div id="dvLoading" style="text-align: center">
+        <img src="../../Content/themes/base/images/hd/loader.gif" />
+    </div>
+    <div id="divPage" style="min-height: 32px; width: 100%; display: none;">
+        <input type="hidden" id="hdnDocMaxCode" />
+        <input type="hidden" id="hdnDocAccMaxCode" />
+        <input type="hidden" id="hdnInputsMaxCode" />
+        <input type="hidden" id="hdnDetailedMaxCode" />
+        <input type="hidden" id="hdnChemMaxCode" />
+        <input type="hidden" id="hdnRCPAMaxCode" />
+        <input type="hidden" id="hdnRecord_Status" />
+        <input type="hidden" id="hdnDoc_EntryMode" />
+        <input type="hidden" id="hdnsoe" />
+        <input type="hidden" id="hdnlat" />
+        <input type="hidden" id="hdnlon" />
+        <input type="hidden" id="hdnloc" />
+        <input type="hidden" id="hdnedt" />
+        <div class="divdoclist">
+            <div style="background: #EFF3F6">
+                <div id="div_doctorvisit_list">
+                    <div class="listheaderbar">
+                        <div style="text-align: left; padding: 2px; font-family: Segoe UI; float: left">
+                            <span class="spnDcoCus"> Doctor/Customer List</span> (Click on the below list to View the details.)
+                            <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddDOCLST"><span id="docLSTLoadingTitle" class="loadingcaption"> Retrieving data</span>
+                        </div>
+                        <div class="helpIconmargin">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DOCTORLIST')" />
+                        </div>
+                    </div>
+                    <table id="tbl_doctorvisit_list" runat="server" cellpadding="0" cellspacing="0" style="width: 100%;"
+                           class=""></table>
+                </div>
+                <div style="float: left; width: 50%; margin-top: 5px;">
+                    <input type="button" id="btnClear" value="Add New" onclick="fnClear()" />
+                </div>
+                <div style="float: right; margin-top: 5px; display:none;">
+                    <input type="button" id='btnInsertCP' value="Go to Stockist Visit >>" onclick="fnInsertCPDoctors();" />
+                </div>
+            </div>
+            @if (ViewBag.ChemistsPrivilege == "CHEMIST_DAY")
+            {
+                <div class="divChemistlist chemistDay" style="margin-top: 6%;">
+                    <div id="div_Chemistvisit_list">
+                        <div class="chemistheader">
+                            <div style="text-align: left; padding: 2px; font-family: Segoe UI; float: left">
+                                <span class="spnDcoCuss"> Chemists </span> (Click on the below list to View the details.)
+                                @*  <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadCheLST"><span id="CheLSTLoadingTitle" class="loadingcaption"> Retrieving data</span>*@
+                            </div>
+                            @*                   <div class="helpIconmargin">
+                                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DOCTORLIST')" />
+                                </div>*@
+                        </div>
+                        <table id="tbl_Chemistvisit_list" runat="server" cellpadding="0" cellspacing="0" style="width: 100%;"
+                               class=""></table>
+                    </div>
+                    <div style="float: left; width: 50%; margin-top: 5px;">
+                        <input type="button" id="btnCheClear" value="Add New" onclick="ChemistVisit.fnCheClear()" />
+                    </div>
+                    <div style="float: right; margin-top: 5px;display: none;">
+                        <input type="button" id='btnCheInsertCP' value="Go to Stockist Visit >>" onclick="ChemistVisit.fnInsertChemist();" />
+                    </div>
+                </div>
+            }
+            @if (ViewBag.ChemistsPrivilege == "HOSPITAL")
+            {
+                <div class="divhospitallist hospitalDay" style="margin-top: 6%;">
+                    <div id="div_Hospitalvisit_list">
+                        <div class="Hospitalheader">
+                            <div style="text-align: left; padding: 2px; font-family: Segoe UI; float: left">
+                                <span class="spnhospital"> Hospital </span> (Click on the below list to View the details.)
+                                @*  <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadCheLST"><span id="CheLSTLoadingTitle" class="loadingcaption"> Retrieving data</span>*@
+                            </div>
+                            @*                   <div class="helpIconmargin">
+                                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DOCTORLIST')" />
+                                </div>*@
+                        </div>
+                        <table id="tbl_hospitalvisit_list" runat="server" cellpadding="0" cellspacing="0" style="width: 100%;"
+                               class=""></table>
+                    </div>
+                    <div style="float: left; width: 50%; margin-top: 5px;">
+                        <input type="button" id="btnCheClear" value="Add New" onclick="HospitalVisit.fnHospitalClear()" />
+                    </div>
+                    <div style="float: right; margin-top: 5px;display: none;">
+                        <input type="button" id='btnHsptlInsertCP' value="Go to Stockist Visit >>" onclick="HospitalVisit.fnInsertHospital();" />
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            <div>
+                <form id="frm1" onkeydown="fnSetFormMode(event)" onclick="fnSetFormMode(event)" onkeypress="fnSetFormMode(event)" ondblclick="fnSetFormMode(event)">
+                    <div id="div_doctorvisit_form" style="float: left; width: 49%; border: 1px solid #c0c0c0; padding: 5px; background: #fafafa">
+                        <div id="div_doctordetails_entry">
+                            <center class="OTC/PharmaBlock">
+                                <div class="doctorDetailsbox">
+                                    <div class="listheaderbar doctorDetailsHeading">
+                                        <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgDoctorDetailed"><span id="DoctorloadingTitle" class="loadingcaption"> Doctor Details Settings...</span>
+                                        <span class="fontweightbold" style="float:left"><span class="spnDcoCus"> Doctor/Customer</span> Details</span>
+                                        <div class="helpIconmargin">
+                                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DOCCUSTDETAILS')" />
+                                        </div>
+                                    </div>
+                                    <input id="hdnDoctorVisitCode" type="hidden" />
+
+                                    <div class="rowdiv">
+                                        <div class="column1">
+                                            <label><span class="spnDcoCus1">Name</span></label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="text" id="txtDocName" onblur="fnValidateDoctor(this)" class="dcr_doctor_name_doc required doctorcheckspecialchar setfocus" />
+                                            <input type="hidden" id="hdnDocName" />
+                                            <input type="hidden" id="hdnIsCPDoc" />
+                                        </div>
+
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div id="div_doc_speciality" class="rowdiv" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Speciality
+                                            </label>
+                                        </div>
+                                        <div class="cloumn2">
+                                            <input type="text" id="txtDocSpeciality" onblur="return fnCheckSpecialChar(this)"
+                                                   class="dcr_doc_spec_name setfocus" /><input type="hidden" id="hdnspecname" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+
+                                    <div id="div_doc_visitmode" class="rowdiv">
+                                        <div class="column1">
+                                            <label>
+                                                Visit Mode
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="radio" name="rdvisitmode" id="rdam" checked="checked" onclick="fnSetFormMode(event)" />
+                                            <span id="spnAM">AM</span>
+                                            <input type="radio" name="rdvisitmode" id="rdpm" onclick="fnSetFormMode(event)" />
+                                            <span id="spnPM">PM</span>
+                                            <label id="lblvisitmode"></label>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div id="div_doc_visittime" class="rowdiv" style="display: none">
+                                        <div class="column1">
+                                            <label>Visit Time</label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="text" id="timepicker" onchange="fnSetFormMode(event)" />
+                                            <label id="lbltimepicker"></label>
+
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div id="div_doc_pob" class="rowdiv" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Business\POB Value
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="text" id="txtDocPOB" class="checkcurrencyformat setfocus" onblur="return fnCurrencyFormatNew(this, 'POB')" />
+                                        </div>
+                                    </div>
+
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="divMC">
+                                        <div class="column1">
+                                            <label>
+                                                Marketing Campaign/CME
+                                            </label>
+                                        </div>
+                                        <div class="column2" id="divMCControl" style="width:20% !important;">
+                                            <select id="ddlMC" onchange="fngetUsertype();">
+                                                <option value='0'>-select-</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="rowdiv" id="divSurvey" style="display:none;">
+                                            <a href="#" id="surveylink" onclick="fnshowsurvey();" style="display:none;padding-left:31px;">Take Survey</a>
+                                            <a href="#" id="surveyviewlink" onclick="fnviewsurvey();" style="display:none;padding-left:31px;">View Survey</a>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="divBusinessStatus">
+                                        <div class="column1">
+                                            <label>
+                                                Business Status
+                                            </label>
+                                        </div>
+                                        <div class="column2" id="divBusinessControl">
+                                            <select id="ddlDBStatus"></select>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="divCallObjective" style="display:none;">
+                                        <div class="column1">
+                                            <label>
+                                                Call Objective
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <select id="ddlcallObjetive"></select>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv">
+                                        <div class="column1">
+                                            <label>
+                                                Interaction Remarks
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <textarea id="txtDocRemarks" style="height: 30px;" class="setfocus"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="lblSampleMand" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Sample/Promotional item is not given
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="checkbox" name="sample1" id="SampleMandatory" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="lbldetailMand" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Non-Detailed Customer
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="checkbox" name="sample1" id="DetailedMandatory" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="lblChemistMand" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                No Chemist Visit
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="checkbox" name="sample1" id="chemistMandatory" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="lblRCPAMand" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Chemsit Visit without RCPA
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="checkbox" name="sample1" id="RcpaMandatory" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div class="rowdiv" id="lblPOBMand" style="display: none">
+                                        <div class="column1">
+                                            <label>
+                                                Doctor Visit Without POB
+                                            </label>
+                                        </div>
+                                        <div class="column2">
+                                            <input type="checkbox" name="sample1" id="POBMandatory" />
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                    <div id="divModeOfEntry" style="padding-top: 17px;height: 20px">
+                                        <div style="float:left;margin-left: 3px;">Mode Of Entry</div><div style="float:left;margin-left: 12%;">
+                                            <input type="radio" name="Mode_Of_Form" value="1" onchange="fnLineofBusinessChange()"> Pharma
+                                            <input type="radio" name="Mode_Of_Form" value="2" onchange="fnLineofBusinessChange()">  OTC
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </center>
+                            <center class="OTC/PharmaBlock" id="ACCOMPANIST">
+                                <div id="div_DoctorAccDetails" class="doctorAccDetailsBox">
+                                    <div class="listheaderbar" style="width:100%;" onclick="fnTableShowHide('tbl_DoctorAccDetails','spnAccDetails')">
+                                        <div class="collapse" id="spnAccDetails" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                            Accompanist Details
+                                            @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddAcc"><span id="accLoadingTitle" class="loadingcaption"> Accompanist autofill setting</span>*@
+
+                                        </div>
+                                        <div class="helpIconmargin">
+                                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DOCVISITACCOMPANIST')" />
+                                        </div>
+                                    </div>
+
+                                    <table id="tbl_DoctorAccDetails" style="width:100%;" border="0" cellspacing="0" cellpadding="0"></table>
+                                </div>
+                            </center>
+                            <center class="OTC/PharmaBlock" id="ACTIVITY">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('divActivity','spnFollowup')">
+                                    <div class="collapse" id="spnFollowup" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left">Activity</div>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                                    </div>
+                                </div>
+                                <div style="padding: 1px;" class="doctorAccDetailsBox" id="divActivity">
+                                    <div style="text-align: left;font-weight: 500;margin-left: 1%;">Call Activity</div>
+                                    <table id="tbl_Activity" style="width: 98.5%;margin-bottom:5px;">
+                                        <thead>
+                                            <tr>
+                                                <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                                    Type
+                                                </td>
+
+                                                <td class="dcr_product_header" style="text-align:left;padding-left:19px">Remarks</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    @*<div style="text-align: left;font-weight: 500;margin-left: 1%;">CME Activity</div>
+                                        <table id="tbl_CME" style="width: 98.5%;margin-bottom:5px;display:none;">
+                                            <thead>
+                                                <tr>
+                                                    <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                                        CME
+                                                    </td>
+
+                                                    <td class="dcr_product_header" style="text-align:left;padding-left:19px"><a href="#" onclick="fnRecordCME();">Record CME</a></td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                        </table>*@
+                                    <div style="text-align: left;font-weight: 500;margin-left: 1%;">Marketing Activity</div>
+                                    <table id="tbl_MC_Activity" style="width: 98.5%;margin-bottom:5px;">
+                                        <thead>
+                                            <tr>
+                                                <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                                    Marketing Campaign/CME
+                                                </td>
+
+                                                <td class="dcr_product_header" style="text-align:left;padding-left:19px">Activity</td>
+                                                <td>Remarks</td>
+                                                <td></td>
+                                            </tr>
+                                            @*<tr>
+                                                    <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                                       Current Sales
+                                                    </td>
+                                                    <td class="dcr_product_header" style="text-align:left;padding-left:19px">Expected Sales</td>
+                                                    <td>No of Months</td>
+                                                    <td></td>
+                                                </tr>*@
+                                        </thead>
+                                    </table>
+                                </div>
+                            </center>
+                            <center class="PharmaBlock" id="DETAILING">
+                                <div class="listheaderbar" style="width:98%;">
+                                    <div class="collapse" id="spndetailedproducts" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left;width: 67%;" onclick="fnTableShowHide('tbl_DetailedProducts','spndetailedproducts')">
+                                        <div style="float:left">Target / Detailed Products</div>
+                                        <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddetailed"><span id="detailedLoadingTitle" class="loadingcaption"> Detailed Products autofill setting</span>
+                                    </div>
+                                    <span style="color:blue;display:block;float:left;padding-right:11px;margin-top:4px;" onclick="fnShowDetailedProductsPopup()">Choose Detailed Products</span>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','DETAILPRODUCT')" />
+                                    </div>
+                                </div>
+
+                                <table id="tbl_DetailedProducts" style="width:98.5%;margin-bottom:5px;" border="0" cellspacing="0" cellpadding="0"></table>
+                            </center>
+                            <center class="PharmaBlock" id="SAMPLES">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_Produts','spnproducts')">
+                                    <div class="collapse" id="spnproducts" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left">Samples / Promotional items / Activity</div>
+                                        <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadInputs"><span id="inputsLoadingTitle" class="loadingcaption"> Sample/Promotional items autofill setting</span>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                                    </div>
+                                </div>
+
+                                <table id="tbl_Produts" style="width: 98.5%;margin-bottom:5px;">
+                                    <tr>
+                                        <td class="dcr_product_header" style="text-align:left;">
+                                            Input Name
+                                        </td>
+                                        <td class="dcr_product_header txtqty" style="text-align:left;padding-left:30px">
+                                            Quantity
+                                        </td>
+                                        <td class="dcr_product_header txtqty" style="text-align:left;padding-left:23px;display:none;">
+                                            Detailed
+                                        </td>
+                                        <td class="dcr_product_header"></td>
+                                    </tr>
+                                </table>
+
+
+                            </center>
+                            <center class="OTCBlock" id="POB">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_POB','spnPOB')">
+                                    <div class="collapse" id="spnPOB" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left">POB</div>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                                    </div>
+                                </div>
+                                <div style="padding: 1px;">
+                                    <table id="tbl_POB" style="width: 98.5%;margin-bottom:5px;"></table>
+                                </div>
+
+                            </center>
+                            <center class="PharmaBlock" id="DVChemistBlock">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_chemist','spnchemist')">
+                                    <div class="collapse" id="spnchemist" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left" id="divChemist"></div>
+                                        <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadchemist"><span id="chemistLoadingTitle" class="loadingcaption"> Chemist autofill setting</span>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','CHEMIST')" />
+                                    </div>
+                                </div>
+                                <table id="tbl_chemist" style="width: 98.5%">
+                                    <tr style="display:none;">
+                                        <td class="dcr_chemist_header" style="text-align:left;">
+                                            Name
+                                        </td>
+                                        <td class="dcr_chemist_header txtpob" style="text-align:left;padding-left:11px;">
+                                            POB
+                                        </td>
+                                        <td class="dcr_chemist_header"></td>
+                                    </tr>
+                                </table>
+                            </center>
+                            <center class="OTC/PharmaBlock" id="ATTACHMENTS">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('div_Attachments','spnAttachments')">
+                                    <div class="collapse" id="spnAttachments" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left">Attachments</div>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                                    </div>
+                                </div>
+                                <div class="Upload_box" style="padding: 1px;margin-bottom:5px;">
+                                    <div id='div_Attachments'>
+                                        <div id="dZUpload" class="dropzone">
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </center>
+                            <center class="OTC/PharmaBlock" id="FOLLOW-UP">
+                                <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_Followup','spnFollowup')">
+                                    <div class="collapse" id="spnFollowup" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                                        <div style="float:left">Follow-Ups</div>
+                                    </div>
+                                    <div class="helpIconmargin">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+                                    </div>
+                                </div>
+                                <div style="padding: 1px;" class="doctorAccDetailsBox">
+                                    <table id="tbl_Followup" style="width: 98.5%;margin-bottom:5px;">
+                                        <tr>
+                                            <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                                Tasks
+                                            </td>
+                                            <td style="width: 57%;"></td>
+                                            <td class="dcr_product_header" style="text-align:left;padding-left:19px">Due Date</td>
+                                            <td style="width:4px;"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </center>
+                            <center>
+
+                            </center>
+                            <div id="buttondiv" style="margin-top: 5px; float: right">
+                                <input type="button" id="btnSave" value="Save" onclick="fnInsertDoctorVisitData();" />
+                                <input type="button" class="btninsertdoctor" id="btnInsertCP" onclick="fnInsertCPDoctors();" value="Next>" />
+                                <input type="button" value="Reset" onclick="fncancel()" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @if (ViewBag.ChemistsPrivilege == "CHEMIST_DAY")
+            {
+                <div id="div_Chevisit_form" style="display: block;float: left;width: 49%;border: 1px solid #c0c0c0;padding: 5px;background: #fafafa;">
+                    <form id="cheForm" onkeydown="ChemistVisit.fnSetFormMode(event)" onclick="ChemistVisit.fnSetFormMode(event)" onkeypress="ChemistVisit.fnSetFormMode(event)" ondblclick="ChemistVisit.fnSetFormMode(event)">
+
+                        <div>
+                            @Html.Partial("../DCRV4ChemistVisit/ChemistDetails")
+                        </div>
+                        @if (ViewBag.CONTACT == "CONTACT")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistContactDetails")
+                            </div>
+                        }
+
+                        @if (ViewBag.ACCOMPANIST == "ACCOMPANIST")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistAccomplishmentDetails")
+                            </div>
+                        }
+
+                        @if (ViewBag.DETAILING == "DETAILING")
+                        {
+                            <div class="DetailsBox">
+
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistDetailProduct")
+                            </div>
+
+                        }
+                        @if (ViewBag.SAMPLES == "SAMPLES")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistSampleProduct")
+                            </div>
+                        }
+                        @if (ViewBag.POB == "POB")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistPOB")
+                            </div>
+                        }
+                        @if (ViewBag.RCPA_CV == "RCPA")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/DCRV4ChemistRCPA")
+                            </div>
+                        }
+                        @if (ViewBag.ATTACHMENTS == "ATTACHMENTS")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/Attachments")
+                            </div>
+                        }
+                        @if (ViewBag.FOLLOW == "FOLLOW-UP")
+                        {
+                            <div class="DetailsBox">
+                                @Html.Partial("../DCRV4ChemistVisit/FollowUps")
+                            </div>
+
+                        }
+                        <div id="buttonChediv" style="margin-top: 5px; float: right">
+                            <input type="button" id="btnCheSave" value="Save" onclick="ChemistVisit.fnInsertChemistVisitData();" />
+                            <input type="button" class="btnCheinsertdoctor" id="btnCheInsertCV" onclick="ChemistVisit.fnInsertChemist();" value="Next" />
+                            <input type="button" value="Reset" onclick="ChemistVisit.fnChemistcancel()" />
+                        </div>
+                    </form>
+
+
+                </div>
+                <div id="dvAllDetailedProduct_Chemist" class="simple_overlay" style="width: 50%; height: 450px !important;">
+                    <a class="overlayclose" onclick="$('#dvAllDetailedProduct_Chemist').hide();"></a>
+                    <div>
+                        <div class="popUpTitle" style="height: 45px;">
+                            <span style="font-weight: bold">Products</span>
+                        </div>
+                        <div class="cls_selectedProdsContent">
+                            <div class="cls_fontweight">Selected Products</div>
+                            <div class="cls_selectedProdList_Chemist"></div>
+                        </div>
+                        <div class="col-lg-12" style="clear: both; text-align: center; padding-top: 3px; padding-bottom: 3px;">
+                            <button type="button" onclick="ChemistDetailProductDetails.fnBindDetailedProducts();" class="btn small primary">Done</button>
+                            <button type="button" onclick="fnresetAll();" class="btn small primary">Cancel </button>
+                        </div>
+                        <div>
+                            <div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="cls_fontweight">Product Name</th>
+                                            <th class="cls_fontweight" style="text-align: center">Select</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="dvAllPro_Chemist" class="col-lg-12">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+            @if (ViewBag.ChemistsPrivilege == "HOSPITAL")
+            {
+                <div id="div_Hospitalvisit_form" style="display: block;float: left;width: 49%;border: 1px solid #c0c0c0;padding: 5px;background: #fafafa;">
+                    <form id="cheForm" onkeydown="HospitalVisit.fnSetFormMode(event)" onclick="HospitalVisit.fnSetFormMode(event)" onkeypress="HospitalVisit.fnSetFormMode(event)" ondblclick="HospitalVisit.fnSetFormMode(event)">
+
+                        <div>
+                            @Html.Partial("../DCRV4HospitalVisit/HospitalDetails")
+                        </div>
+
+                        <div id="buttonChediv" style="margin-top: 5px; float: right">
+                            <input type="button" id="btnhsptlSave" value="Save" onclick="HospitalVisit.fnInserthospitalVisitData(1);" />
+                            <input type="button" class="btnCheinsertdoctor" id="btnHsptlInsertCP" onclick="HospitalVisit.fnInserthospital(2);" value="Next" />
+                            <input type="button" value="Reset" onclick="HospitalVisit.fnHospitalcancel()" />
+                        </div>
+                    </form>
+
+
+                </div>
+                <div id="dvAllDetailedProduct_Chemist" class="simple_overlay" style="width: 50%; height: 450px !important;">
+                    <a class="overlayclose" onclick="$('#dvAllDetailedProduct_Chemist').hide();"></a>
+                    <div>
+                        <div class="popUpTitle" style="height: 45px;">
+                            <span style="font-weight: bold">Products</span>
+                        </div>
+                        <div class="cls_selectedProdsContent">
+                            <div class="cls_fontweight">Selected Products</div>
+                            <div class="cls_selectedProdList_Chemist"></div>
+                        </div>
+                        <div class="col-lg-12" style="clear: both; text-align: center; padding-top: 3px; padding-bottom: 3px;">
+                            <button type="button" onclick="ChemistDetailProductDetails.fnBindDetailedProducts();" class="btn small primary">Done</button>
+                            <button type="button" onclick="fnresetAll();" class="btn small primary">Cancel </button>
+                        </div>
+                        <div>
+                            <div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="cls_fontweight">Product Name</th>
+                                            <th class="cls_fontweight" style="text-align: center">Select</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="dvAllPro_Chemist" class="col-lg-12">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div id="dvAllDetailedProduct" class="simple_overlay" style="width: 50%; height: 450px !important;">
+            <a class="overlayclose" onclick="$('#dvAllDetailedProduct').hide();"></a>
+            <div>
+                <div class="popUpTitle" style="height: 45px;">
+                    <span style="font-weight: bold">Products</span>
+                </div>
+                <div class="cls_selectedProdsContent">
+                    <div class="cls_fontweight">Selected Products</div>
+                    <div class="cls_selectedProdList"></div>
+                </div>
+                <div class="col-lg-12" style="clear: both; text-align: center; padding-top: 3px; padding-bottom: 3px;">
+                    <button type="button" onclick="fnBindDetailedProducts();" class="btn small primary">Done</button>
+                    <button type="button" onclick="fnresetAll();" class="btn small primary">Cancel </button>
+                </div>
+                <div>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="cls_fontweight">Product Name</th>
+                                    <th class="cls_fontweight" style="text-align: center">Select</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="dvAllPro" class="col-lg-12">
+                    </div>
+
+                    <div id="color_Details" style="margin: 7px 0px; " hidden>
+                        <span class="" style="background: #f47b7b;color: red;font-size: 17px;margin: 5px;padding: 0px 10px;"></span>
+                        <span>Marketing Campaign</span>
+                        <span class="" style="background: #8bc59c;color: red;font-size: 17px;margin: 5px;padding: 0px 10px;"></span>
+                        <span>Target Mapping</span>
+                        <span class="" style="background: #bab8e3;color: red;font-size: 17px;margin: 5px;padding: 0px 10px;"></span>
+                        <span>Doctor Product Mapping</span>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both">
+            </div>
+            <div style="clear: both">
+            </div>
+        </div>
+        <div id="myModalcompetitor1" class="simple_overlay" style="width: 50%; height: 450px !important;">
+            <h3 style="text-align:center;">Competitor Product Addition</h3>
+
+            <div class="col-lg-12" id="addnew" style="height:400px;overflow-y:scroll;">
+            </div>
+
+            @*<div class="col-lg-12" id="addnew">
+                        <label style="padding-left:23px;font-size:14px;">Competitor Name</label>
+                        <input type="text" style="display:none;" id="txtcomp_" />
+                        <input type="text" id="selcomp" class="input-xlarge form-control autocomp ac_input" autocomplete="off"><input type="hidden" id="hdn_Comp">
+                        <i class="fa fa-plus" style="padding-left:12px;" onclick="fnaddcomp();" id="pluscomp"></i>
+
+
+                        <label style="padding-left:120px;font-size:14px;">Product Name</label>
+                        <input type="text" style="display:none;" id="txtprod_" />
+                        <input type="text" id="selprod" class="input-xlarge form-control autoprod ac_input" autocomplete="off"><input type="hidden" id="hdn_prod">
+                       <i class="fa fa-plus" style="padding-left:12px;" onclick="fnaddprod();" id="plusprod"></i>
+                    </div>
+                </div>
+                <div class="col-lg-12" id="additionalinfo" style="display:none;margin-top:50px;">
+                    <h3 style="text-align:center;">Additional Info</h3>
+                    <label style="padding-left:23px;font-size:14px;">Speciality</label>
+                    <select type="text" style="padding-left:130px;"></select>
+                    <label style="padding-left:23px;font-size:14px;">Category</label>
+                    <select type="text" style="padding-left:130px;"></select>
+                    <label style="padding-left:23px;font-size:14px;">Brand</label>
+                    <select type="text" style="padding-left:130px;"></select>
+                    </div>
+                    <div class="col-lg-12" id="additionalinfocol" style="display:none;margin-top:50px;">
+                        <label style="padding-left:48px;font-size:14px;">UOM</label>
+                        <select type="text" style="padding-left:130px;"></select>
+                        <label style="padding-left:23px;font-size:14px;">UOM Type</label>
+                        <select type="text" style="padding-left:130px;"></select>
+
+                    </div>
+                <div class="col-lg-12" style="margin-top:50px;">
+                    <label style="padding-left:46px;font-size:14px;">Value</label>
+                    <input type="number" />
+                    <label style="padding-left:23px;font-size:14px;">Probability</label>
+                    <input type="number" />
+                </div>
+                <div class="col-lg-12" style="margin-top:50px;">
+                    <label style="padding-left:23px;font-size:14px;">Remarks</label>
+                    <textarea cols="500" style="width:65%;"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <button class="btn btn-primary" onclick="fnaddnewcompetitor();" style="margin-left:15px;margin-top:40px;">Add New</button>
+                    <button class="btn btn-primary" onclick="fnsavecompetitor();" style="float:right;margin-right:39px;margin-top:45px;">Save</button>
+                </div>*@
+
+
+        </div>
+
+    </div>
+</div>
+@*<div class="modal fade in" id="myModalcompetitor1" role="dialog" style="display:none;">
+
+        <div class="modal-dialog modal-lg" style="padding:0px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                   <div class="col-xs-12 col-sm-12">
+                       <div class="col-xs-12 col-sm-6">
+                           <label>Competitor Name</label>
+                           <input type="text" /><i class="fa fa-plus"></i>
+                       </div>
+                       <div class="col-xs-12 col-sm-6">
+                           <label>Product Name</label>
+                           <input type="text" /><i class="fa fa-plus"></i>
+                       </div>
+                   </div>
+                </div>
+                <div class="modal-footer" style="border-top:none !important">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div id="mySurveyModal" class="modal" style="display:none;">
+    <div class="modal-dialog" style="width: 80%;right: 147px;height: 80%;font-size: 21px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                @*<h4 class="modal-title" style="text-align:center;font-size:30px;">Survey</h4>*@
+            </div>
+            <div class="modal-body" id="surveybody">
+                <iframe name="hidden-iframe" style="width:100%;height:500px;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 88%;" onclick="fnsurveyclose();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mySurveyViewModal" class="modal" style="display:none;">
+    <div class="modal-dialog" style="width: 80%;right: 209px;height: 65%;font-size: 21px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                @*<h4 class="modal-title" style="text-align:center;font-size:30px;">Survey</h4>*@
+            </div>
+            <div class="modal-body" id="surveyviewbody">
+                @*<iframe name="hidden-iframe" style="width:100%;height:500px;"></iframe>*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 88%;" onclick="fnsurveyresponseclose();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="post" style="display:none;" id="multiselectformdiv" target="hidden-iframe" data-target="surveybody">
+    <input type="text" id="ChecklistId" name="ChecklistId" />
+    <input type="text" id="publishId" name="publishId" />
+    <input type="text" id="al" name="al" />
+    <input type="text" id="cl" name="cl" />
+    <input type="text" id="layout" name="layout" />
+    <input type="text" id="coId" name="coId" />
+    <input type="text" id="uId" name="uId" />
+    <input type="text" id="rCode" name="rCode" />
+    <input type="text" id="sdn" name="sdn" />
+    <input type="text" id="lang" name="lang" />
+    <input type="text" id="cumid" name="cumid" />
+    <input type="text" id="Ref_Id" name="Ref_Id" />
+    <input type="text" id="Userids" name="Userids" />
+    <input type="text" id="DraftId" name="DraftId" />
+    <input type="text" id="EncypURL" name="EncypURL" />
+    <input type="text" id="CompanyCode" name="CompanyCode" />
+    <input type="text" id="UserCode" name="UserCode" />
+    <input type="text" id="UserName" name="UserName" />
+    @*<input type="text" id="RegionCode" name="RegionCode" />*@
+    <input type="text" id="RegionName" name="RegionName" />
+    <input type="text" id="CustomerCode" name="CustomerCode" />
+    <input type="text" id="CustomerName" name="CustomerName" />
+</form>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistDetailProduct.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistProduct.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistPOB.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistRCPA.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistDetailProduct.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+
+    ShowModalPopup('dvLoading');
+    var dcrDoctorVisit_g = "";
+    var DoctorAutofill_CV = "";
+    var RCPA_g
+    var doctorAutoFill_g;
+    var chemistAutoFill_g;
+    var productAutoFill_g;
+    var productAutoFillOri_g;
+    var specialityAutoFill_g;
+    var RCPAProductAutofill_g;
+    var detailedProductsAutoFill_g;
+    var accomapnistAutoFill_g;
+    var doctorPOBAmount_g;
+    var doctorEntryMode_g;
+    var doctotVisitTime_g;
+    var dcrActualDate_g;
+    var queryString_g;
+    var chemists_mandatory_number_g;
+    var inputs_mandatory_number_g;
+    var input_qty_default_g;
+    var status_g;
+    var category_g;
+    var travelledKMS_g;
+    var source_g="";
+    var formMode_g="";
+    var flag_g="";
+    var productBringType_g;
+    var showAccData_g="";
+    var dcrDoctorVisitTimeEntryModeValue_g ="";
+    var DCR_CATEGORY_VISIT_COUNT_RESTRICTION_G = "";
+    var ChemistsPrivilege="0";
+    var hdncompdetails='';
+    var CompanyId='';
+    var UserCode='';
+    var UserName='';
+    var RegionCode='';
+    var RegionName='';
+
+    var hdncompdetails=@Html.Raw(Json.Encode(ViewBag.hdncompdetails));
+    var CONTACT = @Html.Raw(Json.Encode(ViewBag.CONTACT));
+    var ACCOMPANIST = @Html.Raw(Json.Encode(ViewBag.ACCOMPANIST));
+    var SAMPLES = @Html.Raw(Json.Encode(ViewBag.SAMPLES));
+    var DETAILING = @Html.Raw(Json.Encode(ViewBag.DETAILING));
+    var RCPA = @Html.Raw(Json.Encode(ViewBag.RCPA_CV));
+    var POB = @Html.Raw(Json.Encode(ViewBag.POB));
+    var ATTACHMENTS = @Html.Raw(Json.Encode(ViewBag.ATTACHMENTS));
+    var FOLLOW = @Html.Raw(Json.Encode(ViewBag.FOLLOW));
+    var CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var UserName=@Html.Raw(Json.Encode(ViewBag.UserName));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    var RegionName=@Html.Raw(Json.Encode(ViewBag.RegionName));
+    var accKey=@Html.Raw(Json.Encode(ViewBag.accKey));
+    var At_actvity=@Html.Raw(Json.Encode(ViewBag.activity));
+
+
+    var ChemistsPrivilege_Value="CHEMIST_DAY";
+    var actvity_att='';
+    var isrcpa='';
+    var detailProdMandatoryCheck;
+    doctorPOBAmount_g = fnGetPrivilegeValue('DCR_DOCTOR_POB_AMOUNT', 'NO');
+    //doctorPOBAmount_g = "YES"
+    doctorEntryMode_g = fnGetPrivilegeValue('RIGID_DOCTOR_ENTRY', 'YES');
+    doctotVisitTime_g = fnGetPrivilegeValue('DCR_DOCTOR_VISIT_MODE', 'AM_PM');
+    //doctotVisitTime_g = "AM_PM";
+    chemists_mandatory_number_g = fnGetPrivilegeValue('DCR_CHEMIST_MANDATORY_NUMBER', '0');
+    inputs_mandatory_number_g = fnGetPrivilegeValue('DCR_INPUT_MANDATORY_NUMBER', '0');
+    input_qty_default_g = fnGetPrivilegeValue('INPUT_QTY_DEFAULT', '0');
+    detailProdMandatoryCheck = fnGetPrivilegeValue('DCR_DETAILING_MANDATORY_NUMBER', '0');
+    var AccompanistMandatory_g_CV="";
+    var ChemAlertTitle = "Chemist Visit";
+    RCPA_g =  @Html.Raw(Json.Encode(ViewBag.RCPA));
+    var  chemistName = fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+    var rcpaMandatory = fnGetPrivilegeValue('RCPA_MANDATORY_DOCTOR_CATEGORY', '');
+    $(function () {
+        debugger;
+    });
+
+    var file_Uploading_Status="NO";
+    var DoctorAttJSONArray = new Array();
+    var file_total_count=0;
+    var file_Com_count=0;
+    $(document).ready(function () {
+        debugger;
+        $("#myModalcompetitor1").overlay().load();
+        fnGetCMECampaigns();
+        try{
+            debugger;
+            AjaxGlobalHandler.Initiate();
+            ChemistsPrivilege=@Html.Raw(Json.Encode(ViewBag.ChemistsPrivilege));
+            $('#tbl_doctorvisit_list').html('');
+            $('#hdnAction').val(@Html.Raw(Json.Encode(ViewBag.Mode)));
+
+            queryString_g =  @Html.Raw(Json.Encode(ViewBag.QueryString));
+            dcrDoctorVisitTimeEntryModeValue_g =  @Html.Raw(Json.Encode(ViewBag.DCR_DOCTOR_VISIT_TIME_ENTRY_MODE));
+            DCR_CATEGORY_VISIT_COUNT_RESTRICTION_G =  @Html.Raw(Json.Encode(ViewBag.DCR_CATEGORY_VISIT_COUNT_RESTRICTION));
+
+            status_g = queryString_g.split('&')[4];
+            category_g = queryString_g.split('&')[5];
+            travelledKMS_g = queryString_g.split('&')[6];
+            source_g = queryString_g.split('&')[7];
+            flag_g = queryString_g.split('&')[8];
+            dcrActualDate_g = queryString_g.split('&')[3];
+            actvity_att=queryString_g.split('&')[9];
+            isrcpa=queryString_g.split('&')[10];
+            var dcrDate = dcrActualDate_g.split('-')[2] + "-" + dcrActualDate_g.split('-')[1] + "-" + dcrActualDate_g.split('-')[0];
+            masterdata();
+            Dropzone.autoDiscover = false;
+            DropZone = $("#dZUpload").dropzone({
+                method: "POST",
+                paramName: "files", // The name that will be used to transfer the file
+                maxFilesize: 3, // MB
+                //acceptedFiles: ".doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .jpg, .jpeg, .bmp, .png, .gif, .mp4, .zip",
+                acceptedFiles: ".png,.jpeg,.jpg,.gif,.tiff,.bmp,.pdf,.doc,.docx,.xls,.xlsx",
+                url: "DCRV4DoctorVisit/InserDCRDoctorVisitAttachment?dcr_Date="+dcrDate,
+                success: function (response) {
+                    if(response!=undefined )
+                        if(response.xhr.response!='')
+                        {
+                            file_Com_count++;
+                            var DoctorAttArray = {};
+                            DoctorAttArray.Blob_Url=response.xhr.response.split('^')[0];
+                            var fileName=response.xhr.response.split('^')[1].replace(/[^a-zA-Z0-9. ]/g, "");
+                            var index=fileName.lastIndexOf(".");
+                            DoctorAttArray.Filename=fileName.substring(0,index);
+                            DoctorAttArray.Status='1';
+                            DoctorAttJSONArray.push(DoctorAttArray);
+                            $("#spFileUploadCount").text('('+file_Com_count+'/'+file_total_count+')');
+                        }
+                },
+                maxFiles: 5,
+                addRemoveLinks : true,
+                dictFileTooBig:"File is too big ({{filesize}}MB). Allowed max filesize: {{maxFilesize}}MB.",
+                dictMaxFilesExceeded:"Sorry, You can't upload more than 5 files.",
+                dictInvalidFileType:"Please Upload following file format only.png,.jpeg,.jpg,.gif,.tiff,.bmp,.pdf,.doc,.docx,.xls,.xlsx",
+                error: function (file, response) {
+                    file_total_count--;
+                    fnMsgAlert('info', 'Attachments', response);
+                },
+                init: function () {
+                    debugger;
+                    var self = this;
+                    // config
+                    // self.options.addRemoveLinks = true;
+                    //self.options.dictRemoveFile = "Delete";
+                    //New file added
+                    self.on("addedfile", function (file) {
+
+                        file_total_count++;
+                        file_Uploading_Status="YES";
+                        $("#spFileUpload").show();
+                        $("#spFileUploadCount").text('('+file_Com_count+'/'+file_total_count+')');
+                        console.log('new file added ', file);
+                    });
+                    // Send file starts
+                    self.on("sending", function (file) {
+                        debugger;
+                        console.log('upload started', file);
+                        $('.meter').show();
+                    });
+
+                    // File upload Progress
+                    self.on("totaluploadprogress", function (progress) {
+                        debugger;
+                        console.log("progress ", progress);
+                        $('.roller').width(progress + '%');
+                    });
+
+                    self.on("queuecomplete", function (progress) {
+                        debugger;
+                        //file_Com_count=0;
+                        file_Uploading_Status="NO";
+                        $('.meter').delay(999).slideUp(999);
+                    });
+                    self.on("removedfile", function (file) {
+                        debugger;
+                        file_total_count--;
+                        file_Com_count--;
+                        if(file_total_count<0)
+                            file_total_count=0;
+                        if(file_Com_count<0)
+                            file_Com_count=0;
+                        for (var i = 0; i < DoctorAttJSONArray.length; i++) {
+                            debugger;
+                            if(DoctorAttJSONArray[i].Blob_Url==file.xhr.response.split('^')[0])
+                            {
+                                DoctorAttJSONArray.splice(i,1);
+                            }
+                        }
+                        $("#spFileUploadCount").text('('+file_Com_count+'/'+file_total_count+')');
+
+                    });
+
+                },
+            });
+
+            showAccData_g = fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+            fnGetAccompanistRegionCodes();
+            var productBringType = fnGetPrivilegeValue('DCR_PRODUCTS_BRING_TYPE', '') + "^";
+            productBringType_g = productBringType.replace(/,/g, '^');
+            if(productBringType_g == "^")
+            {
+                $('#div_productdetails_entry').css('display','none');
+                $('#productHeader').css('display','none');
+            }
+
+            $("#dvAllDetailedProduct").overlay().load();
+            $("#dvAllDetailedProduct_Chemist").overlay().load();
+            $('#timepicker').timepicker({
+                showPeriod: true,
+                showLeadingZero: true
+            });
+
+
+
+            var activityFullName = fnGetSelectedActivityFullName(flag_g, RCPA_g)
+            $('#aDCR').html('DCR- '+ displayDate+" "+activityFullName);
+            //$('#spn_cpname').html(queryString_g.split('&')[1].replace('_', ' '));
+            if(flag_g=='F')
+            {
+                dcrActualDate_g = dcrActualDate_g.split('-')[2]+"-"+dcrActualDate_g.split('-')[1]+"-"+dcrActualDate_g.split('-')[0];
+            }
+
+            $(".doctorcheckspecialchar").blur(function () { fnCheckDoctorNameSpecialCharacters(this); });
+            $(".checkspecialchar").blur(function () { fnCheckSpecialChar(this); });
+            $(".setfocus").click(function() {$(this).select();});
+
+            fnDoctorVisitControlsVisibility();
+            GetDoctorBusinessAndActivityMaster();
+            fnPrivilegeValueforHeaderName();
+            debugger;
+            if(flag_g=='F')
+            {
+                // Target and Detailed Product.
+                fnGetAllSaleProductsAndSetAutoFill();
+                // Doctor inside chemist.
+                fnGetChemistsAndSetAutoFill();
+                // Chemist RCPA Product.
+                fnGetSaleProductsAndSetAutoFill();
+
+                fnGetAccompanistAutofill();
+                if(doctorPOBAmount_g.toUpperCase() == "YES")
+                {
+                    $('#div_doc_pob').css('display', '');
+                    $('#div_doc_pob_Chemist').css('display', '');
+                }
+            }
+            // Sample Products.
+            fnGetUserProductsAndSetAutoFill();
+            //Doctor's Name.
+            fnGetDoctorsAndSetAutoFill();
+            // Doctor Speciality.
+            fnGetSpecialityAndSetAutoFill();
+            debugger;
+            fnGetSalesCompetitor();
+            fnOnInit();
+            fnGetMaxCodes();
+            //setMaxCodes();
+            fnGetDoctorVisitDetailsPerDay();
+            debugger;
+            HideModalPopup('dvLoading');
+            if(doctotVisitTime_g.toUpperCase() == "VISIT_TIME" || doctotVisitTime_g.toUpperCase() == "VISIT_TIME_MANDATORY")
+            {
+                $('#div_doc_visitmode').css('display', 'none');
+                $('#div_doc_visittime').css('display', '');
+                if(dcrDoctorVisitTimeEntryModeValue_g.toUpperCase() == "SERVER_TIME")
+                {
+                    $('#timepicker').css('display','none');
+                    // fnSetServerTime();
+                }
+            }
+            else
+            {
+                if(dcrDoctorVisitTimeEntryModeValue_g.toUpperCase() == "SERVER_TIME")
+                {
+                    $('#rdam').css('display','none');
+                    $('#rdpm').css('display','none');
+                    $('#spnAM').css('display','none');
+                    $('#spnPM').css('display','none');
+                    //fnSetServerTime();
+                }
+            }
+
+            if(doctorEntryMode_g.toUpperCase() == "NO")
+            {
+                $('#div_doc_speciality').css('display', '');
+            }
+            $('#imgDoctorDetailed').css('display','none');
+            $('#DoctorloadingTitle').css('display','none');
+            //----------------------------
+
+        }
+        catch(e)
+        {
+            HideModalPopup('dvLoading');
+            alert(e.message);
+        }
+
+        if(ChemistsPrivilege==ChemistsPrivilege_Value && flag_g=='F')
+        {
+            debugger;
+            ChemistVisit.initialize();
+            try
+            {
+                if(ACCOMPANIST=="ACCOMPANIST"){
+                    AccomplishmentDetails.fnBindAccName();
+                }
+                if(DETAILING=="DETAILING"){
+                    ChemistDetailProductDetails.fnBindDetailedProducts();
+                }
+                if(SAMPLES=="SAMPLES"){
+                    ChemistProductDetails.fnAddProductRow(null);
+                }
+                //ChemistRCPA.fnRCPAInitialize();
+                if(POB=="POB"){
+                    ChemistPOB.fnPOBIntialize();
+                }
+                //Doctor
+                if(RCPA=="RCPA"){
+                    ChemistRCPA.fnRCPAInitialize();
+                }
+                if(RCPA=="ATTACHMENTS"){
+                    attachments.initializings();
+                }
+                if(FOLLOW=="FOLLOW-UP"){
+                    FollowUps.initializing();
+                }
+
+                $('#timepicker_cv').timepicker({
+                    showPeriod: true,
+                    showLeadingZero: true
+                });
+                //hide Doctor visit block
+                $("#DVChemistBlock").hide();
+            }
+            catch(e)
+            {
+                alert(e);
+            }
+
+        }
+    });
+
+
+    function fnGetSalesCompetitor(){
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Activity/DCRDoctorVisit/GetSalesCompetitors',
+            data: 'dcrActualDate=' + dcrActualDate_g,
+            async: false,
+            success: function (response) {
+                compAutoFill_g = [];
+                // we have the response
+                compAutoFill_g.push(response)
+                res_g = response;
+
+                //autoComplete(response, 'txtchemRCPA_Prod_comp_', 'hdnchemRCPA_Prod_comp_', 'autoComp_' + cheindex + '_' + rcpaindex);
+
+            },
+            error: function (e) {
+                //$.msgbox();
+
+                fnMsgAlert('error', screenTitle, 'Retrieve the Competitor failed.');
+            }
+        });
+    }
+
+
+
+</script>

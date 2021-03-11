@@ -1,0 +1,243 @@
+﻿@{
+    ViewBag.Title = "TPAluminiReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<style>
+    #dvregionTree {
+        height: 500px;
+        display: block;
+        border: 1px solid #ddd;
+        padding: 1%;
+        overflow: auto;
+    }
+</style>
+
+<div style="min-height: 450px; overflow: auto;">
+    <div id="dvTree" class="col-xs-3">
+        <div id="dvregionTree">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+
+    <div id="dvdata" class="col-xs-9" style="display: none">
+        <div>
+            <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+            |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+        </div>
+        <div style="clear: both"></div>
+        <div id="rptInputs" class="col-lg-12 dvRptInput">
+            <div class="col-lg-12">
+                <div class="helpIconright">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('TPALUMINIREPORT','PAGE')" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12" style="overflow: auto;">
+                <div class="col-xs-2">
+                    Select Month
+                </div>
+                <div class="col-xs-2">
+                    <input type="text" id="txtMonth" class="form-control" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-10">
+                    <input type="radio" value="N" id="optViewInScreen" name="rptOptions" checked="checked" />
+                    <label for="optViewInScreen">View in-screen</label>
+                    <input type="radio" value="Y" id="optExportToExcel" name="rptOptions" />
+                    <label for="optExportToExcel">Export to excel</label>
+                </div>
+            </div>
+            @*   
+            <div class="clearfix">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-10">
+                    <a id="lnkExcel"></a>
+                </div>
+            </div>
+            *@
+            <div class="col-lg-12 clearfix">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-5">
+                    <input type="button" class="btn btnprimary" value="Show Report" onclick="fnShowReport();" />
+                </div>
+                <div class="col-xs-5"></div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="dvMainReport">
+            <div class="col-lg-12">
+                <div class="helpIconright">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('TPALUMINIREPORT','PAGE')" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvDataTable" class="table-responsive" style="overflow: auto;">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<input type="hidden" id="hdnUserCode" />
+<div id="dvloading" style="display: none">
+    <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+</div>
+<div class="simple_overlay" id="dvPopUp">
+    <a class="overlayclose" onclick="$('#dvPopUp').overlay().close();"></a>
+    <div id="dvDoctors" class="col-lg-12" style="height: 400px; overflow: auto;">
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#txtMonth').monthpicker();
+        fnDisabledUserTree("dvregionTree");
+        $("#dvTree").show();
+        // $("#dvdata").show();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#rptInputs").addClass('col-lg-12');
+        $("#dvDataTable").empty();
+        $("#dvPopUp").overlay().load();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnShowReport() {
+        
+        var userCode = $('#hdnUserCode').val();
+        if ($('#txtMonth').val() == '') {
+            fnMsgAlert('info', 'Validate', 'Please select month and year');
+            return;
+        }
+        var isExcel = 'N';
+        isExcel = $(":radio[name=rptOptions]:checked").val();
+        $("#dvDataTable").html('');
+        if (userCode != undefined && userCode != null) {
+            var monthNumber = fngetMonthNumber($('#txtMonth').val().split('-')[0]);
+            $('#main').block({
+                message: '<h3>Loading...</h3>',
+                css: { border: '2px solid #ddd' }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '../HiDoctor_Reports/User/GetTPMasterReportForAluminiUsers',
+                data: 'userCode=' + userCode + '&month=' + monthNumber + "&isExcel=" + isExcel + "&year="
+                + $('#txtMonth').val().split('-')[1] + "&monthName=" + $('#txtMonth').val().split('-')[0] + "",
+                success: function (result) {
+                    if (isExcel == "N") {
+                        $("#dvDataTable").html(result);
+                        //$('#lnkExcel').removeAttr('href');
+                        //$('#lnkExcel').html('');
+                    }
+                    else {
+                        $("#dvDataTable").html('');
+                        $("#dvDataTable").html('<a href=' + result + '>Click here to download</a>');
+                        //$('#lnkExcel').attr("href", result);
+                        //$('#lnkExcel').html('Click here to download');
+                    }
+                    $('#main').unblock();
+                },
+                error: function () {
+                    $('#main').unblock();
+                },
+                complete: function () {
+                    $('#main').unblock();
+                }
+            });
+        }
+        else {
+            fnMsgAlert('info', 'Validate', 'Please select any user');
+            return;
+        }
+    }
+
+    function fnTPDetails(param) {
+        var userCode = param.split('_')[0];
+        var tpDate = param.split('_')[1];
+        $('#main').block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Reports/User/GetTPDoctorDetailsForAluminiUsers',
+            data: 'usercode=' + userCode + '&tpDate=' + tpDate.split('/')[2] + "-" + tpDate.split('/')[1] + "-" + tpDate.split('/')[0] + "",
+            success: function (result) {
+                $('#dvDoctors').html(result);
+                $("#dvPopUp").overlay().load();
+                $('#main').unblock();
+            },
+            error: function () {
+                $('#main').unblock();
+            },
+            complete: function () {
+                $('#main').unblock();
+            }
+        });
+    }
+    function fnDisabledUserTreeClick(userCode) {
+        fnCloseAluminiTree();
+        $(".dvDisableUser").removeClass('selectNode');
+        $("#dvdata").show();
+        //$('#lnkTree').html(' Tree')
+        //$('#lnkInput').html('Hide Inputs')
+        //$("#rptInputs").show();
+        //$("#rptInputs").addClass('col-lg-12');
+        $("#dvDataTable").empty();
+        $('#hdnUserCode').val(userCode);
+        // fnShowReport(userCode);
+    }
+
+    function fnOpenAluminiTree() {
+        $('#lnkTree').html('Hide Tree')
+        $('#dvTree').addClass('col-xs-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-xs-8')
+        $("#dvregionTree").show();
+    }
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-xs-3')) {
+            fnCloseAluminiTree();
+        }
+        else {
+            fnOpenAluminiTree();
+        }
+    }
+    function fnCloseAluminiTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvregionTree").slideUp();
+        $("#dvregionTree").hide();
+        $('#dvTree').removeClass('col-xs-3')
+        $('#dvdata').removeClass('col-xs-9')
+        $('#dvdata').addClass('col-lg-12')
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+</script>

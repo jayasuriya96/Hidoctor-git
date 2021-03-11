@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "InwardAllocation";
+    Layout = null;
+
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Activity/Content/Stos.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <input type="button" value="Hide Summary" id="showhideBtn" style="background: #428bca;color: #fff;border: none;padding: 5px 10px;margin-bottom: 10px;cursor:pointer;" />
+
+        <div id="DocProductDetails">
+            <div class="col-xs-12 clearfix" id="STOSFinalStage" style="padding: 0px;"> </div>
+            <input type="hidden" id="hdntreeSelectUserCode" />
+        </div>
+        <div class="col-xs-12 clearfix" id="BindFinalDocProductDetails" style="padding: 0px;">
+            <div class="col-xs-12 clearfix" id="CSA" style="padding:0px; text-align: right;">
+                <div class="form-group">
+                    <div class="col-xs-7"></div>
+                    <label class="col-xs-2 control-label"> Select CSA </label>
+                    <div class="col-xs-3" id="selectDepot">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 clearfix" id="STOSFinalStageBind" style="padding: 0px;background:#f8f8f8;margin: 15px 0px;"></div>
+            <div class="col-xs-12 clearfix" id="FinalDocProductDetails" style="padding: 0px;margin: 15px 0px;"></div>
+            <div class="col-xs-12 ApplyBtn" style="padding: 0px;text-align: right;">
+                <span class="MyTeam" id="InwardSave">Convert</span>
+                <span class="MyTeam" id="AssignedUsers" onclick="fnUserhierarchy();">Show assigned Users</span>
+                @*<span class="MyTeam" id="StosApprovals">Clear</span>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="simple_overlay simple_overlayCus" id="docDetail">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#docDetail').overlay().close();"></a>
+    <div id="usertree" class="usertreeCus">
+        <div class="dv-controls-load">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+            Loading tree
+        </div>
+    </div>
+    <div style="text-align:right;padding: 10px 10px;font-weight: bold;border-top: 1px solid #ddd;">
+        <span id="SelectUser" style="margin-right:5px;display:inline-block;float:left;"></span>
+        <span class="MyTeam" id="TreeUserDataClose" style="margin-right:10px">Close</span>
+        <span class="MyTeam" id="TreeUserData">Save</span>
+    </div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/Inwardallocation.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/STOSService.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script>
+    $(document).ready(function () {
+        //$("LINK[href*='../../Content/all.css']").remove();
+        //$("LINK[href*='/Content/hidoctor.css']").remove();
+        debugger;
+        var companyCode = "@ViewBag.CompanyCode";
+        var regionCode = "@ViewBag.RegionCode";
+        // var regionCode = "REC00000486"
+        var regionName = "@ViewBag.RegionName";
+        var userCode = "@ViewBag.UserCode";
+        var userName = "@ViewBag.UserName";
+        var usertypeName = "@ViewBag.UserTypeName";
+       
+
+        InwardAllocation.defaults.CompanyCode = companyCode;
+        InwardAllocation.defaults.UserCode = userCode;
+        InwardAllocation.defaults.RegionCode = regionCode;
+        InwardAllocation.defaults.UserName = userName;
+        InwardAllocation.defaults.RegionName = regionName;
+        InwardAllocation.defaults.UserTypeName = usertypeName;
+       
+        $('#showhideBtn').click(function () {
+            debugger;
+            var Btntext = $('#showhideBtn').val();
+            if (Btntext == 'Hide Summary') {
+                $('#DocProductDetails').hide();
+                $('#BindFinalDocProductDetails').show();
+                $('#showhideBtn').val('Show Summary');
+                $('.ApplyBtn').show();
+            } else {
+                $('#DocProductDetails').show();
+                $('#BindFinalDocProductDetails').hide();
+                $('.ApplyBtn').hide();
+                $('#showhideBtn').val('Hide Summary');
+            }
+        });
+
+
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+        fnBindUserTree("usertree");
+        InwardAllocation.init();
+    });
+
+    $("#AssignedUsers").unbind('click').bind('click', function () {
+        $('#hdntreeSelectUserCode').val('');
+        $('#docDetail').overlay().load();
+    });
+
+    $("#TreeUserDataClose").unbind('click').bind('click', function () {
+        $('#hdntreeSelectUserCode').val('');
+        $('#docDetail').overlay().close();
+    });
+
+    function fnUserTreePostInit() {
+    }
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdntreeSelectUserCode').val('');
+        var Content = '';
+        Content += '<span style="margin-right:5px;"><b>Select User Name :</b></span><span>' + node.data.title + '</span>';
+        $('#SelectUser').html(Content);
+        $('#hdntreeSelectUserCode').val(node.data.key);
+        //$('#docDetail').overlay().close();
+    }
+    function fnUserhierarchy() {
+    }
+</script>

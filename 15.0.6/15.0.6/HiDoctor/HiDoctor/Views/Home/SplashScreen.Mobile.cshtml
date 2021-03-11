@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "SplashScreen.Mobile";
+}
+
+<style>
+    /*#divSplash .bx-viewport {
+        min-height: 300px !important;
+        max-height: 350px !important;
+        overflow: auto !important;
+    }*/
+
+    .bxslider {
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+        .bxslider li img {
+            width: 300px;
+            height: 300px;
+        }
+
+    #divSplash .bx-wrapper .bx-pager {
+        padding-top: 0px !important;
+    }
+
+    #divSplash .bxslider li {
+        width: 100% !important;
+    }
+
+    /*.splashImg {
+        width: 20%;
+        float: left;
+    }
+
+    .splashContent {
+        width: 80%;
+        float: left;
+    }*/
+    .splashContent {
+        /*text-align: center;*/
+    }
+
+    .splashTitle {
+        /*text-align: center;*/
+        font-size: 15px;
+        text-decoration: underline;
+    }
+
+    .bx-wrapper img {
+        height: 100%;
+        width: 100%;
+    }
+
+    .bxslider li {
+        border: none !important;
+    }
+
+    .closeImg {
+        /*vertical-align: top;
+        margin-top: -10px;
+        margin-right: 10px;*/
+    }
+
+    .bx-viewport {
+        margin-left: 1%;
+    }
+
+    .lnkClose {
+        vertical-align: top;
+        border: 3px solid #ddd;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 50%;
+        margin-right: 30px;
+    }
+
+    .bx-wrapper {
+        margin-top: 7px !important;
+    }
+
+    .bx-pager {
+        display: none !important;
+    }
+
+    .bx-prev {
+        /*left: 10px;*/
+        background: url('../../Images/controls.png') no-repeat 0 -32px;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        float: left;
+    }
+
+    .bx-next {
+        /*right: 10px;*/
+        background: url('../../Images/controls.png') no-repeat -43px -32px;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        float: left;
+    }
+
+    .dvbtnPreNext {
+        min-height: 40px;
+        margin-top: 10px;
+        text-align: center;
+        clear: both;
+        padding-left: 47%;
+    }
+
+    .closeImg {
+        padding-bottom: 9px;
+    }
+
+    .splashContent {
+        text-align: left !important;
+    }
+</style>
+<link href="~/Content/PluginCss/jquery.bxslider.css" rel="stylesheet" />
+@*<div class="modal" id="modalSplash" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="$('modalSplash').hide();"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="divSplash"></div>
+            </div>
+        </div>
+    </div>
+</div>*@
+<div id="modalSplash" class="col-lg-12">
+    <div class="col-lg-12" id="divSplash"></div>
+</div>
+<script lang="ja" type="text/ecmascript">
+    $(document).ready(function () {
+        fnShowSplashScreen();
+    });
+</script>

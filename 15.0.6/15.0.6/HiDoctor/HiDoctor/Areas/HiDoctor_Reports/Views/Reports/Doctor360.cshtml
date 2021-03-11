@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Doctor360";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<h2>Doctor Details</h2>
+
+<div id="divdoctor360" style="width: 700px; height: 500px; overflow-x: hidden !important">
+    <div id="divdoctorDetails">
+    </div>
+    <div id="divcampaign_list">
+        <span class="title">Campaign List</span><br />
+    </div>
+    <div style="clear: both;">
+    </div>
+    <div id="divlast3visit">
+        <span>Last 3 Visited Dates:</span>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divproduct_details">
+        <div class="title">
+            <div class="sample">
+                &nbsp;
+            </div>
+            Products Samples & Details:
+        </div>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divnonsample_details">
+        <div class="title nonsample">
+            Non-Samples & Details:
+        </div>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divchemist_details">
+        <div class="title">
+            <div class="chemist">
+            </div>
+            Chemist Visited:
+        </div>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divrcpa_details">
+        <img src="../Areas/HiDoctor_Reports/Content/images/Money-icon.png" style="height: 20px" />
+        Yield &
+        <img src="../Areas/HiDoctor_Reports/Content/images/right.png" style="height: 20px" />
+        Potential
+        <div id="divrcpa">
+        </div>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divmapped_details">
+        <div class="title mapping">
+            Product Mapping Details:
+        </div>
+    </div>
+    <div class="dotline">
+    </div>
+    <div id="divremarks_details">
+        <div class="title remarks">
+            Remarks:
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Doctor360.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var doctor360_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+
+            var codes = @Html.Raw(Json.Encode(ViewBag.Id));
+            var userCode = codes.split('_')[2].toString();
+            var regionCode = codes.split('_')[0].toString();
+            var doctorCode = codes.split('_')[1].toString();
+            $.ajax({
+                type: 'POST',
+                data: "doctorCode=" + doctorCode + "&" + "userCode=" + userCode + "&" + "regionCode=" + regionCode,
+                url: '../HiDoctor_Reports/Reports/GetDoctor360',
+                success: function (response) {
+                    // we have the response
+                    var result = response;
+                    doctor360_g = result;
+                    doctor360_g = eval('(' + doctor360_g + ')');
+                    fnBuildDoctorDetails();
+                },
+                error: function (e) {
+                    alert("Eror" + e);
+                }
+            });
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

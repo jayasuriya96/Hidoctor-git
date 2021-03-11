@@ -1,0 +1,585 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/mdtimepicker.css" rel="stylesheet" />
+<style>
+
+</style>
+<form>
+    <div class="form-row">
+        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;margin-top: 10px;" id="punchdiv">
+            <button type="button" class="btn btn-info" id="Punch" onclick="fnCPDPunchTime();">
+                Punch Start Time
+            </button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="startpunch" style="display:none">
+            <label>Start Time :</label>
+          <span id="Attstrttime"></span>
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Attendence" style="margin-top:10px;">
+
+            <div class="panel panel-default" id="Acc_0">
+                <div class="panel-body">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <label>Attendance Activity</label>
+                        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Activitytype">
+                            <input class="form-control" type="text" name="activity" id="Actname">
+                            <input class="form-control" type="hidden" name="activityCode" id="hdncode">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px">
+                            <label>Working Time</label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-6 clearfix">
+                            <input class="form-control Frompicker" type="text" id="Frompicker" placeholder="From Time">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-6 clearfix">
+                            <input class="form-control Topicker" type="text" id="Topicker" placeholder="To Time">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <label>Remarks</label>
+                        <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                            <input class="form-control" type="text" id="ActRemark" maxlength="300">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Add_0" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="AddAcc_0" onclick="fngetAttDetails();">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+            <label>General Remarks</label>
+            <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                <textarea class="form-control" cols="25" rows="3" id="Gremark" maxlength="300"></textarea>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;">
+            <button type="button" class="btn btn-primary" id="Back" onclick="fnBack()">Back</button>
+            <button type="button" class="btn btn-primary" id="ActDraft" onclick="fnInsertAttendance(0)">Draft</button>
+            <button type="button" class="btn btn-primary" id="Actsubmit" onclick="fnEndPunch()">Submit</button>
+
+        </div>
+    </div>
+</form>
+<div class="modal" id="myModal">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#myModal').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="punchintime" placeholder="Start Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="punchtime" class="btn btn-primary" onclick="fnCPDInsertPunchTime()">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="PunchEndTime">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#PunchEndTime').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="PunchEnd" placeholder="End Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="Endpunch" class="btn btn-primary" onclick="fnInsertAttendance(1)">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/mdtimepicker.js"></script>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var LoginEmpNumber='';
+    var subDomainName = '';
+    var CPD_Date='';
+    var Activity='';
+    var Att=0;
+    var inputValues = [];
+    var CPD_ID=0;
+    var Lid='';
+    var AttIntime='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        LoginEmpNumber=@Html.Raw(Json.Encode(ViewBag.EmployeeNumber));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        CPD_Date=@Html.Raw(Json.Encode(ViewBag.CPD_Date));
+        CPD_ID=@Html.Raw(Json.Encode(ViewBag.CPD_Id));
+        //Lid=@Html.Raw(Json.Encode(ViewBag.LID));
+        $('.Frompicker').mdtimepicker();
+        $('.Topicker').mdtimepicker();
+        fngetAttendancetype();
+        if (CPD_ID != 0) {
+            $('#punchdiv').hide();
+
+        }
+        //else{
+        //    $('#Actsubmit').hide();
+        //    $('#ActDraft').hide();
+        //}
+
+    });
+    function fngetAttendancetype() {
+
+        var _objData = new Object();
+        _objData.User_Code = LoginUserCode;
+        _objData.subDomainName = subDomainName;
+        _objData.CPDDate=CPD_Date;
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/CPD/GetAttendancetype',
+                       success: function (response) {
+                           debugger;
+                           if (response != null && response.length > 0) {
+
+                               //Sale product autofill
+                               var doc = "[";
+                               for (var i = 0; i < response.length; i++) {
+                                  // var activityName = response[i].Activity_Name + "(" + response[i].Project_Name + ")";
+                                   doc += "{label:" + '"' + "" + response[i].Activity_Name + "" + '",' + "id:" + '"' + "" + response[i].Activity_Code  +'"' + "}";
+                                   if (i < response.length - 1) {
+                                       doc += ",";
+                                   }
+                               }
+
+                               doc += "];";
+                               Activity = eval(doc);
+                               if(CPD_ID !=0)
+                               {
+                                   fngetCPDAttDraftDetails()
+                               }
+                           }
+                           else
+                           {
+                               swal("You are not having any Attendance Types you cannot able to enter attendance","", "info");
+                               $('#ActDraft').hide();
+                               $('#Actsubmit').hide();
+                           }
+
+
+                       },
+                       error: function () {
+
+                       }
+                   });
+    }
+    function fngetCPDAttDraftDetails()
+    {
+        debugger;
+        var _objData = new Object();
+        _objData.CPD_ID=CPD_ID;
+        _objData.subDomainName = subDomainName;
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/CPD/GetCPDAttDraftDetails',
+                       success: function (response) {
+                           debugger
+                           var Header=response.Header;
+                           var Details=response.Details;
+                           if(Details.length>0)
+                           {
+                               for(var i=0;i<Details.length;i++)
+                               {
+                                   if(i==0)
+                                   {
+                                       $('#Acc_0 #Actname').val(Details[0].Activity_Name);
+                                       $('#Acc_0 #hdncode').val(Details[0].Activity_Code);
+                                       $('#Acc_0 #Frompicker').val(Details[0].From_Time);
+                                       $('#Acc_0 #Topicker').val(Details[0].To_Time);
+                                       $('#Acc_0 #ActRemark').val(Details[0].Remark);
+                                   }
+                                   else{
+                                       fngetAttDetails();
+                                       $('#Acc_'+Att+' #Actname').val(Details[i].Activity_Name);
+                                       $('#Acc_'+Att+' #hdncode').val(Details[i].Activity_Code);
+                                       $('#Acc_'+Att+' #Frompicker').val(Details[i].From_Time);
+                                       $('#Acc_'+Att+' #Topicker').val(Details[i].To_Time);
+                                       $('#Acc_'+Att+' #ActRemark').val(Details[i].Remark);
+                                   }
+                               }
+                           }
+                           if(Header.length>0)
+                           {
+                               $('#Gremark').val(Header[0].GeneralRemarks);
+                               AttIntime=Header[0].In_time;
+                               $('#startpunch').show();
+                               $('#Attstrttime').html(AttIntime);
+                           }
+                       },
+                       error:function()
+                       {
+
+                       }
+                   });
+    }
+    function fnReChkSplChar(id) {
+        debugger;
+        //Remark
+        if ($('#' + id).val() != "") {
+            var specialCharregex = new RegExp("^[-a-zA-Z0-9 _().,\n\r\r\n]+$");
+            if (!specialCharregex.test($('#' + id).val())) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return true
+
+    }
+    function fnRemove(val){
+        debugger;
+
+        var remove = $("#" + val.id).parent().parent().parent().attr('id');
+        var index = inputValues.indexOf($('#'+remove+' #Actname').val());
+        if (index > -1) {
+            inputValues.splice(index, 1);
+        }
+        $('#'+remove).remove();
+    }
+    function fngetAttDetails()
+    {
+        debugger;
+        $('#Add_'+Att).html('');
+        $('#Add_'+Att).html('<button type="button" class="btn btn-danger" id="AddAcc_'+(Att)+'" onclick="fnRemove(this);">Remove</button>');
+        Att=Att+1;
+        var str='';
+        str+='<div class="panel panel-default" id="Acc_'+Att+'">';
+        str+='<div class="panel-body">';
+        str+='<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">';
+        str+='<label>Attendance Activity</label>';
+        str+='<div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Activitytype">';
+        str+='<input class="form-control" type="text" name="activity" id="Actname">';
+        str+='<input class="form-control" type="hidden" name="activity" id="hdncode">';
+        str+='</div>';
+        str+='</div>';
+        str+='<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">';
+        str+='<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px">';
+        str+='<label>Working Time</label>';
+        str+='</div>';
+        str+='<div class="col-lg-6 col-md-6 col-xs-6 clearfix">';
+        str+='<input class="form-control Frompicker" type="text" id="Frompicker" placeholder="From Time">';
+        str+='</div>';
+        str+='<div class="col-lg-6 col-md-6 col-xs-6 clearfix">';
+        str+='<input class="form-control Topicker" type="text" id="Topicker" placeholder="To Time">';
+        str+='</div>';
+        str+='</div>';
+        str+='<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">';
+        str+='<label>Remarks</label>';
+        str+='<div class="col-lg-12 col-md-12 col-xs-12 clearfix">';
+        str+='<input class="form-control" type="text" id="ActRemark" maxlength="300">';
+        str+='</div>';
+        str+='</div>';
+        str+='<div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Add_'+Att+'" style="text-align: center;">';
+        str+='<button type="button" class="btn btn-primary" id="AddAcc_'+Att+'" onclick="fngetAttDetails();">Add</button>';
+        str+='</div>';
+        str+='</div>';
+        str+='</div>';
+        $('#Attendence').append(str);
+        $('.Frompicker').mdtimepicker();
+        $('.Topicker').mdtimepicker();
+    }
+    function fnInsertAttendance(val)
+    {
+        $('#ActDraft').prop('disabled', true);
+        $('#Actsubmit').prop('disabled', true);
+        debugger;
+        var Attendance = [];
+        var result=true;
+        var loopCount = $('#Attendence > div').map(function () {
+            return this.id;
+        });
+        for (var i = 0; i < loopCount.length; i++) {
+            var Att = {
+                "User_Code":LoginUserCode,
+                "AttendanceType": $('#' + loopCount[i] +' #Actname').val(),
+                "AttendanceCode": $('#' + loopCount[i] +' #hdncode').val(),
+                "FromTime": $('#' + loopCount[i] +' #Frompicker').val(),
+                "ToTime": $('#' + loopCount[i] +' #Topicker').val(),
+                "Remark": $('#' + loopCount[i] +' #ActRemark').val()
+            }
+            if (Att.AttendanceType != '') {
+                var Count = $.grep(Attendance, function (v) {
+                    return v.AttendanceType == $('#' + loopCount[i] +' #Actname').val();
+                });
+                var lst = $.grep(Activity, function (v) {
+                    return v.label == $('#' + loopCount[i] +' #Actname').val();
+                });
+                if (lst.length == 0) {
+                    result=false;
+                    swal('Please select  valid Attendance Type', "", "info");
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                    return false;
+                }
+                if (Count.length !=0) {
+                    result=false;
+                    swal(''+Count[0].AttendanceType+' attendance type is already entered', "", "info");
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                    return false;
+                }
+                if(Att.FromTime =='')
+                {
+                    result=false;
+                    swal('Please Select From Time For '+Att.AttendanceType+'', "", "info");
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                    return false;
+                }
+                else if(Att.ToTime =='')
+                {
+                    result=false;
+                    swal('Please Select To Time For '+Att.AttendanceType+'', "", "info");
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                    return false;
+                }
+                var Remark = fnReChkSplChar(loopCount[i] +' #ActRemark');
+                if (Remark == false) {
+                    swal('Special characters are not allowed in Remarks except - _ . , ( )', "", "info");
+                    result = false;
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                    return false;
+                }
+                else  if (Date.parse("2001/01/01 " + Att.FromTime) > Date.parse("2001/01/01 " + Att.ToTime)) {
+                    debugger
+                    result=false;
+                    swal('Start time cannot be greater than end time.', "", "info");
+                    $('#ActDraft').prop('disabled', false);
+                    $('#Actsubmit').prop('disabled', false);
+                        return false;
+                    }
+
+                    Attendance.push(Att);
+
+
+            }
+        }
+        var endtime = $('#PunchEnd').val();
+        if (val==1) {
+            if ($('#PunchEnd').val() == '') {
+                swal('Please Enter End Time', "", "info");
+                result = false;
+                $('#ActDraft').prop('disabled', false);
+                $('#Actsubmit').prop('disabled', false);
+                return false;
+            }
+            if (Date.parse("2001/01/01 " + AttIntime) > Date.parse("2001/01/01 " + endtime)) {
+                swal('End time should be greater than Start time ' + AttIntime + '.', "", "info");
+                result = false;
+                $('#ActDraft').prop('disabled', false);
+                $('#Actsubmit').prop('disabled', false);
+                return false;
+            }
+        }
+        var Remark = fnReChkSplChar('Gremark');
+        if (Remark == false) {
+            swal('Special characters are not allowed in general remarks except - _ . , ( )', "", "info");
+            result = false;
+            $('#ActDraft').prop('disabled', false);
+            $('#Actsubmit').prop('disabled', false);
+            return false;
+        }
+
+        if(result==true)
+        {
+            if(Attendance.length==0)
+            {
+                swal('Please Select Atleast one Activity', "", "info");
+                $('#ActDraft').prop('disabled', false);
+                $('#Actsubmit').prop('disabled', false);
+                return false;
+            }
+            var GRemaks = $('#Gremark').val();
+            var _objData = new Object();
+            _objData.subDomainName = subDomainName;
+            _objData.CompanyId = CompanyId;
+            _objData.Region_Code = LoginRegionCode;
+            _objData.User_Code = LoginUserCode;
+            _objData.CPDDate = CPD_Date;
+            _objData.CPD_ID = CPD_ID;
+            _objData.CPDValue =val;
+            _objData.Activity = 2;
+            _objData.OutTime = $('#PunchEnd').val() == '' ? null : $('#PunchEnd').val();
+            _objData.Attendance = JSON.stringify(Attendance);
+            _objData.GRemaks = GRemaks;
+            $.ajax({
+                type: 'POST',
+                data: _objData,
+                url: '../../HiDoctor_Activity/CPD/InsertAttendance',
+                success: function (response) {
+                    debugger;
+                    if(response==1)
+                    {
+                        swal({
+                            title: "Attendance Activity Saved Successfully",
+                            showCancelButton: false,
+                            closeOnConfirm: false,
+                        }, function (inputValue) {
+                            if (inputValue === false) return false;
+                            window.location.href = '../CPD/CPDMobile';
+                        });
+                        $('#ActDraft').prop('disabled', false);
+                        $('#Actsubmit').prop('disabled', false);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $('#ActDraft').prop('disabled', false);
+            $('#Actsubmit').prop('disabled', false);
+        }
+    }
+    var selector = 'input[name=activity]';
+    var test='';
+    $(document).on('keydown.autocomplete', selector, function () {
+        $(this).autocomplete({
+            delay: 45,
+            source:Activity,
+            minLength: 1,
+            select: function (event, ui) {
+                debugger;
+                var hd= $(this).parent().parent().parent().parent().attr('id');
+                $('#'+hd+ this.id).val(ui.item.label);
+                $('#'+hd+' #hdncode').val(ui.item.id);
+               // test= fnAutoCompleteChange(ui.item.label,$(this));
+            },
+            open: function () {
+                $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+            },
+            close: function () {
+                debugger;
+                $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+            }
+        });
+    });
+    function fnAutoCompleteChange(val, id) {
+        debugger;
+        $('#Attendence :input').map(function () {
+            var type = $(this).prop("name");
+
+            if (type == "activity") {
+                inputValues.push($(this).val());
+            }
+        });
+        var check = $.grep(inputValues, function (v) {
+            return v == val;
+        });
+        if (check != null && check.length > 1) {
+            swal('Attendance Activity Already Selected !', "", "info");
+            id.val('');
+            return false;
+        }
+        else {
+            $('#applybtn').removeAttr('disabled');
+            return true;
+        }
+    }
+    function fnBack()
+    {
+        window.location.href = '../CPD/CPDMobile';
+    }
+    function fnCPDPunchTime()
+    {
+                $('#myModal').show();
+                $('#punchintime').mdtimepicker();
+    }
+    function fnCPDInsertPunchTime()
+    {
+        debugger
+        $('#punchtime').prop('disabled', true);
+        var InTime = $('#punchintime').val();
+        if (InTime == '')
+        {
+            swal("Please enter Start Time", "", "info");
+            $('#punchtime').prop('disabled', false);
+            return false;
+        }
+        var _objData = new Object();
+        _objData.subDomainName = subDomainName;
+        _objData.CompanyId = CompanyId;
+        _objData.Region_Code = LoginRegionCode;
+        _objData.User_Code = LoginUserCode;
+        _objData.CPDDate = CPD_Date;
+        _objData.CPD_ID = CPD_ID;
+        _objData.InTime = InTime;
+        _objData.OutTime = null;
+        _objData.StoreName = null;
+        _objData.Activity = 2;
+        _objData.TotalCalls = null;
+        _objData.ProductiveCalls = null;
+        _objData.BrightCalls = null;
+        _objData.ShineCalls = null;
+        _objData.GRemaks =null;
+
+
+        $.ajax(
+       {
+           type: 'POST',
+           data: _objData,
+           url: '../../HiDoctor_Activity/CPD/GetCPDPunchTime',
+           success: function (response) {
+               debugger;
+               if (response != 0) {
+                   CPD_ID = response;
+                   AttIntime= $('#punchintime').val();
+                   $('#myModal').hide();
+                   //$('#Punch').prop('disabled', true);
+                   $('#startpunch').show();
+                   $('#Attstrttime').html(InTime);
+                   $('#Actsubmit').show();
+                   $('#ActDraft').show();
+                   $('#punchtime').prop('disabled', false);
+               }
+           }, error: function () {
+
+           }
+       });
+    }
+    //fnInsertAttendance(1)
+    function fnEndPunch()
+    {
+        $('#PunchEndTime').show();
+        $('#PunchEnd').mdtimepicker();
+    }
+</script>

@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "EmailTrigger";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+@*<link href="../../Areas/HiDoctor_Activity/Content/Stos.css" rel="stylesheet"/>*@
+@*<script src="~/Scripts/Stos/StosEmailTrigger.js"></script>*@
+
+<div class="container" id="STOSPage">
+  <div class="col-xs-12 Request_table" id="ViewStostable" style="height:500px;overflow-y:scroll; margin-top:30px">
+
+    </div>
+</div>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/Stos.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/StosEmailTrigger.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/STOSService.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script>
+
+    $(document).ready(function () {
+  
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+       var companyCode = "@ViewBag.CompanyCode";
+        var regionCode = "@ViewBag.RequestRegionCode";
+        //  var regionCode = "REC00000486"
+        var regionName = "@ViewBag.RequestRegionName";
+        var userCode = "@ViewBag.RequestUserCode";
+        var userName = "@ViewBag.RequestUserName";
+        var usertypeName = "@ViewBag.RequestUserTypeName";
+        var showteam = "@ViewBag.ShowTeam";
+
+        STOS.defaults.CompanyCode = companyCode;
+        STOS.defaults.RequestUserCode = userCode;
+        STOS.defaults.RequestRegionCode = regionCode;
+        STOS.defaults.RequestUserTypeName = usertypeName;
+        STOS.defaults.ShowTeam = showteam;
+        STOS.defaults.RequestUserName = userName;
+        STOS.defaults.RequestRegionName = regionName;
+
+        STOS.WeeklyMilDetails();
+
+
+    });
+
+
+  </script>

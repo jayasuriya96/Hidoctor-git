@@ -1,0 +1,640 @@
+﻿@{
+    ViewBag.Title = "DeleteSecondarySales";
+    Layout = null;
+}
+
+<style>
+    .legend {
+        border: 1px solid grey;
+        width: 102%;
+        font-size: 100%;
+        background: rgb(226, 236, 240);
+        padding: 2%;
+        border-radius: 10px;
+    }
+    /*#tblPopUp th{
+        min-width:180px;
+    }
+    #tblPopUp td{
+        min-width:180px;
+    }*/
+
+
+    .maintable {
+        position: relative;
+        background-color: #fff;
+        overflow: hidden;
+        border-collapse: collapse;
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    }
+    /*thead*/
+    .maintable thead {
+        position: relative;
+        display: block;
+        width: 1332px;
+        overflow: visible;
+    }
+
+        .maintable thead th {
+            padding: 2px;
+            background-color: #337ab7;
+            height: 30px;
+            border: 0px solid #222;
+            color: #fff;
+        }
+
+    .second_header_row th {
+        position: initial;
+    }
+/*.maintable thead th:nth-child(1) { 
+   position: relative;   
+   background-color:#337ab7;
+   
+}
+.maintable thead th:nth-child(2) { 
+   position: relative;   
+   background-color:#337ab7;
+ 
+}
+.maintable thead th:nth-child(3) { 
+   position: relative;   
+   background-color:#337ab7;  
+}*/
+/*tbody*/
+    .maintable tbody {
+        position: relative;
+        display: block;
+        width: 1332px;
+        height: 480px;
+        overflow: auto;
+    }
+
+    .maintable tbody td {
+        border: 1px solid #ddd;
+    }
+
+/*.maintable tbody tr td:nth-child(1) {
+  position: relative; 
+  height: 40px;  
+  background-color: #ebf2fa;
+  overflow-wrap: break-word;
+}
+ .maintable tbody tr td:nth-child(2) {
+  position: relative; 
+  height: 40px;  
+  background-color: #ebf2fa;
+  overflow-wrap: break-word;
+}
+ .maintable tbody tr td:nth-child(3) {
+  position: relative; 
+  height: 40px; 
+  background-color: #ebf2fa;
+   overflow-wrap: break-word;
+}*/
+    .outer-container {
+        background-color: #ccc;
+        top: 10;
+        bottom: 40px;
+    }
+
+    .inner-container {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .table-header {
+        position: relative;
+    }
+
+    .table-body {
+        overflow: hidden;
+    }
+
+    .maintable tbody > tr > td {
+        padding: 2px;
+        text-align: center;
+        vertical-align: middle;
+        overflow-wrap: break-word;
+    }
+
+    .maintable thead > tr > th {
+        padding: 2px;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+    .header-cell {
+        /*background-color: yellow;*/
+        text-align: left;
+        height: 40px;
+    }
+
+    .body-cell {
+        text-align: left;
+    }
+
+
+
+    .col1 {
+        min-width: 160px;
+    }
+
+
+
+    p {
+        margin: 0 0 0px;
+    }
+
+
+
+    .noBorder td {
+        border: 0;
+        background-color: lightblue;
+        font-weight: 700;
+        font-size: 12px;
+    }
+
+    .tblcollapse {
+        background: #fff;
+    }
+
+        .tblcollapse tbody {
+            height: auto;
+        }
+
+            .tblcollapse tbody tr td:nth-child(1) {
+                position: relative;
+                height: 40px;
+                background-color: #fff;
+            }
+
+            .tblcollapse tbody tr td:nth-child(2) {
+                position: relative;
+                height: 40px;
+                background-color: #fff;
+            }
+
+            .tblcollapse tbody tr td:nth-child(3) {
+                position: initial;
+                background-color: #fff;
+            }
+
+
+    .pddng{
+        padding:5px;
+    }
+
+
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+@*<script src="../../Areas/HiDoctor_Activity/Scripts/HD/SecondarySales12.7.1.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>*@
+
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="regiontree" style="float: left; height: auto; width: 100%">
+        </div>
+        @*<span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+        <div style="width: 1px;"></div>
+    </div>
+    <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                  onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            
+            <div class="legend">
+                <span style="font-weight: bold">1. In case of UNAPPROVAL of Secondary Sales of any month, all entries (if available) for subsequent months will also be mandatorily unapproved.  PRODUCT Data will still be retained, OPENING BALANCES and RATES WILL BE updated ON PAGE LOAD) and modifications to the same months' data can be made but will need to be Approved again (if required).</span></br>
+                <span style="font-weight: bold">2. In case of DELETION of Secondary Sales of any month, all entries (if available) for subsequent months will also be mandatorily deleted.  No data will be retained, and entries to the same months will need to be redone, and be approved (if required).</span>
+            </div>
+            <div id="ssHeader" class="row" style="padding-top:5px;">
+                <div class="col-xs-12" style="text-align:center;">
+                    <p><span style="font-weight:bold;font-size:15px;" id="ssregionName"></span><b><span style="margin:0px 5px;font-size:15px;" id="FdBckFor"></span></b></p>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding-top:5px;" id="divInputform">
+                <div class="col-xs-12" style="padding: 12px;background: rgb(241, 241, 241);" id="Form">
+                    <div id="ICEFormInpt">
+                        <div class="row pddng" id="InptForm">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5" id="Evaldate">
+                                    <p><b>Secondary Sales Month & Year:<label id="mandatory" style="color:red">*</label></b></p>
+                                </div>
+                                <div class="col-xs-2" id="inptMnth">
+                                    <input type="text" id="mnthyr" class="form-control" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row pddng">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5" id="includeclsdStock">
+                                    <p><b>Include Closed Stockist(s):</b></p>
+                                </div>
+                                <div class="col-xs-2" id="clsdStockchk">
+                                    <input type="checkbox" name="IncludeClosedStockiest" value="1" id="chkbxIncludClsdStckst" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 pddng" style="text-align:center;">
+                            <input type="button" value="GO" id="btnGo" onclick="fngetStockiest();" class="btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+            <br />
+            <table id="tblInputDet" style="display:none;width:100%;padding:12px;">
+                <tr>
+                    <td style="font-weight: bold">
+                        Stockist Name
+                    </td>
+                    <td>
+                        <input type="hidden" id="hdnRegionCode" />
+                        <select id="ddlStockiest"></select>
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td style="font-weight: bold">Last 3 entries</td>
+                    <td>
+                        <input type="radio" value="3" id="rbtThreeEntries" name="rptOptions" checked="checked" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Last 6 entries</td>
+                    <td>
+                        <input type="radio" value="6" id="rbtSixEntries" name="rptOptions" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Last 12 entries</td>
+                    <td>
+                        <input type="radio" value="12" id="rbttwelveEntries" name="rptOptions" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">More than 12 entries</td>
+                    <td>
+                        <input type="radio" value="N" id="rbtnEntries" name="rptOptions" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" value="GO" id="btnGo" onclick="fnDeletedSecondarySalesDetail();"
+                               class="btn small primary" />
+                    </td>
+                   
+                </tr>
+            </table>
+
+
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+
+        <div>
+            <div id="divReportHeader">
+            </div>
+        </div>
+        <div id="txtarea" style="display: none">
+            <b>Remarks:</b></br>
+            <textarea id="txtReason" style="height: 50px; width: 250px;resize:none;" rows="4" maxlength='500' placeholder="Enter the reason here to unapprove the Secondry Sales..." onblur='return fnDCRCheckRemarksSpecialChar(this);'></textarea>
+        </div>
+        <div id="buttonsTwo" style="display: none">
+            <input type="button" value="Unapprove " id="btnSingleApproved" class="btn small primary" onclick="fnSSDeleteConfirmation(0);" />
+            <input type="button" value="Delete" id="btnSingleUnApproved" class="btn small primary" onclick="fnSSDeleteConfirmation(4);" />
+        </div>
+    </div>
+</div>
+ <div id="mymodal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="height:575px;margin-top:20px;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:95%">
+        <!-- Modal content-->
+        <div class="modal-content" style="z-index:0">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Secondary Sales Details</h4>
+            </div>
+            <div class="modal-body clearfix" id="DetailsBody" style="height:400px;overflow-y:scroll;overflow-x:hidden;">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Stockist Name</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="SckstName" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Stockist Ref Key</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="Sckstrefkey" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Effective From</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="ScksteffFrm" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Effective To</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="ScksteffTo" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Month</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="monthSS"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Year</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="yearSS"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Statement Date</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="SSSDate"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Secondary Sales Amount(Rs.)</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="SSAmount"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="divModel" style="">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DeleteModal" class="modal fade " role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-top:10%;margin-left:25%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body" id="deleteMappingBody" style="width:100%;">
+            </div>
+            <div class="modal-footer col-xs-12" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <div id="confrmdelte" class="col-xs-10">
+
+                </div>
+                <div id="cncldelete" class="col-xs-1">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mymodalRemarks" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="height:575px;margin-top:20px;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:80%">
+        <!-- Modal content-->
+        <div class="modal-content" style="z-index:0">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Secondary Sales Remarks Details</h4>
+            </div>
+            <div class="modal-body clearfix" id="DetailsBodyrmrks" style="height:400px;overflow-y:scroll;overflow-x:hidden;">
+
+                <div class="row pddng">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Stockist Name</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="SckstNamermrks" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pddng">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Month</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="monthSSrmrks"></span></p></div>
+                    </div>
+                </div>
+                <div class="row pddng">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Year</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="yearSSrmrks"></span></p></div>
+                    </div>
+                </div>
+
+                <div id="divModelrmrks" class="pddng" style="">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>   
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/SecondarySalesDelete.js"></script>
+<script type="text/javascript">
+    var c_g;
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            debugger;
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {               
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $('#txtFrom').monthpicker();
+                $('#txtTo').monthpicker();
+                $('#dvAjaxLoad').hide()
+            } 
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+    $('#mymodal').on('shown.bs.modal', function () {
+        fnFixedcolum(2);
+    });
+
+    function fnRegionTreeNodeClick(node){     
+        $("#divReport").html(""); 
+        $("#divReportHeader").html("");      
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#leftNav").show();
+        // $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');
+        $('#rbtThreeEntries').attr('checked','checked');
+        $('#txtarea').hide();
+        $('#buttonsTwo').hide();
+        $("#ssregionName").html(node.data.title);
+        fnClearOnChangeofNode();
+    }
+
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html(""); 
+        $("#divReportHeader").html("");      
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#leftNav").show();
+        // $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');
+        fnClearOnChangeofNode();
+    }
+    function fnRegionTreePostInit() {
+
+    }
+    function fnClearOnChangeofNode(){
+        $('#tblInputDet').hide();
+        IncludeClosedStockiest=0;
+        $('input[name="IncludeClosedStockiest"]').attr('checked',false);
+        $('#mnthyr').val('');
+    }
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+
+    function fnCheckAll() {
+        if ($(":checkbox[name=DCRStatusAll]:checked").length > 0) {
+            $('input:checkbox[name=DCRStatus]').each(function () {
+                this.checked = true;
+            });
+        }
+    }
+
+    function fnChangeRadioDCR() {
+        //uncheck all without draft
+        $("input:checkbox[name=DCRStatusAll]").removeAttr('checked');
+
+        if ($(":checkbox[name=DCRStatus]:checked").length > 0) {
+            var dcrStatus = "";
+            $('input:checkbox[name=DCRStatus]').each(function () {
+                if ($(this).is(':checked')) { dcrStatus += $(this).val(); }
+            });
+            if (dcrStatus == "'1','2','0'") {
+                // check All without draft
+                $("input:checkbox[name=DCRStatusAll]").attr('checked', 'checked');
+            }
+        }
+    }
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    }
+    $(function () {
+        $('#mnthyr').monthpicker();
+    });
+
+
+</script>
+

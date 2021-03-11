@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "BillingReport";
+    Layout = null;
+}
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+</style>
+<div style="width: 100%; border: 1px solid #efefef;">
+    <div style="width: 100%; padding: 10px; min-height: 30px; overflow: auto;">
+        <div style="width: 100%;">
+            <div style="width: 10%; float: left;">From Date </div>
+            <div style="float: left;">
+                <input type="text" id="txtFromDate" class="datepicker" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%;">
+            <div style="width: 10%; float: left;">To Date </div>
+            <div style="float: left;">
+                <input type="text" id="txtToDate" class="datepicker" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%;">
+            <div style="width: 10%; float: left;">Mode </div>
+            <div style="float: left;">
+                <input type="radio" name="rdMode" value="LOG" checked="checked" />User Log Count  
+            <input type="radio" name="rdMode" value="DCR" />DCR Count                    
+            </div>
+            <div style="float: left; padding-left: 10px;">
+                <input type="button" class="btn small primary" value="Show" onclick="fnShowReport();" />
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div id="dvCount"></div>
+        <div style="width: 100%;" id="dvReport"></div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script lang="ja">
+    $(document).ready(function () {
+        $(".datepicker").datepicker({ "changeMonth": true, "changeYear": true, "dateFormat": "dd/mm/yy" });
+        $("#txtFromDate").keypress(function () { return false; });
+        $("#txtToDate").keypress(function () { return false; });
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnShowReport() {
+        $("#dvReport").html('');
+        $("#divPrint").html('');
+        $("#dvAjaxLoad").show();
+        if ($.trim($("#txtFromDate").val()) == "") {
+            fnMsgAlert('info', 'Info', 'Please select from date');
+            $("#dvAjaxLoad").hide();
+            return;
+        }
+        if ($.trim($("#txtToDate").val()) == "") {
+            fnMsgAlert('info', 'Info', 'Please select to date');
+            $("#dvAjaxLoad").hide();
+            return;
+        }
+        var fromDate = $("#txtFromDate").val().split('/')[2] + "-" + $("#txtFromDate").val().split('/')[1] + "-" + $("#txtFromDate").val().split('/')[0];
+        var toDate = $("#txtToDate").val().split('/')[2] + "-" + $("#txtToDate").val().split('/')[1] + "-" + $("#txtToDate").val().split('/')[0];
+
+        var mode = $('input:radio[name=rdMode]:checked').val();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Reports/User/GetBillingReport',
+            data: 'fromDate=' + fromDate + '&toDate=' + toDate + '&mode=' + mode,
+            success: function (result) {
+                $("#dvReport").html(result);
+                $("#divPrint").html(result);
+                $('#tblReport').dataTable({
+                    "sPaginationType": "full_numbers", "bDestroy": true,
+                    "fnFooterCallback": function (nRow, aaData, iStart, iEnd, aiDisplay) {
+                        if (mode == "LOG") {
+                            var userCount = 0;
+                            var totalUserCount = 0;
+                            for (var i = 0; i < aaData.length; i++) {
+                                userCount += parseFloat(aaData[i][5].replace(',', ''));
+                            }
+                            for (var i = iStart; i < iEnd; i++) {
+                                totalUserCount += parseFloat(aaData[aiDisplay[i]][5].replace(',', ''));
+                            }
+                            var ncell = nRow.getElementsByTagName('th');
+                            ncell[5].innerHTML = addCommas(totalUserCount.toFixed(2)) + '<br/>(' + addCommas(userCount.toFixed(2)) + ')';
+
+                        }
+                        else {
+                            var dcrCount = 0;
+                            var totalDCRCount = 0;
+                            for (var i = 0; i < aaData.length; i++) {
+                                dcrCount += parseFloat(aaData[i][11].replace(',', ''));
+                            }
+                            for (var i = iStart; i < iEnd; i++) {
+                                totalDCRCount += parseFloat(aaData[aiDisplay[i]][11].replace(',', ''));
+                            }
+                            var ncell = nRow.getElementsByTagName('th');
+                            ncell[11].innerHTML = addCommas(totalDCRCount.toFixed(2)) + '<br/>(' + addCommas(dcrCount.toFixed(2)) + ')';
+                        }
+                    }, "bSort": true, "bDestroy": true, "sDom": 'T<"clear">lfrtip', "oTableTools": { "sSwfPath": "/Content/ZeroClipboard.swf" }
+                });
+                fninializePrint("divPrint", "ifrmPrint", "dvReport");
+                $("#dvAjaxLoad").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+
+
+    function addCommas(nStr) {
+        nStr += ''; x = nStr.split('.'); x1 = x[0]; x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) { x1 = x1.replace(rgx, '$1' + ',' + '$2'); }
+        return x1 + x2;
+    }
+</script>

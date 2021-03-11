@@ -1,0 +1,791 @@
+﻿@model HiDoctor_Master.Models.ExpensesMapping
+@{
+    ViewBag.Title = "Expense Mapping";
+    Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+
+<style type="text/css">
+    #modal {
+        height: 850px !important;
+        overflow: auto !important;
+        width: 980px;
+    }
+
+    #cblist {
+        background-color: #E8F1FF;
+        border: 3px solid #d3d3d3;
+        height: auto;
+        width: 99%;
+    }
+
+    #dvMaincblist {
+        height: 350px;
+        width: 80%;
+        overflow: auto;
+        margin-bottom: 5px;
+    }
+
+    #tblList td, #tblList {
+        border: none;
+    }
+
+    #tblList {
+        width: 100%;
+    }
+
+    select {
+        width: auto !important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+  
+    <div id="dvLoadingExpense" style="display: none;">
+        <div class="dvAccPopUpClose">
+            <img src="../Areas/HiDoctor_Master/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+                onclick="HideModalPopup('dvLoadingExpense');" />
+        </div>
+        <div style="width: auto;">
+            <div id="dvDailyBlockM" style="margin: 10px; max-height: 300px; overflow: auto; width: 97%;">
+            </div>
+        </div>
+        <div style="width: auto;">
+            <div id="dvNonDailyBlockM" style="margin: 10px;">
+            </div>
+        </div>
+    </div>
+
+
+
+<table>
+    <tr>
+        <td>
+            <h4>Division Code</h4>
+        </td>
+        <td>
+            <select id="ddlDivision" onchange="fnGetTypes(this)">
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="radio" id="radRegionType" name="Type" value="Region" /><span style="font-size: 14px; font-weight: bold;">Region</span>
+        </td>
+        <td>
+            <input type="radio" id="radUserType" name="Type" value="User" /><span style="font-size: 14px; font-weight: bold;">User</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="divRegion">
+                <table>
+                    <tr>
+                        <td>
+                            <h4 style="margin-right: 20px;">Region Type</h4>
+                        </td>
+                        <td>
+                            <select id="ddlRegionType" onchange="fnGetTypes(this)">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4 style="margin-right: 20px;">Region Classification</h4>
+                        </td>
+                        <td>
+                            <select id="ddlClassification" onchange="fnGetTypes(this)">
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="divUser">
+                <table>
+                    <tr>
+                        <td>
+                            <h4 style="margin-right: 30px;">User Type</h4>
+                        </td>
+                        <td>
+                            <select id="ddlUserType" onchange="fnGetTypes(this)">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4 style="margin-right: 30px;">Region Classification</h4>
+                        </td>
+                        <td>
+                            <select id="ddlUserRegionClassification" onchange="fnGetTypes(this)">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4 style="margin-right: 30px;">Region Type</h4>
+                        </td>
+                        <td>
+                            <select id="ddlUserRegionType" onchange="fnGetTypes(this)">
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <h4 style="margin-right: 10px;">Expense Group</h4>
+        </td>
+        <td>
+            <select id="ddlExpenseGroupM" onchange="fnGetTypes(this)">
+            </select>
+            <img src="../Areas/HiDoctor_Master/Content/images/group_screen.png" onclick="fnOpenExpenseGroup()" style="margin-left: 5px;" />
+            <img src="../Areas/HiDoctor_Master/Content/images/detail.png" style="margin-left: 5px;" onclick="fnShowExpenseGroupDetails()" />
+        </td>
+    </tr>
+
+</table>
+
+<div class="expHeader">
+</div>
+
+
+<div>
+    <input type="button" id="btnSelect" value="Select All" onclick="fnSelectAll(this)" />
+</div>
+<div class="editor-field">
+    <div id="dvMaincblist" style="display: none;">
+        <div id="cblist">
+        </div>
+    </div>
+</div>
+<p>
+    <input type="button" value="Submit" onclick="fnCreate()" />
+    <input type="button" value="Reset" onclick="Reset()" />
+</p>
+
+<div id="divIframLength" style="height: 500px; width: 100%;">
+</div>
+}
+
+
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            GetExpenseMasterData();
+            $("[name=Type][type=radio]").filter("[value=Region]").attr("checked", "checked");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function GetExpenseMasterData() {
+        $.ajax({
+            url: '../HiDoctor_Master/ExpenseMapping/GetExpenseMappingMasterData',
+            type: "POST",
+            data: "",
+            success: function (data) {
+                jsData = eval('(' + data + ')');
+
+                //Filling DDL Division
+                var ddlDivision = $("#ddlDivision");
+                $('option', ddlDivision).remove();
+                if (jsData.Tables[0].Rows.length > 0) {
+                    $('#ddlDivision').append($('<option></option>').val("0").html("- Select Division -"));
+                    $('#ddlDivision').append($('<option></option>').val("NULL").html("- No Division -"));
+                    for (var i = 0; i < jsData.Tables[0].Rows.length; i++) {
+                        $('#ddlDivision').append($('<option></option>').val(jsData.Tables[0].Rows[i].Division_Code).html(jsData.Tables[0].Rows[i].Division_Name));
+                    }
+                }
+                else {
+                    $('#ddlDivision').append($('<option></option>').val("0").html("- No Division -"));
+                }
+
+
+                //Filling DDL Region Type
+                var ddlRegionType = $("#ddlRegionType");
+                $('option', ddlRegionType).remove();
+                $('#ddlRegionType').append($('<option></option>').val("0").html("- Select Region -"));
+                for (var i = 0; i <= jsData.Tables[1].Rows.length - 1; i++) {
+                    $('#ddlRegionType').append($('<option></option>').val(jsData.Tables[1].Rows[i].Region_Type_Code).html(jsData.Tables[1].Rows[i].Region_Type_Name));
+                }
+
+                //Filling DDL Region Classification
+                var ddlClassification = $("#ddlClassification");
+                $('option', ddlClassification).remove();
+                if (jsData.Tables[2].Rows.length > 0) {
+                    $('#ddlClassification').append($('<option></option>').val("0").html("- Select Classification -"));
+                    $('#ddlClassification').append($('<option></option>').val("NULL").html("- No Classification -"));
+                    for (var i = 0; i <= jsData.Tables[2].Rows.length - 1; i++) {
+                        $('#ddlClassification').append($('<option></option>').val(jsData.Tables[2].Rows[i].Region_Classification_Code).html(jsData.Tables[2].Rows[i].Region_Classification_Name));
+                    }
+                }
+                else {
+                    $('#ddlClassification').append($('<option></option>').val("0").html("- No Classification -"));
+                }
+
+                //Filling Expense Group Header
+                var ddlExpenseGroupM = $("#ddlExpenseGroupM");
+                $('option', ddlExpenseGroupM).remove();
+                $('#ddlExpenseGroupM').append($('<option></option>').val("0").html("- Select Expense Group -"));
+                for (var i = 0; i <= jsData.Tables[3].Rows.length - 1; i++) {
+                    $('#ddlExpenseGroupM').append($('<option></option>').val(jsData.Tables[3].Rows[i].Expense_Group_Id).html(jsData.Tables[3].Rows[i].Expense_Group_Name));
+                }
+
+                //Filling DDL User Types
+                var ddlUser = $("#ddlUserType");
+                $('option', ddlUser).remove();
+                $('#ddlUserType').append($('<option></option>').val("0").html("- Select User -"));
+                for (var i = 0; i <= jsData.Tables[4].Rows.length - 1; i++) {
+                    $('#ddlUserType').append($('<option></option>').val(jsData.Tables[4].Rows[i].User_Type_Code).html(jsData.Tables[4].Rows[i].User_Type_Name));
+                }
+
+                // Filling DDL User Region Classification
+                var ddlClassification = $("#ddlUserRegionClassification");
+                $('option', ddlClassification).remove();
+                if (jsData.Tables[2].Rows.length > 0) {
+                    $('#ddlUserRegionClassification').append($('<option></option>').val("0").html("- Select Classification -"));
+                    $('#ddlUserRegionClassification').append($('<option></option>').val("NULL").html("- No Classification -"));
+                    for (var i = 0; i <= jsData.Tables[2].Rows.length - 1; i++) {
+                        $('#ddlUserRegionClassification').append($('<option></option>').val(jsData.Tables[2].Rows[i].Region_Classification_Code).html(jsData.Tables[2].Rows[i].Region_Classification_Name));
+                    }
+                }
+                else {
+                    $('#ddlUserRegionClassification').append($('<option></option>').val("0").html("- No Classification -"));
+                }
+                // Filling DDL User Region Type
+                var ddlRegionType = $("#ddlUserRegionType");
+                $('option', ddlRegionType).remove();
+                $('#ddlUserRegionType').append($('<option></option>').val("0").html("- Select Region -"));
+                for (var i = 0; i <= jsData.Tables[1].Rows.length - 1; i++) {
+                    $('#ddlUserRegionType').append($('<option></option>').val(jsData.Tables[1].Rows[i].Region_Type_Code).html(jsData.Tables[1].Rows[i].Region_Type_Name));
+                }
+
+
+                $("input:radio[name=Type]").trigger("change");
+            },
+            error: function () {
+                alert("Error Found");
+            }
+        });
+    }
+
+
+    function fnGetTypes(id) {
+        if (id.id != "ddlExpenseGroupM") {
+            $("#ddlExpenseGroupM").val("0");
+        }
+        var SelectedValue = $("input:radio[name=Type]:checked").val();
+        if (SelectedValue == "Region") {
+            fnGetRegions();
+        }
+        else if (SelectedValue == "User") {
+            fnGetUsers();
+        }
+    }
+    function fnGetRegions() {
+        $.ajax({
+            url: '../HiDoctor_Master/ExpenseMapping/GetRegions',
+            type: "POST",
+            data: "DivisionCode=" + $("#ddlDivision option:selected").val() + "&RegionTypeCode=" + $("#ddlRegionType option:selected").val() + "&RegionClassificatinCode=" + $("#ddlClassification option:selected").val() + "&ExpenseGroup=" + $("#ddlExpenseGroupM option:selected").val(),
+            success: function (data) {
+                if ($("#ddlExpenseGroupM option:selected").val() == "0") {
+                    $('#cblist').empty();
+
+                    if (data.length > 0) {
+                        addCheckbox(data, "REGION");
+                    }
+                    else {
+                        $("#dvMaincblist").css('display', 'none');
+                        $("#btnSelect").val("Select All");
+                        $("#btnSelect").hide();
+                    }
+                }
+                else {
+                    $('#cblist input[type=checkbox]').each(function () {
+                        $(this).removeAttr('checked');
+                    });
+                    var length = data.length;
+                    if (parseInt(length) > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("input[type=checkbox]").filter("[value=" + data[i].RegionCode + "]").attr("checked", "checked");
+                        }
+                    }
+                    $("#dvMaincblist").css('display', '');
+                    $("#btnSelect").val("Select All");
+                    $("#btnSelect").show();
+                }
+            },
+            error: function () {
+                alert("Error Found");
+
+            }
+        });
+    }
+
+    function fnGetUsers() {
+        $.ajax({
+            url: '../HiDoctor_Master/ExpenseMapping/GetUsers',
+            type: "POST",
+            data: "DivisionCode=" + $("#ddlDivision option:selected").val() + "&UserTypeCode=" + $("#ddlUserType option:selected").val() + "&RegionTypeCode=" + $("#ddlUserRegionType option:selected").val() + "&RegionClassification=" + $("#ddlUserRegionClassification option:selected").val() + "&ExpenseGroup=" + $("#ddlExpenseGroupM option:selected").val(),
+            success: function (data) {
+                if ($("#ddlExpenseGroupM option:selected").val() == "0") {
+                    $('#cblist').empty();
+                    if (data.length > 0) {
+                        addCheckbox(data, "USER");
+                    }
+                    else {
+                        $("#dvMaincblist").css('display', 'none');
+                        $("#btnSelect").val("Select All");
+                        $("#btnSelect").hide();
+                    }
+                }
+                else {
+                    $('#cblist input[type=checkbox]').each(function () {
+                        $(this).removeAttr('checked');
+                    });
+                    var length = data.length;
+                    if (parseInt(length) > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("input[type=checkbox]").filter("[value=" + data[i].UserCode + "]").attr("checked", "checked");
+                        }
+                    }
+                    $("#dvMaincblist").css('display', '');
+                    $("#btnSelect").val("Select All");
+                    $("#btnSelect").show();
+                }
+            },
+            error: function () {
+                alert("Error Found");
+
+            }
+        });
+    }
+
+    function addCheckbox(data, Name) {
+
+        var container = $('#cblist');
+        var html = "";
+        if (data.length > 0) {
+            var tblcontent = "";
+            tblcontent += "<table id='tblList'>";
+
+            tblcontent += "<tr>";
+            var i = 1;
+            for (var j = 0; j < data.length; j++, i++) {
+                //tblcontent += "<td><input type='checkbox' id='chkUserType_" + (j + 1) + "' value='" + userType_g.Data[j].User_Type_Code + "'/>" + userType_g.Data[j].User_Type_Name + "</td>"
+                if (Name == "REGION") {
+                    tblcontent += '<td><input type="checkbox" id="cbk' + data[j].RegionCode + '" value="' + data[j].RegionCode + '" /> <label for="cbk' + data[j].RegionCode + '">' + data[j].RegionName + '</label></td>';
+                }
+                else if (Name == "USER") {
+                    tblcontent += '<td><input type="checkbox" id="cbk' + data[j].UserCode + '" value="' + data[j].UserCode + '" /> <label for="cbk' + data[j].UserCode + '">' + data[j].UserName + '</label></td>';
+                }
+                if (i == 4 && j != (data.length - 1)) {
+                    i = 0;
+                    tblcontent += "</tr><tr>";
+                }
+            }
+            if (data.length % 4 == 0) {
+                tblcontent += "</tr>";
+            }
+            else {
+                for (var i = 1; i <= (4 - data.length % 4) ; i++) {
+                    tblcontent += "<td></td>";
+                }
+                tblcontent += "</tr>";
+            }
+
+            tblcontent += "</table>";
+        }
+
+
+        //html = '<input type="checkbox" id="cbk' + Code + '" value="' + Code + '" /> <label for="cbk' + Code + '">' + Name + '</label><br/>';
+        container.append($(tblcontent));
+        $("#dvMaincblist").css('display', '');
+        $("#btnSelect").val("Select All");
+        $("#btnSelect").show();
+    }
+
+    var validation = false;
+    function fnCreate() {
+        Validation();
+        if (validation) {
+            var chkInsert = "";
+            var selected = new Array();
+            var i = 1;
+            $('#cblist input[type=checkbox]').each(function () {
+                chkInsert += "cbk_" + i.toString() + "=" + $(this).val() + "&Checked_" + i.toString() + "=" + $(this).is(':checked') + "&";
+                i++;
+            });
+            chkInsert += "ExpenseGroup=" + $("#ddlExpenseGroupM option:selected").val() + "&rowCount=" + i.toString() + "&Type=" + $("input:radio[name=Type]:checked").val();
+            $.ajax({
+                url: '../HiDoctor_Master/ExpenseMapping/TypeInsert',
+                type: "POST",
+                data: chkInsert,
+                success: function (data) {
+                    if (data == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', 'Saved Successfully.');
+                        Reset();
+                    }
+                    else {
+                        fnMsgAlert('error', 'Error', 'Insertion failed.');
+                        return;
+                    }
+                },
+                error: function () {
+                    alert("Error Found");
+                }
+            });
+        }
+    }
+
+    function Reset() {
+        $("#ddlDivision").val("0");
+        $("#ddlRegionType").val("0");
+        $("#ddlClassification").val("0");
+        $("#ddlExpenseGroupM").val("0");
+        $("#ddlUserType").val("0");
+        $("#ddlUserRegionClassification").val("0");
+        $("#ddlUserRegionType").val("0");
+        $('#cblist').empty();
+        $("[name=Type][type=radio]").filter("[value=Region]").attr("checked", "checked");
+        $("input:radio[name=Type]").trigger("change");
+        $("#dvMaincblist").css('display', 'none');
+        $("#btnSelect").val("Select All");
+        $("#btnSelect").hide();
+    }
+
+    $("input[name=Type]").change(function (e) {
+        $("#ddlDivision").val("0");
+        $("#ddlRegionType").val("0");
+        $("#ddlClassification").val("0");
+        $("#ddlExpenseGroupM").val("0");
+        $("#ddlUserType").val("0");
+        $("#ddlUserRegionClassification").val("0");
+        $("#ddlUserRegionType").val("0");
+        $('#cblist').empty();
+        $("#dvMaincblist").css('display', 'none');
+        $("#btnSelect").val("Select All");
+        $("#btnSelect").hide();
+        var SelectedValue = $("input:radio[name=Type]:checked").val();
+        if (SelectedValue == "Region") {
+            $("label[for='Regions']").html("Region");
+            $("#divRegion").show();
+            $("#divUser").hide();
+        }
+        else if (SelectedValue == "User") {
+            $("label[for='Regions']").html("User");
+            $("#divRegion").hide();
+            $("#divUser").show();
+        }
+    });
+
+    function fnOpenExpenseGroup() {
+        //        $('#divExpenseGrp').load('../ExpenseGroup/Create');
+        //        ShowModalPopup('dvLoadingExpense');
+
+        $.modal({ ajax: '../HiDoctor_Master/ExpenseGroup/Create', title: 'Expense Group', overlayClose: false });
+        $("#modal_close").click(function () { fnBindExpenseGroupddl(); });
+        return;
+    }
+
+    function fnBindExpenseGroupddl() {
+        if (groupJson != "") {
+            if (!(groupJson.Tables === undefined) && groupJson.Tables.length > 0 && groupJson.Tables[0].Rows.length > 0) {
+                //Filling Expense Group Header
+                var ddlExpenseGroupM = $("#ddlExpenseGroupM");
+                $('option', ddlExpenseGroupM).remove();
+                $('#ddlExpenseGroupM').append($('<option></option>').val("0").html("- Select Expense Group -"));
+                for (var i = 0; i <= groupJson.Tables[0].Rows.length - 1; i++) {
+                    $('#ddlExpenseGroupM').append($('<option></option>').val(groupJson.Tables[0].Rows[i].Expense_Group_Id).html(groupJson.Tables[0].Rows[i].Expense_Group_Name));
+                }
+                fnSelectExpenseGroup();
+            }
+        }
+        else {
+            fnSelectExpenseGroup();
+        }
+    }
+
+    function fnSelectExpenseGroup() {
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Master/ExpenseMapping/GetExpenseGroupMaxID',
+            data: "groupID=MAX",
+            success: function (id) {
+                $('#ddlExpenseGroupM').val(id);
+            }
+        });
+    }
+
+    function fnShowExpenseGroupDetails() {
+
+        if ($("#ddlExpenseGroupM").val() == 0) {
+            fnMsgAlert('error', 'Error', 'Please select Expense Group to see the details.');
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '../HiDoctor_Master/ExpenseMapping/GetExpenseGroupDetails',
+                data: "groupID=" + $("#ddlExpenseGroupM").val(),
+                success: function (jsPrefillData) {
+                    if (jsPrefillData != false && jsPrefillData != "") {
+                        var prefill = eval('(' + jsPrefillData + ')');
+                        var prefillD = prefill.Tables[0].Rows;
+                        var prefillND = prefill.Tables[1].Rows;
+                        var category = prefill.Tables[2].Rows;
+
+                        fnDailyTable(prefillD, category);
+                        fnNonDailyTable(prefillND, category);
+                        if (($("#dvDailyBlockM").html() != "") || ($("#dvNonDailyBlockM").html() != "")) {
+                            ShowModalPopup('dvLoadingExpense');
+                        }
+                        else {
+                            fnMsgAlert('info', 'Information', 'No Data is mapped for this Expense group.');
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function fnDailyTable(option, category) {
+        var content = "";
+        if (option != false && option.length > 0) {
+            content = "<table cellspacing='0' cellpadding='0' width='100%'  id='tblDaily' class='data display dataTable box'>";
+            content += "<thead>";
+            content += "<tr><th >ExpenseType</th>";
+            content += "<th >Eligibility Base</th>";
+            content += "<th >Travel Distance Edit</th>";
+            content += "<th >Validation on Eligibility</th>";
+            content += "<th>DCR Prefill</th>";
+            content += "<th >Effective From</th>";
+            content += "<th >Effective To</th>";
+            content += "<th colspan='3'>Category</th>";
+            content += "</tr>";
+            content += "</thead><tbody>";
+
+            for (var i = 0; i < option.length; i++) {
+                content += "<tr >";
+                content += "<td rowspan='" + (category.length + 1) + "'>" + option[i].Expense_Type_Name + "</td>";
+                content += "<td rowspan='" + (category.length + 1) + "'>" + option[i].SFC_Type + "</td>";
+
+                //Distance Edit
+                if (option[i].SFC_Type == "E") {
+                    content += "<td rowspan='" + (category.length + 1) + "'></td>";
+                }
+                else {
+                    if (option[i].Distance_Edit != null && option[i].Distance_Edit == "F") {
+                        content += "<td rowspan='" + (category.length + 1) + "'>Flexi</td>";
+                    }
+                    else { content += "<td rowspan='" + (category.length + 1) + "'>Rigid</td>"; }
+                }
+
+                //Validation on eligibility
+                if (option[i].SFC_Type == "E") {
+                    if (option[i].Is_Validation_On_Eligibility != null && option[i].Is_Validation_On_Eligibility == "Y") {
+                        content += "<td rowspan='" + (category.length + 1) + "'>Yes</td>";
+                    }
+                    else { content += "<td rowspan='" + (category.length + 1) + "'>No</td>"; }
+                }
+                else {
+                    content += "<td rowspan='" + (category.length + 1) + "'></td>";
+                }
+
+                //Is Prefill
+                if (option[i].Is_Prefill != null) {
+                    if (option[i].Is_Prefill == "R") {
+                        content += "<td rowspan='" + (category.length + 1) + "'>Rigid</td>";
+                    }
+                    else if (option[i].Is_Prefill == "F") { content += "<td rowspan='" + (category.length + 1) + "'>Flexi</td>"; }
+                    else { content += "<td rowspan='" + (category.length + 1) + "'>No Prefill</td>"; }
+                }
+                else { content += "<td rowspan='" + (category.length + 1) + "'></td>"; }
+
+
+                //From date
+                if (option[i].Effective_From != null) {
+                    content += "<td rowspan='" + (category.length + 1) + "'>" + option[i].Effective_From + "</td>";
+                }
+                else { content += "<td rowspan='" + (category.length + 1) + "'></td>"; }
+
+                //To date
+                if (option[i].Effective_To != null && option[i].Effective_To != '31/12/9999') {
+                    content += "<td rowspan='" + (category.length + 1) + "'>" + option[i].Effective_To + "</td>";
+                }
+                else { content += "<td rowspan='" + (category.length + 1) + "'></td>"; }
+
+                //Category
+                if (option[i].SFC_Type == "E") {
+                    content += "<td><b>Category</b><td><td colspan='2'><b>Eligibility Amount</b></td></tr>";
+                    for (var j = 0; j < category.length; j++) {
+                        if (option[i][category[j].Expense_Entity_Code] != null) {
+                            content += "<tr><td>" + category[j].Expense_Entity_Name + "</td><td colspan='2'>" + option[i][category[j].Expense_Entity_Code] + "</td></tr>";
+                        }
+                        else {
+                            content += "<tr><td></td><td colspan='2'></td></tr>";
+                        }
+                    }
+                }
+                else {
+                    content += "<td><b>Category</b></td><td><b>Applicable?</b></td><td><b>Sum Distance</b></td></tr>";
+                    for (var j = 0; j < category.length; j++) {
+                        if (option[i][category[j].Expense_Entity_Code] == null) {
+                            content += "<tr><td>" + category[j].Expense_Entity_Name + "</td><td>No</td><td>-</td></tr>";
+                        }
+                        else {
+                            content += "<tr><td>" + category[j].Expense_Entity_Name + "</td><td>Yes</td>";
+                            if (option[i][category[j].Expense_Entity_Code].split('_')[1] === undefined) {
+                                content += "<td>-</td></tr>";
+                            }
+                            else {
+                                if (option[i][category[j].Expense_Entity_Code].split('_')[1] == 'Y') {
+                                    content += "<td>Yes</td></tr>";
+                                }
+                                else {
+                                    content += "<td>No</td></tr>";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            content += "</tbody></table>";
+        }
+        $("#dvDailyBlockM").html(content);
+    }
+
+    function fnNonDailyTable(option, category) {
+        var content = "";
+        if (option != false && option.length > 0) {
+            content = "<table cellspacing='0' cellpadding='0' width='50%'  id='tblNonDaily' class='data display dataTable box'>";
+            content += "<thead>";
+            content += "<tr><th>ExpenseType</th>";
+            content += "<th>Expense Mode</th>";
+            content += "<th>Can Split Amount</th>";
+            content += "<th>Validation on Eligibility</th>";
+            content += "<th>Amount</th>";
+            content += "<th>Effective From</th>";
+            content += "<th>Effective To</th>";
+            content += "<th>Mandate remarks</th>";
+            content += "</tr>";
+            content += "</thead><tbody>";
+
+            for (var i = 0; i < option.length; i++) {
+                content += "<tr>";
+                content += "<td>" + option[i].Expense_Type_Name + "</td>";
+                content += "<td>" + option[i].Expense_Mode + "</td>";
+
+                //CanSplit
+                if (option[i].Can_Split_Amount != null && option[i].Can_Split_Amount == "Y") {
+                    content += "<td>Yes</td>";
+                }
+                else { content += "<td>No</td>"; }
+
+                //Validation  on eligibility
+                if (option[i].Is_Validation_On_Eligibility != null && option[i].Is_Validation_On_Eligibility == "Y") {
+                    content += "<td>Yes</td>";
+                }
+                else { content += "<td>No</td>"; }
+
+                //Amount
+                if (option[i].Eligibility_Amount != null) {
+                    content += "<td>" + option[i].Eligibility_Amount + "</td>";
+                }
+                else { content += "<td></td>"; }
+
+                //From date
+                if (option[i].Effective_From != null) {
+                    content += "<td>" + option[i].Effective_From + "</td>";
+                }
+                else { content += "<td></td>"; }
+
+                //To date
+                if (option[i].Effective_To != null && option[i].Effective_To != '31/12/9999') {
+                    content += "<td>" + option[i].Effective_To + "</td>";
+                }
+                else { content += "<td></td>"; }
+
+                // Mandate Remarks for monthly
+                if (option[i].Mandate_Remarks != null && option[i].Mandate_Remarks == "Y") {
+                    debugger;
+                    content += "<td>Yes</td>";
+                }
+                else {
+                    content += "<td>No</td>";
+                }
+                content += "</tr>";
+            }
+            content += "</tbody></table>";
+        }
+        $("#dvNonDailyBlockM").html(content);
+    }
+
+    function Validation() {
+        validation = false;
+        var SelectedValue = $("input:radio[name=Type]:checked").val();
+        if (SelectedValue == "Region") {
+            if ($("#ddlRegionType option:selected").val() == "0" || $("#ddlExpenseGroupM option:selected").val() == "0") {
+                if ($("#ddlRegionType option:selected").val() == "0") {
+                    fnMsgAlert('error', 'Error', 'Please Choose Any Region.');
+                    return;
+                }
+                if ($("#ddlExpenseGroupM option:selected").val() == "0") {
+                    fnMsgAlert('error', 'Error', 'Please Choose Expense Group.');
+                    return;
+                }
+            }
+        }
+        else if (SelectedValue == "User") {
+            if ($("#ddlUserType option:selected").val() == "0" || $("#ddlExpenseGroupM option:selected").val() == "0") {
+                if ($("#ddlUserType option:selected").val() == "0") {
+                    fnMsgAlert('error', 'Error', 'Please Choose Any User.');
+                    return;
+                }
+                if ($("#ddlExpenseGroupM option:selected").val() == "0") {
+                    fnMsgAlert('error', 'Error', 'Please Choose Expense Group.');
+                    return;
+                }
+
+            }
+        }
+        var checked = false;
+        $('#cblist input[type=checkbox]').each(function () {
+            if ($(this).is(':checked')) {
+                checked = true;
+            }
+        });
+        if (!checked) {
+            fnMsgAlert('error', 'Error', 'please choose at least one ' + SelectedValue + ' to mapping Expense Group.');
+            return;
+        }
+        validation = true;
+    }
+
+    function fnSelectAll(id) {
+        if ($(id).val() == 'Select All') {
+            $('#cblist input[type=checkbox]').each(function () {
+                $(this).attr('checked', 'checked');
+            });
+            $(id).val("Deselect All");
+        }
+        else if ($(id).val() == 'Deselect All') {
+            $('#cblist input[type=checkbox]').each(function () {
+                $(this).removeAttr('checked');
+            });
+            $(id).val("Select All");
+        }
+    }
+</script>

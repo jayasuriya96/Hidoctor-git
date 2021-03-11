@@ -1,0 +1,121 @@
+﻿
+<style type="text/css">
+    .cvImg {
+        padding-left: 6px;
+    }
+
+    #dvAllPro_Chemist {
+        overflow: auto;
+        height: 350px;
+    }
+</style>
+
+<div class="ChemistDetailsbox chemistDay DetailsBox">
+    <div class="chemistheader">
+        @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgDoctorDetailed"> <span id="DoctorloadingTitle" class="loadingcaption"> <span class="spnDcoCuss">Customer</span> Details Settings...</span>*@
+        <span class="fontweightbold" style="float: left"><span class="spnDcoCuss">Customer</span> Details</span>
+        <div class="helpIconmargin">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','CHECUSTDETAILS')" />
+        </div>
+    </div>
+    <input id="hdChemistVisitCode" type="hidden" />
+
+    <div class="rowdiv">
+        <div class="column1">
+            <label><span class="spnDcoCus1">Name</span></label>
+        </div>
+        <div class="column2">
+            <input type="text" id="txtChemistName" onblur="ChemistVisit.fnValidateChemist(this)" class="auto_Chemist_Visit required doctorcheckspecialchar setfocus"/>
+            <input type="hidden" id="hdnChemistCode" />
+        </div>
+    </div>
+    <div class="rowdiv" id="div_doc_visitmode_cv">
+        <div class="column1">
+            <label>
+                Visit Mode
+            </label>
+        </div>
+        <div class="column2">
+            <input type="radio" name="rdvisitmode_cv" checked="checked" value="AM" />
+            <span id="spnAM_cv">AM</span>
+            <input type="radio" name="rdvisitmode_cv" value="PM">
+            <span id="spnPM_cv">PM</span>
+            <label id="lblChevisitmode"></label>
+        </div>
+    </div>
+    <div id="div_doc_visittime_cv" class="rowdiv">
+        <div class="column1">
+            <label>Visit Time</label>
+        </div>
+        <div class="column2">
+            <input type="text" id="timepicker_cv" />
+            @*onchange="fnSetFormMode(event)"*@
+            <label id="lbltimepicker_cv"></label>
+
+        </div>
+    </div>
+
+    <div class="rowdiv">
+        <div class="column1">
+            <label>
+                Remarks
+            </label>
+        </div>
+        <div class="column2">
+            <textarea id="txtCheRemarks" style="height: 20px;" class="setfocus"></textarea>
+        </div>
+    </div>
+    <div class="rowdiv" id="Category" style="display:none;">
+        <div class="column1">
+            <label>
+                Business Category
+            </label>
+        </div>
+        <div class="column2">
+            <select id="bCategory"></select>
+        </div>
+    </div>
+    <div class="rowdiv" id="ClblPOBMand" style="display: none;padding-bottom:10px">
+        <div class="column1">
+            <label>
+                Chemist Visit Without POB
+            </label>
+        </div>
+        <div class="column2">
+            <input type="checkbox" name="sample1" id="CPOBMandatory" />
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRAllowedSpecialCharacters.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistVisit.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script>
+    var CompanyCode = "";
+    var UserCode = "";
+    var RegionCode = "";
+    var CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    var DoctorHeader = '';
+    var chemistName = "";
+    DoctorHeader = fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+    $('.spnDcoCuss').text(DoctorHeader);
+    chemistName = fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+    $('.spnDcoCuss').text(chemistName);
+    chemistName = fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+    if (chemistName.length >= 20) {
+        chemistName = chemistName.substr(0, 20) + "...";
+    }
+    if (chemistName != '') {
+        $("#divChemist").text(chemistName);
+    }
+    $(document).ready(function () {
+        try {
+            ChemistVisit.fngetChemistbusinesscategory();
+            // autoComplete(chemistAutoFill_g, "txtChemistName", "hdnChemistCode", "auto_Chemist_Visit");
+        }
+        catch (ex) {
+        }
+    });
+</script>

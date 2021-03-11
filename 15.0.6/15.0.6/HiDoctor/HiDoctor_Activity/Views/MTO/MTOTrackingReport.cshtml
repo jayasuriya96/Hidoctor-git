@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/MTO.css" rel="stylesheet" />
+<style>
+    #Initial {
+        text-align: center;
+        height: 50px;
+        width: 50px;
+        background-color: brown;
+        color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+        font-size: 30px;
+        right: 20px;
+        position: relative;
+        right: 20px;
+        padding: 5px 12px;
+    }
+
+    .align p {
+        margin: 0px;
+    }
+</style>
+
+<div class="form-row" id="dvreport">
+    <div class="form-group col-xs-12" style="padding: 5px;">
+        <div id="userdet">
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/MTOTrackReports.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var LID='';
+    var UserName='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        MTOTrackReports.GetTrackUserDetails();
+    })
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/MTO/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+</script>
+

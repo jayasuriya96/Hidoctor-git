@@ -1,0 +1,74 @@
+﻿
+<style>
+    .SuccessMessage {
+        height:56px;
+        width:95%;
+        background-color:limegreen;
+        color:white;
+        font-size:16px;
+        margin:5px;
+        padding:5px;
+    }
+    .ErrorMessage {
+        height:56px;
+        width:95%;
+        background-color:red;
+        color:white;
+        font-size:16px;
+        margin:5px;
+        padding:5px;
+    }
+</style>
+<div id="dvSuccessMessage" class="SuccessMessage" style="display:none;">Your Excel File successfully uploaded. Please click on the Go to Batch processing screen link to view the status of the upload.</div>
+<div id="dvErrorMessage" class="ErrorMessage" style="display:none;"></div>
+
+<script>
+    function fnLoadBP() {
+
+        $('#main').load('../Hidoctor/BatchProcessing/Index/?bpType=REGION_UPLOAD');
+    }
+    $(document).ready(function () {
+        var ErrCode;
+
+        ErrCode = @Html.Raw(Json.Encode(ViewBag.ErrorCode));
+        switch(ErrCode)
+        {
+            case "-1":
+                $('#dvSuccessMessage').css("display",'');
+                parent.document.getElementById('lnkBP').style.display='';
+                break;
+            case "0":
+                $('#dvErrorMessage').html("Invalid Excel or Empty Excel.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "1":
+                $('#dvErrorMessage').html("Invalid excel format. Column headers are invalid or Excel Rows empty.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "2":
+                $('#dvErrorMessage').html("Invalid excel file. please choose the original file.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "3":
+                $('#dvErrorMessage').html("Please save the excel file or Excel has empty rows.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "4":
+                $('#dvErrorMessage').html("Row No data type is invalid.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "5":
+                $('#dvErrorMessage').html("Unexpected Error.Please verify the excel sheet.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "6":
+                $('#dvErrorMessage').html("All Region Name rows are empty. Please fill the Region Name.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            default:
+                $('#dvErrorMessage').html(ErrCode)
+                $('#dvErrorMessage').css('display','');
+                break;
+        }
+    });
+</script>

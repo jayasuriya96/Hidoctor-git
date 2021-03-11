@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "MasterDataHandler";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+@*<h1>MasterDataHandler</h1>*@
+<style>
+    /*#dvMainBody {
+        height: 850px;
+    }*/
+
+    .labelDetails {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+
+    .card-columns {
+        column-count: 4;
+    }
+
+    /*.card-columns-1 {
+        column-count: 4;
+    }*/
+</style>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Master Data
+        </div>
+        <div class="card-body" id="dvMainBody">
+            @*<div class="row mb-3">
+                    <div class="flex-fill col-sm-3">
+                        <label><b>Select Module Name:</b></label>
+                        <select class="form-control" id="ddlModuleNames">
+                            <option value="0" selected="selected" disabled="">Choose Upload Type</option>
+                        </select>
+                    </div>
+                    <div class="flex-fill col-sm-3">
+                        <label><b>Select Data Point:</b></label>
+                        <select class="form-control" id="ddldataPoints">
+                            <option value="0" selected="selected" disabled="">Choose Data Point Type</option>
+                            <option value="MasterData">Master Data</option>
+                            <option value="BatchProcessing">Batch Processing</option>
+                        </select>
+                    </div>
+                    <div class="flex-fill col-sm-3">
+                        <label><b>Uploaded Range:</b></label>
+                        <input type="text" class="form-control hasDatepicker" id="dateRange" data-keyboard="false" autocomplete="off">
+                    </div>
+                    <div class="flex-fill col-sm-3" style="text-align:center;margin-top:32px;">
+                        <input type="button" class="btn btn-info" id="btnGo" value="Go" onclick="AutomateMasterData.fnGetAllBatchProcessingDetails();" />
+                    </div>
+                </div>*@
+            <div id="dvReportMain">
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">Upload Info</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 row">
+                                <div class="col-sm-6">
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">Module Name: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblModuleName"></label>
+                                    </div>
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">Uploaded By: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblUploadedBy"></label>
+                                    </div>
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">Upload Status: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblUploadStatus"></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">File Name: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblFileName"></label>
+                                    </div>
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">Uploaded On: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblUploadedOn"></label>
+                                    </div>
+                                    <div class="form-group row no-gutters">
+                                        <label class="col-6 col-sm-6 col-form-label" style="font-weight:600;font-size:14px;">Upload Description: </label>
+                                        <label class="col-6 col-sm-6 col-form-label labelDetails" style="font-size:14px;" id="lblUploadDescription"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white" id="lblType">Master Data Info</div>
+                    <div class="card-body" id="dvBodyDetails">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/RPACoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/MasterDataHandler/AutomateMasterData.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script type="text/javascript">
+    var CompanyCode = "";
+    var RegionCode = "";
+    var UserCode = "";
+    var UserTypeCode = "";
+    var UserDetails = "";
+    var CompanyId = "";
+    var BatchProcessingId="";
+    var FileProcessId="";
+    var BP_Guid="";
+    var ViewType="";
+    $(document).ready(function () {
+        //AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        UserDetails = @Html.Raw(Json.Encode(ViewBag.UserDetails));
+        UserCode=@Html.Raw(Json.Encode(ViewBag.CUserCode));
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        UserTypeCode=@Html.Raw(Json.Encode(ViewBag.UTypeCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.Company_Id));
+        UserCode=@Html.Raw(Json.Encode(ViewBag.CUserCode));
+        BatchProcessingId=@Html.Raw(Json.Encode(ViewBag.BatchProcessingId));
+        FileProcessId=@Html.Raw(Json.Encode(ViewBag.FileProcessId));
+        BP_Guid=@Html.Raw(Json.Encode(ViewBag.BP_Guid));
+        ViewType=@Html.Raw(Json.Encode(ViewBag.ViewType));
+        AutomateMasterData.defaults.CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        AutomateMasterData.defaults.UserCode=@Html.Raw(Json.Encode(ViewBag.CUserCode));
+        AutomateMasterData.defaults.UserTypeCode=@Html.Raw(Json.Encode(ViewBag.UTypeCode));
+        AutomateMasterData.defaults.RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+        AutomateMasterData.defaults.CompanyId=@Html.Raw(Json.Encode(ViewBag.Company_Id));
+        AutomateMasterData.defaults.BatchProcessingId=@Html.Raw(Json.Encode(ViewBag.BatchProcessingId));
+        AutomateMasterData.defaults.BP_Guid=@Html.Raw(Json.Encode(ViewBag.BP_Guid));
+        AutomateMasterData.defaults.ViewType=@Html.Raw(Json.Encode(ViewBag.ViewType));
+        AutomateMasterData.defaults.FileProcessId=@Html.Raw(Json.Encode(ViewBag.FileProcessId));
+        AutomateMasterData.Init();
+        //$("#dateRange").monthpicker();
+    });
+    $(document).on('click','#chkAllDocType',function(){
+        debugger;
+        currentTabId =$(this).parent().parent().parent().attr('id');
+        $("#"+currentTabId+" input[type=checkbox]").prop('checked',($(this).text() == 'Select All' ? true: false));
+        var check = $(this).text() == 'Select All' ? true: false;
+        if(check){
+            $("#"+currentTabId +" #chkAllDocType").text('UnSelect All');
+        }
+        else{
+            $("#"+currentTabId +" #chkAllDocType").text('Select All');
+        }
+    });
+    $(document).on('click','#chkAllDepot',function(){
+        debugger;
+        currentTabId =$(this).parent().parent().parent().attr('id');
+        $("#"+currentTabId+" input[type=checkbox]").prop('checked',($(this).text() == 'Select All' ? true: false));
+        var check = $(this).text() == 'Select All' ? true: false;
+        if(check){
+            $("#"+currentTabId +" #chkAllDepot").text('UnSelect All');
+        }
+        else{
+            $("#"+currentTabId +" #chkAllDepot").text('Select All');
+        }
+    });
+</script>

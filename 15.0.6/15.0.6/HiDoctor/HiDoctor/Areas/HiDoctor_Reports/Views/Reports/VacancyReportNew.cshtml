@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "VacancyReportNew";
+    Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr>
+                    <td>Start Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnRegionCode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Region Status
+                    </td>
+                    <td>
+                        <input type="radio" id="rbAll" value="0,1," name="regionStatus" /><label
+                            for="0,1">
+                            All</label>
+                        <input type="radio" id="rbEnabled" value="1," name="regionStatus" checked="checked" />
+                        <label for="1">
+                            Enabled</label>
+                        <input type="radio" id="rbDisabled" value="0," name="regionStatus" />
+                        <label for="0">
+                            Disabled</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnVacancyReportNew();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+        <hr />
+        <div id="divReport">
+        </div>
+        <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 800px; height: 500px; overflow: auto">
+            <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+            <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+            <div id="divHeader" style="height: 100px;">
+            </div>
+            <br />
+            <div style="clear: both">
+            </div>
+            <div id="divModel" style="height: 100px;">
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            fnBindRegionTree("tree");
+            $("#dvTree").show();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        fnBindProductDetails();
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+</script>

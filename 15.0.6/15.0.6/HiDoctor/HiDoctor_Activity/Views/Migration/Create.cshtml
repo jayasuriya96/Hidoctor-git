@@ -1,0 +1,47 @@
+﻿@model HiDoctor_Activity.Models.RegionMigration
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<div id="sub-page-header">
+    <div class="">
+        <div class="grid grid_24">
+            <div id="divPageHeader">
+                <h2>
+                    Region Master And Region Type Master Migration</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="content" class="">
+    <div class="container">
+        <div class="grid grid_24">
+            <div id="dvRegionType">
+                <div style="float: left">
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <input type="button" id="btnRegionType" class="btn small primary" value="Migrate Region Type master"
+                                    onclick="fnRegionTypeMigration()" />
+                            </td>
+                            <td>
+                                <input type="button" id="btnRegion" class="btn small primary" value="Migrate Region Master"
+                                    onclick="fnRegionMasterMigration()" />
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="dvloading" style="display: none">
+                        <img src="../../Content/themes/base/images/hd/loader1.gif" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Scripts/HD/RegionMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+    });
+
+</script>

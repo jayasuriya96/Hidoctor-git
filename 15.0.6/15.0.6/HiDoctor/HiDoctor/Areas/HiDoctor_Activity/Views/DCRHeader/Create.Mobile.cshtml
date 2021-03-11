@@ -1,0 +1,275 @@
+﻿@Scripts.Render("~/bundles/dcrheaderjs")
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+    <span id="dcrheaderloginUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div style="clear: both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>DCR Header
+    </h3>
+</div>
+<div data-role="content" data-theme="b">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <div class="ui-controlgroup-controls">
+        <div data-role="collapsible-set" data-mini="true" data-theme="b">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>DCR Date : <span id="DCR_Date"></span>
+                </h3>
+                <table style="width: 100%">
+                    @*<tr>
+                        <td>
+                            <h5>DCR Date</h5>
+                            <img src="~/Content/images/Mobile/black_delete.png" />
+                        </td>
+                        <td>
+                            <h5><span id="DCR_Date"></span></h5>
+                        </td>
+                    </tr>
+                    *@
+                    <tr>
+                        <td style="width: 85px">
+                            <h5>Category</h5>
+                        </td>
+                        <td>
+                            <select name="" data-mini="true" id="ddlCategory">
+                            </select>
+                            @*
+                            <input type="time" />
+                            <input type="date" name="myDate" />
+                            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" onclick="alert(1)">Delete</a>*@
+                        </td>
+                    </tr>
+                    <tr id="trCP">
+                        <td>
+                            <h5>CP Name</h5>
+                        </td>
+                        <td>
+                            <select name="" data-mini="true" id="drpCP" onchange="fnFillCpDetails()">
+                                <option value="0">Select CP
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Work Place</h5>
+                        </td>
+                        <td>@*
+                            <select name="" data-mini="true" id="drpWorkPlace">
+                                <option value="0">Select WorkPlace
+                                </option>
+                            </select>*@
+                            <input name="mode6" id="drpWorkPlace" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>From Time</h5>
+                        </td>
+                        <td>
+                            <div style="width: 100%; float: left;">
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlStartHour">
+                                        <option value="">HH</option>
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlStartMin">
+                                    </select>
+                                </div>
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlStartMode">
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>To Time</h5>
+                        </td>
+                        <td>
+                            <div style="width: 100%; float: left;">
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlEndHour">
+                                        <option value="">HH</option>
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlEndMin">
+                                    </select>
+                                </div>
+                                <div style="width: 30%; float: left;">
+                                    <select name="" data-inline="true" data-mini="true" id="ddlEndMode">
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div data-role="collapsible-set" id="dvActivity-panel" style="display: none" data-mini="true" data-theme="b">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Activity Details
+                </h3>
+                <div id="dvActivity" data-inset="true">
+                </div>
+            </div>
+            <a href="" id="aAddActivity" data-transition="fade" onclick="fnAddNewActivity()">Add Activity
+            </a>
+        </div>
+    </div>
+    <div data-role="collapsible-set" id="dvAccompanist-panel" data-mini="true" data-theme="b">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>Accompanist Details
+            </h3>
+            <div id="dvAccompanist" data-inset="true">
+            </div>
+            <a href="" id="aAddAccomp" data-transition="fade" onclick="fnCreateNewRowInAccompanist()" data-mini="true">Add Accompanist
+            </a>
+        </div>
+    </div>
+    <div data-role="collapsible-set" data-mini="true" data-theme="b">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>SFC Details
+            </h3>
+            <div id="dvSFC" data-inset="true">
+            </div>
+            <a href="" id="aAddSFC" data-transition="fade" onclick="fnCreateNewRowInIntermediate()" data-mini="true">Add SFC
+            </a>
+        </div>
+    </div>
+    <a data-role="button" data-theme="b" id="btnSave" href="#page1" class="ui-btn-left" onclick="fnSubmitHeader()" style="width: 45%">Save
+    </a>&nbsp&nbsp
+        <a data-role="button" data-theme="b" id="btnClear" href="#page1" class="ui-btn-left" onclick="fnClear()" style="width: 45%">Reset
+        </a>
+    <input type="hidden" id="hdnAccompPopUP" />
+</div>
+
+<div data-role="footer"></div>
+
+
+<script type="text/javascript">
+    var dcrDate = "";
+    var dcrStatus = "";
+    var currentRegion = "";
+    var currRegionName = "";
+    var cpNeed = "";
+    var isrcpa="";
+    var source="";
+    var sourceString="";
+    var flag_g="";
+    var actvistyJSON_g="";
+    var category_g ="";
+    var dcrTimeGap_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $.mobile.loading('show');
+        $("#dcrheaderloginUserName").html(loginUserName_g);
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        category_g = @Html.Raw(Json.Encode(ViewBag.category));
+        dcrTimeGap_g = @Html.Raw(Json.Encode(ViewBag.dcrTimeGap));
+        
+
+        //function to include category
+        fnCategory();
+        fnBindTimeBox("ddlStartMin");
+        fnBindTimeBox("ddlEndMin");
+
+        $("#DCR_Date").html(dcrDate.split('-')[2] + '-' + dcrDate.split('-')[1] + '-' + dcrDate.split('-')[0]);
+        // set attendance controls
+        if(flag_g.toUpperCase() == "A")
+        {
+            //$('#prog-bar').css('display','none');
+            //$('#prog-bar-att').css('display','');
+            // $('#btnHeaderSubmit').val("Go to Expense");
+            $('#trCP').css('display','none');
+            $('#dvAccompanist-panel').css('display','none');
+            $("#dvActivity-panel").css('display','');
+        }
+        
+        if(flag_g.toUpperCase() == 'A')
+        {
+            //$('#btnHeaderSubmit').val('Go To Expense');
+            // $('#lblActivity').css('display','');
+        }
+
+       
+        if(flag_g.toUpperCase() == "F")
+        {
+            cpNeed = fnGetPrivilegeValue("CAMPAIGN_PLANNER", "NO");
+            if (cpNeed == "NO") {
+                $("#trCP").css('display','none');
+                //$("#CP_No").attr('disabled', 'disabled');
+                //$("#divShowCP").css('display','none');
+            }
+            else {
+                if (cpNeed == "YES") {
+                    $("#trCP").css('display','');
+                    //$("#CP_No").blur(function () { fnFillCpDetails(); });
+                }
+                if (cpNeed == "OPTIONAL") {
+                    $("#trCP").css('display','');
+                    // $("#CP_No").blur(function () { fnFillCpDetails(); });
+                    //$("#CP_No").blur(function () { return fnCheckRemarksSpecialChar(event) });
+                }
+            }
+        }
+
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        sourceString = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        source=sourceString.split('_')[0];
+        var region = "";
+        region=@Html.Raw(Json.Encode(ViewBag.regionCode));
+        currentRegion = region.split(',')[0];
+        currRegionName = region.split(',')[1];
+
+        // in page load the work place should be current region name, except in the case of drafted data.
+        $("#drpWorkPlace").val(currRegionName);
+        //$("#txtWorkPlace").blur(function() { return fnCheckRemarksSpecialChar(this) });
+
+        $("#ddlCategory").val('0');
+
+        $("#ddlCategory").change(function () { fnCategorySelected(); });
+
+        fnSetHeaderPrivileges();
+        GetHeaderDetails();
+        //$('#txtMatching').keyup(function(e) {
+        //if (e.which == 13) {  // detect the enter key
+        //    $('#btnGo').click(); // fire a sample click,  you can do anything
+        //}
+    });
+     
+</script>

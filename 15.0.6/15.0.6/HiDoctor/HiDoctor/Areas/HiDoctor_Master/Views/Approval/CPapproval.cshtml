@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "CPapproval";
+  Layout = null;
+}
+<style>
+    #tblCPApproval {
+        border: 1px solid #76787A;
+        background-color: darkgray;
+        font-size: 16px;
+        font-weight: 100;
+    }
+
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: rgb(150, 150, 246) !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+
+    .boldText {
+        font-weight: bold;
+    }
+
+    #dvTPHistorySub thead tr th {
+        background-color: #428bca;
+        color: #fff;
+        border-right: 1px solid #fff;
+    }
+
+    .col-lg-12 {
+        padding-bottom: 4px !important;
+    }
+
+    .col-lg-12, .col-lg-10, .col-lg-9, .col-lg-3 {
+        padding-left: 0px !important;
+    }
+</style>
+
+<div>
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div id="dvTree" class="col-lg-4 table-responsive" class="treebg">
+        <div id="ddlmode" class="col-lg-12">
+            <table id="tblCPApproval" class="table table-bordered">
+                <tr>
+                    <td>
+                        <span style="float: right">Status</span>
+                    </td>
+                    <td>
+                        <select id="ddlstatus">
+                            <option value="E">-Select Mode-</option>
+                            <option value="2">Applied</option>
+                            <option value="1">Approved</option>
+                            <option value="0">Unapproved</option>
+                            <option value="A">ALL</option>
+                        </select>
+                        <input type="hidden" id="hdnRegionCode" />
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="tree" style="height: 530px;" class="col-lg-12">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+    <div id="dvdata" class="col-lg-8 table-responsive">
+        <div id="lbllable" class="col-lg-12">
+            <lable id="lblmessage" style="font-size: 15px; color: red; text-align: center"></lable>
+        </div>
+        <div id="divHeader" class="col-lg-12">
+        </div>
+        <div id="button" class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                        <button id="btnApprove" style="display: none" type="button" class="btn btn-primary" onclick="fnCPApprove(1);">Approve</button>
+                    </td>
+                    <td>
+                        <button id="btnUnapprove" style="display: none; margin-left: 3%" type="button" class="btn btn-primary" onclick="fnCPApprove(0);">Unapprove</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvCpHistory">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white" onclick="$('#dvCpHistory').overlay().close();;">
+            <img src="~/Images/close.png" />
+        </span>
+        <div class="details" style="overflow: auto">
+            <div style="font-size: 20px">
+                CP History
+            </div>
+            <hr />
+            <div id="dvCphistorydetails" style="width: 98%; height: 420px">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+            <img src="~/Images/close.png" />
+        </span>
+        <h2 id="popheader" class="popheader"></h2>
+        <div id="divModel" style="height: 500px; overflow: auto">
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            fnBindRegionTree("tree");
+            $("#dvOverlay").overlay().load();
+            $("#dvCpHistory").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $(document).ajaxStop($.unblockUI);
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreePostInit() {
+        //get the all users from tree
+        var regionCodes = "";
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "'" + node.data.key + "',";
+        });
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Master/Approval/GetAppliedCPRegions',
+            data: "RegionCodes=" + regionCodes + "",
+            success: function (jsData) {
+                var data = eval('(' + jsData + ')');
+                $("#tree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(data, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                });
+            }
+        });
+
+    }
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-8')
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-8')
+
+    }
+
+    function fnRegionTreeActivate(node) {
+        var selectedStatus = $("#ddlstatus option:selected").val();
+        $('#btnApprove').hide();
+        $('#btnUnapprove').hide();
+        if (selectedStatus == "E") {
+            fnMsgAlert('info', 'Info', 'Please select cp status.');
+            isResult = false;
+            return false;
+        }
+        $('#hdnRegionCode').val(node.data.key);
+        fnCPHeader();
+        $('#lblmessage').html("");
+    }
+</script>

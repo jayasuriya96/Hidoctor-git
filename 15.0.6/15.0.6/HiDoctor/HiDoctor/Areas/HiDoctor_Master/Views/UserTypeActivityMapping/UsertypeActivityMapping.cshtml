@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "UsertypeActivityMapping";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: rgb(150, 150, 246) !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+    .e-grid .e-headercell{
+        padding:15px 21px 0!important;
+        background-color: #066ECD!important;
+        color:#fff!important;
+        border-color: #0561B4!important;
+    }
+    .e-toolbar .e-toolbar-items{
+        /*background:#4d90fe!important;*/
+    }
+</style>
+
+<div style="font-size:13px;">
+    <div class="row">
+        <div class="col-sm-4 p-0">
+            <div class="card">
+                <div class="card-header">User Designation</div>
+                <div class="card-body p-0">
+                    <div id="UserTypetree" style="height: 425px;" class="shadow-sm">
+                        <input type="hidden" id="hdnUserTypeCode" />
+                        <input type="hidden" id="ActivityTypeCode" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">Activity</div>
+                <div class="card-body form-row">
+                    <div class="col-sm-6" style="height:385px;overflow:auto;">
+                        <table class="table table-bordered">
+                            <thead class="bg-info text-white">
+                                <tr>
+                                    <th style="text-align:center;"><p class="m-0">Select All</p><input type="checkbox" class="selectAll"/></th>
+                                    <th>Activity Name</th>
+                                    <th>SFC Not Mandatory</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lstActivity">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3" style="box-shadow: 0 0 10px rgba(0,0,0,.18);">
+                            <div class="form-group row">
+                                <label for="txtFromDate" class="col-sm-4 col-form-label">Start Date</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm datepicker" id="txtFromDate">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtToDate" class="col-sm-4 col-form-label">End Date</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm datepicker" id="txtToDate">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <button type="button" id="btnSave" class="btn btn-primary btn-sm" onclick="fnSave()">Save</button>
+                                    <button type="button" id="btnUpdate" class="btn btn-primary btn-sm" style="display: none;" onclick="fnUpdate()">Update</button>
+                                    <button type="button" id="btnCancel" class="btn btn-primary btn-sm" style="display: none;" onclick="fnCancel()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div id="dvTable" class="row mt-3"></div>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ActivityMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+@*<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/Bootstrap/bootstrap.js"></script>*@
+<script>
+    var curUserTypeCode_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+            curUserTypeCode_g = @Html.Raw(Json.Encode(ViewBag.UserTypeCode));
+            fnBindUserTypeTree("UserTypetree");
+            fnActivityTree("Activitytree");
+            fnfillMappingGrid();
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $("#divPageHeader").html('User Type Activity Mapping');
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    $(".selectAll").click(function(){
+        debugger;
+        $(this).parent().parent().parent().parent().find('tr td:nth-child(1) input[type=checkbox]').attr('checked',$(this).prop('checked'));
+    });
+
+    function fnUserTypeTreePostInit(node){
+    }
+    function  fnActivityTreePostInit(node){}
+
+
+</script>

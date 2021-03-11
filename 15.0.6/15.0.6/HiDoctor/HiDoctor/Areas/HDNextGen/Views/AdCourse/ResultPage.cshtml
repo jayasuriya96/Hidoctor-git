@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "ResultPage";
+   // Layout = "~/Views/Shared/_HeaderLayout.cshtml";
+}
+<style>
+    .sub-wrapper {
+        display: none;
+    }
+</style>
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AssetUpload/fonts/fonts.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css" rel="stylesheet" />
+<div class="wrapper">
+    <div id="dvViewCourse" class="col-md-12">
+        <div class="col-lg-12 clsPaddingNone clearfix" id="resultPageHeader">
+            <div id="dvCourseName" class="dvCourseName"></div>
+            <div class="clearfix"></div>
+            <div class="dvCourseSections">
+                <div id="dvReportUserName"></div>
+                <div id="dvExamDate" style="padding-top: 10px;"></div>
+            </div>
+        </div>
+        <div class="dvCourseSectionTable">
+            <div class="table-responsive" id="dvViewHeader">
+            </div>
+        </div>
+        <div class="dvCourseSectionTable" id="dvCourseDetails">
+            <p class="col-md-7">Score</p>
+            <p class="col-md-5" id="pScore">: Loading...</p>
+
+            <p class="col-md-7">No of Questions</p>
+            <p class="col-md-5" id="pNoQuestions">: Loading...</p>
+
+            <p class="col-md-7">No of Questions attended</p>
+            <p class="col-md-5" id="pNoQuestionsAttended">: Loading...</p>
+
+            <p class="col-md-7">Total correctly answered questions</p>
+            <p class="col-md-5" id="pTotalCorrect">: Loading...</p>
+
+            <p class="col-md-7">Result</p>
+            <p class="col-md-5" id="pResult">: Loading...</p>
+
+            <p class="col-md-3 action-buttons" style="text-align: center;">
+                <input class="a-btn col-md-12" type="button" value="Retake Test" style="display: none;" id="retake-test" />
+                <input class="a-btn col-md-12" type="button" value="Print Certificate" style="display: none;" id="printCertificate" />
+                <input type="button" class="a-btn col-md-12" value="Back" id="go-back" />
+                <input type="button" class="a-btn col-md-12" value="Done" id="go-home" />
+            </p>
+        </div>
+    </div>
+</div>
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/UserAdCourseDetails.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdvancedCourse.css" rel="stylesheet" />
+
+@*<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>*@
+<script type="text/javascript" src="../../Areas/HDNextGen//Scripts/AdCourse/AdCourseServices.js"></script>
+@*<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/RxBook/rxBookInit.js"></script>*@
+<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/AdCourse/ResultPage.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var userId = @ViewBag.userId;
+        var companyId = @ViewBag.companyId;
+        var examId = @ViewBag.examId;
+        var publishId = @ViewBag.publishId;
+        var bRetakeTest = @ViewBag.canRetake;
+        var courseId = @Html.Raw(Json.Encode(ViewBag.courseId));
+        var sectionId = @Html.Raw(Json.Encode(ViewBag.sectionId));
+       
+        //rxBookInit.enableCurUserInfo(function (data) {
+        //    fnSetFooter($('body'));
+        //}, false);
+        if(bRetakeTest == 1) {
+            var courseUserAssignmentId = @Html.Raw(Json.Encode(ViewBag.courseUserAssignmentId));
+            var courseUserSectionId = @Html.Raw(Json.Encode(ViewBag.courseUserSectionId));
+
+            $('#go-home').bind('click', function (e) {
+                $('#dvAjaxLoad').show();
+                var courseDetails = courseId + "^" + publishId + "^" + sectionId;             
+                $("#main").load("HDNextGen/AdCourse/SectionAttempts/" + courseDetails+"",function(e){
+                    var defaults = { courseId: courseId, publishId: publishId, userId: userId, sectionId: sectionId };
+                    $.extend(sectionAttempts.defaults, defaults);
+                    sectionAttempts.init();
+                    $('#dvAjaxLoad').hide();
+                });
+                
+                return false;
+            });
+            $('#go-back').bind('click', function (e) {     
+                $('#dvAjaxLoad').show();           
+                var SectionAttemptsdetails = courseId + "^" + publishId + "^" + sectionId;            
+                $("#main").load("HDNextGen/AdCourse/SectionAttempts/" + SectionAttemptsdetails +"",function(e){
+                    var defaults = { courseId: courseId, publishId: publishId, userId: userId, sectionId: sectionId };
+                    $.extend(sectionAttempts.defaults, defaults);
+                    sectionAttempts.init();
+                    $('#dvAjaxLoad').hide();
+                });
+                return false;
+            });
+               
+
+            bRetakeTest = true;
+            var defaults = { userId: userId, companyId: companyId, examId: examId, publishId: publishId,
+                sectionId: sectionId, courseId: courseId, courseUserAssignmentId: courseUserAssignmentId,
+                courseUserSectionId: courseUserSectionId, bRetakeTest: bRetakeTest};
+        } else {               
+            bRetakeTest = false;
+            var defaults = { userId: userId, companyId: companyId, examId: examId, publishId: publishId,
+                bRetakeTest: bRetakeTest };
+
+            $('#go-home').bind('click', function (e) {
+                var SectionAttemptsdetails = courseId + "^" + publishId + "^" + sectionId;             
+                $("#main").load("HDNextGen/AdCourse/SectionAttempts/" + SectionAttemptsdetails+"",function(e){
+                    var defaults = { courseId: courseId, publishId: publishId, userId: userId, sectionId: sectionId };
+                    $.extend(sectionAttempts.defaults, defaults);
+                    sectionAttempts.init();
+                });
+                return false;
+            });
+            $('#go-back').bind('click', function (e) {
+                //window.location.href = '/AdCourse/SectionAttempts/?pId=@ViewBag.publishId&cId=@ViewBag.courseId&sId=@ViewBag.sectionId';
+                var SectionAttemptsdetails = courseId + "^" + publishId + "^" + sectionId;           
+                $("#main").load("HDNextGen/AdCourse/SectionAttempts/" + SectionAttemptsdetails+"",function(e){
+                    var defaults = { courseId: courseId, publishId: publishId, userId: userId, sectionId: sectionId };
+                    $.extend(sectionAttempts.defaults, defaults);
+                    sectionAttempts.init();
+                });
+                return false;
+            });
+        }
+        $.extend(resultPage.defaults, defaults);
+        resultPage.init();    
+        $('#dvAjaxLoad').hide();
+    });
+</script>

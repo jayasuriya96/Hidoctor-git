@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "NoticeauthorMovement";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">
+    .dvDisableUser {
+        padding: 2px;
+    }
+
+        .dvDisableUser:hover {
+            background-color: #F3F3F3;
+            border: 1px solid #d3d3d3;
+            cursor: pointer;
+        }
+
+    .selectNode {
+        background-color: #3169C6 !important;
+        color: white !important;
+    }
+
+    .lblMessage {
+        font-weight: bold;
+    }
+
+    #dvUserTree {
+        height: 450px;
+        overflow: auto;
+    }
+
+    .clsTree {
+        min-height: 530px;
+        height: auto;
+        margin: 0 -1px 0 0;
+        border-right: 1px solid #b6b6b6 !important;
+        background-color: #efefef;
+        padding-right: 0px !important;
+        padding-left: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-3">
+        <div class="lblMessage">Inactive Users(With active notice only)</div>
+        <br />
+        <div id="dvTree" style="float: left; border: 2px solid #d3d3d3;">
+            <div id="disabledUserTree" style="float: left; height: 530px;overflow: scroll">
+            </div>
+        </div>
+    </div>    
+    <div class="col-lg-5 clsTree">
+        <div id="Usertree">
+        </div>
+    </div>
+</div>
+<div style="clear:both;"></div>
+<br />
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvActiveUser" style="display: none;">
+        <div class="lblMessage">Active Notices</div>
+        <div id="dvNotice"></div>
+        <div>
+            <input type='button' value='Submit' onclick='fnSubmitNoticeauthorcontent();' class='btn btn-primary' />
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/NoticeBoard.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var AsignUserCode = "";
+    
+    $(document).ready(function () {
+        fnGetInactiveUserforActiveNotice();
+        $('#dvActiveUser').hide();
+        currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        fnTreePosiition("Usertree");
+        fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");  
+        $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+        $('#txtSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {                       
+                fnSearchUsers();
+                return false;
+            }
+        });
+        $('#dvAjaxLoad').hide()   
+ 
+    });
+
+    function fnUserTreePostInit() {
+    }
+
+</script>

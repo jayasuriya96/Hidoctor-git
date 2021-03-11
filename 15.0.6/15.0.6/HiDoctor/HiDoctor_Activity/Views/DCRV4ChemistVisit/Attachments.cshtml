@@ -1,0 +1,138 @@
+﻿<style type="text/css">   
+ #dZUpload_Cv {
+        max-height: 300px !important;
+        overflow-y: scroll !important;
+    }
+
+    .dz-image {
+        display: none;
+    }
+
+    #dZUpload_Cv {
+        background-color: #e4ecf3;
+        width:100%;
+    }
+
+
+</style>   
+
+         <center class="OTC/PharmaBlock chemistDay">
+                       <div class="chemistheader" style="width:100%;" onclick="fnTableShowHide('div_Attachments_Cv','spnAttachments_Cv')">
+                <div class="collapse" id="spnAttachments_Cv" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                <div style="float:left">Attachments</div> 
+                </div> 
+                 <div class="helpIconmargin">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','INPUT')" />
+                     </div>
+            </div>
+                        <div class="Upload_box_Cv" style="padding: 1px;">
+                            <div id='div_Attachments_Cv'>
+                                 <div id="dZUpload_Cv" class="dropzone">
+                                    
+                                
+                            </div>
+</div>
+                               
+                   
+                </div>
+        
+            </center>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistAttachments.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script>
+    var AttachmentJSON = new Array();
+    $(document).ready(function () {
+        debugger;
+        try {
+           
+        }
+        catch (ex) {
+        }
+
+
+        Dropzone.autoDiscover = false;
+        DropZone = $("#dZUpload_Cv").dropzone({
+            method: "POST",
+            paramName: "files", // The name that will be used to transfer the file
+            maxFilesize: 3, // MB
+            //acceptedFiles: ".doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .jpg, .jpeg, .bmp, .png, .gif, .mp4, .zip",
+            acceptedFiles: ".png,.jpeg,.jpg,.gif,.tiff,.bmp,.pdf,.doc,.docx,.xls,.xlsx",
+           url: "DCRV4DoctorVisit/InserDCRDoctorVisitAttachment?dcr_Date=" + dcrDate,
+            success: function (response) {
+                if (response != undefined)
+                    if (response.xhr.response != '') {
+                        file_Com_count++;
+                        var DoctorAttArray = {};
+                        DoctorAttArray.Blob_Url = response.xhr.response.split('^')[0];
+                        var Uploaded_File_Name = response.xhr.response.split('^')[1].replace(/[^a-zA-Z0-9. ]/g, "");
+                        var index = Uploaded_File_Name.lastIndexOf(".");
+                        DoctorAttArray.Uploaded_File_Name = Uploaded_File_Name.substring(0, index);
+                        DoctorAttArray.Status = '1';
+                        DoctorAttJSONArray.push(DoctorAttArray);
+                        $("#spFileUploadCount").text('(' + file_Com_count + '/' + file_total_count + ')');
+                    }
+            },
+            maxFiles: 5,
+            addRemoveLinks: true,
+            dictFileTooBig: "File is too big ({{filesize}}MB). Allowed max filesize: {{maxFilesize}}MB.",
+            dictMaxFilesExceeded: "Sorry, You can't upload more than 5 files.",
+            dictInvalidFileType: "Please Upload following file format only.png,.jpeg,.jpg,.gif,.tiff,.bmp,.pdf,.doc,.docx,.xls,.xlsx",
+            error: function (file, response) {
+                file_total_count--;
+                fnMsgAlert('info', 'Attachments', response);
+            },
+            init: function () {
+                debugger;
+                var self = this;
+                // config
+                // self.options.addRemoveLinks = true;
+                //self.options.dictRemoveFile = "Delete";
+                //New file added
+                self.on("addedfile", function (file) {
+
+                    file_total_count++;
+                    file_Uploading_Status = "YES";
+                    $("#spFileUpload").show();
+                    $("#spFileUploadCount").text('(' + file_Com_count + '/' + file_total_count + ')');
+                    console.log('new file added ', file);
+                });
+                // Send file starts
+                self.on("sending", function (file) {
+                    debugger;
+                    console.log('upload started', file);
+                    $('.meter').show();
+                });
+
+                // File upload Progress
+                self.on("totaluploadprogress", function (progress) {
+                    debugger;
+                    console.log("progress ", progress);
+                    $('.roller').width(progress + '%');
+                });
+
+                self.on("queuecomplete", function (progress) {
+                    debugger;
+                    //file_Com_count=0;
+                    file_Uploading_Status = "NO";
+                    $('.meter').delay(999).slideUp(999);
+                });
+                self.on("removedfile", function (file) {
+                    debugger;
+                    file_total_count--;
+                    file_Com_count--;
+                    if (file_total_count < 0)
+                        file_total_count = 0;
+                    if (file_Com_count < 0)
+                        file_Com_count = 0;
+                    for (var i = 0; i < DoctorAttJSONArray.length; i++) {
+                        if (DoctorAttJSONArray[i].Blob_Url == file.xhr.response.split('^')[0]) {
+                            DoctorAttJSONArray.splice(i, 1);
+                        }
+                    }
+                    $("#spFileUploadCount").text('(' + file_Com_count + '/' + file_total_count + ')');
+
+                });
+
+            },
+        });
+    });
+</script>

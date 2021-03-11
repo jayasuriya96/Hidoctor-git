@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "RegionPriceMapping";
+    Layout=null;
+}
+
+<div style="width: 100%;">
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 10%; float: left;">Price Group Name </div>
+        <div style="width: 85%; float: left;">
+            <select id="cboPriceGroup" onchange="fnGetMappedRegions();">
+            </select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 10%; float: left;">Mapping Details </div>
+        <div style="width: 85%; float: left;">
+            <input type="radio" name="rdMap" value="1" checked="checked" onchange="fnShowRegions();" />Map this to all region
+        <input type="radio" name="rdMap" value="2" onchange="fnShowRegions();" />Map this to selective region
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none; " id="dvRegionType">
+        <div style="width: 10%; float: left;">Region Type</div>
+        <div style="width: 90%; float: left;" style="width: 20%;">
+            <select id="cboRegionType" multiple="multiple" style="width: 25%;">
+            </select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px; display: none;" id="dRegClassi">
+        <div style="width: 10%; float: left;">Region Classification</div>
+        <div style="width: 90%; float: left;" style="width: 20%;">
+            <select id="cboRegionClassification" multiple="multiple" style="width: 25%;"></select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none;" id="dvBtnRegions">
+        <div style="width: 85%; padding-left: 10%;">
+            <input type="button" id="btnGetRegion" value="Get Regions" onclick="fnGetRegions();" />
+        </div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none;" id="dvMainRegion">
+        <div style="width: 10%; float: left;">Region Tree</div>
+        <div style="width: 90%; float: left;">
+            <select id="cboRegion" multiple="multiple" style="width: 25%;"></select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 90%; padding-left: 5%;">
+            <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnPriceGroupMap();" />
+            <input type="button" id="btnReset" value="Reset" class="btn small primary" onclick="fnClearMapping();" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PriceGroup.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    //var priceGroupHeaderJson_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetPriceGroup();
+        //  fnBindRegionClassification();
+
+        $("#dvAjaxLoad").hide();
+        //document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('dvData').innerHTML
+    });
+
+
+    function fnGetPriceGroup() {
+      //  var priceGroupHeaderJson_g = "";
+        $.ajax({
+            url: '../HiDoctor_Master/PriceGroup/GetPriceGroupHeader/',
+            type: "POST",
+            data: "A",
+            success: function (jsData) {
+                jsData = eval('(' + jsData + ')');
+                if (jsData.length > 0) {
+                    var cboPriceGroup = $("#cboPriceGroup");
+                    $('option', cboPriceGroup).remove();
+                    cboPriceGroup.append("<option value=0>-Select price group-</option>");
+                    for (var i = 0; i < jsData.length; i++) {
+                        cboPriceGroup.append("<option value='" + jsData[i].Price_Group_Code + "'>" + jsData[i].Price_Group_Name + "</option>");
+                    }
+                    $("#cboPriceGroup").attr('selectedIndex', 0);
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

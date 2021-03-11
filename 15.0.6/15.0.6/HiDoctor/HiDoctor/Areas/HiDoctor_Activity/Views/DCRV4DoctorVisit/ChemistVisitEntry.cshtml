@@ -1,0 +1,51 @@
+﻿
+
+<div id="docnamelable">Doctor Name</div>
+<div id="docnamevalue"></div>
+
+<div id="chemistmodaldiv" style="overflow: scroll; padding: 5px; display: none;"
+    data-options='{"mode":"blank","headerText":"Chemists","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div id="selectedChemistsdiv" style="margin: 3px; border: 1px solid #aaa">
+        <ul id="slectedchemistslist" data-role="listview" data-mini="true" data-split-icon="Delete" data-theme="b" data-split-theme="b" data-split-icon-postion="left" data-split-icon="Dlete" data-inset="true">
+        </ul>
+        <input type="button" value="Done" onclick="fnAddChemists()" />
+    </div>
+
+    <ul id="chemistmodal" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search chemists...">
+    </ul>
+</div>
+<div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-mini="true" data-inset="false" style="margin: 3px; padding: 3px;">
+    <div data-role="collapsible" data-collapsed="false" data-mini="true" data-inset="false">
+        <h3>Chemist</h3>
+       <div style="padding-top: 5px; padding-bottom: 5px; margin-top: 15px"><a href="#" onclick="showChemistSimpleDialog();">Add Chemist</a> </div>
+
+        <div id="chemistlist" class="ui-collapsible-content ui-body-d ui-corner-bottom" style="margin: 0px; padding: 0px; border: 0px solid" aria-hidden="true">
+        </div>
+        <div style="padding-top: 5px;"><a href="#" onclick="fnAddChemistRow();">Add Flexi Chemist</a> </div>
+    </div>
+</div>
+<div>
+<input type="button" data-theme="b" value="Save&Back" onclick="fnSaveandBack()" />
+<input type="button" data-theme="d" value="Save&Home" onclick="fnSaveandHome()" />
+</div>
+
+@Scripts.Render("~/bundles/mDCRChemistEntryjs");
+
+<script>
+    $(document).ready(function () {
+        try {
+            var docName = @Html.Raw(Json.Encode(ViewBag.DoctorName));
+            $('#docnamevalue').html(docName);
+            $.mobile.loading('show');
+            var rcpalstObj = GetDCRRCPADetailsForADoctor();
+            fnGetRCPASaleProducts();
+            fnGetDCRChemistVisitForADoctor(rcpalstObj);
+        }
+        // fnGetAutoFillData();
+        catch(e)
+        {
+            $.mobile.loading('hide');
+            fnMsgAlert('info', screenTitle, e.message);
+        }
+    });
+</script>

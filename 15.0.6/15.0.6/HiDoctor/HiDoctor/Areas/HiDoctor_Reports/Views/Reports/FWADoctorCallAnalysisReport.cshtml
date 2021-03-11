@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "FWADoctorCallAnalysisReport";
+}
+
+<h2>FWADoctorCallAnalysisReport</h2>
+
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <td colspan="2" align="center">
+        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetFWADoctorCallAnalysis();" />
+    </td>
+</div>
+<div>
+    <div id="divheader"></div>
+    <div id="divDoctorCallanalysisReport"></div>
+</div>
+<div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-right: 5%; width: 800px; height: 600px; overflow: auto">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+    <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">Doctordetails:</h2>
+    <div id="divModel" style="height: 100px;">
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+<iframe id="ifrmPrintCallanalysis" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintcallanalysis" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/FWAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvAjaxLoad").hide();
+            fnGetFWAnanlysisDetails();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+
+</script>
+

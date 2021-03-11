@@ -1,0 +1,271 @@
+﻿@{
+    ViewBag.Title = "SFCAuditReport";
+    Layout=null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .table-striped tbody tr .highlight {
+        background-color: #00ABEC !important;
+        color: #fff !important;
+    }
+
+    .lblText {
+        width: 8%;
+    }
+</style>
+
+
+<div id="dvUserLog">
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-lg-3">
+            <div style="clear: both"></div>
+            <div id="tree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <input type="hidden" id="hdnRegionCode" value="" />
+
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div>
+                    <div class="col-lg-1" style="white-space: nowrap">Start Date</div>
+                    <div class="col-lg-7">
+                        <input type="text" id="txtStartDate" class="datepicker" />
+                    </div>
+                    <div style="float: right">
+                        <img src='../Images/HelpIcon.png' onclick="fnHelp('SFC_AUDIT_REPORT','PAGE_HEADER')" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div>
+                    <div class="col-lg-1" style="white-space: nowrap">End Date</div>
+                    <div class="col-lg-7">
+                        <input type="text" id="txtEndDate" class="datepicker" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="messgae" style="display: none"></div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="button" class="btn btn-primary" value="View" onclick="fnBindSFCAuditReport()" />
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvtitle">
+            <h2 style="margin-top: 15px;" id="h4title"></h2>
+        </div>
+        <div id="dvGrid" class="col-lg-12">
+        </div>
+    </div>
+</div>
+<div></div>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvUserLog').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+
+            fnBindRegionTree("tree"); //To Bind The RegionTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvUserLog").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        //showButtonPanel: true
+    });
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-lg-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+
+    function fnRegionTreePostInit() {
+        $("#dvUserLog").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#tree").slideDown();
+
+        $('#dvTree').addClass('col-lg-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+        $('#dvGrid').removeClass('col-lg-12')
+        $('#dvGrid').addClass('col-lg-9');
+        $('#h4title').css('marginLeft', '26.3%');
+        $('#h4title').css('paddingBottom', '2%');
+        $('#h4title').css('borderBottomWidth', '1px');
+        $('#h4title').css('borderBottomColor', '#dadada');
+        $('#h4title').css('borderBottomStyle', 'solid');
+        //  $('#dvtitle').css('marginTop', '14%')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#tree").slideUp();
+
+        $('#dvTree').removeClass('col-lg-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+        $('#dvGrid').removeClass('col-lg-9')
+        $('#dvGrid').addClass('col-lg-12');
+        $('#h4title').css('marginLeft', '1.2%');
+
+        $('#h4title').css('paddingBottom', '2%');
+        $('#h4title').css('borderBottomWidth', '1px');
+        $('#h4title').css('borderBottomColor', '#dadada');
+        $('#h4title').css('borderBottomStyle', 'solid');
+
+        $('#dvtitle').css('marginTop', '2%')
+
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    function fnRegionTreeActivate(node) {
+        $('#h4title').html(node.data.title + "&nbsp;<img src='../Images/HelpIcon.png' onclick=\"fnHelp('SFC_AUDIT','HEADER')\" />");
+        $('#hdnRegionCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+    }
+
+
+
+    function fnValidation() {
+        var errMsg = '';
+        if (!fnValidateDateFormate($('#txtStartDate'), "Start Date")) {
+            $("#dvUserLog").unblock();
+            return false;
+        }
+
+        if (!fnValidateDateFormate($('#txtEndDate'), "End Date")) {
+            $("#dvUserLog").unblock();
+            return false;
+        }
+        if ($.trim($('#txtStartDate').val()).length == 0) {
+            errMsg += "Please select start date. <br />"
+        }
+        if ($.trim($('#txtEndDate').val()).length == 0) {
+            errMsg += "Please select end date. <br />"
+        }
+        if ($.trim($('#txtEndDate').val()).length > 0 && $.trim($('#txtStartDate').val()).length > 0) {
+            var sdate = $('#txtStartDate').val().split('/');
+            sdate = sdate[1] + '/' + sdate[0] + '/' + sdate[2];
+            var edate = $('#txtEndDate').val().split('/');
+            edate = edate[1] + '/' + edate[0] + '/' + edate[2];
+
+            if (new Date(sdate) > new Date(edate)) {
+                errMsg += "Start date greater than End date. <br />"
+            }
+        }
+        if (errMsg.length > 0) {
+            $("#dvUserLog").unblock();
+            fnMsgAlert('info', 'SFC Audit Report', errMsg);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function fnGetViewType() {
+        if ($('#optViewInScreen').attr('checked') == 'checked') {
+            return $('#optViewInScreen').val();
+        }
+        else {
+            return $('#optExportToExcel').val();
+        }
+    }
+
+
+    function fnBindSFCAuditReport() {
+        $('#dvUserLog').block({
+            message: 'Retriveing data...',
+            css: { border: '1px solid #ddd' }
+        });
+        var viweType = fnGetViewType()
+        if (fnValidation()) {
+            var sdate = $('#txtStartDate').val().split('/');
+            sdate = sdate[1] + '/' + sdate[0] + '/' + sdate[2];
+            var edate = $('#txtEndDate').val().split('/');
+            edate = edate[1] + '/' + edate[0] + '/' + edate[2];
+
+            $.ajax({
+                type: 'POST',
+                url: '../HiDoctor_Reports/ReportsLevelThree/GetSFCAuditReport',
+                data: 'regionCode=' + $('#hdnRegionCode').val() + '&startDate=' + sdate + '&endDate=' + edate + '&viewType=' + viweType,
+                success: function (response) {
+                    $('#dvGrid').html(response);
+                    $("#dvUserLog").unblock();
+                },
+                error: function (e) {
+                    $("#dvUserLog").unblock();
+
+                }
+            });
+        }
+    }
+
+</script>
+

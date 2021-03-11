@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "AppUserMapping";
+    Layout=null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+<style>
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+
+<div id="dvMainUserMapping">
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div id="dvTree" class="col-lg-4 table-responsive" class="treebg">       
+        <div style="clear: both"></div>
+        <div id="dvuserTree" style="height: 530px; margin-top: 1%" class="col-lg-12">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+
+    <div id="dvdata" class="col-lg-8 table-responsive">
+        <div id="lbllable" class="col-lg-12">
+            <lable id="lblmessage" style="font-size: 15px; color: red; text-align: center"></lable>
+        </div>
+     
+        <div style="clear: both"></div>
+        <div id="button" style="margin-left: 50%" class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                        <input type="button" id="btnSave" style="display:none;" value="Save" name="Save" class="btn btn-primary" onclick="fnSaveUserProduct();" />                      
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <input type="hidden" id="hdnUserCode" />
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UserProductMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $.unblockUI();
+            $('#dvMainUserMapping').block({
+                message: '<h3>Loading...</h3>',
+                css: { border: '2px solid #ddd' }
+            });
+            fnGetuserType();
+            fnBindUserTreeWithCheckBoxDoubleClick("dvuserTree");//To bind the User Tree          
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();          
+        }
+        catch (err) {
+            $("#dvMainUserMapping").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClick(node) {
+    }
+
+    function fnUncheck() {
+        $("#dvuserTree").dynatree("getRoot").visit(function (node) {
+            node.select(false);
+            node.data.unselectable = false;
+            node.data.hideCheckbox = false;
+        });
+    }
+
+
+    function fnOpenTree() {
+        $("#dvuserTree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-8')       
+    }
+
+    function fnCloseTree() {
+        $("#dvuserTree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-8')
+      
+    }
+
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnUserCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreePostInit() {
+        $("#dvMainUserMapping").unblock();
+    }
+</script>
+
+

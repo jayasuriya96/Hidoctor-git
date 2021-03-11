@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "SpecialityCategoryWiseVisitAnaly";
+    Layout = "~/Views/Shared/_CubeLayOut.cshtml";
+}
+
+<div>
+    <div>
+        <h2>Speciality CategoryWise VisitAnalysis</h2>
+    </div>
+</div>
+
+<div id="divInput">
+    <table>
+        <tr>
+            <td>Start Date & End Date
+            </td>
+            <td>
+                <input type="text" id="txtFromDate" class='datepicker' />
+                <input type="text" id="txtToDate" class='datepicker' />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="radio" name="mode" value="VISIT" checked="checked" />
+                Visit<br />
+                <input type="radio" name="mode" value="MET" />
+                Met<br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="button" value="Show Cube" onclick="fnOpenCube()" />
+            </td>
+        </tr>
+    </table>
+    <p></p>
+    <p></p>
+</div>
+
+<div id="dvCube">
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(document).ajaxStop($.unblockUI);
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+        $("#dvAjaxLoad").hide();
+    });
+    function fnOpenCube() {
+        $.blockUI();
+        var startDate = "";
+        var endDate = "";
+
+        if ($("#txtFromDate").val() == "") {
+            fnMsgAlert('info', 'Speciality CategoryWise VisitAnalysis', 'Please enter Start date.');
+            $("#txtFromDate").focus();
+            HideModalPopup("dvloading");
+            return false;
+        }
+
+        if ($("#txtToDate").val() == "") {
+            fnMsgAlert('info', 'Speciality CategoryWise VisitAnalysis', 'Please enter End date.');
+            $("#txtToDate").focus();
+            HideModalPopup("dvloading");
+            return false;
+        }
+
+        var FromDateArr = $("#txtFromDate").val().split('/');
+        var ToDateArr = $("#txtToDate").val().split('/');
+        var dt1 = new Date(FromDateArr[2] + "-" + FromDateArr[1] + "-" + FromDateArr[0]);
+        var dt2 = new Date(ToDateArr[2] + "-" + ToDateArr[1] + "-" + ToDateArr[0]);
+
+        if (dt1 > dt2) {
+            fnMsgAlert('info', 'Speciality CategoryWise VisitAnalysis', 'Start date should be less than End date.');
+            HideModalPopup("dvloading");
+            return false;
+        }
+
+        startDate = $("#txtFromDate").val().split('/')[2] + "-" + $("#txtFromDate").val().split('/')[1] + "-" + $("#txtFromDate").val().split('/')[0];
+        endDate = $("#txtToDate").val().split('/')[2] + "-" + $("#txtToDate").val().split('/')[1] + "-" + $("#txtToDate").val().split('/')[0];
+        var mode = $("input[type='radio'][name='mode']:checked").val();
+
+        $.ajax({
+            type: 'POST',
+            url: "GetDoctorCoverageCount",
+            data: 'sd=' + startDate + '&ed=' + endDate + '&mode=' + mode + '',
+            success: function (response) {
+                try{
+                    $('#jqpivot').remove(); // this is used for rebind the data we have to clear the element and need to rebind it
+                    $("#dvCube").html("<div id='jqpivot'></div>")
+
+                    if (mode == "VISIT") {
+                        $('#jqpivot').jqpivot({
+                            data: {
+                                "rows": eval(response) // the data from server side
+                            },
+                            dimensions: {
+                                'UserName': {
+                                    sortIndex: 1
+                                },
+                                'CategoryName': {
+                                    sortIndex: 2
+                                },
+                                'SpecialityName': {
+                                    sortIndex: 3
+                                } //depends on the report
+                            },
+                            columns: [],//depends on the report
+                            rows: ['UserName', 'CategoryName', 'SpecialityName'], //depends on the report
+                            facts: [{
+                                by: 'NoOfVisits',
+                                func: 'sum'
+                            } //depends on the report
+                            ]
+                        });
+                    }
+                    else {
+                        $('#jqpivot').jqpivot({
+                            data: {
+                                "rows": eval(response) // the data from server side
+                            },
+                            dimensions: {
+                                'UserName': {
+                                    sortIndex: 1
+                                },
+                                'CategoryName': {
+                                    sortIndex: 2
+                                },
+                                'SpecialityName': {
+                                    sortIndex: 3
+                                } //depends on the report
+                            },
+                            columns: [],//depends on the report
+                            rows: ['UserName', 'CategoryName', 'SpecialityName'], //depends on the report
+                            facts: [{
+                                by: 'NoOfMet',
+                                func: 'sum'
+                            } //depends on the report
+                            ]
+                        });
+                    }
+                    $.unblockUI()
+                }
+                catch (e) {
+                    $.unblockUI()
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error', 'Error', '');
+                $.unblockUI()
+            }
+        });
+    }
+
+</script>

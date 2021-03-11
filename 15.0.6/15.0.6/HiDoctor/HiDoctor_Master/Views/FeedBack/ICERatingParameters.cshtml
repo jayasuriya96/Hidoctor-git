@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "ICERatingParameters";
+    Layout = null;
+}
+<link href="~/Areas/HiDoctor_Master/Content/InChamberEffectiveness.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<div></div>
+
+<div id="RPMain">
+    <div id="RPsub">
+
+        <form class="form-inline" action="/action_page.php">
+            <div class="form-group col-sm-12">
+                <label id="UserType" class="col-sm-2">Select User Type:</label>
+                <select id="usertype" class="col-sm-6 form-control" onchange="ICEParameters.fnShowInputs(this.value);">
+                    <option value="0">Please select User Type</option>
+                </select> 
+                @*<input type="button" value="Add" class="btn" id="AddQustions" onclick="ICEParameters.fnAppendQuestionInputs();"  />*@          
+            </div>
+            
+        </form>
+       
+    </div>
+</div>
+<div id="CompParaMain">
+    <div id="backgrndmain">
+        <div id="mapMain" class="ICEMainrp">
+
+        </div>
+        <div class="col-xs-12" id="buttonsAS">
+            <div  class="col-xs-6">
+                <div id="Addbtn">
+
+                </div>
+            </div>
+            <div id="submit" class="col-xs-6">
+                <input type="button" id="submitbtn" onclick="ICEParameters.fnSubmit();" value="Submit" class="btn" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="alert">
+    <div class="col-xs-12" id="NOQstns">
+        <p><b style="font-size:15px;">No competencies for the selected User.</b></p>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/ICERatingParameters.js"></script>
+
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+       
+    });
+
+    ICEParameters.Init();
+
+</script>

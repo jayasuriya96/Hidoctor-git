@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "SFCApproval";
+    Layout = null;
+}
+<style>
+    #tblSFCApproval {
+        border: 1px solid #76787A;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: rgb(150, 150, 246) !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+</style>
+
+<div>
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div id="dvTree" class="col-lg-4 table-responsive" class="treebg">
+        <div id="ddlmode" class="col-lg-12">
+            <table id="tblSFCApproval" class="table table-bordered">
+                <tr>
+                    <td>
+                        <span style="float: right">SFC Status</span>
+                    </td>
+                    <td>
+                        <select id="ddlstatus" onchange="fnchange()">
+                            <option value="">-Select Mode-</option>
+                            <option value="2">Applied</option>
+                            <option value="1">Approved</option>
+                            <option value="0">Unapproved</option>
+                            <option value="ALL">ALL</option>
+                        </select>
+                        <input type="hidden" id="hdnRegionCode" />
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="tree" style="height: 530px;" class="col-lg-12">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+    <div id="dvdata" class="col-lg-8 table-responsive">
+        <div id="lbllable" class="col-lg-12">
+            <lable id="lblmessage" style="font-size: 15px; color: red; text-align: center"></lable>
+        </div>
+        <div id="dvTable" class="col-lg-12">
+        </div>
+        <div id="button" class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                        <button id="btnApprove" style="display: none" type="button" class="btn btn-primary" onclick="fnSFCApprove()">Approve</button>
+                        <button id="btnUnapprove" style="display: none; margin-left: 3%" type="button" class="btn btn-primary" onclick="fnSFCUnapprove()">Unapprove</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <span style="font-style:italic;font-size:12px; font-weight:bold;display:none;"
+                              id="spnInfo">
+                            Note : Approving SFC will update 'Minimum and Maximum' count of all Current(Non Expired or Future) SFC with same (Region, From place, To place, Category ) 
+                            combination irrespective of Travel mode. 
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+            <img src="~/Images/close.png" />
+        </span>
+        <h2 id="popheader" class="popheader"></h2>
+        <div id="divModel" style="height: 500px; overflow: auto">
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript">
+    var regionCode="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            regionCode = @Html.Raw(Json.Encode(ViewBag.regionCode)); 
+            fnBindRegionTree("tree");
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $("#dvOverlay").overlay().load();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreeActivate(node) {
+        $('#hdnRegionCode').val(node.data.key);
+        fnSFCApprovalfillGrid();
+        $('#lblmessage').html("");
+    }
+    function fnRegionTreePostInit() {
+        //get the all users from tree
+        var regionCodes = "";
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "'" + node.data.key + "',";
+        });
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Master/Approval/GetTpAppliedUsers',
+            data: "RegionCodes=" + regionCodes + "",
+            success: function (jsData) {
+                var data = eval('(' + jsData + ')');
+                $("#tree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(data, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                    if(node.data.key==regionCode)
+                    {
+                        node.activate= false;                      
+                    }
+                });
+            }
+        });
+
+    }
+    function fnchange() {
+        fnBindRegionTree("tree");
+        function fnRegionTreePostInit() {
+            //get the all users from tree
+            var regionCodes = "";
+            $("#tree").dynatree("getRoot").visit(function (node) {
+                regionCodes += "'" + node.data.key + "',";
+            });
+            regionCodes = regionCodes.slice(0, -1) + "";
+            //get the applied users
+
+            $.ajax({
+                type: "POST",
+                url: '../HiDoctor_Master/Approval/GetTpAppliedUsers',
+                data: "RegionCodes=" + regionCodes + "",
+                success: function (jsData) {
+                    var data = eval('(' + jsData + ')');
+                    $("#tree").dynatree("getRoot").visit(function (node) {
+                        var regions = jsonPath(data, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                        if (regions.length > 0) {
+                            $(node.span).addClass('tree-node-active');
+                        }
+                    });
+                }
+            });
+
+        }
+    }
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-8')
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-8')
+
+    }
+</script>

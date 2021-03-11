@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = null;
+}
+
+<style>
+    .cls_header {
+        text-align: center;
+        font-weight: bold;
+        background-color: #3276b1;
+        color: white;
+    }
+
+    .divleftpanel {
+        background-color: grey;
+        padding: 0px;
+        min-height: 350px;
+    }
+
+    .divMain {
+        background-color: whitesmoke;
+        padding: 0px;
+    }
+
+    .divrightpanel {
+        padding: 0px;
+    }
+
+    .divlable ul.ulmaster li {
+        font-family: 'Times New Roman';
+        font-size: 12px;
+    }
+
+    .divlist ul.ulmaster li {
+        text-decoration: underline;
+        cursor: pointer;
+        font-family: 'Times New Roman';
+        font-size: 12px;
+    }
+
+    .divfont {
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .divalignuser {
+        text-align: center;
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+        font-weight: bold;
+        /*padding-top: 26px;*/
+        background-color: aliceblue;
+    }
+
+    .divtext {
+        font-size: 13px;
+        padding-top: 26px;
+        padding-left: 32px !important;
+        background-color: whitesmoke;
+    }
+
+    .divalignreg {
+        text-align: center;
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+        font-weight: bold;
+        /*padding-top: 26px;*/
+        background-color: aliceblue;
+    }
+
+    .divquit {
+        padding: 0px;
+        text-align: right;
+    }
+
+    .addButtonClass {
+        background-color: #4297d7;
+        color: white;
+        font-weight: bold;
+    }
+
+    .blurbg {
+        position: fixed;
+        background-color: white;
+        opacity: 0.5;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="col-md-12" id="dvUsercreationwizard" style="padding-left: 17%;">
+    <div class="col-md-10 cls_header"> HiDoctor User Creation/Disable/Hierarchy or Attribute Changes
+        @*  <div class="cls_header">
+                HIDOCTOR USER CREATION - DISABLE WIZARD
+            </div>*@
+    </div>
+
+    <div class="col-md-10" style="background-color:whitesmoke;padding:0px;">
+        <div class="col-md-12">
+            <div class="col-md-12 dvheader" style="font-weight: bold;">Pre-requisities for User Creation</div>
+            <div class="col-md-6 divlable">
+                <ul style="list-style: none;" class="ulText">
+                    <li id="usertypemasterl">* Designations (User Types) in User Type Master.</li>
+                    <li id="regionmasterl">* Regions in Region Master.</li>
+                    <li id="projectmasterl">* Project Names with associated Activities.</li>
+                    <li id="divisionmasterl">* Divisions with mapping done to Regions/Products and Users.</li>
+                </ul>
+            </div>
+            <div class="col-md-6 divlist">
+                <ul style="list-style: none;" class="ulmaster">
+                    <li id="usertypemasterL"><a onclick="fnUserTypeMaster()">Link to User Type Master Screen</a></li>
+                    <li id="regionmasterL"><a onclick="fnRegionMaster()">Link to Region Master Screen</a></li>
+                    <li id="projectmasterL"><a onclick="fnProjectMaster()">Link to Project Master Screen</a></li>
+                    <li id="divisionmasterL"><a onclick="fnDivisionMaster()">Link to Division Master Screen</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10 divfont">
+                (if you navigate to any of the links provided above,you will need to manually return to the Wizard.
+                Navigation back to the wizard is not automatic.)
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divtext">
+            *Click here to go to the User Creation
+        </div>
+        <div class="col-md-12 divalignuser">
+            <a onclick="fnCreateNewUser('1')">User Creation</a>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divtext">
+            *Click here to go to the User Disable Selection of the Wizard.
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divalignreg">
+            <a onclick="fnDiableUser()">Resignation</a>
+        </div>
+        <div style="clear: both;"></div>
+        <div hidden id ="hierarchyCmnt"class="col-md-12 divtext">
+            *Click here to go to the User Hierarchy Change of the Wizard.
+        </div>
+        <div hidden id ="hierarchyClr" style="clear: both;"></div>
+        <div hidden id ="hierarchyLink" class="col-md-12 divalignreg">
+            <a onclick="fnUserhierarchy()">Hierarchy/Attribute Changes</a>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12" style="padding: 0px;">
+            <div class="col-md-9" style="clear: both;"></div>
+            <div class="col-md-3 divquit">
+                @*<input type="button" id="btnquit" value="Quit" class="btn btn-primary" onclick="fnQuit()" />*@
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div id="dvquitPopup" title="New User Creation Wizard">Are you sure you wish to quit the Wizard?</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    debugger;
+    var subDomainName = "";
+    var usertypeCode = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+
+        subDomainName = @Html.Raw(Json.Encode(ViewBag.subDomainName));
+        usertypeCode = @Html.Raw(Json.Encode(ViewBag.usertypeCode));
+
+        try {
+            $('#dvUsercreationwizard').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            $('#dvAjaxLoad').hide();
+            $("#dvUsercreationwizard").unblock();
+            
+            if(subDomainName == "crls.hidoctor.me" ){
+                if(usertypeCode == "UTC00000001" || usertypeCode == "UTC00012008"){
+                    $('#hierarchyClr').show();
+                    $('#hierarchyCmnt').show();
+                    $('#hierarchyLink').show();
+                }
+            }
+            else if(subDomainName == "bsv.hidoctor.me"){
+                if( usertypeCode == "UTC00000001" || usertypeCode == "UTC00000015"){
+                    $('#hierarchyClr').show();
+                    $('#hierarchyCmnt').show();
+                    $('#hierarchyLink').show();
+                }
+            }
+            else{
+                $('#hierarchyClr').show();
+                $('#hierarchyCmnt').show();
+                $('#hierarchyLink').show();
+            }
+            $("#dialog-confirm").overlay();
+        }
+        catch (err) {
+            $("#dvUsercreationwizard").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+        fnShowBasedOnMappedMenu();
+    });
+
+
+    function fnShowBasedOnMappedMenu() {
+        debugger;
+        var User_Type_Master='HiDoctor_Master/UserTypeMaster/UserType';
+        var Region_Master='~/ScreensMaster/RegionMaster.aspx';
+        var Project_Master='HiDoctor_Master/ProjectMaster/Create';
+        var Division_Master = 'HiDoctor_Master/Division/Index';
+        var usertypemaster = false;
+        var regionmaster = false;
+        var divisionmaster = false;
+        var projectmaster = false;
+        for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+            if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[i].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == User_Type_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    usertypemaster = true;
+                }
+            }
+        }
+        if (usertypemaster == true) {
+            $('#usertypemasterL').show();
+            $('#usertypemasterl').show();
+        } else {
+            $('#usertypemasterL').hide();
+            $('#usertypemasterl').hide();
+        }
+        for (var j = 0; j < menuContent_g.Tables[0].Rows.length; j++) {
+            if (menuContent_g.Tables[0].Rows[j].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[j].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == Region_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    regionmaster = true;
+                }
+
+            }
+        }
+        if (regionmaster == true) {
+            $('#regionmasterL').show();
+            $('#regionmasterl').show();
+        }
+        else {
+            $('#regionmasterL').hide();
+            $('#regionmasterl').hide();
+        }
+
+
+        for (var k = 0; k < menuContent_g.Tables[0].Rows.length; k++) {
+            if (menuContent_g.Tables[0].Rows[k].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[k].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == Project_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    projectmaster = true;
+                }
+
+            }
+        }
+        if (projectmaster == true) {
+            $('#projectmasterL').show();
+            $('#projectmasterl').show();
+        } else {
+            $('#projectmasterL').hide();
+            $('#projectmasterl').hide();
+        }
+
+        for (var l = 0; l < menuContent_g.Tables[0].Rows.length; l++) {
+            if (menuContent_g.Tables[0].Rows[l].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[l].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == Division_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    divisionmaster = true;
+                }
+            }
+        }
+        if (divisionmaster == true) {
+            $('#divisionmasterL').show();
+            $('#divisionmasterl').show();
+        } else {
+            $('#divisionmasterL').hide();
+            $('#divisionmasterl').hide();
+        }
+        if (usertypemaster == false && regionmaster == false && projectmaster == false && divisionmaster == false)
+        {
+            $('.divfont').hide();
+            $('.dvheader').hide();
+        }
+    }
+</script>
+
+

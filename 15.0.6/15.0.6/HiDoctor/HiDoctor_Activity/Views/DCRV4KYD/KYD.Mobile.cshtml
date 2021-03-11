@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "KYD.Mobile";
+}
+<style>
+    .cls_displaynone {
+        display: none !important;
+    }
+
+    .cls_displayblock {
+        display: inline-block;
+    }
+
+    .cls_Filled {
+        background: url("/Areas/HiDoctor_Activity/Content/images/Mobile/greentick.png");
+        height: 22px;
+        width: 22px;
+        display: inline-block;
+    }
+
+    .cls_Filledleg {
+        background: url("/Areas/HiDoctor_Activity/Content/images/Mobile/greentick.png");
+        height: 22px;
+        width: 22px;
+        float: left;
+        background-repeat: no-repeat;
+    }
+
+
+    .cls_Duplicate {
+        background: url("/Areas/HiDoctor_Activity/Content/images/Mobile/errorIcon.png");
+        height: 22px;
+        width: 22px;
+        display: inline-block;
+        background-repeat: no-repeat;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .cls_Duplicateleg {
+        background: url("/Areas/HiDoctor_Activity/Content/images/Mobile/errorIcon.png");
+        height: 22px;
+        width: 22px;
+        float: left;
+        background-repeat: no-repeat;
+    }
+
+    .cls_padding {
+        padding: 5px;
+    }
+
+    .cls_fontbold {
+        font-weight: bold;
+    }
+
+    .cls_font {
+        font-family: Arial;
+        font-size: 13px;
+    }
+
+    .cls_info {
+        font-family: Arial;
+        font-size: 13px;
+        color: blueviolet;
+    }
+
+    .cls_clearboth {
+        clear: both;
+    }
+
+    .cls_pad15 {
+        padding-left: 15px;
+    }
+
+    .cls_pad32 {
+        padding-left: 32px;
+    }
+
+    .cls_padding {
+        padding-top: 5px;
+    }
+
+    .cls_gap {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    .cls_divider {
+        border-bottom: 1px solid blueviolet;
+    }
+
+    .cls_mandatory {
+        color: red;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    .cls_key {
+        color: green;
+        font-weight: bold;
+        font-size: 17px;
+    }
+</style>
+<div class="clearboth"></div>
+<div data-role="header" data-theme="b">
+    <h3 class="cls_fontbold">Konwn Your Doctor
+    </h3>
+</div>
+<div id="dvKYDList" class="cls_displaynone">
+    <ul data-divider-theme="b" data-inset="true" data-role="listview" id="ulDocList">
+       
+    </ul>
+    <div id="dvInfo" class="cls_info"><span>Please enter at-least <span id="spnperValue"></span> doctor(s) data.</span></div>
+    <div><input type="button" value="Save" id="btn_SaveList" data-theme="b" class="btn" /></div>
+    <div id="dvSkip"><input type="button" value="Skip" data-theme="c" id="btn_Skip"  /></div>
+    <div class="cls_Filledleg cls_font"> </div> <span class="cls_font cls_pad15"> Filled </span>
+    <div class="cls_clearboth"></div>
+    <div class="cls_Duplicateleg cls_font"> <span class="cls_font cls_displayblock cls_pad32 "> Duplicate </span></div>
+</div>
+<div id="dvKYDEntryForm" class="cls_displaynone cls_padding">
+    <div class="cls_font cls_fontbold"><span id="spndocName"></span></div>
+    <div class="cls_font cls_gap"><span id="spnRegionName"></span></div>
+    <div class="cls_font cls_gap"><span id="spnSpec"></span></div>
+    <div class="cls_divider"></div>
+    <div id="dvEmail"  class="cls_displaynone cls_gap">
+    <div class="cls_font " ><span>Email Id</span><span id="spnKeyEmail" class="cls_displaynone cls_key">**</span><span id="spnMandEmail" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font "><input type="text" id="txtEmail" value="" maxlength="50" /></div>
+    </div>
+    <div id="dvRegNo"  class="cls_displaynone cls_gap">
+    <div class="cls_font " ><span>Registration No</span><span id="spnKeyRegNo" class="cls_displaynone cls_key">**</span><span id="spnMandRegNo" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font "><input type="text" id="txtRegNo" value="" maxlength="50" /></div>
+    </div>
+     <div id="dvMobile"  class="cls_displaynone cls_gap">
+    <div class="cls_font "><span>Mobile</span><span id="spnKeyMobile" class="cls_displaynone cls_key">**</span><span id="spnMandMobile" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font "><input type="text" id="txtMobile" value="" maxlength="10" /></div>
+    </div>
+    <div id="dvLocalArea"  class="cls_displaynone cls_gap">
+    <div class="cls_font "><span>Local Area</span><span id="spnMandLocalArea" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font "><input type="text" id="txtLocalArea" value="" maxlength="500" /></div>
+    </div>
+    <div id="dvPinCode"  class="cls_displaynone cls_gap">
+    <div class="cls_font "><span>Pin Code</span><span id="spnMandPinCode" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font "><input type="text" id="txtPinCode" value="" maxlength="6" /></div>
+    </div>
+    <div id="dvMedCoun"  class="cls_displaynone cls_gap">
+    <div class="cls_font "><span>Med. Council</span><span id="spnMedCouncil" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font " ><input type="text" id="txtMedCoun" value="" maxlength="100" /></div>
+    </div>
+    <div id="dvHosName"  class="cls_displaynone cls_gap">
+    <div class="cls_font "><span>Hospital Name</span><span id="spnMandHosName" class="cls_displaynone cls_mandatory">*</span></div>
+    <div class="cls_font " ><input type="text" id="txtHosName" value="" maxlength="100" /></div>
+    </div>
+    <div class="cls_font"><input type="button" id="btn_Done" data-theme="b" value="Done" /></div>
+    <div class="cls_font"><input type="button" id="btn_Back" value="Back" /></div>
+    <div class="legend">
+    <div class="cls_mandatory">*</div> <span class="cls_font">Mandatory Field.</span>
+    <div class="cls_key">**</div> <span class="cls_font">Key Column.</span>
+    </div>
+</div>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/DCRV4/mKYD.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    $(document).ready(function () {
+        $('span.cls_usernamespn').text(loginUserName_g);
+        mKYD.init();
+    });
+
+
+</script>

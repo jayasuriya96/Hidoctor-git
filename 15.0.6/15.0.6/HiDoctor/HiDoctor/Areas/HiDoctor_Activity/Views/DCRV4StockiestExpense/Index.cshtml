@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style>
+    .helpIcon {
+        display: none;
+    }
+
+    .actionLink {
+        padding-right: 8px;
+    }
+</style>
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css" rel="stylesheet" />
+
+
+<div id="div_stockiestexpense">
+    <div id="prog-bar-field">
+        <div class="stepno1  ">
+            <a href="#" id="aDCR" onclick="javascript:fnRedirectToHeader()"></a>
+        </div>
+        <div style="width: 14%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno2 ">
+            <a href="#" onclick="javascript:fnRedirectToDoctorVisit();"><span id="spnDcoCus">  Doctors & Chemist </span> - Visit Details</a>
+        </div>
+        <div style="width: 12.5%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno3 step3Selected">
+            <div style="float:left"><span id="spnStockist">Stockist</span> Visit & Expense Details</div>
+            <div class="helpIcon">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_STOCKEXPENSE','PAGE')" />
+            </div>
+        </div>
+    </div>
+    <div id="prog-bar-att" style='display: none'>
+        <div class="stepno1 ">
+            <a href="#" id="aADCR" onclick="javascript:fnRedirectToHeader()"></a>
+        </div>
+        <div style="width: 28.5%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno2 step2Selected">
+            Expense Details
+        </div>
+    </div>
+    <div id="dvLoading" style="display: none">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+    </div>
+    <div id="divStockiestLoad" style="display: none;">
+        <div style="width: 100%; height: 20px;">
+        </div>
+        <div style="clear: both"></div>
+        <div id="stockiestDetails" style="float:left;width:95%">
+        </div>
+        <div class="helpIcon">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_STOCKEXPENSE','STOCKIEST')" />
+        </div>
+
+        <div style="clear: both"></div>
+        <div id="divAttendanceDetails" style="display:none;">
+            <table id="tblSamples" class=" data display dataTable box">
+                <thead><tr><th>Region Name</th><th>Doctor Name</th><th>Input Name</th><th>Quantity</th><th>Remark</th><th>Action</th><th></th></tr></thead>
+                <tbody id="tblSamplesbody"></tbody>
+            </table>
+        </div>
+        <div id="expenseDetails" style="float:left;width:95%">
+        </div>
+        <div class="helpIcon">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_STOCKEXPENSE','EXPENSE')" />
+        </div>
+
+        <div id="dvMainOldRemarks" style="float: left; width: 100%; padding-top: 20px; color: #000011;display:none;">
+            <div style="width: 10%; float: left;">Old Remarks</div>
+            <div id="dvOldRemarks" style="width: 40%; float: left;">
+
+            </div>
+        </div>
+        <div style="float: left; width: 100%; padding-top: 20px; color: #000011;margin-bottom: 35px;">
+            <div style="width: 10%; float: left;"><span style="font-weight:bold;">Common Remarks</span></div>
+            <div style="width: 40%; float: left;">
+                <textarea id="txtCommonRemarks"></textarea>
+            </div>
+        </div>
+        <br />
+        <p style="text-align: center;">
+            <input type="button" class="btnSave" value="Save as Draft" onclick="$('.btnSave').hide(); fnSubmit(3);" />
+            <input type="button" class="btnSave" value="Save and Submit" onclick="$('.btnSave').hide(); fnSubmit(1);" />
+        </p>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4AttendanceDoctor.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4StokcistExpense12.7.0.1.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRAllowedSpecialCharacters.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+    var intermediatePlace = "";
+    var dailyAllowance = "";
+    var dcrDate = "";
+    var dcrStatus = "";
+    var dcrCode = "";
+    var isrcpa = "";
+    var userCode = "";
+    var entity = "";
+    var travelKm="";
+    var hideExpense_g = true;
+    var cpCode_g = "";
+    var tpCode_g = "";
+    //Addind Accompanist's Stockiest Details
+    var showAccStockiestData_g="";
+    var hideActivitiesLength = new Array;
+    //Added for getting the config value to enable the KYD screen and check duplicate column value
+    var jsonKYDConfig_g="";
+    var jsonKYDDoctorduplicatecheckColumn_g="";
+    var jsonDoctorCount_g="";
+    var cvPrefill_g="";
+    var CompanyCode = "";
+    var User_Code = "";
+    var Region_Code = "";
+    var isThereAnyOneDoctorSavedA="";
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        ShowModalPopup('dvLoading');
+
+        CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        User_Code = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        dcrCode = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.isrcpa));
+        entity= @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+        travelKm = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[5]));
+        activity_g=  @Html.Raw(Json.Encode(ViewBag.activity));
+        cpCode_g = @Html.Raw(Json.Encode(ViewBag.CPCode));
+        tpCode_g = @Html.Raw(Json.Encode(ViewBag.TPCode));
+        cvPrefill_g = @Html.Raw(Json.Encode(ViewBag.PrefillCV));
+        isThereAnyOneDoctorSavedA=@Html.Raw(Json.Encode(ViewBag.isThereAnyOneDoctorSavedA));
+        //Adding Accompanist's Stockiest details
+        showAccStockiestData_g = fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+        fnGetAccompanistRegionCodes();
+        //Used to get Config value for Mapped Designation to Enable KYD Screen
+        fnGetConfigvaluesforKYD();
+        fnPrivilegeValueforHeaderName();
+        //Used to get Doctor Count from Doctor Visit Screen
+        //fnGetDoctorcountforKYD();
+        var activityFullName = fnGetSelectedActivityFullName(flag_g, isrcpa);
+        $('#aDCR').html('DCR- '+ displayDate+ " "+activityFullName);
+        if(flag_g == "A")
+        {
+            debugger;
+            $('#aADCR').html('DCR - '+ displayDate+ " - "+activityFullName);
+            var hideActivities = fnGetPrivilegeValue("DAILY_ALLOWANCE_TO_HIDE_FOR_ACTIVITIES", "");
+            dailyAllowance = fnGetPrivilegeValue("FARE_DAILY_ALLOWANCE", "");
+            if(activity_g != null && activity_g.length >0 && hideActivities.length > 0 &&  dailyAllowance.length>0)
+            {
+                hideActivitiesLength = hideActivities.split(',');
+
+                // var hideActivitiesLength = hideActivities.split(',');
+                var activityLength = activity_g.split(',');
+                var count  = 0;
+                for(var i=0;i<hideActivitiesLength.length;i++)
+                {
+                    if ($.inArray(hideActivitiesLength[i],activityLength) !== -1) {
+                        hideExpense_g =true;
+                        break;
+                    }
+                    //if ($.inArray(activityLength[i],hideActivitiesLength) > -1) {
+                    //    count++;
+                    //}
+
+                    //for(var j=0;j<hideActivitiesLength.length;j++)
+                    //{
+                    //if(activityLength[i].toUpperCase() == hideActivitiesLength[j].toUpperCase())
+                    //{
+                    //    count++;
+                    //}
+                    //}
+                    hideExpense_g =false;
+                }
+
+                //if(count > 0)
+                //{
+                //    hideExpense_g = true;
+                //}
+            }
+            else
+            {
+                hideExpense_g=false;
+            }
+            $('#stockiestDetails').css('display','none');
+           // var doc = fnGetPrivilegeValue("SHOW_SAMPLE_IN_DCR_ATTENDANCE", "NO");
+            //if (doc == 'YES') {
+            //    $('#prog-bar-att').css('display','none');
+            //    $('#prog-bar-field').css('display','');
+            //}
+            //else
+            //{
+            //    $('#prog-bar-att').css('display','');
+            //    $('#prog-bar-field').css('display','none');
+            //}
+            if (isThereAnyOneDoctorSavedA == "true") {
+                $('#prog-bar-att').css('display','none');
+                $('#prog-bar-field').css('display','');
+            }
+            else
+            {
+                $('#prog-bar-att').css('display','');
+                $('#prog-bar-field').css('display','none');
+            }
+
+        }
+        intermediatePlace = fnGetPrivilegeValue("DCR_INTERMEDIATE_PLACES", "");
+        dailyAllowance = fnGetPrivilegeValue("FARE_DAILY_ALLOWANCE", "");
+        if(dcrStatus!="1")
+        {
+            fnGetCommonRemarks();
+        }
+
+        if(flag_g != "A")
+        {
+            GetStockiest();
+        }
+        GetExpense(entity,travelKm);
+        fnPrivilegeValueforHeaderName();
+        var doc = fnGetPrivilegeValue("SHOW_SAMPLE_IN_DCR_ATTENDANCE", "NO");
+        doc='NO';
+        if(doc == "YES" && flag_g=='A')
+            AttendanceDoctor.initialize();
+    });
+
+</script>

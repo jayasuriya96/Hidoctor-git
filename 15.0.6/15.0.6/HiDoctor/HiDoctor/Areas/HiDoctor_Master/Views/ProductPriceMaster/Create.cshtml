@@ -1,0 +1,103 @@
+﻿@model MVCModels.ProductPriceMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+
+<style>
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+
+<div id="dvRules" class="col-lg-12 form-group">
+    <table>
+        <tr>
+            <td>
+                <label class="control-label">Region Type:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="hidden" name="PriceCode" id="hdnPriceCodeval" />
+                <input type="hidden" name="RegionType" id="hdnRegionTypeCodeval" />
+                <select class="selectboxWidth form-control" id="ddlRegionType" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Region:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="hidden" name="Region" id="hdnRegionCodeval" />
+                <select class="selectboxWidth form-control" id="ddlRegion">
+                    <option>-select a Region-</option>
+                </select>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Product:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="hidden" name="Product" id="hdnproductCodeval" />
+                <select class="selectboxWidth form-control" id="ddlProduct" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Price:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="text" id="txtprice" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Effective From:</label>
+            </td>
+            <td>
+                <input type="text" id="txtEffectiveFrom" class='datepicker form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Effective To:</label>
+            </td>
+            <td>
+                <input type="text" id="txtEffectiveTo" class='datepicker form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" name="Save" value="Save" id="btnsave" class="btn btn-primary" />
+                <input type="hidden" name="Update" value="I" id="hdnMode" />
+            </td>
+            <td>
+                <input type="button" name="Cancel" value="Cancel" id="btncancel" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+    <br />
+    @Html.ActionLink("Download ProductPriseMaster details", "PutProductPricemasterIntoExcel",new {})
+    <br />
+    <div id="divProductPrice"></div>
+</div>
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ProductPriceMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetRegionType();
+        fnGetProduct();
+        fnGetProductPricedetails();
+        $("#dvAjaxLoad").hide();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+        });
+    });
+</script>

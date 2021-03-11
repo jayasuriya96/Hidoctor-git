@@ -1,0 +1,25 @@
+﻿
+<div style="clear: both"></div>
+<div id="d1" data-theme="b" data-role="header" data-mini="true" style="width: 100%; height: 35px;">
+    <h3 data-mini="true">Activity Summary Header
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <br />
+    <div style="width: 100%;" id="dvReportActivitySummaryHeader">
+    </div>
+</div>
+<div data-role="footer"></div>
+@Scripts.Render("~/bundles/mobileReportsjs")
+<script>
+    var userCode="";
+    $(document).ready(function () {
+        $('span.cls_usernamespn').text(loginUserName_g);
+        //$.mobile.loading('show');  
+        AjaxGlobalHandler.Initiate();
+        userCode = @Html.Raw(Json.Encode(ViewBag.User_Code));    
+        fnActivitySummaryHeader(userCode);
+    });
+</script>

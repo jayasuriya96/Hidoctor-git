@@ -1,0 +1,29 @@
+﻿@{
+   Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    .downloadicon {
+background:url('../../Content/images/download1.png') no-repeat;
+width:21px;
+height:21px;
+display:block;
+    }
+</style>
+<form id="form1" action="HiDoctor_Master/MyDocument/GetDocumentByDocId" method="post">
+<div class="col-lg-12">
+<div id="dvDocument"></div>
+@Html.Hidden("docid")
+</div>
+</form>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MyDocuments.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetDocumentTypes();
+        $("#dvAjaxLoad").hide();
+    });
+</script>

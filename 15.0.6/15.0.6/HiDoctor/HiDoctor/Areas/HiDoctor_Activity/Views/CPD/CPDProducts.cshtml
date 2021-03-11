@@ -1,0 +1,186 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+
+<style>
+
+
+
+</style>
+<div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+    <div class="form-group col-lg-12 col-md-12 col-xs-12" style="padding: 0px;">
+        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="divprod" style="padding: 0px;"></div>
+    </div>
+    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;margin-bottom: 10px;">
+        <button type="button" class="btn btn-primary" style="background-color: blue;border-color: blue;" id="Back">Back</button>
+    </div>
+</div>
+<script>
+    var subDomainName = '';
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoggedUserCode = '';
+    var LoginUserName = '';
+    var LID = '';
+    var from='';
+    var to='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoggedUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        LoginUserName=@Html.Raw(Json.Encode(ViewBag.LoginUserName));
+        from=@Html.Raw(Json.Encode(ViewBag.FromDate));
+        to=@Html.Raw(Json.Encode(ViewBag.Todate));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        fngetcpdProducts();
+    })
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoggedUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    function fngetcpdProducts()
+    {
+        if (navigator.onLine == true) {
+            var Userstatus = fnuserstatus();
+            debugger
+            if (Userstatus) {
+                $.ajax({
+                    type: 'POST',
+                    data:"CompanyId=" + CompanyId + "&Region_Code="+ LoginRegionCode + '&subDomainName=' + subDomainName + '&User_Code=' + LoggedUserCode + '&Fromdate=' + from + '&Todate=' + to,
+                    url: '../../HiDoctor_Activity/CPD/GetProductDetails',
+                    success: function (response) {
+                        debugger
+                        var content='';
+                        if(response.length>0){
+                            for (var i = 0; i < response.length; i++) {
+                                content += '<div class="Cuspanel panel-default clearfix " id="Pan_' + response[i].Product_Code + '">';
+                                content += '<div class="panel-heading collapsebatchs togglebatch" style="background-color: royalblue;color: white;" id="collap_' + response[i].Product_Code + '" onclick=fntoogleProduct("' + response[i].Product_Code + '") >';
+                                content += '<div class="Cuspanel panel-default clearfix " style="margin-top: 16px;" id="Product_' + response[i].Product_Code + '">';
+                                content += '<label class="control-label col-sm-7 col-xs-6" name="prod" style="font-size: 13px;" id="P_' + response[i].Product_Code + '">' + response[i].Product_Name + '</label>';
+                                content +='</div>';
+                       
+                                content += "<div class='col-md-12 clearfix' id='Pt_" + response[i].Product_Code + "' style='cursor:pointer;padding:0px;color: black;background-color: white;display:none'>";
+                                content += '<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;margin-top:10px;margin-bottom:0px;">';
+                                content += '<div class="form-group col-lg-6 col-md-6 col-xs-6 clearfix" >';
+                                content += '<label>Bright Calls :</label>';
+                                content += '<span id="Boval_'+response[i].Product_Code+'">0</span></div>';
+                                content += '<div class="form-group col-lg-6 col-md-6 col-xs-6 clearfix">';
+                                content += '<label>Shine Calls :</label>';
+                                content += '<span id="Soval_'+response[i].Product_Code+'">0</span></div>';
+                                content +='</div>';
+                                content += '<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;margin-bottom:0px;">';
+                                content += '<div class="form-group col-lg-6 col-md-6 col-xs-6 clearfix" >';
+                                content += '<label>Bright Value :</label>';
+                                content += '<span id="Bval_'+response[i].Product_Code+'">0</span></div>';
+                                content += '<div class="form-group col-lg-6 col-md-6 col-xs-6 clearfix">';
+                                content += '<label>Shine Value :</label>';
+                                content += '<span id="Sval_'+response[i].Product_Code+'">0</span></div>';
+                                content +='</div>';
+                                content += '<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">';
+                                content += '<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" >';
+                                content += '<label>Total Value :</label>';
+                                content += '<span id="Tval_'+response[i].Product_Code+'">0</span></div></div>';
+                                content +='</div>';
+
+                                content +='</div>';
+                                content +='</div>';
+                            }
+                        }
+                        else{
+                            content += '<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">';
+                            content += '<label>No record found</label>';
+                            content += '</div>';
+                        }
+                        $('#divprod').html(content);
+                    }
+                })
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else{
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+    function fntoogleProduct(pid)
+    {
+        if($('#Pt_' +pid).is(":visible") != true)
+        {
+            if (navigator.onLine == true) {
+                debugger
+                $.ajax({
+                    type: 'POST',
+                    data:"CompanyId=" + CompanyId + "&Region_Code="+ LoginRegionCode + '&subDomainName=' + subDomainName + '&User_Code=' + LoggedUserCode + '&Fromdate=' + from + '&Todate=' + to,
+                    url: '../../HiDoctor_Activity/CPD/GetProductwiseDetails',
+                    success: function (response) {
+                        debugger
+                        if (response.length>0) {
+                            debugger
+                            var lstsample = $.grep(response, function (v) {
+                                return v.Product_Code == pid
+                            });
+                            if (lstsample.length == 1) {
+                                $('#Boval_' +pid).html(lstsample[0].Bright_Calls);
+                                $('#Soval_' +pid).html(lstsample[0].Shine_Calls);
+                                $('#Tval_' +pid).html(lstsample[0].Product_Value);
+                                $('#Bval_' +pid).html(lstsample[0].Bright_Outlet);
+                                $('#Sval_' +pid).html(lstsample[0].Shine_Outlet);
+                            }
+                        }
+                        else{
+                            $('#Boval_' +pid).html(0);
+                            $('#Soval_' +pid).html(0);
+                            $('#Tval_' +pid).html(0);
+                            $('#Bval_' +pid).html(0);
+                            $('#Sval_' +pid).html(0);
+                        }
+                    }
+                })
+                $('#Pt_' +pid).show(); 
+            }
+            else{
+                swal("Please connect to the internet", "", "");
+                return false;
+            }
+        }
+        else{
+            $('#Pt_' +pid).hide(); 
+        }
+      
+    }
+    $("#Back").click(function () {
+        if (navigator.onLine == true) {
+            var Userstatus = fnuserstatus();
+            debugger
+            if (Userstatus) {
+                window.location.href = '../CPD/CPDDashboard?Fromdate=' + from + '&Todate=' + to + '&LID=' + LID;
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+        
+    });
+</script>

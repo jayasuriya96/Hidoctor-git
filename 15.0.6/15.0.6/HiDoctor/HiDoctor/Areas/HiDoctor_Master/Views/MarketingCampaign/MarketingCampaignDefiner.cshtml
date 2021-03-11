@@ -1,0 +1,907 @@
+﻿@{
+    ViewBag.Title = "MarketingCampaignDefiner";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link href="~/Areas/HiDoctor_Master/Content/MarketingCampaign.css" rel="stylesheet" />
+<style type="text/css">
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    .dvsalebox {
+        padding-top: 15px;
+        border: 1px solid #d3d3d3;
+    }
+
+    .adjustsalebox {
+    }
+
+    #rdbtnsmain {
+        padding: 15px;
+        margin: 15px;
+        background: rgb(241, 241, 241);
+    }
+</style>
+
+<div id="dvTabs" class="col-lg-12  form-group">
+    <ul>
+        <li id="MCCreate"><a href="#dvDefiner">Marketing Campaign Definer</a></li>
+        <li id="MCEdit"><a href="#dvDefinerSummaryTab">Marketing Campaign Summary</a></li>
+    </ul>
+
+    <div id="dvDefiner" class="col-lg-12  form-group">
+        <div class="col-lg-3 treebg" id="divleft">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+                 onclick="fnOpenTree()" />
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+                 style="cursor: pointer" />
+            <span>Show / Hide Tree</span>
+            <div id="usertree" style="height: 700px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+        </div>
+
+        <div id="dataDiv" class="col-lg-9 form-group" style="display: none;">
+            <div class="col-lg-12  form-group">
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Marketing Campaign Name</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="text" id="txtCampName" class="input-large form-control MC" maxlength="100" placeholder="Campaign Name Here..." />
+                            <input type="hidden" id="hdnRegionCode" />
+                            <input type="hidden" id="hdnCampaignCode" />
+                            <input type="hidden" id="hdnMappedDoctorCount" />
+                            <input type="hidden" id="hdnStatus" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Objective of the Campaign</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <textarea maxLength="500" rows="3" class="form-control MC" oninput="fnObjectiveLength();" id="txtCampPurpose" placeholder="Objective of the Campaign...."></textarea>
+                            <div id="campPurCount"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Start Date</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="text" readonly="readonly" style="cursor:pointer;" id="txtStartDate" class="input-small datepicker form-control MC" placeholder="dd/mm/yyyy" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>End Date</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="text" readonly="readonly" style="cursor:pointer;" id="txtEndDate" class="input-small datepicker form-control MC" placeholder="dd/mm/yyyy" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Track From</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="text" id="txtfrom" style="cursor:pointer;" class="input-small form-control MC" readonly="readonly" placeholder="dd/mm/yyyy" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Track Till</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="text" id="txtMonths" style="cursor:pointer;" class="input-small form-control MC" readonly="readonly" placeholder="dd/mm/yyyy" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Budget of the Campaign</label>
+                        </div>
+                        <div class="col-lg-8 form-group">
+                            <input type="number" min="1" max="999" id="CampBudget" class="input-small form-control MC" onpaste="return false" onkeypress="return fnValidateBudget(this,event);" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Region(s) Participating in Campaign</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <a href="#" onclick="fnShowModalRegionPopup();" style="text-decoration:underline;">Select Regions</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Campaign Driven By</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <select multiple="multiple" id="ddlCategory"></select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Campaign Based On</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="radio" id="rbregion" value="1" name="typeSelection" checked="checked" onclick="fnGetCustomerCountControl(1);" />
+                            <label>
+                                Region
+                            </label>
+                            <input type="radio" id="rbrole" value="2" name="typeSelection" onclick="fnGetCustomerCountControl(2);" />
+                            <label>
+                                Role
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="regsel">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Customer Count Per Territory</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="number" min="1" max="999" id="txtCustCount" class="input-small form-control MC" onpaste="return false" onkeypress="return fnValidateCustomerCount(this,event);" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="rolesel">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Customer Count Per Role</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="number" min="1" max="999" id="txtCustCountrole" class="input-small form-control MC" onpaste="return false" onkeypress="return fnValidateCustomerCount(this,event);" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Customer Selection</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <input type="radio" id="rbFlexi" value="F" name="doctorSelection" />
+                            <label>
+                                Flexi
+                            </label>
+                            <input type="radio" id="rbRigid" value="R" name="doctorSelection" checked="checked" />
+                            <label>
+                                Rigid
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Customer Category</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <select multiple="multiple" id="ddlDocCategory"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding" style="float:left" ;>
+                        <div class="col-lg-3 form-group">
+                            <label>Customer Speciality</label><label class="Mandatory">*</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <select multiple="multiple" id="ddlSpeciality"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Frequency of the Campaign</label>
+                        </div>
+                        <div class="col-lg-8 form-group">
+                            <select id="freqSel" class="form-control MC">
+                                <option value="0">Please select Frequency</option>
+                                <option value="1">Monthly</option>
+                                <option value="2">Quarterly</option>
+                                <option value="3">Half-yearly</option>
+                                <option value="4">Yearly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display:none;" id="survey">
+                    <div class="col-lg-12 form-group remove-left-padding" style="float:left;">
+                        <div class="col-lg-3 form-group">
+                            <label>Survey</label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+
+                            <select class="form-control" id="ddlsurvey"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="surveytakenby">
+                    <div class="col-lg-12 form-group remove-left-padding">
+                        <div class="col-lg-3 form-group">
+                            <label>Survey to be taken by</label>
+                        </div>
+
+                        <div class="col-lg-8 form-group">
+                            <select multiple="multiple" id="ddlsurveyusers"></select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                @*<div class="col-lg-12 form-group">
+                        <input type="button" class="btn btn-primary" value="Save" onclick="fnSaveMarketingCampaignDefiner();" />
+                        <input type="button" class="btn btn-primary" value="Cancel" onclick="fnCancelMarketingCampaignDefiner();" />
+                    </div>*@
+
+                <div id="dvproduct" class="col-lg-12 form-group">
+                </div>
+                <div class="col-lg-12 form-group">
+                    <div class="form-group">
+                        <label class="Mandatory">* Mandatory Fields</label>
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <input type="button" class="btn btn-primary" value="Save" onclick="fnSaveMarketingCampaignDefiner();" />
+                    <input type="button" class="btn btn-primary" value="Cancel" onclick="fnCancelMarketingCampaignDefiner();" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+    </div>
+    <div id="dvDefinerSummaryTab" class="col-lg-12  form-group">
+        <div id="dvTablePrint" style="display: none;" class="col-lg-12 form-group">
+            <a id="lnkExcel" title="Excel Export" style="float: right;">
+                <img src="../Content/DataTable/media/images/xls.png" style='border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer;' />
+            </a>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="rdbtnsmain" style="display:none;">
+            <div class="col-xs-12 clearfix" id="DateInput">
+                <div class="col-xs-1" id="GENDateInput1">
+                    <label for="From Date">Campaign Start Date</label>
+                </div>
+                <div class="col-xs-2"><input type="text" readonly id="fromDate" class="form-control" style="cursor:pointer;" /></div>
+                <div class="col-xs-1" id="GENDateInput2">
+                    <label for="From Date">Campaign End Date</label>
+                </div>
+                <div class="col-xs-2"><input type="text" readonly id="toDate" class="form-control" style="cursor:pointer;" /></div>
+            </div>
+            <div class="col-xs-12 clearfix" id="UserTypechkbx" style="padding:30px;">
+                <b>Select Status Filter Type:</b>   &nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="MCStatFil" id="apprvdchkbox" value="1" checked>&nbsp;<b>Approved</b>
+                <input type="checkbox" name="MCStatFil" id="appldchkbox" value="2">&nbsp;<b>Applied</b>
+                <input type="checkbox" name="MCStatFil" id="unapprvdchkbox" value="0">&nbsp;<b>UnApproved</b>
+            </div>
+            @*<div class="col-xs-12 clearfix" id="RDbtnsSelec">
+                    <b>Select Requisition Type:</b>   &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="type" value="0" onclick="RequisitionSummary.fnGetGrid('0');" checked>&nbsp;<b>All</b>
+                    <input type="radio" name="type" value="1" onclick="RequisitionSummary.fnGetGrid('1');">&nbsp;<b>Marketing Campaign</b>
+                    <input type="radio" name="type" value="2" onclick="RequisitionSummary.fnGetGrid('2');">&nbsp;<b>General</b>
+                </div>*@
+
+            <div class="col-xs-12 clearfix" id="btnSumbitInput">
+                <input type="button" value="GO" style="margin-left:15px;" class="btn" onclick="fnGetMarketingCampaignDetails('A', 'Click');" />
+            </div>
+        </div>
+        <div id="dvDefinerSummary" class="col-lg-12  form-group">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+@*<div class="simple_overlay" id="dvOverLay">
+        <a class="overlayclose" onclick="$('#dvOverLay').overlay().close();$('#main').unblock();fnRemoveClass();"></a>
+
+    </div>*@
+<div class="simple_overlay" id="dvhstryOverLay">
+    <a class="overlayclose" onclick="$('#dvhstryOverLay').overlay().close();$('#main').unblock();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Marketing Campaign Details</span>
+    </div>
+    <div id="hstryoverlay" style="height:450px;overflow-y:scroll;"></div>
+</div>
+
+
+<div id="myModaltree" class="modal fade" role="dialog" style="display:none;overflow:hidden;" data-backdrop="static">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="$('#dvAjaxLoad').hide();">&times;</button>
+                <h4 class="modal-title">Region Tree</h4>
+            </div>
+            <div id="multilinks">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6">
+                    <div class="col-xs-6" style="padding-left:50px;">
+                        <a href="#" onclick="fnSelectAll();" style="text-decoration:underline;font-weight:bold;">Select All</a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="#" onclick="fnUnSelectAll();" style="text-decoration:underline;font-weight:bold;">UnSelect All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="width:100%;height:400px;overflow: auto;">
+
+                <div id="treebody">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#dvAjaxLoad').hide();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Alert Modal -->
+<div id="AcknowledgeConfirmation" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="margin-top:5%;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Marketing Campaign Pause Confirmation</h4>
+            </div>
+            <div class="modal-body clearfix" id="remarks_body">
+                <label for="Reason to Pause Campaign">Reason to Pause Campaign:</label>
+                <textarea id="PauseRemarks" class="form-group" rows="4" style="resize:none;width:100%;" placeholder="Enter Reason Here..." maxlength="500"></textarea>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-12" id="btnsdiv">
+                    <div class="col-xs-6"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5" id="Acknowledgebutton">
+
+                        </div>
+                        <div class="col-xs-1">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Don't Pause</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Campaign Detail View Modal -->
+<div id="dvOverLay" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="height:575px;margin-top:20px;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:60%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Marketing Campaign Details</h4>
+            </div>
+            <div class="modal-body clearfix" id="DetailsBody" style="height:400px;overflow-y:scroll;">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Name</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="MCName" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Description</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="MCDescrp"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Budget Of the Campaign</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="BudgetofCamppop"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Mapped Customer Category</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Category Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCCatCode" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Mapped Customer Speciality</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Speciality Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCSpecCode" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Campaign Driven By</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Driven By Region Type Name(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCRegType" style="text-align:center;"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Participating Region(s)</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Participating Region Name(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCParReg" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="popUpTitle" style="height: 45px;">
+                    <span>Sale & Sample Products/Activity</span>
+                </div>
+                <div id="divMCProdDetail">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Purchase Requisition Modal -->
+<div id="PR_Modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="height:575px;margin-top:20px;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:98%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="$('#RequisitionBody').empty();">&times;</button>
+                <h4 class="modal-title">Create Purchase Requisition</h4>
+            </div>
+            <div class="modal-body clearfix" id="RequisitionBody" style="height:400px;overflow-y:scroll;">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#RequisitionBody').empty();">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnLoadType" />
+@*<script type="text/javascript" src="../../Scripts/HD/common.js"></script>*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/SurveyCoreREST.js"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MarketingCampaign.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+
+    var CustCount='';
+    var cmpCode = '';
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            minDate:0,
+            changeMonth: true,
+            changeYear:true,
+        });
+    });
+    $(function () {
+        $("#txtMonths").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            minDate:0,
+            changeMonth: true,
+            changeYear:true,
+            //showButtonPanel: true
+        });
+    });
+    $(function () {
+        $("#txtfrom").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            minDate:0,
+            changeMonth: true,
+            changeYear:true,
+            //showButtonPanel: true
+        });
+    });
+    $(function () {
+        $("#fromDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            //maxDate:0,
+            changeMonth: true,
+            changeYear:true,
+        });
+    });
+    $(function () {
+        $("#toDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            // maxDate:0,
+            changeMonth: true,
+            changeYear:true,
+            //showButtonPanel: true
+        });
+    });
+
+
+    var mcCurDate = "";
+    var curdate_g = "";
+    var CompanyCode="";
+    var RegionCode="";
+    var UserCode="";
+    var UserTypeCode="";
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+
+
+        try {
+
+            $(document).ajaxStop($.unblockUI);
+            fnBindRegionTree("usertree");
+            mcCurDate=@Html.Raw(Json.Encode(ViewBag.currentDate));
+            curdate_g = @Html.Raw(Json.Encode(ViewBag.CurrentDateMC));
+            curdate_g = @Html.Raw(Json.Encode(ViewBag.CurrentDateMC));
+            CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+            RegionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+            UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+            UserTypeCode = @Html.Raw(Json.Encode(ViewBag.UserTypeCode));
+            CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+            $("#ddlCategory").multiselect().multiselectfilter();
+            $("#ddlDocCategory").multiselect().multiselectfilter();
+            $("#ddlSpeciality").multiselect().multiselectfilter();
+            $("#dvTabs").tabs();
+
+            $("#dvAjaxLoad").hide();
+            fnGetActivities();
+            fnGetMCList();
+            fnGetUserPrivileges();
+            fnGetSurvey();
+            $('#hdnRegionCode').val(RegionCode);
+            $('#hdnLoadType').val('Approval');
+            fnGetMarketingCampaignDetails(RegionCode,'LOAD');
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    var Sel_Region_Code='';
+    function fnRegionTreeActivate(node) {
+        debugger;
+        fnGetCustomerCountControl(1);
+        $('#hdnRegionCode').val(node.data.key);
+        Sel_Region_Code=node.data.key;
+        cmpCode = '';
+        $('#rdbtnsmain').show();
+        fnGetMCList();
+        //fnGetRegionTreeByRegionWithCheckBoxMC(node.data.key,"treebody","");
+        //fnGetAllRegionUsers(node.data.key);
+        fnCancelMarketingCampaignDefiner();
+        fnLoadMarketingCampaignDefiner(node.data.key);
+        //fnGetMarketingCampaignDetails();
+        //fnGetActivities();
+        $('#dataDiv').show();
+        fnCloseTree();
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+
+    function fnOpenTree() {
+        //debugger;
+        $("#usertree").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show();
+        $('#divleft').addClass('col-lg-3');
+        $('#dataDiv').removeClass('col-lg-12');
+        $('#dataDiv').addClass('col-lg-9');
+        $('.dvsalebox').removeClass('col-lg-12');
+        $('.dvsalebox').addClass('col-lg-12');
+        $('#dataDiv').addClass('adjustsalebox');
+    }
+    function fnCloseTree() {
+        // debugger;
+        $("#usertree").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide();
+        $('#divleft').removeClass('col-lg-3');
+        $('#dataDiv').addClass('col-lg-12');
+        $('#dataDiv').removeClass('col-lg-9');
+        $('.dvsalebox').removeClass('col-lg-12');
+        $('.dvsalebox').addClass('col-lg-12');
+        $('#dataDiv').removeClass('adjustsalebox');
+    }
+
+    $("#dvOverLay").overlay().load();
+    $('#dvhstryOverLay').overlay().load();
+
+    function fnRemoveClass() {
+        //debugger;
+        $('#MCDescrp').removeClass('descrpcss');
+    }
+
+    function fnGetCustomerCountControl(value){
+        //debugger;
+        if(value==2){
+            $('#rolesel').show();
+            $('#regsel').hide();
+            $('#txtCustCount').val('');
+        }else{
+            $('#regsel').show();
+            $('#rolesel').hide();
+            $('#txtCustCountrole').val('');
+        }
+    }
+    function fnUnSelectAll(){
+        debugger;
+        $('#treebody').dynatree("getRoot").visit(function (node){
+            debugger;
+            bindFlag=true;
+            node.select(false);
+            node.render(true);
+        });
+    }
+    function fnSelectAll(){
+        debugger;
+        $('#treebody').dynatree("getRoot").visit(function (node){
+            debugger;
+            bindFlag=true;
+            node.select(true);
+            node.render(true);
+        });
+    }
+
+    var bindFlag=false;
+    function fnGetRegionTreeByRegionWithCheckBoxMC(regionCode, treeId, filterId) {
+        // debugger;
+
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/RegionTreeGenerationByRegionCode',
+            data: "regionCode=" + regionCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(jsData);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnRegionTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            // Close menu on click
+                            //if ($(event.target).hasClass("parent")) {
+                            //    alert("You clicked " + node + ",  url=" + node.url);
+                            //}
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onCreate: function (node, span) {
+                            bindRegionContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onSelect: function (select, node) {
+                            // Get a list of all selected nodes, and convert to a key array:
+                            fnRegionTreeSelect(select, node);
+                            //if (select) {
+                            //    node.visit(function (node) {
+                            //        node.select(true);
+                            //    });
+                            //}
+                            //else {
+                            //    node.visit(function (node) {
+                            //        node.select(false);
+                            //    });
+                            //}
+                        },
+                        onDblClick: function (node, event) {
+                            node.select(true);
+                            try {
+                                inEventHandler = true;
+                                node.visit(function (childNode) {
+                                    childNode.select(true);
+                                });
+                            } finally {
+                                inEventHandler = false;
+                            }
+                            // fnAddNode(node);
+                            fnBindRegionTreeWithCheckBox(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnRegionTreePostInit(node);
+                        }
+                    });
+
+                    // vacant user background-color change
+                    $("#" + treeId).dynatree("getRoot").visit(function (node) {
+                        //$(node.span.lastChild).addClass("tip");
+                        if (node.data.title.split('-')[1] == "NOT ASSIGNED" || node.data.title.split('-')[1] == "VACANT") {
+                            $(node.span).addClass('tree-node-vacant');
+                        }
+                    });
+
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").unbind("click");
+                    $("span.childIcon").bind("click", function (e) {
+                        //alert("Edit " + $.ui.dynatree.getNode(e.target));
+                        //fnShowChildNodes(e.target);
+                        e.preventDefault();
+                        fnAddRegionNode(e);
+                        return false;
+                    });
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                //$.unblockUI();
+                $("#dvAjaxLoad").hide();
+                $('#' + treeId).unblock();
+                fnGetAllRegionUsers(Sel_Region_Code);
+                $('#hdnLoadType').val('ED');
+                fnGetMarketingCampaignDetails(Sel_Region_Code,'Click');
+            }
+            //}
+
+        });
+        $("#dvAjaxLoad").hide();
+
+    }
+
+    function fnShowModalRegionPopup(){
+        //   debugger;
+        //$('#treebody').block();
+        //fnGetAllRegionUsers(Sel_Region_Code);
+        $('#myModaltree').modal('show');
+        //if(DocCountRegions!=""){
+
+        //    fnShowChckBoxOnlywithDocCount(DocCountRegions);
+        //}
+    }
+
+    var selKeys = new Array();
+    var SelTitleKeys=new Array();
+    var selKeys_ls = new Array();
+    function fnRegionTreeSelect(select, node) {
+        debugger;
+        bindFlag=true;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        SelTitleKeys=$.map(node.tree.getSelectedNodes(),function(node){
+            return node.data.title;
+        });
+
+        selKeys_ls = selKeys;
+    }
+    function fnObjectiveLength(){
+        var campObject_Lngth=$('#txtCampPurpose').val().length;
+        $('#campPurCount').html(""+campObject_Lngth+"/500");
+    }
+</script>
+
+
+
+
+
+

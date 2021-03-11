@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "PrivilegeMaster";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+
+<style type="text/css">
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    #dvEditPrivilegeMaster a {
+        color: blue !important;
+    }
+
+    #dvprivilegeMaster {
+        height: 450px;
+        overflow: scroll;
+    }
+
+        #dvprivilegeMaster a {
+            color: blue;
+        }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+
+    .litralcheckbox {
+        height: 250px;
+        overflow: auto;
+        /*border: 1px solid #ddd;*/
+    }
+</style>
+
+
+<div class="col-lg-12 form-group" id="dvTabs">
+    <ul class="nav nav-pills">
+        <li><a href="#dvNewPrivilegeMaster">New Privilege Master</a></li>
+        <li><a href="#dvEditPrivilegeMaster">Edit Privilege Master</a></li>
+    </ul>
+    <div id="dvNewPrivilegeMaster">
+        <div id="dataDiv" class="col-lg-9 form-group" style="display: none;">
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <label>Privilege Name</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" id="txtPrivilegeName" class="form-control" />
+                    <input type="hidden" id="hdnPrivilegeCode" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <label>Base Privilege Name</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" id="txtBasePrivilegeName" class="form-control Groupname" />
+                    <input type="hidden" id="hdnBaseprivilegeCode" />
+                    <input type="hidden" id="hdnchkbaseprivilegeCode" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" style="clear: both;">
+                <div class="col-xs-4">
+                    <label>Features</label>
+                </div>
+                <div class="col-xs-4" style="height: 100px; overflow: auto; /*border: 1px solid #ddd; */">
+                    <table id="tblFeature"></table>
+                    <input type="hidden" id="hdnfeatureCode" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" style="clear: both;">
+                <div class="col-xs-4">
+                    <label>Description</label>
+                </div>
+                <div class="col-xs-4">
+                    <textarea style="padding-right: 5px; height: 60px !important;" id="txtDescription" name="Description" class='form-control' rows="5" cols="37"></textarea>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" style="clear: both;">
+                <div class="col-xs-4">
+                    <label>Privilege Value Type</label>
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" value="LOOKUP" id="optLookup" name="rptOptions" onclick="fncheckRadio('1');" />
+                    <label for="optLookup">Lookup</label>
+                    <input type="radio" value="LITERAL" id="optlitral" name="rptOptions" onclick="fncheckRadio('2');" />
+                    <label for="optlitral">Literal</label>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" style="display: none;" id="rdoLookup">
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Lookup Table Name</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="hidden" name="TableCode" id="hdnLookupTable" />
+                        <select class="selectboxWidth input-large" id="ddlLookUpTable" onchange="fnLookup_Tablechange();">
+                            <option value="0">- Select One -</option>
+                            <option value="tbl_SFA_Activity_Master">Activity Master</option>
+                            <option value="tbl_SFA_Division_Master">Division Master</option>
+                            <option value="tbl_SFA_Doctor_Category">Doctor Category Master</option>
+                            <option value="tbl_SFA_Domain_Master">Domain Master</option>
+                            <option value="tbl_SFA_Expense_Type_Master">Expense Type Master</option>
+                            <option value="tbl_SFA_Leave_Type_Master">Leave Type Master</option>
+                            <option value="tbl_SFA_Product_Type_Master">Product Type Master</option>
+                            <option value="tbl_SFA_Region_Type_Master">Region Type Master</option>
+                            <option value="tbl_SFA_Request_Master">Request Master</option>
+                            <option value="tbl_SFA_User_Type_Master">User Type Master</option>
+                            <option value="tbl_SFA_Expense_Entity_Master">Expense Entity Master</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Lookup Column Name</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="hidden" name="ColumnCode" id="hdnLookupColumn" />
+                        <select class="selectboxWidth input-large" id="ddlLookupColumn">
+                            <option value="0">- Select Column -</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" style="display: none;" id="rdoLiteral">
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Literal Value</label>
+                    </div>
+                    <div class="col-xs-4" style="height: 200px; overflow: auto; /*border: 1px solid #ddd; */">
+                        <table id="chkliteral"></table>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="row col-lg-12 form-group clearfix">
+                        <div class="col-xs-4">
+                            <label>if not listed add here</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtlitral" class="form-control" />
+                        </div>
+                        <div class="col-xs-3">
+                            <a href="#" onclick="fnAddlitral();" style="cursor: pointer; text-decoration: underline;">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-9 form-group clearfix">
+                <input type="button" id="btnSave" onclick="fnsavePrivilege();" value="Save" class="btn btn-primary"></input>
+                <input type="hidden" name="Update" value="I" id="hdnMode" />
+                <td style="margin-top: 10px">
+                    <input type="button" name="Cancel" value="Cancel" id="btncancel" onclick="fnClearAllprivilegeMaster();" class="btn btn-primary" />
+                </td>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+    <div id="dvEditPrivilegeMaster" class="col-lg-12 form-group">
+        @Html.ActionLink("Download Privilege Master details", "PutPrivilegeMasterintoExcel")
+            <div class="col-lg-3 form-group" style="float: right">
+                <input type="text" id="txtsearch" />
+                <button type="button" id="btnsearch" onclick="fnsearch();" value="Search" class="btn btn-primary">Search</button>
+            </div>
+        <div id="dvprivilegeMaster" class="table-responsive form-group" style="clear: both;">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PrivilegeMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            $("#dvTabs").tabs();
+            fnGetFeature();
+            fnGetBasePrivilegeName();
+            fnGetLiteralValues();
+            fnGetPrivilegeMaster("");
+            $('#dataDiv').show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>
+

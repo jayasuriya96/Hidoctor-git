@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "UserPerDayReport";
+    Layout = null;
+}
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+
+<link href="../areas/hidoctor_reports/content/reports.css" rel="stylesheet" />
+
+
+    <div id="dvUserPerDayCont">
+    <div class="divcenter" id="dvHeader"></div>
+    <div class="divcenter" id="dvsfcdetails">
+    </div>
+
+
+    <div id="dvAcc" class="divcenter">
+    </div>
+    <div id="dvhopplaces" class="divcenter">
+    </div>
+    <div id="dvOwnDoctors" class="divcenter">
+    </div>
+    <div id="dvAccDoctors" class="divcenter">
+    </div>
+    <div id="dvProducts" class="divcenter">
+    </div>
+        <div id="dvDetailedProductsDetails" class="divcenter"></div>
+    <div id="dvDoctorAcc" class="divcenter">
+    </div>
+    <div id="dvDetailedProduct" class="divcenter">
+    </div>
+    <div id="dvDigitalAssets" class="divcenter">
+    </div>
+    <div id="dvChemist" class="divcenter">
+    </div>
+    <div id="dvPOB" class="divcenter">
+    </div>
+    <div id="dvFollowUps" class="divcenter">
+    </div>
+    <div id="dvAttachments" class="divcenter">
+    </div>
+    <div id="dvRCPA" class="divcenter">
+    </div>
+    <div id="dvStockiest" class="divcenter">
+    </div>
+    <div id="dvAttendance" class="divcenter">
+    </div>
+    <div id="dvLeave" class="divcenter">
+    </div>
+    <div id="dvExpense" class="divcenter">
+    </div>
+    <div id="dvEmpty" class="divcenter">
+    </div>
+    </div>
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/NextGenUserPerDayReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    var Company_Code="";
+    var c_g;
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+            // $("#divuserperday").hide();
+            $('#dvUserPerday').hide();
+
+            var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+
+            var HeaderReponse = "";
+            var DoctorReponse = "";
+
+            var selecteduserCode = $('#hdnUserCode').val();
+            var startDate = "";
+            var activityMode = "";
+
+            // $("#divuserperday").show();
+            startDate = $("#txtFromDate").val().split('/')[2] + "-" + $("#txtFromDate").val().split('/')[1] + "-" + $("#txtFromDate").val().split('/')[0];
+            Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+            var activityflag = "";
+
+            if(userCode==null)
+            {
+                $("#leftNav").show();
+
+                var leftNav = $("#tree");
+                currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.cur_UserCode));
+
+                $('#dvAjaxLoad').hide()
+            }
+            else{ // call from other pages.
+                debugger;
+                currentUserCode_g = userCode;
+                $("#dvTree").hide();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#dvAjaxLoad").hide();
+                $("#divuserperday").hide();
+                var leftNav = $("#tree");
+
+                $('#leftNav').css('display','none');
+
+                $("#divMain").addClass('col-xs-12');
+                var flag = @Html.Raw(Json.Encode(ViewBag.flag));
+                var dcrDate = @Html.Raw(Json.Encode(ViewBag.dcrDate));
+                var userName = @Html.Raw(Json.Encode(ViewBag.userName));
+
+                $("#txtFromDate").val(dcrDate);
+                $('#hdnUserCode').val(userCode);
+                $('#ddlflag').val(flag);
+                $('#hdnUserName').val(userName);
+                $("#udvOverLay").overlay().load();
+                $("#dvDetailedProductOverLay").overlay().load();
+                $('#dvPopupLeave').overlay().load();
+
+                fnUserPerDayreport();
+            }
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        // Pop Modal
+        $("#dvMoreInfoModal").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+
+    });
+
+
+    
+    }
+</script>

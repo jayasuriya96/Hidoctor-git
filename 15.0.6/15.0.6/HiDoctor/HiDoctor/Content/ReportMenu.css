@@ -1,0 +1,187 @@
+﻿body {
+}
+
+#dvRptMenu {
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+    border-top: 1px solid #aaa;
+    font-size: 11px;
+}
+
+#dvSideMenu {
+    width: 24.5%;
+    height: auto;
+    border-right: 1px solid #aaa;
+    min-height: 1000px;
+    float: left;
+    background-color: #f3f3f3;
+}
+
+#dvDesc {
+    width: 75%;
+    height: auto;
+    /*border: 1px solid blue;*/
+    float: right;
+    min-height: 1000px;
+}
+
+#divPageHeader {
+    padding-left: 12px;
+}
+
+#dvSideMenuContent ul {
+    list-style-type: none;
+}
+
+    #dvSideMenuContent ul li {
+        padding: 5px;
+    }
+
+        #dvSideMenuContent ul li:hover {
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+.parentMenu {
+    color: #06C;
+    width: 90%;
+    float: left;
+}
+
+.childCnt {
+    width: 15px;
+    height: 17px;
+    background: #aaa;
+    float: right;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 9px;
+    padding-bottom: 2px;
+}
+
+.descMain {
+    width: 100%;
+    padding-bottom: 20px;
+    clear: both;
+    margin-bottom: 30px;
+}
+
+    .descMain ul {
+        list-style-type: none;
+    }
+
+        .descMain ul li {
+            border-bottom: 1px dotted #d3d3d3;
+            line-height: 4;
+            padding-left: 3px;
+        }
+
+            .descMain ul li:hover {
+                border-bottom: 1px solid #f7c37a;
+                cursor: pointer;
+            }
+
+.childText {
+    color: #06C;
+    float: left;
+}
+
+
+.liLeft {
+    float: left !important;
+    width: 45%;
+    margin-left: 2%;
+}
+
+.liRight {
+    float: right !important;
+    width: 45%;
+    margin-right: 3%;
+}
+
+.descTitle {
+    font-weight: bold;
+    border-bottom: 1px solid #06C;
+    font-size: 12px;
+}
+
+.divdescIcon {
+    width: 16px;
+    height: 100%;
+    min-height: 16px;
+    float: right;
+    margin-top: 3.5%;
+    margin-left: 2%;
+}
+
+.divdescexcel {
+    background-image: url("images/report_menuexcel.jpg");
+}
+
+.divdescprint {
+    background-image: url("images/report_menu_print.png");
+}
+
+.divdescchart {
+    background-image: url("images/report_menu_chart.png");
+}
+
+.divdescuser {
+    background-image: url("images/report_menu_user.png");
+}
+
+.divdescdrildown {
+    background-image: url("images/report_menu_drillDown.png");
+}
+
+.scrollup {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+    display: none;
+    text-indent: -9999px;
+    background: url("images/scrollUp.jpg") no-repeat;
+}
+
+
+@media screen and (min-width:1230px) {
+    #dvRptMenu {
+        font-size: 12px;
+    }
+
+    .descTitle {
+        font-size: 14px;
+    }
+
+    .childCnt {
+        width: 15px;
+        height: 17px;
+        font-size: 11px;
+    }
+
+    .descMain ul li {
+        line-height: 3.5;
+    }
+
+    .divdescIcon {
+        margin-top: 3%;
+    }
+
+    .liLeft {
+        width: 40%;
+        margin-left: 4%;
+    }
+
+    .liRight {
+        width: 40%;
+        margin-right: 5%;
+    }
+}

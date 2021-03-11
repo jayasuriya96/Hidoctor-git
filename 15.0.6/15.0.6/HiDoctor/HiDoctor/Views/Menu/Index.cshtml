@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<link href="~/Content/ReportMenu.css" rel="stylesheet" />
+
+<div id="dvRptMenu">
+    <div id="dvSideMenu">
+        <div id="dvSideMenuContent" style="margin: 5%;"></div>
+    </div>
+
+    <div id="dvDesc">
+        <div id="dvDescContent" style="margin: 2% 3% 3% 3%;"></div>
+    </div>
+    <div style="clear:both;"></div>
+
+    <a href="#" class="scrollup">Scroll</a>
+</div>
+
+<script src="~/Scripts/HD/ReportMenu.js"></script>
+<script type="text/javascript">
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            fnBindReportMenu();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

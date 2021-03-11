@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "CourseSections";
+    Layout = null;
+}
+
+<style>
+    .sub-wrapper {
+        display: none;
+    }
+    #dvCourseSections
+    {
+        font-size:16px;
+    }    
+    #courseSections {
+        background-color:#E9E9E9;
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+    }
+    #courseSections span,#courseSections div, #dvCourseSectionsStatus a {
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+    }     
+    #courseSectionsTable td{
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+    }
+    #courseSectionsTable td span {
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+        font-size:16px;
+    }     
+    #dvCourseSectionsStatus span,#printCertificate a, #dvCourseSections {
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+        font-size:16px;
+    }
+    #courseSectionsTable fa {
+        font-family: FontAwesome !important;
+    }
+</style>
+<link href="../../Areas/HDNextGen/Content/AssetUpload/fonts/fonts.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/UserAdCourseDetails.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseSections.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/GlobalPlayer/GlobalPlayer.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<link href="../../Areas/HDNextGen/Scripts/GlobalPlayer/GlobalPlayer.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/HeaderLayoutCommon.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/bxslider/jquery.bxslider.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+
+<script src="../../Areas/HDNextGen/Content/bxslider/jquery.bxslider.min.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ADCourseServices.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CourseSections.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<div id="courseSections">
+    <div class="dvCourseName">
+        <div class="dvCourseHeader"><span class="bold">Course Name: </span>Loading...</div>
+    </div>
+    <div class="dvCourseSections">
+        Sections
+    </div>
+    <div class="dvCourseSectionTable">
+        <div class="table-responsive">
+            <table id="courseSectionsTable" class="table">
+                <tr>
+                    <th>SNo.</th>
+                    <th>Section Name</th>
+                    <th>No of assets</th>
+                    <th>Pass %</th>
+                    <th style="width: 100px">Test Status</th>
+                    <th>Action</th>
+                    <th>&nbsp;</th>
+                    <th style="text-align: center;">&nbsp;&nbsp;Assets</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="dvCourseSectionsStatus">
+        <span>Test Status: </span>
+        <span id="courseStatus">Loading...</span>
+    </div>
+    <div class="dvCourseSectionsStatus" style="height: 100px;">
+        <span id="courseStatusDone" style="float: right;"><a href="#" onclick="courseSections.redirectToAdCourseLandingPage();" class="a-btn">Done</a></span>
+        <span id="printCertificate" style="float: right;"><a href="#print" class="a-btn">Print Certificate</a></span>
+    </div>
+</div>
+
+
+<script lang="ja" type="text/javascript">
+    var courseId = "@ViewBag.Course_Id"
+    var publishId = "@ViewBag.Publish_Id";
+    clientLogoURL_g = "http://clientlogo.blob.core.windows.net/logo/hdtesta1.kangle.me.jpg";
+    $(document).ready(function () {
+        // $(function () {
+        courseSections.courseId = courseId;
+        courseSections.publishId = publishId;
+
+        $("#printCertificate").hide();
+        courseSections.init(HDNG_gUserId, HDNG_gCompanyId, courseSections.courseId, courseSections.publishId);
+        $('#dvAjaxLoad').hide();
+        debugger;
+    });
+</script>

@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "ProductType";
+    Layout = null;
+}
+<div id="message">
+</div>
+<div class="col-xs-12 clearfix">
+    <div class="col-xs-3">
+        <label>Product Type Name</label>
+    </div>
+    <div class="col-xs-3">
+        <input type="text" id="txtProductTypeName" class="form-control"/>
+        <input type="hidden" id="hdnProductTypeCode" />
+        <input type="hidden" id="hdnMode" value="S" />
+        <input type="hidden" id="hdProductTypeIndex" />
+    </div>
+ </div>
+<div  class="col-xs-12 clearfix" style="    margin-top: 10px;
+    margin-bottom: 10px;
+    left: 14%;">
+    <input type="button" value="Save" class="btn btn-success" onclick="fnInsertProductType()" />
+    <input type="button" value="Reset" class="btn primary" onclick="fnProductTypeClearAll()" />
+</div>
+            
+<div class="separator">
+</div>
+<div id="divProductType">
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetAllProductType();
+        $('#hdProductTypeIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+    });
+   var producttypelst_g = ''
+    function fnGetAllProductType() {
+        $.ajax({
+            type: "POST",
+            url: "ProductMaster/GetAllProductType",
+            data: "A",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                producttypelst_g = result;
+                //var content = "";
+                //content += "<table class='data display' id='tblProductType'>";
+                //content += "<thead><tr><td>Product Type Name</td><td>Status</td><td>Action</td></tr></thead>";
+                //content += "<tbody>";
+                //for (var i = 0; i < result.Tables[0].Rows.length; i++) {
+                //    content += "<tr>";
+                //    content += "<td id='tdProductType_" + i + "'>" + result.Tables[0].Rows[i].Product_Type_Name + "</td>";
+                //    content += "<td>" + result.Tables[0].Rows[i].Status + "<input type='hidden' id='hdnProductType_" + i + "' value='" + result.Tables[0].Rows[i].Product_Type_Code + "' /></td>";
+                //    content += "<td><span style='cursor:pointer;text-decoration:underline' onclick='fnEditProductType(" + i + ")'>Edit</span> | <span style='cursor:pointer;text-decoration:underline'  onclick='fnProductTypeChangeStatus(" + i + ")'>Change status</span></td>";
+                //    content += "</tr>";
+                //}
+                //content += "<tbody>";
+                //content += "</tbody>";
+                //content += "</table>";
+                $("#divProductType").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: result.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: true,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'Product_Type_Name', headerText: 'Product Type Name', width: 200, textAlign: 'center' },
+                            { field: 'Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                            { headerText: 'Edit', width: 200, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#divProductType');
+              //  if ($.fn.dataTable) { $('#tblProductType').dataTable({ "sPaginationType": "full_numbers", "bDestroy": true }); };
+            }
+        });
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnEditProductType(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnEditProductType(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnProductTypeChangeStatus(" + args+ ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnProductTypeChangeStatus(args);
+            })
+        }
+    }
+
+    function fnEditProductType(rowIndex) {
+        $("#hdnMode").val("E");
+        var ProductTypeCode = rowIndex.data.Product_Type_Code;
+        var ProductTypeName = rowIndex.data.Product_Type_Name;
+
+        $("#hdnProductTypeCode").val(ProductTypeCode);
+        $("#txtProductTypeName").val(ProductTypeName);
+    }
+    function fnProductTypeClearAll() {
+        $("#hdnProductTypeCode").val('');
+        $("#txtProductTypeName").val('');
+        $("#hdnMode").val('S');
+    }
+
+    $('#modal_close').click(function () {
+        fnEdit($('#hdProductTypeIndex').val());
+    });
+
+</script>

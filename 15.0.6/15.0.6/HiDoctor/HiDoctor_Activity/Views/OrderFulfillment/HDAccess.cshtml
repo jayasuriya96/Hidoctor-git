@@ -1,0 +1,388 @@
+﻿@{
+    string IsResponsive = Convert.ToString(HttpContext.Current.Session["IsResponsive"]);
+    switch (IsResponsive)
+    {
+        case "Yes":
+            Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+            break;
+    }
+}
+<style>
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-dialog {
+        max-width: 850px !important;
+    }
+
+    .modal-content {
+        border: none;
+    }
+
+    label {
+        font-weight: normal !important;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .col-form-label {
+        font-size: small !important;
+    }
+
+    table {
+        font-size: 10px !important;
+    }
+
+    .link {
+        color: #007bff !important;
+        cursor: pointer;
+        text-decoration: underline !important;
+    }
+</style>
+<div class="startcss">
+    <div class="p-2" id="seconddiv" style="">
+
+        <div class="row p-2 mt-3">
+            <div class="container">
+                
+                <div class="tab-content" id="nav-tabContent">
+                    <nav>
+                        <div class="nav nav-tabs mt-2" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><b>Access Give</b></a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><b>View Details</b></a>
+                        </div>
+                    </nav>
+                    <div class="tab-pane show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div id="home" style="margin-top: 18px;">
+                            <form>
+
+                                <div class="form-row clearfix">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4"><b>Select User :</b></label>
+                                        <input type="hidden" id="CompnyCode" />
+                                        <input type="hidden" id="Subdomain" />
+                                        <div id="users"></div>
+                                        @*<a href="#" onclick="fnGetHDAccessUsers();">View User Access Info</a>*@
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationDefault01"><b>Choose Option</b></label>
+
+                                        <div class="checkbox" id="UserAccess">
+                                            <label><input type="checkbox" id="Weballowed" value=1 style="margin-right: 4px;">Web Access</label>
+                                        </div>
+                                        <div class="checkbox" id="AppAccs">
+                                            @*<input type="hidden" name="check[0]" value="0" />*@
+                                            <label><input type="checkbox" id="Appallowed" value=2 style="margin-right: 4px;">App Access</label>
+                                        </div>
+
+                                        @*<span class="text-danger" id="curlerror"></span>*@
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    @*<input type="button" class="btn btn-primary" id="Approvalgo" value="Go" />*@
+                                    <button type="button" class="btn btn-primary" id="btnAccess" onclick="fnGiveAccess();">Submit</button>
+                                    @*<button type="button" class="btn btn-sm btn-outline-info" onclick="fnCancel();">Cancel</button>*@
+                                </div>
+
+                            </form>
+                            </div>
+
+
+                        </div>
+
+               
+
+                  
+                    <div class="tab-pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div>
+
+                            <div id="Approval" style="margin-top:1%">
+
+                            </div>
+                            <div style="margin-top:2%" id="AButton">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+@*<script src="~/Areas/HiDoctor_Activity/Scripts/HD/OrderCreation.js?v=@HiDoctor.BuildNumber.BuildNo"></script>*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />
+@*<script src="~/Scripts/HD/CommonDateDetails.js?v=@HiDoctor.BuildNo.Build_No"></script>*@
+@*<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />*@
+<script>
+
+
+    $('#dvAjaxLoad').hide();
+
+    var CompanyCode='';
+    var isResponsive='';
+    var subDomainName='';
+    var LoginUserCode='';
+    $(document).ready(function () {
+        debugger;
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        isResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+        fnGetUserList();
+        //fnddUserOnChange();
+        fnGetHDAccessUsers();
+    });
+    CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    function fnGetUserList(CompanyCode) {
+        debugger;
+        $("#Uname").val('');
+        $("#CompnyCode").val(CompanyCode);
+        $("#Subdomain").val(subDomainName);
+       var param = "LoginUserCode=" + LoginUserCode;
+       Ajax.requestInvoke("OrderFulfillment", "GetUsers", param, "GET", fnUserSucessCallBack, fnUserErrorCallBack, '', '');
+        
+    }
+
+    
+    function fnclear(){
+        $("#Weballowed").prop('checked', false);
+        $("#Appallowed").prop('checked', false);
+
+    }
+
+    
+    function fnChangeUser(){
+        debugger;
+        fnclear();
+        var user=$("#Uname").val();
+        var b=user.split("-");
+        var UserName=b[0];
+        var UserCode = $("#users option:selected").val();
+        var CompanyCode= $("#CompnyCode").val();
+        //data: "CompanyCode="+ CompanyCode+"&UserCode="+UserCode+"&subDomainName="+subDomainName+"",
+        var param = "UserName=" + UserName + "&subDomainName=" + subDomainName;
+        Ajax.requestInvoke("OrderFulfillment", "GetHDAccessInfo", param, "GET", fnGetHDAccessInfoSucessCallBack, fnGetHDAccessInfoErrorCallBack, '', '');
+    }
+    function fnGetHDAccessInfoSucessCallBack(response) {
+        debugger;
+        var content = "";
+        if (response != null && response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+                if(response[i].Is_Web_Access==1){
+                    $("#Weballowed").prop('checked', true);
+                }
+                else if(response[i].Is_Web_Access==0){
+                    $("#Weballowed").prop('checked', false);
+                }
+
+                if(response[i].Is_App_Access==1){
+                    $("#Appallowed").prop('checked', true);
+                }
+                else if(response[i].Is_App_Access==0){
+                    $("#Appallowed").prop('checked', false);
+                }
+
+            }
+
+
+        }
+        else{
+            $("#Weballowed").prop('checked', false);
+            $("#Appallowed").prop('checked', false);
+        }
+
+    }
+    function fnGetHDAccessInfoErrorCallBack()
+    {
+
+    }
+
+    function fnGiveAccess(){
+        debugger;
+      
+        if ($("#users option:selected").val()==undefined) {
+            swal("Please select User.", "", "info");
+            return;
+        }
+
+        else{
+            var obj = new Object();
+            obj.UserCode = $("#users option:selected").val();
+            obj.LoginUserCode=LoginUserCode;
+            obj.Created_By=LoginUserCode;
+            obj.Updated_By=LoginUserCode;
+            var CompanyCode= $("#CompnyCode").val();
+            if($('#Weballowed').is(':checked')==true){
+                obj.Is_Web_Access=1;
+            }
+            if($('#Weballowed').is(':checked')==false){
+                obj.Is_Web_Access=0;
+            }
+            if($('#Appallowed').is(':checked')==true){
+                obj.Is_App_Access=1;
+            }
+            if($('#Appallowed').is(':checked')==false){
+                obj.Is_App_Access=0;
+            }
+            obj.subDomainName=$("#Subdomain").val();
+            obj.CompanyCode=$("#CompnyCode").val();
+            var params = [];
+            var p = {};
+            p.value = obj;
+            params.push(p);
+            Ajax.requestInvoke("OrderFulfillment", "InsertHDAccess", params, "POST", fnInsertSuccessCallBack, fnInserErrorCallBack, null, 'JSON');
+        }
+    }
+
+    function fnInsertSuccessCallBack(result)
+    {
+        if (result !=null) {
+            swal("Success", "", "success");
+            $("#Weballowed").prop('checked', false);
+            $("#Appallowed").prop('checked', false);
+            $('#Uname').val('');
+            fnGetHDAccessUsers();
+         }
+
+    }
+    function fnInserErrorCallBack()
+    {
+    }
+
+    function fnUserSucessCallBack (response) {
+        debugger;
+      
+        var lstRegions = [];
+        $('#users').html('');
+        $('#users').html('<input id="Uname" style="width:100%;text-align:left;" />');
+        atcObj3 = new ej.dropdowns.DropDownList({
+            fields: { text: 'label', value: 'value' },
+            popupHeight: '150px',
+            allowFiltering: true,
+            placeholder: 'Select User',
+            showClearButton: true,
+            //index: indexDet,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                e.updateData(lstRegions, dropdown_query);
+            },
+            change: fnddUserOnChange,
+        });
+        if (response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+                _objUserData = {};
+                _objUserData.value = response[i].User_Code;
+                _objUserData.label = response[i].User_Name;
+                lstRegions.push(_objUserData);
+            }
+            atcObj3.dataSource = lstRegions;
+        } else {
+            atcObj3.dataSource = [];
+        }
+        atcObj3.appendTo('#Uname');
+        
+    }
+    function fnUserErrorCallBack() {
+
+    }
+    function fnddUserOnChange()
+    {
+        fnChangeUser();
+    }
+
+    function fnGetHDAccessUsers()
+    {
+        $("#Weballowed").prop('checked', false);
+        $("#Appallowed").prop('checked', false);
+        $('#Uname').val('');
+        fnGetUserList();
+        //$('#Uname').val('');
+        var subdomain=$("#Subdomain").val();
+        var param = "LoginUserCode=" + LoginUserCode;
+        Ajax.requestInvoke("OrderFulfillment", "GetHDAccessUsersDetails", param, "GET", getDataSuccess, getDataFailure, '', '');
+    }
+    function getDataSuccess(response) {
+        debugger;
+        result = response;
+        if(response.length==0)
+        {
+            $("#CompnyCode").val(response.Company_Code);
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            $('#Approvaltable').html('<label>No Record Found</label>');
+          //  $('#AButton').html('');
+        }
+        else{
+            Details = response;
+            // $('#Summary').html('');
+            grid = new ej.grids.Grid({
+                dataSource: response,
+                toolbar: ['Search'],
+                showColumnChooser: true,
+                allowTextWrap: true,
+                allowResizing: true,
+                enableHover: true,
+                gridLines:"Both",
+                allowSorting: true,
+                allowPaging: true,
+                allowGrouping: true,
+                allowScrolling: true,
+                enableHover: true,
+                scrollSettings: { width: '100%', height: 300, allowVirtualScrolling: true },
+                //selectionSettings: { checkboxOnly: true },
+                pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                height: 300,
+                columns: [
+                      { field: 'User_Name', headerText: 'User Name', textAlign: 'center'},
+                      { field: 'Is_Web_Access', headerText: 'Web Access', textAlign: 'center',width:120},
+                      { field: 'Is_App_Access', headerText: 'App Access', textAlign: 'center',width:120},
+                      { field: 'Created_On', headerText: 'Created On', textAlign: 'center'},
+                      { field: 'Created_By', headerText: 'Created By', textAlign: 'center' },
+                      { field: 'Updated_On', headerText: 'Updated On', textAlign: 'center' },
+                      { field: 'Updated_By', headerText: 'Updated By', textAlign: 'center' },
+                     ],
+              //  queryCellInfo: fnQueryCellInfo,
+            });
+            $('#Approval').html('');
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            grid.appendTo('#Approvaltable');
+            //$('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction()">Close</button>');
+         }
+
+    }
+
+    function getDataFailure(response)
+    {
+
+    }
+    function fnAction(){
+        $("#Approval").html("");
+       // $('#AButton').html('');
+    }
+    $("#nav-profile-tab").click(function(){
+        debugger;
+       $('#home').hide();
+       // $('#Uname').val('');
+        fnGetHDAccessUsers();
+        //fnGetSingleDeviceLoginReleaseHistory();
+        //$("#txtnat").val('');
+        
+        // $('#nav-profile-tab').show();
+    });
+    $("#nav-home-tab").click(function(){
+        $('#home').show();
+        //  $('#nav-profile-tab').hide();
+    });
+</script>

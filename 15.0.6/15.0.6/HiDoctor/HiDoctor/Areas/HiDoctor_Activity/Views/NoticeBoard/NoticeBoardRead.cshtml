@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "NoticeBoardRead";
+    Layout = null;
+}
+
+<div>
+ <div id="divNoticeBoardRead">
+</div>
+<div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+            <img src="~/Images/close.png" />
+        </span>
+        <h2 id="popheader" class="popheader"></h2>
+        <div id="divModel" style="height: 300px; overflow: auto">
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+</div>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/NoticeBoard.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        fnNoticeBoardGrid();
+        $("#dvOverlay").overlay().load();
+        $("#dvAjaxLoad").hide();
+    });
+</script>

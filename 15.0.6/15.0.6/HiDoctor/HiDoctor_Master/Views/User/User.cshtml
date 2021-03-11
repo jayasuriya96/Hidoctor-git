@@ -1,0 +1,259 @@
+﻿@{
+    ViewBag.Title = "User";
+    Layout=null;
+}
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style>
+    .Mandatory {
+        color: red;
+    }
+
+    .dvSubHeader {
+        width: 100%;
+        border-bottom: 1px solid #DDD;
+        color: #A4A4A4;
+        font-size: 15px;
+        padding: 5px;
+    }
+
+    .tdleftWidth {
+        width: 25% !important;
+    }
+
+    .dvHeader {
+        width: 100%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    #dvUserMain table {
+        width: 100%;
+        padding-top: 5px;
+    }
+
+        #dvUserMain table input[type=text], input[type=password], textarea, select {
+            width: 40% !important;
+        }
+
+    .tooltip {
+        background-color: #000;
+        border: 1px solid #fff;
+        padding: 10px 15px;
+        width: 200px;
+        display: none;
+        color: #fff;
+        text-align: left;
+        font-size: 12px; /* outline radius for mozilla/firefox only */
+        -moz-box-shadow: 0 0 10px #000;
+        -webkit-box-shadow: 0 0 10px #000;
+        z-index: 999999;
+    }
+</style>
+<div style="width: 98%; padding: 5px;" id="dvUserMain">
+    <div class="dvHeader" id="dvUserHeader">
+        Add & Map User
+    </div>
+    <div style="width: 95%; padding: 10px;">
+        <div>
+            <table>
+                <tr>
+                    <td class="tdleftWidth">Region <span class="Mandatory">*</span>
+                    </td>
+                    <td>
+                        <div id="dvRegionUser">
+                            <input type="text" id="txtRegionName" />
+                            <input type="hidden" id="hdnRegionCode" />
+                        </div>
+
+                        <div id="dvUser" style="display: none;">
+                            <select id="cboRegion">
+                            </select>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 100%;">
+            <div class="dvSubHeader">
+                Login Credential Information
+            </div>
+            <table>
+                <tr>
+                    <td class="tdleftWidth">Employee Name <span class="Mandatory">*</span>
+                    </td>
+                    <td>
+                        <input type="text" id="txtEmployee" class="autoEmployee" />
+                        <input type="hidden" id="hdnEmployeeCode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleftWidth">User Name <span class="Mandatory">*</span>
+                    </td>
+                    <td>
+                        <input type="text" id="txtUserName" maxlength="30" onblur="FnValidateUserNameExistance();" />
+                        <input type="hidden" id="hdnUserCode" />
+                        <div style="color: #A4A4A4;">
+                            (example: Ajay2567. User Name should contains atleast 6 characters.
+                            <br />
+                            User Name created once can not be modified.) 
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleftWidth">Password
+                        @*<span class="Mandatory">*</span>*@
+                    </td>
+                    <td>
+                        <input type="password" id="txtUserPassWord" disabled="disabled" />
+                        @*<div style="color: #A4A4A4;">
+                            (Minimun of 6 characters.Leave this field empty to retain the old password
+                            <br />
+                            while editing the existing user. For new user creation password must
+                            be given)
+                        </div>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdleftWidth">User Type Name <span class="Mandatory">*</span>
+                    </td>
+                    <td>
+                        <select id="cboUserType">
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <div class="dvSubHeader">
+                    Reporting Details
+                </div>
+                <table>
+                    <tr>
+                        <td class="tdleftWidth">Reporting Manager Name <span class="Mandatory">*</span>
+                        </td>
+                        <td>
+                            <select id="cboUnderUser">
+                            </select>
+                        </td>
+                    </tr>
+                   @* <tr>
+                        <td class="tdleftWidth">Division
+                        </td>
+                        <td>
+                            <select id="cboDivision">
+                            </select>
+                        </td>
+                    </tr>*@
+                </table>
+            </div>
+
+            <div>
+                <div class="dvSubHeader">
+                    Reporting Date
+                </div>
+                <table>
+                    <tr>
+                        <td class="tdleftWidth">Hidoctor StartDate <span class="Mandatory">*</span>
+                        </td>
+                        <td>
+                            <input type="text" id="txtHiDoctorStartDate" class="datepicker" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <div class="dvSubHeader">
+                    Expense Details
+                </div>
+                <table>
+                    <tr>
+                        <td class="tdleftWidth">Expense Group
+                        </td>
+                        <td>
+                            <select id="cboExpenseGroupCode">
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="width: 100%; clear: both;">
+            @*<input type="button" id="btnUserSave" class="btn small primary" value="Save" onclick="fnUserSubmit();" />*@
+            <input type="button" id="btnUserCancel" class="btn small primary" value="Close" onclick="fnCloseUserPopUp();" />
+            <input type="hidden" id="hdnMode" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var employeeJson_g = "";
+    var userJson_g = "";
+    var regionCode = "";
+    var regionName = "";
+    var userCode="";
+    var userDetailsJson="";
+    var allusersJson_g="";
+    var entryMode="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        fnUserClearAll();
+        $(".datepicker").datepicker({"dateFormat": "dd/mm/yy","changeMonth": true, "changeYear": true});
+         entryMode=  @Html.Raw(Json.Encode(ViewBag.EntryMode));
+        if(entryMode=="REGION")
+        {
+
+           // $("#txtUserPassWord").attr("disabled",false);
+            $("#dvUserHeader").html('Add & Map User');
+            $("#hdnMode").val("INSERT");
+            $("#txtUserPassWord").attr("disabled",false);
+            var regionView= @Html.Raw(Json.Encode(ViewBag.EntryValue));
+            if(regionView != null)
+            {
+                regionCode=regionView.split('|')[0];
+                regionName= regionView.split('|')[1];
+                $("#txtRegionName").val(regionName);
+                $("#hdnRegionCode").val(regionCode);
+                $("#txtRegionName").attr("disabled","disabled");
+                $("#dvUser").hide();
+                $("#dvRegionUser").show();
+            }
+            else
+            {
+                $("#dvUser").show();
+                $("#dvRegionUser").hide();
+            }
+        }
+        else
+        {
+            $("#dvUser").show();
+            $("#dvRegionUser").hide();
+
+            if(@Html.Raw(Json.Encode(ViewBag.EntryValue))!=null)
+            {
+                userCode= @Html.Raw(Json.Encode(ViewBag.EntryValue))
+            }
+            if(entryMode=='USER')
+            {
+                $("#dvUserHeader").html('Add New User');
+                $("#hdnMode").val("INSERT");
+            }
+            else
+            {
+                $("#dvUserHeader").html('Edit User Details');
+                $("#hdnMode").val("EDIT");
+            }
+        }
+        fnGetMasterDataForUser();
+        $("#dvUserMain input[type=text]").blur(function(){ fnRemoverErrorIndicator(this); });
+        $("#dvUserMain input[type=password]").blur(function(){ fnRemoverErrorIndicator(this); });
+        $("#dvUserMain select").change(function(){ fnRemoverErrorIndicator(this); });
+        //  $("#txtEmployee").blur(function() {fnValidateAutofill(this, "employeeJson_g","txtEmployeeName","hdnEmployeeCode")});
+        $("#dvAjaxLoad").hide();
+    });
+</script>

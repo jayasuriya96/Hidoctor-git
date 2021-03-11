@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Maintenance";
+    Layout = "~/Views/Shared/_CubeLayOut.cshtml";
+}
+<style>
+    .main-img {
+        width: 300px;
+    }
+
+    .dv-maintenance {
+        width: 100%;
+        border: 1px solid gray;
+    }
+
+    .dv-outer-div {
+        margin: 5% auto;
+        width: 60%;
+    }
+
+    .dv-main-caption {
+        font-size: 20px;
+        text-align: center;
+        margin: 10px;
+    }
+
+    .dv-maint-details {
+        font-size: 15px;
+        text-align: center;
+        margin: 0px;
+        background: black;
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color: white;
+    }
+</style>
+<div class="dv-outer-div">
+    <div style="width: 50%; float: left;">
+        <img src="~/Images/Hidoctor.png" />
+    </div>
+    <div style="clear: both"></div>
+    <div>
+        <div class="dv-maintenance">
+            <img src="~/Images/maintanace_512x422.png" class="main-img" />
+            <div class="dv-main-caption">Your site is under maintenance</div>
+            <div class="dv-maint-details">Start time : 6:30 AM To End Time 10:30 AM</div>
+        </div>
+    </div>
+</div>

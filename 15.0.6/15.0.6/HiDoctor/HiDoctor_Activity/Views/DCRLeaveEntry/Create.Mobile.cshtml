@@ -1,0 +1,204 @@
+﻿@model HiDoctor_Activity.Models.DCRLeaveEntryModel
+
+@{
+    ViewBag.Title = "Create.Mobile";
+}
+
+<style type="text/css">
+    .field-validation-error {
+        font-size: 12px !important;
+        font-weight: 300 !important;
+    }
+</style>
+
+<div data-role="header" data-theme="b">
+    <h3>Leave Entry
+    </h3>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div data-role="content" data-theme="d">
+        <center>
+                <table cellpadding="0px" cellspacing="0px" width="100%" border="0px" id="tblLeave">
+                    <tr align="left">
+                        <td colspan="2">
+                            <a onclick="fnLoadCalendar()" href="#" class="leaveLink">Go to Calendar</a>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.From_Date)
+                            </div>
+                            <div style="clear:both !important;"></div>
+                        </td>
+                        <td>
+                           <input type="tel" placeholder="dd" id="txtFromDate" maxlength="2" /> <span style="padding: 6px;float:left;"> / </span> <input type="tel" placeholder="mm" id="txtFromMonth" maxlength="2" /> <span style="padding: 6px;float:left;"> / </span> <input type="tel" placeholder="yyyy"  id="txtFromYear" maxlength="4" />
+                            <div style="clear:both !important;"></div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td>                            
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.To_Date)<br />
+                            </div>
+                            <div style="clear:both !important;"></div>
+                        </td>
+                        <td>                              
+                            <input type="tel" placeholder="dd" id="txtToDate" maxlength="2" /> <span style="padding: 6px;float:left;"> / </span> <input type="tel" placeholder="mm" id="txtToMonth" maxlength="2" /> <span style="padding: 6px;float:left;"> / </span> <input type="tel" placeholder="yyyy"  id="txtToYear" maxlength="4" /><br />
+                            <div style="clear:both !important;"></div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td>
+                            <div style="clear:both;"></div>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Leave_Type_Name)
+                            </div>
+                        </td>
+                        <td>
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.Leave_Type_Name, ViewBag.leaveType as SelectList, "-Select Leave Type-", new { id = "ddlLeaveType" })
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Reason)
+                            </div>
+                        </td>
+                        <td>
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.Reason)
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td>
+                        </td>
+                        <td>                            
+                            <input type="button" value="Submit" onclick="fnValidateLeave()" data-theme="b" />
+                            <input type="button" value="Cancel" onclick="fnCancel()" data-theme="b" />                           
+                        </td>
+                    </tr>
+                </table>
+            </center>
+    </div>
+}
+<div data-role="footer">
+</div>
+
+@Scripts.Render("~/bundles/dcrleaveentryjs")
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/DCRV4/mDCRAllowedSpecialCharacters.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" lang="javascript">
+    var leaveValidationLeaves = "";
+    var dcrStatus = "";
+    var dcrDateLeave="";
+
+    $(document).ready(function () {     
+debugger;
+        AjaxGlobalHandler.Initiate();      
+
+        $("#dcrleaveloginUserName").html(loginUserName_g);
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        var remarks = @Html.Raw(Json.Encode(ViewBag.remarks));
+        var typeCode = @Html.Raw(Json.Encode(ViewBag.typeCode));
+
+        if($('#ddlLeaveType ').find('option').length==1)
+        {
+            $("#ddlLeaveType :selected").text("-No Leave Type-");
+        }
+
+        // Set the DCR date as from date
+        if (@Html.Raw(Json.Encode(ViewBag.viewArray[0])) != "") {  
+            var fromDate= @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+            dcrDateLeave=fromDate; 
+
+            $("#txtFromDate").val(fromDate.split('-')[2]); 
+            $("#txtFromMonth").val(fromDate.split('-')[1]); 
+            $("#txtFromYear").val(fromDate.split('-')[0]); 
+
+            $("#txtFromDate").attr('readonly', 'readonly');
+            $("#txtFromMonth").attr('readonly', 'readonly');
+            $("#txtFromYear").attr('readonly', 'readonly');
+            //$("#From_Date").val(fromDate.split('-')[2] + '/' + fromDate.split('-')[1] + '/' + fromDate.split('-')[0]);
+            //$("#From_Date").attr('readonly', 'readonly');            
+            if (typeCode != null && typeCode != "" && dcrStatus == "1") { 
+                $("#txtToDate").val(fromDate.split('-')[2]); 
+                $("#txtToMonth").val(fromDate.split('-')[1]); 
+                $("#txtToYear").val(fromDate.split('-')[0]);   
+                            
+                //$("#To_Date").val(fromDate);  
+                $("#ddlLeaveType").val(typeCode); 
+                $("#ddlLeaveType").selectmenu();
+                $("#ddlLeaveType").selectmenu('refresh');       
+                $("#Reason").val(remarks);            
+            }
+            else{
+                debugger;
+                $("#txtToDate").val(fromDate.split('-')[2]);
+                $("#txtToMonth").val(fromDate.split('-')[1]); 
+                $("#txtToYear").val(fromDate.split('-')[0]);
+            }
+        }
+
+        // Check the DCR status. 
+        if (dcrStatus != "") {
+            if (dcrStatus == "0") { // Unapproved 
+                $("#txtToDate").val($("#txtFromDate").val()); 
+                $("#txtToMonth").val($("#txtFromMonth").val()); 
+                $("#txtToYear").val($("#txtFromYear").val());   
+                
+                $("#txtToDate").attr('readonly', 'readonly');
+                $("#txtToMonth").attr('readonly', 'readonly');
+                $("#txtToYear").attr('readonly', 'readonly');
+                $("#ddlLeaveType").val(typeCode); 
+                $("#ddlLeaveType").selectmenu();
+                $("#ddlLeaveType").selectmenu('refresh');       
+                $("#Reason").val(remarks);            
+
+                //$("#To_Date").val($("#From_Date").val());
+                //$("#To_Date").attr('disabled', 'disabled');
+            }            
+        }
+
+       // $("#Reason").blur(function () { if (fnCheckRemarksSpecialChar(this)) { return fnRemoveErrorIndicatior(this); } });    
+        $("#Reason").keypress(function() { return fnEnterKeyPrevent(event) }); 
+
+
+        // Draw Leave balance table.   
+        leaveValidationLeaves = fnGetPrivilegeValue("LEAVE_ENTRY_VALIDATION_REQUIRED_LEAVES", "");
+        DrawLeaveBalanceTable(dcrDateLeave);       
+    });
+
+    function fnCancel() {
+        if(dcrStatus!="0")
+        {
+            $("#txtToDate").val(""); 
+            $("#txtToMonth").val(""); 
+            $("#txtToYear").val("");   
+       
+            fnRemoveErrorIndicatior("#txtToDate");
+            fnRemoveErrorIndicatior("#txtToMonth");
+            fnRemoveErrorIndicatior("#txtToYear");
+        }
+
+        $("#Reason").val("");
+        fnRemoveErrorIndicatior("#Reason");
+        $("#ddlLeaveType").val('').selectmenu('refresh');       
+    }   
+
+    function fnLoadCalendar() {       
+        $.mobile.changePage("/HiDoctor_Activity/DCRCalendar/Index", {
+            type: "post",
+            reverse: false,
+            changeHash: false
+        });
+    }
+</script>
+

@@ -1,0 +1,360 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = null;
+}
+<style>
+    .dvBox {
+        border-style: solid;
+        border-width: 1px 1px 2px 1px;
+        border-color: #cfcfcf;
+        padding: 1%;
+        -moz-box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+        -webkit-box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+        -o-box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+        box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+        height: 210px;
+        margin-left: 1%;
+    }
+
+    .dvContentBox {
+        height: 150px;
+        overflow: auto;
+    }
+
+
+    .trColor td {
+        background-color: #ddd !important;
+    }
+
+    #dvMainAlerts div {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+    .anounce {
+        clear: both;
+        line-height: 23px;
+        height: 50px;
+        border-bottom: 1px solid #efefef;
+    }
+
+        .anounce:hover {
+            background: #efefef;
+            color: #000;
+            cursor: pointer;
+        }
+
+    .anounce_icon {
+        background: url('../../Content/images/Home/announce_pin.png') no-repeat left bottom;
+        height: 26px;
+        width: 6%;
+        float: left;
+        margin-right: 8px;
+    }
+
+    .sender_name_msg {
+    }
+
+    .subject_message {
+        float: left;
+        width: 70%;
+    }
+
+    .attachment {
+        background: url('../../Content/images/Home/mail-attachment1.png') no-repeat;
+        height: 16px;
+        width: 16px;
+        float: right;
+        margin-left: 12px;
+        margin-top: -15px;
+    }
+
+    .totalCol {
+        font-weight: bold;
+    }
+
+    .anouncement_icon {
+        background: url('../../Content/images/Home/Announcement_Icon.png') no-repeat;
+        height: 30px;
+        width: 13%;
+        float: left;
+    }
+
+    .header_caption {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 2%;
+        width: 79%;
+    }
+
+    .message_icon {
+        background: url('../../Content/images/Home/mailbox.png') no-repeat;
+        height: 32px;
+        width: 13%;
+        float: left;
+        margin-right: 5px;
+    }
+
+    .dvHead {
+        border-bottom: 2px solid gray;
+        padding-bottom: 1%;
+    }
+
+    .dvViewMore {
+        padding-top: 3%;
+        float: right;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .act_summ_icon {
+        background: url('../../Content/images/Home/Activity_Summary_Icon.png') no-repeat;
+        height: 32px;
+        width: 10%;
+        float: left;
+        margin-right: 5px;
+    }
+
+    .data_summ_icon {
+        background: url('../../Content/images/Home/data_summary_icon.png') no-repeat;
+        height: 32px;
+        width: 10%;
+        float: left;
+        margin-right: 5px;
+    }
+
+    .exp_icon {
+        background: url('../../Content/images/Home/Field_Expenses_Icon.png') no-repeat;
+        height: 32px;
+        width: 10%;
+        float: left;
+        margin-right: 5px;
+    }
+
+
+    .messages {
+        clear: both;
+        line-height: 23px;
+        height: 50px;
+        border-bottom: 1px solid #efefef;
+    }
+
+        .messages:hover {
+            background: #efefef;
+            color: #000;
+            cursor: pointer;
+        }
+
+    .unread_message {
+        background: url('../../Content/images/Home/messages_icon.png') no-repeat left bottom;
+        height: 26px;
+        width: 6%;
+        float: left;
+        margin-right: 8px;
+    }
+
+    .date_message {
+        float: right;
+    }
+
+    .alerts_icon {
+        background: url('../../Content/images/Home/alarm-clock.png') no-repeat;
+        height: 32px;
+        width: 18%;
+        float: left;
+        margin-right: 5px;
+    }
+
+    #dvAnnouncement {
+        padding-top: 1%;
+        min-height: 100px;
+    }
+
+    #dvMsg {
+        padding-top: 1%;
+        min-height: 100px;
+    }
+
+    #dvMainAlerts {
+        padding-top: 1%;
+        min-height: 100px;
+    }
+
+        #dvMainAlerts h3 {
+            padding-left: 8% !important;
+            height: 30px !important;
+            padding-top: 2% !important;
+            border-bottom: 2px solid #79b7e7;
+        }
+
+        #dvMainAlerts div {
+            padding: 1em 2.2em !important;
+        }
+
+    #dvBirthday {
+        min-height: 0px !important;
+        height: 0px !important;
+    }
+
+    #dvAnniversary {
+        min-height: 0px !important;
+        height: 0px !important;
+    }
+
+    .cls_AltTitle {
+        width: 100%;
+        background-color: #0173BA;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .cls_doctor {
+        text-align: left;
+        font-weight: bold;
+        color: black;
+        font-size: 12px;
+    }
+    /*#dvMeeting {
+        height: 0px !important;
+    }*/
+</style>
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div style="overflow: auto; margin-left: -2%;">
+    <div class="col-lg-12">
+        <div class="col-xs-4 dvBox" id="dvMainAnnounce">
+            <div class="dvHead col-lg-12">
+                <div class="anouncement_icon"></div>
+                <div class="header_caption">Announcements</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvAnnouncement"></div>
+            <div class="dvViewMore">
+                <a onclick="fnGoToNotificationScreen();">View More >></a>
+            </div>
+        </div>
+        <div class="col-xs-4 dvBox" id="dvMainMsg">
+            <div class="dvHead">
+                <div class="message_icon"></div>
+                <div class="header_caption">Messages</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvMsg"></div>
+            <div class="dvViewMore">
+                <a onclick="fnGoToMessageScreen();">View More >></a>
+            </div>
+        </div>
+        <div class="col-xs-3 dvBox">
+            <div class="dvHead">
+                <div class="alerts_icon"></div>
+                <div class="header_caption">Alerts</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvMainAlerts" class="dvContentBox">
+                <h3 onclick="fnShowMeeting();">Tomorrow's Meeting Point</h3>
+                <div id="dvMeeting"></div>
+
+                <h3 id="lnkShowBirthDay" onclick="fnShowBirthdays();">Upcoming Birthdays</h3>
+                <div id="dvBirthday"></div>
+                <h3 id="lnkshowAnniversary" onclick="fnShowAnniversary();">Upcoming Anniversaries</h3>
+                <div id="dvAnniversary"></div>
+                <h3 onclick="fnShowHoliday();">Holidays for the month</h3>
+                <div id="dvHoliday"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" id="dvCalcFields" style="overflow: auto; clear: both;">
+        <div class="col-xs-4 dvBox" id="dvMainActivity" style="margin-top: 1%;">
+            <div class="dvHead">
+                <div class="act_summ_icon"></div>
+                <div class="header_caption">Activity Summary</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvActivity" class="dvContentBox"></div>
+        </div>
+        <div class="col-xs-4 dvBox" id="dvMainData" style="margin-top: 1%;">
+            <div class="dvHead">
+                <div class="data_summ_icon"></div>
+                <div class="header_caption">Your Data Summary</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvData" class="dvContentBox"></div>
+        </div>
+        <div class="col-xs-3 dvBox" id="dvMainExp" style="margin-top: 1%;">
+            <div class="dvHead">
+                <div class="exp_icon"></div>
+                <div class="header_caption">Field Expense</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvExp" class="dvContentBox"></div>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+
+<div id="dvLoadingDoctorsBirthdayAlerts" style="padding-top: 5px; padding-right: 10px; display: none; width: 700px; height: 400px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white; margin: -23px;" onclick="HideModalPopup('dvLoadingDoctorsBirthdayAlerts'); fnHideAccordinforBday();">
+            <img src="~/Images/close.png" />
+        </span>
+        <div style="width: auto;" class="cls_AltTitle">Birthday Details</div>
+        <br />
+        <div id="dvshowBirthdayAlertsforchildusers" style="width: 100%"></div>
+    </div>
+</div>
+
+<div id="dvLoadingDoctorsAnniversaryAlerts" style="padding-top: 5px; padding-right: 10px; display: none; width: 700px; height: 400px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white; margin: -23px;" onclick="HideModalPopup('dvLoadingDoctorsAnniversaryAlerts'); fnHideAccordinforAnniversary();">
+            <img src="~/Images/close.png" />
+        </span>
+        <div style="width: auto;" class="cls_AltTitle">Anniversary Details</div>
+        <br />
+        <div id="dvshowAnniversaryAlertsforchildusers" style="width: 100%"></div>
+    </div>
+</div>
+
+<script src="../../Scripts/HD/Home.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var emailId_Curr_g = "";
+    $(document).ready(function () {
+        emailId_Curr_g = @Html.Raw(Json.Encode(ViewBag.Cur_User_Email));
+        
+        $('#hdnEmailId').val(emailId_Curr_g);
+        FreshWidget.init();
+        //  FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + "&&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        if($('#spnUser').html() !="")
+        {
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&disable[custom_field][user_name_13621]=true&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        }
+        else{
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        }
+        $('#divPageHeader').html('Home');
+        $("#dvMainAlerts").accordion({
+            collapsible: true,
+            heightStyle: "fill",
+            active: false
+        });
+        fnGetNotifications();
+        fnGetMessages();
+        fnGetCALCDetails();
+
+        function fnHideAccordinforBday()
+        {
+            $('#lnkShowBirthDay').removeClass();
+            $('#lnkShowBirthDay').addClass('ui-accordion-header ui-helper-reset ui-state-default ui-corner-all');
+        }
+
+        function fnHideAccordinforAnniversary()
+        {
+            $('#lnkshowAnniversary').removeClass();
+            $('#lnkshowAnniversary').addClass('ui-accordion-header ui-helper-reset ui-state-default ui-corner-all');
+        }
+        $("#dvAjaxLoad").hide();
+    })
+</script>

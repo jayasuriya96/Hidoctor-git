@@ -1,0 +1,46 @@
+﻿<div id="dvData" style="display: none;">
+    Hi Partial View
+</div>
+
+<script type="text/javascript">
+    var excelData="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        excelData = @Html.Raw(Json.Encode(ViewBag.ExcelData))
+        if(excelData!='')
+        {
+          
+            var jsonData= eval('('+excelData.Data+')');
+            if(jsonData.length>0)
+            {
+                fnBindTable(jsonData);
+            }
+        }
+    });
+
+    function fnBindTable(jsonData)
+    {
+        var content="";
+        content += "<table id='tblExcel'><thead style='width:100%;'>";
+        content += "<tr>";
+        content += "<td>Product_Name</td><td>Product_Code</td><td>Invoice_Amount</td>";
+        content += "<td>PTS</td><td>PTR</td>";
+        content += "<td>MRP</td><td>NRV</td><td>Source</td><td>Error</td>";
+        content += "</tr></thead><tbody>";
+        for (var i = 0; i < jsonData.length; i++) {
+            content += "<tr>";
+            content += "<td id='tdProductName_" + i + "'> " + jsonData[i].Product_Name + "</td>";
+            content += "<td id='tdProductCode_" + i + "'>"+jsonData[i].Product_Code+"</td>";
+            content += "<td id='tdInvoicePrice_" + i + "'>" + jsonData[i].Invoice_Amount + "</td>";
+            content += "<td id='tdPTS_" + i + "'>" + jsonData[i].PTS + "</td>";
+            content += "<td id='tdPTR_" + i + "'>" + jsonData[i].PTR_WOTax + "</td>";
+            content += "<td id='tdMRP_" + i + "' >" + jsonData[i].MRP + "</td>";
+            content += "<td id='tdNRV_" + i + "'>" + jsonData[i].NRV + "</td>";
+            content += "<td id='tdSource_" + i + "'>" + jsonData[i].Source + "</td>";
+            content += "<td id='tdError_" + i + "'>" + jsonData[i].IsError + "</td>";
+            content += "</tr>";
+        }
+        content += "</tbody></table>";
+        $("#dvData").html(content);
+    }
+</script>

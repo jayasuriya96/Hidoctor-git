@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "KYD";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    .mandatory {
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .cls_mandatory {
+        color: red;
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+    .spnstar {
+        font-weight: bold;
+        font-size: 15px;
+        color: red;
+    }
+
+    .cls_KYDdiv {
+        width: 100%;
+        background-color: #0173BA;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .cls_ShowButton {
+        display: none;
+    }
+
+    .cls_DisplayColumn {
+        display: none;
+    }
+
+    .cls_Errorindication {
+        border: 1px solid red !important;
+        background-color: #efefef !important;
+    }
+
+    .cls-ErrorindicationRow td {
+        /*border: 1px solid black !important;*/
+        background-color: #F0C08D !important;
+    }
+
+    .kydtable {
+        /*border: solid 1px #DDEEEE;
+        border-collapse: collapse;
+        border-spacing: 0;*/ 
+        font: normal 13px Arial, sans-serif;
+    }
+
+    .kydtable thead th {
+        background-color: #0173BA;
+        border: solid 1px #DDEEEE;
+        color: #336B6B;
+        padding: 10px;
+        text-align: center;
+        /*text-shadow: 1px 1px 1px #fff;*/        
+    }
+
+    .kydtable td {
+        border: solid 1px #DDEEEE;
+        color: #333;
+        padding: 10px;
+        /*text-shadow: 1px 1px 1px #fff;*/
+    }
+</style>
+
+<div id="dvLoading" style="display: none">
+    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+</div>
+
+<div id="dvKYD" style="padding-top: 5px; padding-right: 10px; display: none; width: 980px; height: 550px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <div style="width: 100%;" class="cls_KYDdiv">Know Your Doctor</div>
+    <br />
+    <div id="tblkyd" style="width: 100%"></div>
+    <div class="row col-lg-12 form-group clearfix" id='dvShowbuttons'>
+        <div class="col-xs-5"><span id="spnDoctMandatory"></span></div>
+        <div class="col-xs-3">
+            <input type="button" id="btnKydSave" value="Save" class='btn btn-info' onclick='fnSaveKYDDoctorList();' />
+        </div>
+        <div class="col-xs-3">
+            <input type="button" id="btnKydskip" value="Skip" class='btn btn-info cls_ShowButton' onclick='fnSkipKYD();' />
+        </div>
+    </div>
+    <br />
+    <div id="dvLegend" class="row col-lg-12 form-group clearfix">
+        <label style='font-weight: bold;'>
+            <span class='spnstar'>*</span>Mandatory Columns
+        </label>
+        <br />
+        <label style="font-weight: bold;">
+             <span class="spnstar">**</span><span id="spnkeycheck">></span>
+        </label>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4KYD.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    var dcrDate = "",flag_g="",jsonDisplayColumns_g="",jsonCheckDuplicate_g="",jsonMandatory_g="",showDoctorPercentage_g=0,prividotorpercentage_g="";
+    $(document).ready(function () {        
+        AjaxGlobalHandler.Initiate();
+        ShowModalPopup('dvLoading');
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.DCR_Date));
+        flag_g = @Html.Raw(Json.Encode( ViewBag.Flag));
+        //Used to get config values
+        fnGetKYDConfigValues();
+        //Bind Doctor List
+        fnGetKYDScreen();
+        prividotorpercentage_g = fnGetPrivilegeValue('KYD_MINIMUM_DOCTOR_ENTRY_PERCENTAGE', '0');        
+    });
+</script>
+

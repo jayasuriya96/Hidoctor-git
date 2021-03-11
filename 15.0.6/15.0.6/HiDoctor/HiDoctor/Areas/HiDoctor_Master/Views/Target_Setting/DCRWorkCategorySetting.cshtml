@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "DCRWorkCategorySetting";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+
+<style>
+    #details {
+        height: 320px;
+        overflow-y: scroll;
+    }
+
+    .dropdown {
+        width: 96%;
+    }
+
+    .form-control[readonly] {
+        background-color: white !important;
+        opacity: 1;
+    }
+</style>
+<div style="font-size:13px;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link def active" href="#" onclick="fnsetting();">DCR Work Category Setting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link sum" href="#" onclick="fnSummary();">Summary</a>
+        </li>
+    </ul>
+    <div class="tab-content p-3" id="head">
+        <div class="tab-pane fade show active" id="settinghead" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row">
+                <div class="col-sm-3 p-0">
+                    <div class="card">
+                        <div class="card-header">User Type</div>
+                        <div class="card-body p-0">
+                            <div id="UserTypetree" style="height: 650px;" class="shadow-sm"><ul class="dynatree-container"><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Admin</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">ASE1</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">BSV</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">NAME</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Salesadmin HO</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Auditor</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Training Manager</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">CEO</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Marketing</a></span></li></ul></li></ul></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Exe Salesadmin</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">BH</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Exec Salesadmin 1</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">President</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">AVP</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">VP</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">GM</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Country Manager</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">DGM</a></span></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">GPM</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sr GM</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">DSM</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">BDM</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">RSM</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">ASM</a></span><ul style=""><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">ASE</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">BDE</a></span></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">IBM</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">KAM</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sr BDE</a></span></li></ul></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sr RSM</a></span></li></ul></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">SDE</a></span></li></ul></li></ul></li></ul></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Group President</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Head Distribution</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Marketing Manager</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sales Admin Manager</a></span></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-exp-e dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sales Head</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">NSM</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">ZSM</a></span></li></ul></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sr Executive Sales admin</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-has-children dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-expander"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Sr GM HR</a></span><ul style=""><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">Executive HR</a></span></li></ul></li></ul></li><li class=""><span class="dynatree-node dynatree-expanded dynatree-exp-e dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">SD</a></span></li><li class="dynatree-lastsib"><span class="dynatree-node dynatree-expanded dynatree-lastsib dynatree-exp-el dynatree-ico-e"><span class="dynatree-connector"></span><span class="dynatree-icon"></span><a href="#" class="dynatree-title">SwaasIT</a></span></li></ul></li></ul></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div style="box-shadow: 0 0 10px rgba(0,0,0,.18);height: 690px;" class="p-3">
+                        <div class="p-2 mb-2 border-bottom" style="font-size: 14px;font-weight: 600;">DCR Work Category Setting</div>
+
+                        <form>
+                            <div class="form-group row" id="expensetype" style="display:flex;">
+                                <label for="Category" class="col-sm-2 col-form-label">Category</label>
+                                <div class="col-sm-5">
+                                    <select id="Category" class="form-control Categorytype"></select>
+                                </div>
+                            </div>
+                                <div class="form-group row">
+                                    <label for="Kilometer" class="col-sm-2 col-form-label">Kilometer</label>
+                                    <div class="col-sm-5">
+                                        <input type="number" id="Kilometer" min="0" class="form-control" onkeypress="return fnValidateBudget(this,event);"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lessCategory" class="col-sm-2 col-form-label"> Category Less than Kilometer</label>
+                                    <div class="col-sm-5">
+                                        <select id="lessCategory" class="form-control Categorytype"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="GreaterCategory" class="col-sm-2 col-form-label">Category Greater than Kilometer</label>
+                                    <div class="col-sm-5">
+                                        <select id="GreaterCategory" class="form-control Categorytype"></select>
+                                    </div>
+                                </div>
+                            <div class="form-group row">
+                                <label for="startdate" class="col-sm-2 col-form-label">Effective From</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id="startdate" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="enddate" class="col-sm-2 col-form-label">Effective To</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id="enddate" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-primary" id="submit" onclick="fnsubmit();">Submit</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="summary" role="tabpanel" aria-labelledby="profile-tab">
+            <div id="Summarytable"></div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/DCRWorkCategorySetting.js"></script>
+<script>
+    $(document).ready()
+    {
+        $('#dvAjaxLoad').hide();
+        var UserTypeCode = '';
+        fngetcategoryname();
+        var Details = '';
+        $("#startdate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date(),
+            onSelect: function (selected) {
+                var dates = $('#startdate').val();
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate());
+                $("#enddate").datepicker("option", "minDate", dt);
+                //jjj
+            }
+        });
+        $("#enddate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            //numberOfMonths: 1,
+            //maxDate: 0,
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date(),
+
+        });
+        fngetallworkcategorysettings();
+        fnBindUserTypeTree("UserTypetree");
+    }
+    function fnsetting() {
+        $('.def').addClass('active');
+        $('.sum').removeClass('active');
+        $('#settinghead').show();
+        $('#summary').hide();
+    }
+    function fnSummary() {
+        $('.def').removeClass('active');
+        $('.sum').addClass('active');
+        $('#settinghead').hide();
+        $('#summary').show();
+    }
+    function fnUserTypeTreeNodeClick(node) {
+        debugger;
+        $("#UserTypetree").dynatree("getRoot").visit(function (node) {
+            $(node.span).removeClass('tree-node-active');
+        });
+        UserTypeCode = node.data.key;
+    }
+</script>

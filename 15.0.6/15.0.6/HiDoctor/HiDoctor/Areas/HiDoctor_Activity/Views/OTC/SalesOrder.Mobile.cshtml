@@ -1,0 +1,82 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="loginUserNameOTC"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div style="clear: both"></div>
+<a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+</a>
+<div style="clear: both"></div>
+
+<div data-role="header" data-mini="true" data-theme="b">
+    <a data-role="button" href="#page1" data-icon="home" data-iconpos="notext"
+        class="ui-btn-right" onclick="fnGoToOTC()"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Sales Order - Customer Selection
+        </h5>
+    </div>
+</div>
+
+<div data-role="content" data-theme="d">
+
+    <div class="dvSOsub" id="rbCustomerEntity">
+    </div>
+
+
+    <div class="dvSOsub" id="dvMyCustList" style="display: none;">
+        <div data-role="content">
+            <div data-role="fieldcontain">
+                <label for="ddlMyCustList" style="display: block; -webkit-padding-start: 2px; -webkit-padding-end: 2px; font-size: 16px !important;">
+                    Customer List:
+                </label>
+                <select id="ddlMyCustList" name="myCustList" data-theme="b" data-mini="true" onchange="fnAssignSalesUserName();">
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="dvSOsub">
+        <div data-role="content">
+            <div data-role="fieldcontain">
+                <label for="txtCustSelection" style="display: block; -webkit-padding-start: 2px; -webkit-padding-end: 2px; font-size: 16px !important;">
+                    Customer Name
+                </label>
+                <input name="custName" id="txtCustSelection" placeholder="Enter atleast 3 characters"
+                    value="" type="search">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="dvSOsub">
+        <div data-role="content">
+            <input id="btnSearchCust" type="button" data-theme="b" data-icon="search"
+                data-iconpos="left" value="Search" data-mini="true" onclick="fnCustomerSearch();">
+        </div>
+    </div>
+
+    <div class="dvSOsub" id="dvSearchCustList">
+    </div>
+
+
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var sPersonName_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#loginUserNameOTC').html(loginUserName_g);
+        fnLoadSaleOrderCustomerSelection();
+        //fnGetNotification();
+        //fnGetChildUsers();
+    });
+
+    function fnAssignSalesUserName() {
+
+        sPersonName_g = $("#ddlMyCustList :selected").text();
+    }
+
+</script>
+

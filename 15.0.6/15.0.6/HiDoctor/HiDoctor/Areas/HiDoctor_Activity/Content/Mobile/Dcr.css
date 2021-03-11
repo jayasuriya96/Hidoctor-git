@@ -1,0 +1,12 @@
+﻿
+#drpAccompanist_DNUM {
+    display:block;
+    width:100px;
+}
+
+
+@media only screen and (max-width : 767px) {
+    #drpAccompanist_DNUM, .ui-btn.ui-shadow.ui-btn-corner-all.ui-mini.ui-btn-icon-right.ui-btn-up-c  {
+        width: 247px !important;
+    }
+}

@@ -1,0 +1,416 @@
+﻿@{
+    ViewBag.Title = "TasksView";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        color: #ffffff;
+        background-color: #428bca;
+    }
+</style>
+
+<div style="margin-left: 1%;padding-top: 5px;color: #265685;font-size: 20px;">
+    <h2>Tasks View</h2>
+</div>
+<div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top MYTasks">
+            <a href="#MyTasks" data-toggle="tab"><b>Tasks Assigned To Me</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top taskByME">
+            <a href="#TasksByMe" data-toggle="tab" id="tasksassgnbyme"><b>Tasks Assigned By Me</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top MyFollowUp">
+            <a href="#FollowUpByMe" data-toggle="tab" id="followuptome"><b> My Follow up</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top FollowUpByMe">
+            <a href="#followupteam" data-toggle="tab" id="teamfollowup"><b>Team Follow up </b></a>
+        </li>
+    </ul>
+    @*assigned to me*@
+    <div class="tab-content">
+        <div class="tab-pane active" id="MyTasks">
+            <div class="dvSubDetails">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12" id="myheader">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="col-xs-6">
+                                </div>
+                                <div class="col-xs-6" style="padding-top: 20px;float:right;">
+                                    <b>Status:</b>
+                                    <select id="myfiltertsks" style="width:78%;text-align:left;" onchange="fnFilterMyTasks(this.value);">
+                                        <option maxlength="25" value="4" style="text-align:left;">All</option>
+                                        <option maxlength="25" value="1" style="text-align:left;">Open</option>
+                                        <option maxlength="25" value="2" style="text-align:left;">In Progress</option>
+                                        <option maxlength="25" value="3" style="text-align:left;">Completed</option>
+                                        <option maxlength="25" value="0" style="text-align:left;">Reviewed</option>
+                                        <option maxlength="25" value="5" style="text-align:left;">Re Open</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px; padding:20px;">
+                    <div class="col-xs-12" id="MyTaskData">
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*assigned by me*@
+        <div class="tab-pane active" id="TasksByMe">
+            <div class="dvSubDetails2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12" id="headerbyme">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-6">
+
+                                    </div>
+                                    <div class="col-xs-6" style="padding-top: 20px;float:right;">
+                                        <b>Status:</b>
+                                        <select id="filtertsksteam" style="width:78%;text-align:left;" onchange="fnFilterTeamTasks(this.value);">
+                                            <option maxlength="25" value="4" style="text-align:left;">All</option>
+                                            <option maxlength="25" value="1" style="text-align:left;">Open</option>
+                                            <option maxlength="25" value="2" style="text-align:left;">In Progress</option>
+                                            <option maxlength="25" value="3" style="text-align:left;">Completed</option>
+                                            <option maxlength="25" value="0" style="text-align:left;">Reviewed</option>
+                                            <option maxlength="25" value="5" style="text-align:left;">Re Open</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 15px; padding:20px;">
+                <div class="col-xs-12" id="TaskDataByMe">
+                </div>
+            </div>
+        </div>
+        @*my follow up*@ 
+        <div class="tab-pane active" id="FollowUpByMe">
+            <div class="dvSubDetails3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12" id="followheaderbyme">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-6">
+
+                                    </div>
+                                    <div class="col-xs-6" style="padding-top: 20px;float:right;">
+                                        <b>Status:</b>
+                                        <select id="filterfollteam" style="width:78%;text-align:left;" onchange="fnFilterMyFollowUps(this.value);">
+                                            <option maxlength="25" value="4" style="text-align:left;">All</option>
+                                            <option maxlength="25" value="1" style="text-align:left;">Open</option>
+                                            <option maxlength="25" value="2" style="text-align:left;">In Progress</option>
+                                            <option maxlength="25" value="3" style="text-align:left;">Completed</option>
+                                            @*<option maxlength="25" value="0" style="text-align:left;">Reviewed</option>
+                                                <option maxlength="25" value="5" style="text-align:left;">Re Open</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 15px; padding:20px;">
+                <div class="col-xs-12" id="FollowDataByMe">
+                </div>
+            </div>
+        </div>
+        @*team followup*@
+        <div class="tab-pane active" id="followupteam">
+            <div class="dvSubDetails3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12" id="followheaderteam">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-6">
+
+                                    </div>
+                                    <div class="col-xs-6" style="padding-top: 20px;float:right;">
+                                        <b>Status:</b>
+                                        <select id="filterfollowsteam" style="width:78%;text-align:left;" onchange="fnFilterTeamFollowUps(this.value);">
+                                            <option maxlength="25" value="4" style="text-align:left;">All</option>
+                                            <option maxlength="25" value="1" style="text-align:left;">Open</option>
+                                            <option maxlength="25" value="2" style="text-align:left;">In Progress</option>
+                                            <option maxlength="25" value="3" style="text-align:left;">Completed</option>
+                                            @*<option maxlength="25" value="0" style="text-align:left;">Reviewed</option>
+                <option maxlength="25" value="5" style="text-align:left;">Re Open</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 15px; padding:20px;">
+                <div class="col-xs-12" id="FollowDatateam">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ChangeStatus" style="display:none">
+</div>
+
+<div id="ModalTaskView" class="modal fade" role="dialog" style="display:none;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="fnClearInputs();">&times;</button>
+                <h4 class="modal-title">Detailed View</h4>
+            </div>
+            <div class="modal-body" id="DetailsViewbody" style="width:100%;overflow: auto;">
+                <div id="taskdata">
+                    @*<div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <p><span type="hidden" style="font-weight:bold;display:none;" >Task Id</span></p>
+                                </div>
+                                <div class="col-xs-1">
+                                    <p><span style="text-align:center;display:none;"><label>:</label></span></p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p><span  id="TaskId" style="display:none;"></span></p>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Task Name</span></p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p><span style="text-align:center;"><label>:</label></span></p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p><span style="white-space: normal;word-wrap: break-word;" id="tskName"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Task Description</span></p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p><span style="text-align:center;"><label>:</label></span></p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p><span style="white-space: normal;word-wrap: break-word;" id="tskDescrtn"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Assigned To(User Name)</span></p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p><span style="text-align:center;"><label>:</label></span></p>
+                            </div>
+                            <div class="col-xs-6"><p><span id="AssgnTo"></span></p> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Assigned By(User Name)</span></p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p><span style="text-align:center;"><label>:</label></span></p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p><span id="AssgnBy"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><p><span style="font-weight:bold;">Assigned On</span></p></div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span id="AssgnOn"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Due Date</span></p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p><span style="text-align:center;"><label>:</label></span></p>
+                            </div>
+                            <div class="col-xs-6"><p><span id="DueDate"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row" id="tskclsdon" style="display:none;">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Completed On</span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span id="ClosedOn"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row" id="reviewedstat" style="display:none;">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Status</span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span id="Status"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row" id="remrks" style="display:none;">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;"><b>Remarks</b></span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span style="white-space: normal;word-wrap: break-word;" id="rmrks"></span></p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="Statusdrpdwn">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Status</span></p>
+                        </div>
+                        <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                        <div class="col-xs-6">
+                            <select id="Statusfiltertsks" style="width:45%;text-align:left" onchange="fnChange(this.value);">
+                                <option maxlength="25" value="5" style="text-align:left;">Re-Open</option>
+                                <option maxlength="25" value="1" style="text-align:left;">Open</option>
+                                <option maxlength="25" value="2" style="text-align:left;">In Progress</option>
+                                <option maxlength="25" value="3" style="text-align:left;">Completed</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="remarks" style="display:none;">
+                    <div id="rmkshdr" style="padding-left:19px;">
+                        <b>Remarks:</b>
+                    </div>
+                    <div id="rmksarea" style="margin-left:20px;">
+                        <textarea id="rmrkstxt" rows="4" style="resize:none; width:80%"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;" id="modalActn">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-9" id="updtbtn" style="margin-left:40px;display:none;">
+
+                        </div>
+                        <div class="col-xs-1" id="clsbtn">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnClearInputs();">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="ModalTaskComplete" class="modal fade" role="dialog" style="display:none;">
+        <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Remarks For The Task</h4>
+                </div>
+                <div class="modal-body" id="Remarkbody" style="width:100%;overflow: auto;">
+                    <textarea id="rmrkstxt" rows="4" style="resize:none; width:80%"></textarea>
+                </div>
+                <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnUpdatewithRemarks();">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+
+
+
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/ICETaskView.js"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script>
+
+    var MyTasksList = '';
+    var TeamTasksList = '';
+    var MyFollowupsList = '';
+    var TeamFollowupsList = '';
+
+    $(document).ready(function () {
+        $.unblockUI();
+        AjaxGlobalHandler.Initiate();
+        fnGetUserChildTaskCount();
+        // $('#dvTab').tabs('option', 'selected', 0);
+        fnGetMyTasksByStatus();
+
+        //fnTaskActivePane();
+       
+       
+        $('#filtertsksteam').val(3);
+        $('#myfiltertsks').val(1);
+        $('#filterfollowsteam').val(1);
+        $('#filterfollteam').val(1);
+        $('#dvTab').tabs();
+    });
+    function fnGetUserChildTaskCount() {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: "../HiDoctor_Master/FeedBack/GetChildUserCount",
+            data: "",
+            async: false,
+            success: function (resp) {
+                //console.log(resp);
+                fnHideColumn(resp);
+            }
+        });
+    }
+    function fnHideColumn(resp) {
+        debugger;
+        if (resp != '' & resp != null && resp.length >= 1) {
+            var count = resp[0].Child_Count;
+            if (count == 1) {
+                $('#tasksassgnbyme').hide();
+                $('#teamfollowup').hide();
+            }
+        }
+    }
+    function fnClearInputs() {
+        $('#rmrkstxt').val('');
+    }
+</script>
+
+
+
+

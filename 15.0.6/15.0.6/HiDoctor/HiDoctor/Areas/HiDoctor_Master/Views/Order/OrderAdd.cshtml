@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "OrderAdd";
+    Layout = null;
+}
+
+
+<style>
+.bgGray {
+    background: rgb(243, 243, 243);
+    padding: 16px;
+    border-radius: 3px;
+    color: #000000;
+}
+.trgray  {
+    background: rgba(221, 221, 221, 0.35);
+    border-radius: 0px;
+}
+
+.borderShadow {
+        border-radius: 3px;
+        box-shadow: 0px 40px 20px -40px rgb(133, 133, 133);
+        -webkit-box-shadow: 0px 40px 20px -40px rgb(133, 133, 133);
+    }
+
+table tr.clsRowStockist { height: 20px; }
+
+    #tblStockist {
+width:100%;
+    }
+
+.clsStockistScroll {
+    max-height: 430px;
+    overflow-y: scroll;
+}
+
+#tblStockist tr.odd {
+    background-color: #E2E4FF;
+}
+
+#tblStockist tr.even {
+    background-color: #FFFFFF;
+}
+
+
+    .borderLine:hover {
+    padding: 10px;
+    padding-top: 15px;
+    border: 2px solid #808080;
+    border-radius: 10px;
+    }
+.borderLine {
+    padding: 10px;
+    padding-top: 15px;
+    border-bottom: 2px solid #444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: 2px solid #f3f3f3;
+    }
+
+/*.input-disabled{background-color:#EBEBE4;border:1px solid #ABADB3;padding:2px 1px;}*/
+
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #f8f8f8 !important;
+}
+
+    #dvRegionTree {
+    max-height: 508px;
+    overflow-y: scroll;
+    }
+
+    .txtRight {
+    text-align: right;
+}
+
+    .borderLine:hover {
+    border-color: #66afe9 !important;
+    outline: 0 !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
+}
+
+</style>
+<!-- style="height: 75vh;" this is for dvAddOrderMainContainer -->
+<div class="col-sm-12 clearfix" id="dvAddOrderMainContainer" >
+<button id="btnAddTreeShowHide" class="btn btn-primary" type="button" style="position: absolute;left: -8px;padding: 1px 15px;top: -20px;line-height: 1;border-radius:0px;">&lt;&lt;</button>
+<div class="col-sm-3 col-xs-12 clearfix" style="display:none;" id="dvRegionTreeContainer">
+    <div class="col-xs-12 clearfix" id="dvRegionTree">
+    
+    </div>
+</div>
+
+<div class="col-sm-9 col-xs-12 clearfix" style="display:none;top: -17px;" id="dvAddOrderContainer">
+    <div class="col-xs-12 clearfix">
+
+     <div class="form-group bgGray" style="padding: 5px 25px;">
+      <label for="txtUser" style="float: left;">Favouring User :</label>
+      <input type="text" class="form-control CutPaste" disabled="disabled" id="txtUser" style="width:40% !important;margin-left: 12%;"  placeholder="Select User" />
+      <input type="hidden" id="hdnUserCode"  />
+     </div>
+     <div class="form-group bgGray" style="padding: 5px 25px;">
+      <label for="txtCustomerOrChemist" id="lblCustomerCaption" style="float: left;">Customer Name :</label>
+      <input type="text" class="clsCustomerOrChemist form-control CutPaste" id="txtCustomerOrChemist" style="width:40% !important;margin-left: 12%;"  placeholder="" /> 
+      <input type="hidden" id="hdnCustomerOrChemist"  /> 
+      <input type="hidden" id="hdnOrderStatus" value="1"  /> 
+      <input type="hidden" id="hdnOrderMode" value=""  /> 
+      <input type="hidden" id="hdnOrderNumber" value=""  /> 
+
+<input type="hidden" id="hdnOrder_Date" value=""  /> 
+      <input type="hidden" id="hdnCustomer_Speciality" value=""  /> 
+      <input type="hidden" id="hdnMDL_Number" value=""  /> 
+      <input type="hidden" id="hdnCustomer_Category_Code" value=""  /> 
+
+      <input type="hidden" id="hdnCustomer_Region_Code" value=""  /> 
+      <input type="hidden" id="hdnEditOldStockistCode" value=""  /> 
+     </div>
+    
+     <div class="form-group clsStockistScroll">
+        <table id="tblStockist">
+            
+        </table>
+     </div>
+     
+     <div class="form-group clearfix" style="margin-top: 20px;">
+      <button type="button" class="btn btn-md pull-right" id="btnReset" style="margin-right: 5px; margin-left: 15px;">Reset</button>
+      <button type="button" class="btn btn-md btn-success pull-right" id="btnSubmit">Submit</button>
+     </div>
+     
+    </div>
+</div>
+
+</div>
+
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/OrderAdd.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script  type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvAjaxLoad").hide();
+        OrderAdd.blockUI("dvAddOrderMainContainer");
+        //OrderAdd.defaults.showAccData= fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+        OrderAdd.defaults.stockistCaption= fnGetPrivilegeValue("STOCKIEST_CAPTION_DISPLAY_NAME", "Stockist");
+        OrderAdd.defaults.customerCaption= fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Customer");
+
+        OrderAdd.defaults.showAccData = 'false';
+        OrderAdd.defaults.Child_User_Count= @Html.Raw(Json.Encode(ViewBag.Child_User_Count));
+        OrderAdd.defaults.Current_Date= @Html.Raw(Json.Encode(ViewBag.Current_Date));
+        OrderAdd.defaults.action_Region_Code = @Html.Raw(Json.Encode(ViewBag.action_Region_Code));
+        OrderAdd.defaults.action_User_Name = @Html.Raw(Json.Encode(ViewBag.action_User_Name));
+        OrderAdd.defaults.action_User_Code = @Html.Raw(Json.Encode(ViewBag.action_User_Code));
+        OrderAdd.defaults.login_User_Code = @Html.Raw(Json.Encode(ViewBag.action_User_Code));
+        
+
+        OrderAdd.defaults.OrderMode = @Html.Raw(Json.Encode(ViewBag.OrderMode));
+        if(OrderAdd.defaults.OrderMode != "Add")
+        {
+            OrderAdd.defaults.Order_Id = @Html.Raw(Json.Encode(ViewBag.Order_Id));
+        }
+        setTimeout(function () { OrderAdd.initialize(); }, 50);
+
+    });
+  
+
+
+</script>

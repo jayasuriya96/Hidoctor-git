@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "DcrRequestScreen";
+    Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+
+<style type="text/css">
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    #dvDCRRequest {
+        height: 450px;
+        overflow: scroll;
+    }
+
+        #dvDCRRequest a {
+            color: blue;
+        }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+
+    .mandatory {
+        color: red;
+    }
+
+    .texxtare {
+        height: 30px;
+    }
+
+    #dvEditDCRRequest a {
+        color: blue !important;
+    }
+</style>
+
+<div class="col-lg-12 form-group" id="dvTabs">
+    <ul class="nav nav-pills">
+        <li><a href="#dvNewDCRRequest">New DCR-Request Master</a></li>
+        <li><a href="#dvEditDCRRequest">Edit DCR-Request Master</a></li>
+    </ul>
+    <div id="dvNewDCRRequest">
+        <div id="dataDiv" class="col-lg-9 form-group" style="display: none;">
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Request Category</label><span class="mandatory">*</span>
+                </div>
+                <div class="col-xs-5">
+                    <input type="hidden" id="hdnRequestId" />
+                    <input type="hidden" name="regionCategory" id="hdnRequestCategoryCode" />
+                    <select class="selectboxWidth form-control" id="ddlRequestCategory"></select>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Request Period</label><span class="mandatory">*</span>
+                </div>
+                <div class="col-xs-2">
+                    <input type="text" id="txtFromDate" class='datepicker form-control' />
+                </div>
+                <div class="col-xs-1"><span>to</span></div>
+                <div class="col-xs-2">
+                    <input type="text" id="txtEndDate" class='datepicker form-control' />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Remarks</label><span class="mandatory">*</span>
+                </div>
+                <div class="col-xs-5">
+                    <textarea style="padding-right: 5px; height: 60px !important;" id="txtRemarks" name="Remarks" class='form-control' rows="5" cols="40"></textarea>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <input type="button" id="btnSave" onclick="fnsubmitRequest();" value="Submit" class="btn btn-primary"></input>
+                <input type="hidden" name="Update" value="I" id="hdnMode" />
+                <input type="button" id="btnReset" value="Reset" onclick="fnClearAllRequest();" class="btn btn-primary"></input>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+    <div id="dvEditDCRRequest">
+        @Html.ActionLink("Download DCR_Request details", "PutDCRRequestScreenintoExcel")      
+        <div id="dvDCRRequest" class="table-responsive form-group" style="clear: both;">
+        </div>
+    </div>
+</div>
+
+<div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 500px; min-height: 300px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000; overflow: auto;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">       
+        <span style="float: right; cursor: pointer; color: white;margin-top:-15px;margin-right:-25px;" onclick="$('#dvOverlay').overlay().close();">
+            <img src="~/Images/close.png" />
+        </span>
+        <h2 id="popheader" class="popheader"></h2>
+        <div id="divModel" style="height: 500px; overflow: auto">
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RequestMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            $("#dvOverlay").overlay().load();
+            $("#dvTabs").tabs();
+            fnGetRegionCategoryName();
+            fnGetDCRRequestScreen();
+            $('#dataDiv').show();
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>
+
+
+

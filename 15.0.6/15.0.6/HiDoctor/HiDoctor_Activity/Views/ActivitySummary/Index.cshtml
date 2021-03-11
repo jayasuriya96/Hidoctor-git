@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class="mainDiv2">
+    <div style="float: left; width: 100%;  margin:0px auto;" id="divAct">
+    </div>
+    <div style="float: left; width: 100%;margin:0px auto;" id="divMissed">
+    </div>
+    <div class="dvErrorMessage">Note: Above figuers are based on approved dcr. </div>
+    <div style="clear:both"></div>
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/InstantReport.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+       // GetActivitySummary(@Html.Raw(Json.Encode(ViewBag.dcrDate)),@Html.Raw(Json.Encode(ViewBag.today)));
+    });
+</script>

@@ -1,0 +1,280 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    #dvEntityDetails {
+        height: 350px;
+        overflow: auto;
+    }
+
+    #dvDocEntityDetails {
+        height: 350px;
+        overflow: auto;
+    }
+
+    #dvDoctor {
+        height: 350px;
+        overflow: auto;
+    }
+
+    .dvTitleHeader {
+        font-weight: bold;
+        font-size: 14px;
+        padding-top: 1%;
+        background-color: #efefef;
+    }
+
+    #dvEditDivision a {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    #dvDivisionMapping a {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+     .fixed { 
+        position:fixed; 
+        top:0; 
+        left:0;
+
+     }
+input[type='radio'] {
+    -webkit-appearance:none;
+    width:15px;
+    height:15px;
+    border:1px solid grey;
+    border-radius:100%;
+    outline:none;
+}
+input[type='radio']:hover {
+    box-shadow:0 0 5px 0px blue inset;
+}
+input[type='radio']:before {
+    content:'';
+    display:block;
+    width:60%;
+    height:60%;
+    margin: 20% auto;    
+    border-radius:50%;    
+}
+input[type='radio']:checked:before {
+    background:blue;
+}
+    .radio-inline #pharma, .radio-inline #otc
+    {
+      float: left;
+    margin-left: -20px;
+    margin-top: -3px;       
+}
+
+    #division
+    {
+    margin-top: -9px;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvRightPanel">
+        <ul class="nav nav-tabs">
+            <li id="newDivision"><a href="#dvInsertDivision">New Division</a></li>
+            <li id="editDivision"><a href="#dvEditDivision">Edit Division</a></li>
+            <li id="divisionEntityMapping"><a href="#dvDivisionMapping">Division Entity Mapping</a></li>
+        </ul>
+        <div id="dvInsertDivision" class="form-group">
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Division Name</label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <input type="text" id="txtDivisionName" class="input large" maxlength="30" onblur="fnValidateDivisionName();" />
+                    <input type="hidden" id="hdnDivisionCode" />
+                    <input type="hidden" id="hdnMode" value="INSERT" />
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Division Line of Business</label>
+                </div>
+                <div class="col-lg-10 form-group" id="radiobutton">
+                    <div class="radio-inline">
+                        <input type="radio" id="pharma" name="Pharmaotc" value="1" checked /> <label id="division">Pharma </label>
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" id="otc" name="Pharmaotc" value="2" /> <label id="division">OTC / FMCG </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <input type="button" class="btn btn-primary btn-sm" onclick="fnSubmit();" value="Submit" />
+                <input type="button" class="btn btn-primary btn-sm" onclick="fnClearAll();" value="Cancel" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvEditDivision" class="col-lg-12 form-group">
+            <div id="dvDivision" class="table-responsive"></div>
+        </div>
+        <div id="dvDivisionMapping">
+            <div id="dvEntity" class="table-responsive"></div>
+        </div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvEntityMapping">
+    <a class="overlayclose" onclick="$('#dvEntityMapping').overlay().close();"></a>
+    <div class="col-lg-12 form-group dvTitleHeader">
+        <div class="col-lg-12">
+            <div class="col-lg-3">Division Name : </div>
+            <div class="col-lg-9" id="dvSelectedDivName"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-3">Entity Name : </div>
+            <div class="col-lg-9" id="dvSelectedEntityName"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+    <div class="col-lg-12 form-group" id="dvEntityDetails">
+    </div>
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+</div>
+<div class="simple_overlay" id="dvDoctorEntityMapping">
+    <a class="overlayclose" onclick="$('#dvDoctorEntityMapping').overlay().close();"></a>
+    <div class="col-lg-12 form-group dvTitleHeader">
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-3">Division Name : </div>
+            <div class="col-lg-9" id="dvDocSelectedDivName"></div>
+        </div>
+
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-3">Entity Name : </div>
+            <div class="col-lg-9" id="dvDocSelectedEntityName"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+    <div class="col-lg-12 form-group">
+        <div class="col-lg-12">
+            <div class="col-lg-3"><a onclick="fnHideDoctorTree();" id="dvDocTree">Hide Tree</a></div>
+            <div id="dvDocRegion" class="col-lg-9"></div>
+        </div>
+        <div class="col-lg-12 form-group" id="dvDocEntityDetails">
+        </div>
+        <div class="col-lg-12 form-group" id="dvDoctor" style="display: none;"></div>
+    </div>
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+</div>
+
+<input type="hidden" id="hdnEntity" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Division.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="javascript">
+    var selectedUserCodes, selectedRegionCodes;
+    var getusertypename_g="";
+    var User_Code_G_K = "";
+    var Region_Code_G_K ="";
+
+    $(document).ready(function () {
+    debugger;
+        AjaxGlobalHandler.Initiate();
+        getusertypename_g=@Html.Raw(Json.Encode(ViewBag.getusertypename));
+        CompanyCode_g = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        UserName_g = @Html.Raw(Json.Encode(ViewBag.UserName));
+        User_Code_G_K = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        Region_Code_G_K = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+
+
+        $(document).ajaxStop($.unblockUI);
+        $("#dvRightPanel").tabs();
+        $("#dvEntityMapping").overlay().load();
+        $("#dvDoctorEntityMapping").overlay().load();
+        fnGetDivisions();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRegionTreeActivate(node) {
+        $("#dvDocEntityDetails").hide();
+        $("#dvDocTree").html('Show Tree');
+        $("#dvDoctor").show();
+        //$("#dvDoctor").removeClass("col-lg-6");
+        //$("#dvDoctor").addClass("col-lg-12");
+        fnGetDoctors();
+    }
+    function fnHideDoctorTree() {
+        if ($("#dvDocTree").html() == "Show Tree") {
+            $("#dvDocEntityDetails").show();
+            $("#dvDocTree").html('Hide Tree');
+            $("#dvDoctor").hide();
+        }
+        else {
+            $("#dvDocEntityDetails").hide();
+            $("#dvDocTree").html('Show Tree')
+            $("#dvDoctor").show();
+        }
+    }
+    function fnRegionTreePostInit(node) {
+        debugger;
+        if (entityDetails_g != '' && entityDetails_g != undefined && $("#hdnEntity").val() != "DOCTOR") {
+            $("#dvEntityDetails").dynatree("getRoot").visit(function (node) {
+                var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                if (disJson != false && disJson != undefined) {
+                    node.select(true);
+                }
+            });
+        }
+    }
+    function fnRegionTreeSelect(select, node) {
+        debugger;
+        selectedRegionCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreeNodeClick(node) {
+        debugger;
+    }
+    function fnUserTreeSelect(select, node) {
+        debugger;
+        selectedUserCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreePostInit(node) {
+        debugger;
+        if (entityDetails_g != '' && entityDetails_g != undefined) {
+            $("#dvEntityDetails").dynatree("getRoot").visit(function (node) {
+                var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                if (disJson != false && disJson != undefined) {
+                    node.select(true);
+                }
+            });
+        }
+    }
+
+
+</script>
+

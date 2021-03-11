@@ -1,0 +1,816 @@
+﻿@{
+    ViewBag.Title = "DCRApproval";
+    Layout = null;
+}
+
+<style>
+    #tblDCRApproval {
+        border: 1px solid #76787A;
+        background-color: darkgray;
+        font-size: 16px;
+        font-weight: 100;
+    }
+
+    #divUserInfo ul li {
+        list-style: none;
+        list-style-type: none;
+        padding-left: 5%;
+        padding-top: 1%;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    #divUserInfo a :hover {
+        text-decoration: underline;
+    }
+
+    #divUserInfo {
+        height: 530px !important;
+        overflow: scroll;
+        border-left: 2px solid #ddd;
+        border-top: 1px solid #ddd;
+    }
+
+    #divUserHeader {
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: double;
+    }
+
+    #dvUserPopup {
+        padding-top: 5px;
+        padding-right: 10px;
+        display: none;
+        width: 537px;
+        height: 600px;
+        border: 4px solid rgb(204, 204, 204);
+        overflow: scroll;
+        background-color: rgb(255, 255, 255);
+        left: 46%;
+        z-index: 9999;
+        top: 50%;
+        margin-top: -293.5px;
+        margin-left: -191px;
+        position: fixed;
+        cursor: pointer;
+    }
+
+
+    .dataTables_wrapper {
+        min-height: 5px;
+        padding-bottom: 5px;
+    }
+
+    table.display thead th {
+        line-height: 14px;
+        background: url(/Areas/HiDoctor_Activity/Content/images/Web/hd/thead.png) no-repeat;
+    }
+
+    #divMain {
+        background: #EEEEEE !important;
+    }
+
+    .box {
+        box-shadow: 1px 1px 1px rgb(204, 204, 204);
+    }
+
+    .hyperlink {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .accHeaderTable {
+        width: 99%;
+        margin-bottom: 5px;
+    }
+
+    .accDocDetail, .DocDetailProduct {
+        width: 98%;
+        border: 1px solid #666666;
+        margin: 5px;
+    }
+
+
+        .accDocDetail thead, .DocDetailProduct thead {
+            background: #888888;
+            color: #fff;
+            padding: 3px;
+            text-align: left;
+        }
+
+
+        .accDocDetail td, .DocDetailProduct td {
+            border-right: 1px solid #666666;
+            border-top: 1px solid #666666;
+            padding: 3px;
+        }
+        #backgroundPopup_XYZ_20110418_Custom
+        {
+            z-index:0 !important;
+        }
+
+    #divDCR {
+        overflow: auto;
+        white-space: nowrap;
+    }
+
+    /****Added for loading image*/
+    #modal {
+        z-index: 0 !important;
+    }
+
+    .clsLegend {
+        font-weight: bold;
+    }
+    .addzindex{
+        z-index:0 !important;
+    }
+    .removezindex{
+        z-index:16 !important;
+    }
+    /*#dvReportTwo
+    {
+        z-index:0 !important;
+    }*/
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+<div>
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+             onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+             style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div id="divPendingApproval" style="display: none; margin-left: 1%; padding: 2%">
+        <span id="PendingApproval" style="color: red; background-color: white; font-weight: bold"></span>
+    </div>
+    <div id="dvMonth" class="col-lg-4 table-responsive treebg">
+        <div class="col-lg-12">
+            <table id="tblDCRApproval" class="table table-bordered">
+                <tr>
+                    <td>
+                        <span style="float: right">Month/Year</span>
+                    </td>
+                    <td>
+                        <input id="txtMonth" style="width: 70%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right">Status</span>
+                    </td>
+                    <td>
+                        <select id="ddlStatus">
+                            <option value="1^">Applied</option>
+                            <option value="2^">Approved</option>
+                            <option value="0^">Unapproved</option>
+                            <option value="0^1^2^">All</option>
+                        </select>
+                        <input type="hidden" id="hdnUserCodeApproval" />
+                        <input type="hidden" id="hdnStatus" />
+                        <input type="hidden" id="hdnMonth" />
+                        <input type="hidden" id="hdnMode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right">Mode</span>
+                    </td>
+                    <td>
+                        <select id="ddlMode">
+                            <option value="F">Field</option>
+                            <option value="A">Attendance</option>
+                            <option value="L">Leave</option>
+                            <option value="ALL" selected="selected">All</option>
+                        </select>
+
+                        <input type="hidden" id="hdnStatusName" />
+                        <input type="hidden" id="hdnModeName" />
+                        <input type="hidden" id="hdnUserName" />
+                        <input type="hidden" id="hdnRegionCode"/>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right;">Division</span>
+                    </td>
+                    <td>
+                        <select id="ddlDivision" style="width: 76%;"></select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><span style="float: right">User Selection</span></td>
+                    <td>
+                        <select id="ddlSelection">
+                            <option value="M">My Direct Reporting Users</option>
+                            <option value="A">All Reporting Users</option>
+                        </select>
+                        <button id="btnGo" type="button" class="btn btn-primary" onclick="fnGetUsers();">Go</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="tree" class="col-lg-12">
+            <div id="divIndication" style="display: none;">The list does not include users who have not entered DCR for the chosen month, mode and status filters.</div>
+            <div class="dv-controls-load" id="divloading" style="display: none;">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading users
+            </div>
+            <div id="divUserHeader" style="display: none;">
+                User Information : <a onclick="fnShowUserTree();" style="cursor: pointer;" title="Show Hierarchy for reference purpose only, not mandatory to click">Show user hierarchy</a>
+            </div>
+            <div id="divUserInfo" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+    <div id="dataDiv" class="col-lg-8 table-responsive">
+        <div id="dvLegend">
+        </div>
+        <br />
+        <div class="page-header">
+            <h3 id="spnName"></h3>
+        </div>
+
+        <div id='divDCR'>
+        </div>
+        <div style="clear: both">
+        </div>
+        <br />
+        <div id="dv-buttons" style="display: none">
+            <input type="button" value="Approve" class="btn small primary" id="btnbulkapprove" onclick="fnBulkApprove(2);" />
+            <input type="button" value="Unapprove" class="btn small primary" id="btnbulkunapprove" style="margin-left: 10px;" onclick="fnBulkApprove(0);" />
+            <input type="hidden" id="hdnCurrentDate" />
+            <input type="hidden" id="hdnUserSelection" />
+        </div>
+        <br/>
+        <div id="dvNote" style="display:none">
+            <label>
+                <bold>NOTE :</bold>
+                If Leave Policy is enabled for the selected User Type, then please go to DCR Leave Approval Screen to Approve/Unapprove Leave Type DCR.
+            </label>
+        </div>
+    </div>
+
+</div>
+
+<div id="dvReportTwo" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: -390px; width: 90%; height: 600px; overflow: auto; left: 33%; top: 40%; margin-top: -240px; position: fixed; overflow: auto;">
+    <span style="float: right; cursor: pointer" onclick="$('#dvUserPerDay').empty();HideModalPopup('dvReportTwo');">X</span>
+    <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DCR Approval </h2>
+    @*<div id="divDates" style="width: 100%"></div>*@
+    <div class="dv-controls-load" id="divloadingSub" style="display: none;">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+        Loading DCR Approval .....
+    </div>
+    <div id="divuserperday" style="padding-bottom: 5px; display: none">
+        <div id="divPageHeader">
+            <div id="dvLoading" style="display: none;">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading ....
+            </div>
+            <div id="dvUserPerDayCont" style="width: 100%; margin: 0px auto; padding-left: 5px; padding-right: -5px;">
+            </div>
+            <div id="divRating" style="margin-left: 0px"></div>
+            <div style="clear: both">
+            </div>
+            <div style="margin-left: 40%">
+                <div>
+                    <textarea id="txtRatingRemarks" style="height: 50px; width: 250px" placeholder="Type the Rating remarks here.." maxlength='500' onblur='return fnCheckRemarksSpecialCharforDCRinBlurfun(this);'></textarea>
+                </div>
+                <div>
+                    @*<textarea id="txtReason" class="clstxtReason" style="height: 50px; width: 250px ;margin-top: 10px;" maxlength='500' placeholder="Remarks is Mandatory, in case of Unapproval" onblur='return fnCheckRemarksSpecialCharforDCRinBlurfun(this);'></textarea>*@
+                    <textarea id="txtReason" class="clstxtReason" style="height: 50px; width: 250px ;margin-top: 10px;" maxlength='500' placeholder="Remarks is Mandatory, in case of Unapproval"></textarea>
+                    <input type="hidden" id="hdnSingle" />
+                </div>
+                <div style="clear: both">
+                </div>
+                <br />
+                <div id="dv-buttonsTwo">
+                </div>
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <div class="simple_overlay" id="udvOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Accompanist Visit Details</span>
+            </div>
+
+            <div id="udivAccDocDetail" style="height: 500px; overflow: scroll;margin-left: 8px;">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td>User Name</td>
+                        <td><span id="spnuserName"></span></td>
+                        <td>Employee Name</td>
+                        <td><span id="spnpEmpName"></span></td>
+                        <td>Region Name</td>
+                        <td><span id="spnRegionName"></span></td>
+                    </tr>
+                    <tr>
+                        <td>DCR Date</td>
+                        <td><span id="spnDCRDate"></span></td>
+                        <td>DCR Type</td>
+                        <td><span id="spnDCRType"></span></td>
+                        <td>DCR Status</td>
+                        <td><span id="uspnpDCRStatus"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Work Place</td>
+                        <td><span id="spnWorkPlace"></span></td>
+                        <td>Division Name</td>
+                        <td id="tddivisionName"></td>
+                        <td>Entered Date</td>
+                        <td><span id="spnDCRentedDate"></span></td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="simple_overlay" id="dvDetailedProductOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Detailed Products</span>
+            </div>
+            <div id="divDetailPrdDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td>User Name</td>
+                        <td><span id="spnduserName"></span></td>
+                        <td>Employee Name</td>
+                        <td><span id="spndEmpName"></span></td>
+                        <td>Region Name</td>
+                        <td><span id="spndRegionName"></span></td>
+                    </tr>
+                    <br />
+                    <tr>
+                        <td>Doctor Name</td>
+                        <td><span id="spndDocName"></span></td>
+                        <td>MDL No</td>
+                        <td><span id="spndMDL"></span></td>
+                        <td>Specialty</td>
+                        <td><span id="spndSpeciality"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td><span id="spndCategory"></span></td>
+                        <td>Division Name</td>
+                        <td><span id="spnDivisionname"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="simple_overlay" id="dvAccOverLay">
+            <div class="popUpTitle" style="height: 45px; text-align: center;">
+                <span id="doc_details" style="font-size: 13px;"></span>
+            </div>
+
+            <div id="divAccDocDetail_Call" style="height: 500px; overflow: scroll">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvPopup" style="padding-top: 5px; padding-right: 10px; display: none; width: 400px; height: 350px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('dvPopup'); return false;">X</span>
+    <div id="divdetailsTable" style="width: 100%">
+    </div>
+</div>
+
+<div id="dvUserPopup">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('dvUserPopup'); return false;">X</span>
+    <div id="popTree" style="width: 100%">
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvDCRHistory">
+    <div style="font-size: 20px">
+        DCR-Approval History
+    </div>
+    <hr />
+    <div id="dvDCRHistorydetails" style="width: 98%; height: 420px">
+        2147483700 !important
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvDCRTP">
+    <!-- image details -->
+    <div class="details" style="overflow: auto">
+        <div style="font-size: 20px">
+            TP Header Details
+        </div>
+        <div style="clear: both;"></div>
+        @*
+            <hr />
+        *@
+        <div id="dvTPdetails" style="width: 98%; height: 420px">
+        </div>
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvPopupLeave" style="z-index:99999999999;">
+    <div id="tblleavepopup" style="width: 98%; height: 420px">
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvExpense" style="z-index:99999999999;min-height: 435px !important;width: 600px !important; "">
+    <div id="tblexpense" style="width: 98%; height: 400px;text-align: center;margin-top: 10%;">
+    </div>
+</div>
+
+<div id="dvloadingDCR" style="display: none; left: 50%; z-index: ; top: 50%; margin-top: -10.5px; margin-left: -39.5px; position: fixed; background-color: gray">
+    <img src="../../Content/images/loading.gif">
+</div>
+
+
+<!-- OverylaY PopUp for POB  -->
+
+<div class="modal" id="dvMoreInfoModal" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvMoreInfoModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title clsModalTitle" id="dvMoreInfoHeader"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvInfoContent">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mySurveyViewModal" role="dialog" style="display: none;margin: 0px !important;top: 91.4px !important;left: 13% !important;position: fixed;width: 96%;">
+    <div class="Survey" style="width:1059px;">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body" id="surveyviewbody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 88%;" onclick="fnsurveyresponseclose();">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="dvCME" role="dialog" style="display: none;margin: 0px !important;top: 91.4px !important;left: 13% !important;position: fixed;width: 96%;">
+    <div class="Survey" style="width:900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body" id="dvCMEDetails">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 88%;" onclick="fnCMEclose();">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+             <!-- Digital Signature  -->
+
+
+<div class="modal" id="udvOverLaydg">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"style="padding-left: 150px;">Digital Signature</h4>
+                <button type="button" class="close" id="closemodel" onclick="$('#udvOverLaydg').hide();">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height: 350px;overflow:auto;">
+                <div id="showImage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dvDR" role="dialog" style="display: none;margin: 0px !important;top: 91.4px !important;left: 13% !important;position: fixed;width: 96%;">
+    <div class="Dietreport" style="width:1059px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvDR');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title clsModalTitle" id="dvMoreInfoHeader">Dietician Reporting</h4>
+            </div>
+            <div class="modal-body" style="overflow-y:scroll;height:500px;">
+                <div class="col-lg-12 cls-padding-none" id="dvDRdetails" style="padding: 0px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/SurveyCoreREST.js"></script>
+@*<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js"></script>*@
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script type="text/javascript">
+    var unApprovalNeeded_g = "", bulkApprovalneeded_g = "";
+    var unApprovallockCheck_g = "";
+    var Company_Code="";
+    var recon_Status="1";
+    var CompanyId="";
+    var accKey="";
+    $(document).ready(function () {
+        $('#divPageHeader').html("DCR Approval [Alt+6]");
+        $('#dvloadingDCR').hide();
+        AjaxGlobalHandler.Initiate();
+        Company_Code=@Html.Raw(Json.Encode(ViewBag.Company_Code));
+        Region_Code=@Html.Raw(Json.Encode(ViewBag.Region_Code));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        accKey=@Html.Raw(Json.Encode(ViewBag.accKey));
+        try {
+            // fnmanagerApprovalPrivilage();
+            $("#dvTree").show();
+            $("#dv-buttons").hide();
+            $('#txtMonth').monthpicker();
+            var monthName = fnMonthName();
+            $("#txtMonth").val(monthName + '-' + curdate.split('.')[2]);
+            fnsetPrivilegeValues();
+            fnGetDivisions();
+            $("#udvOverLay").overlay().load();
+            $("#dvDCRHistory").overlay().load();
+            $("#dvAccOverLay").overlay().load();
+            $("#dvAjaxLoad").hide();
+            $("#dvDCRTP").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            //myFunction();
+
+
+            // Pop Modal
+            $("#dvMoreInfoModal").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnMonthName() {
+        var month = new Array(12);
+        month[1] = "Jan";
+        month[2] = "Feb";
+        month[3] = "Mar";
+        month[4] = "Apr";
+        month[5] = "May";
+        month[6] = "Jun";
+        month[7] = "Jul";
+        month[8] = "Aug";
+        month[9] = "Sep";
+        month[10] = "Oct";
+        month[11] = "Nov";
+        month[12] = "Dec";
+        return month[parseInt(curdate.split('.')[1])];
+    }
+
+    function fnGetDivisions() {
+        $.ajax({
+            type: 'post',
+            url: '../HiDoctor_Master/Approval/GetDivisions',
+            data: 'A',
+            success: function (jsData) {
+                if (jsData != null && jsData != '' && jsData != undefined) {
+                    var jsonResult = eval('(' + jsData + ')');
+                    if (jsonResult.length > 0) {
+                        var selectcolumn = $("#ddlDivision");
+                        for (var s = 0 ; s < jsonResult.length; s++) {
+                            selectcolumn.append("<option value=" + jsonResult[s].Division_Code + ">" + jsonResult[s].Division_Name + "</option>");
+                        }
+                        selectcolumn.append("<option value='ALLDIV' selected='selected'>ALL</option>");
+                    }
+                }
+
+            },
+            error: function () {
+                fnMsgAlert("Get Divisions failed.");
+            }
+        });
+    }
+
+    function fnGetUsersSub() {
+
+        $("#divloading").show();
+        $("#divIndication").hide();
+        $("#divUserInfo").html("");
+        $("#divUserHeader").hide();
+        $("#divUserInfo").hide();
+        if ($("#txtMonth").val() == "") {
+            fnMsgAlert('error', 'Error', 'Please select Month & Year');
+            return false;
+        }
+
+        $("#dv-buttons").hide();
+        $("#divDCR").html("");
+        //get the all users from tree
+        var userCodes = "";
+        var month = "";
+        var year = "";
+
+        month = fngetMonthNumber($('#hdnMonth').val().split('-')[0]);
+        year = $('#hdnMonth').val().split('-')[1];
+        var flag = $('#hdnMode').val();
+        var dcrstatus = $('#hdnStatus').val();
+
+        var selectedDivisionCode = $('#ddlDivision option:selected').val();
+        var userSelection = $('#hdnUserSelection').val();
+
+        //get the applied users
+        $.ajax({
+            type: "POST",
+            url: 'Approval/GetDCRSelectedUsers',
+            data: 'month=' + month + '&year=' + year + '&dcrStatus=' + dcrstatus + '&dcrFlag=' + flag + '&selection=' + userSelection + '&divisionCodes=' + selectedDivisionCode,
+            success: function (result) {
+                if (result != "") {
+                    $("#divUserInfo").html(result);
+                    $("#divUserHeader").show();
+                    $("#divUserInfo").show();
+                    $("#divloading").hide();
+                    $("#divIndication").show();
+                }
+                else {
+                    $("#divloading").hide();
+                }
+            }
+        });
+    }
+
+    function fnGetUsers() {
+        $("#divloading").show();
+        $("#divIndication").hide();
+        $("#divUserInfo").html("");
+        $("#divUserHeader").hide();
+        $("#divUserInfo").hide();
+        $("#divPendingApproval").hide();
+        if ($("#txtMonth").val() == "") {
+            fnMsgAlert('error', 'Error', 'Please select Month & Year');
+            return false;
+        }
+
+        $("#dv-buttons").hide();
+        $("#divDCR").html("");
+        $("#spnName").html("");
+        $("#dvLegend").html("");
+        //get the all users from tree
+        var userCodes = "";
+        var month = "";
+        var year = "";
+
+
+        month = fngetMonthNumber($('#txtMonth').val().split('-')[0]);
+        year = $('#txtMonth').val().split('-')[1];
+
+        var flag = $("#ddlMode option:selected").val();
+        var dcrstatus = $("#ddlStatus option:selected").val();
+
+        $('#hdnMonth').val($('#txtMonth').val());
+        $('#hdnMode').val(flag);
+        $('#hdnStatus').val(dcrstatus);
+
+        $('#hdnStatusName').val($("#ddlStatus option:selected").text());
+        $('#hdnModeName').val($("#ddlMode option:selected").text());
+
+        var selectedDivisionCode = $('#ddlDivision option:selected').val();
+        var userSelection = $("#ddlSelection option:selected").val();
+
+        $('#hdnUserSelection').val(userSelection);
+        //get the applied users
+        $.ajax({
+            type: "POST",
+            url: 'Approval/GetDCRSelectedUsers',
+            data: 'month=' + month + '&year=' + year + '&dcrStatus=' + dcrstatus + '&dcrFlag=' + flag + '&selection=' + userSelection + '&divisionCodes=' + selectedDivisionCode,
+            success: function (result) {
+                debugger;
+                if (result != "") {
+                    $("#divUserInfo").html(result);
+                    $("#divUserHeader").show();
+                    $("#divUserInfo").show();
+                    $("#divloading").hide();
+                    $("#divIndication").show();
+                    var monthYear = month + "-" + year;
+                    fnCurrentAppieduserStatus(monthYear)
+                }
+                else {
+                    $("#divloading").hide();
+
+                }
+
+            }
+        });
+    }
+    function fnGetDCRDetails(val) {
+        $("#spnName").html("");
+        $("#dvLegend").html("");
+        $("#dv-buttons").hide();
+        $("#hdnUserCodeApproval").val(val.split('|')[0]);
+        $('#hdnUserName').val(val.split('|')[2]);
+        $("#hdnRegionCode").val(val.split('|')[1]);
+        $("#spnName").html(val.split('|')[2] + " : for " + $('#hdnMonth').val() + " | DCR Status : " + $('#hdnStatusName').val() + " |  Mode : " + $('#hdnModeName').val() + "");
+        fnFillDCRData();
+        $("#dvNote").show();
+    }
+    function fnShowUserTree() {
+        try {
+            fnBindUserTree("popTree");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        ShowModalPopup('dvUserPopup');
+    }
+
+
+    function fnUserTreePostInit() {
+    }
+
+    function fnCurrentAppieduserStatus(val) {
+
+        var Dcrmonth = val.split('-')[0];
+        var DcrYear = val.split('-')[1];
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/DCRApprovalPending',
+            type: "GET",
+            data: 'month=' + Dcrmonth + '&year=' + DcrYear,
+            success: function (result) {
+                var value = result.split('_')[0];
+                var overAllpendingCountcount = result.split('_')[1];
+                var currentMonthPendingCount = result.split('_')[2];
+                var strmonthno = fngetMonthNumberFromArray(Dcrmonth);
+
+                if (value == 'YES') {
+                    $("#divPendingApproval").show();
+                    if (overAllpendingCountcount == currentMonthPendingCount) {
+                        $("#PendingApproval").html("You have a total of " + overAllpendingCountcount + " DCR(s) in Applied Status,with " + currentMonthPendingCount + " DCR(s) for the selected period " + strmonthno + " - " + DcrYear);
+                    }
+                    else {
+
+                        $("#PendingApproval").html("You have a total of " + overAllpendingCountcount + " DCR(s) in Applied Status,with " + currentMonthPendingCount + "DCR(s) for the selected period " + strmonthno + " - " + DcrYear + ". <br>There could be applied DCRs in other months. Select a month to check for respective applied DCRs, if available.");
+                    }
+
+                }
+            }
+        });
+
+    }
+
+    function fngetMonthNumberFromArray(monthName) {
+        if (monthName.toUpperCase() == "1") {
+            return "JAN";
+        }
+        if (monthName.toUpperCase() == "2") {
+            return "FEB";
+        }
+        if (monthName.toUpperCase() == "3") {
+            return "MAR";
+        }
+        if (monthName.toUpperCase() == "4") {
+            return "APR";
+        }
+        if (monthName.toUpperCase() == "5") {
+            return "MAY";
+        }
+        if (monthName.toUpperCase() == "6") {
+            return "JUN";
+        }
+        if (monthName.toUpperCase() == "7") {
+            return "JUL";
+        }
+        if (monthName.toUpperCase() == "8") {
+            return "AUG";
+        }
+        if (monthName.toUpperCase() == "9") {
+            return "SEP";
+        }
+        if (monthName.toUpperCase() == "10") {
+            return "OCT";
+        }
+        if (monthName.toUpperCase() == "11") {
+            return "NOV";
+        }
+        if (monthName.toUpperCase() == "12") {
+            return "DEC";
+        }
+    }
+
+</script>
+
+
+

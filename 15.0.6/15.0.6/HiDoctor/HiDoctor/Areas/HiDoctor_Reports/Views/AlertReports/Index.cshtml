@@ -1,0 +1,511 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+
+    <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <style>
+        #rpt {
+        margin-left: 520px;
+        width: 640px;
+    }
+    .fixed-side-first{
+        position:absolute !important;
+        min-width: 85px;
+        max-width: 85px;
+        left: 51px!important;
+     }
+    .fixed-side-third{
+        position:absolute !important;
+        min-width: 200px;
+        max-width: 200px;
+        left:336px !important;
+    }
+    .fixed-side-second{
+        position:absolute !important;
+        min-width: 200px;
+        max-width: 200px;
+        left: 136px !important;
+    }
+
+
+        .container {
+            margin-top: 3%;
+        }
+
+        .btn-primary {
+            float: right;
+            margin-right: 0;
+            display: inline-block;
+        }
+
+        .dropdown {
+            display: inline-block;
+        }
+
+        table {
+        border-collapse: collapse;
+        /*width: 300px;*/
+        overflow-x: scroll;
+        display: block;
+    }
+
+        /*table {
+            border-collapse: collapse;
+            width: 1250px;
+            overflow-x: scroll;
+            display: block;
+        }*/
+
+        thead tr {
+            text-align: left !important;
+        }
+
+        thead {
+            background-color: #EFEFEF;
+        }
+
+        tbody {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            min-height: auto;
+            max-height: 270px;
+        }
+
+        td, th {
+            /*min-width: 215px;
+            height: 25px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;*/
+
+         min-width: 249px;
+        height: 25px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 249px;
+        }
+
+        th#Sno, td#Sno {
+                min-width: 100px !important;
+                height: 25px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                max-width: 220px !important;
+        }
+
+        .table-fixed {
+            width: 100%;
+        }
+
+        th {
+            background-color: blue;
+            color: white;
+        }
+
+        /*th, td, tr {
+            padding: 7px;
+        }*/
+
+        /*td.removeWidth, th.removeWidth {
+                min-width: auto !important;
+                height: 25px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                max-width: 260px !important;
+        }*/
+
+         td.align, th.align {
+                min-width: 140px !important;
+                height: 25px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                max-width: 260px !important;
+        }
+
+         td.AlignCss,th.AlignCss{
+        min-width: 95px  !important;
+        height: 25px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 260px !important;
+         } 
+
+        .container {
+            margin-left: 0px !important;
+        }
+
+        .floating-box {
+        float: left;
+        width: 248px;
+        height: 40px;
+        margin: 11px;
+        }
+
+        .Remarks{
+            white-space:normal;
+            word-wrap: break-word;
+        }
+      
+
+        .modal-dialog {
+            padding: 0px 0px !important;
+        }
+    </style>
+<body>
+    <div class="container">
+        <div class="col-xs-12">
+            <div class="col-xs-4" style="text-align:right;">
+                <div class="dropdown">
+                    <div>
+                        <label style="font-size: 16px;margin-right:10px;">Year:</label>
+                        <select id="AlertYear">
+                            <option id="Curr_Year" value="" style="text-align:center"></option>
+                            <option id="Prev_Year" value="" style="text-align:center"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div>
+                        <label style="font-size: 16px;margin-left: 25px;">Month:</label>
+                        <select id="AlertMonth" style="margin-left:20px">
+                            <option value="1" style="text-align:center">Jan</option>
+                            <option value="2" style="text-align:center">Feb</option>
+                            <option value="3" style="text-align:center">Mar</option>
+                            <option value="4" style="text-align:center">Apr</option>
+                            <option value="5" style="text-align:center">May</option>
+                            <option value="6" style="text-align:center">Jun</option>
+                            <option value="7" style="text-align:center">Jul</option>
+                            <option value="8" style="text-align:center">Aug</option>
+                            <option value="9" style="text-align:center">Sep</option>
+                            <option value="10" style="text-align:center">Oct</option>
+                            <option value="11" style="text-align:center">Nov</option>
+                            <option value="12" style="text-align:center">Dec</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-xs-4">
+                <div class="dropdown">
+                    <div>
+                        <label style="font-size: 16px;margin-left:30px;">Alert Type:</label>
+                        <select id="AlertType" style="margin-left:10px">
+                            <option value="1" style="text-align:center">Call Average Alert</option>
+                            <option value="2" style="text-align:center">Absence Alert</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-4">
+                <div class="btn-primary btn_right">
+                    <div>
+                    </div>
+                    <button type="button" class="btn btn-primary" style="padding: 7px; " onclick="validate()">Get Report</button>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div style="margin-top:15px; width: 664px" id="rpt"></div>
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width:1150px;height:605px;">
+
+                <div class="modal-content" style="height: 605px;">
+                    <div class="modal-header" style="height: 180px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 style="margin-top:0px;text-align:center;">
+                            <b id="modaltitle">Doctor Call Average Alert</b>
+                        </h2>
+                        <div style="background-color:#eeeeee;height: 120px;">
+                            <div class="floating-box"><b><u>User Name(Employee Name):</u></b><br /><span id="ModalUsername"></span></div>
+
+                            <div class="floating-box"><b><u>Region Name:</u></b><br /><span id="ModalUserregion"></span></div>
+
+                            <div class="floating-box"><b><u>Designation:</u></b><br /><span id="ModalUsertype"></span></div>
+
+                            <div class="floating-box"><b><u>HiDoctor Start Date:</u></b><br /><span id="ModalHiDoctorJoindate"></span></div>
+
+                            <div class="floating-box"><b><u>Expected Call Average:</u></b><br /><span id="ModalExpcalAvg"></span></div>
+
+                            <div class="floating-box"><b><u>Current Call Average:</u></b><br /><span id="ModalCurcalAvg"></span></div>
+
+                            <div class="floating-box"><b><u>Manager Name:</u></b><br /><span id="ModalRepusername"></span></div>
+
+                            <div class="floating-box"><b><u>Manager Region Name:</u></b><br /><span id="ModalRepuserreg"></span></div>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="DocCallMailContent" style="height: 320px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button style="margin-right:530px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="myAbsModal" role="dialog">
+            <div class="modal-dialog" style="width:1150px;">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 style="margin-top:0px;text-align:center;"><b id="Absmodaltitle"></b></h3>
+
+
+                    </div>
+                    <div class="modal-body clearfix" style="padding:0px;">
+                        <div class="col-xs-12 clearfix" style="background: #eeeeee;padding: 13px 15px;margin-bottom: 8px;">
+                            <div class="floating-box"><u><b>User Name :</b></u><br /><span id="AbsentModalUsername"></span></div>
+
+                            <div class="floating-box"><u><b>Region Name :</b></u><br /><span id="AbsentModalUserregion"></span></div>
+
+                            <div class="floating-box"><u><b>Designation :</b></u><br /><span id="AbsentModalUsertype"></span></div>
+
+                            <div class="floating-box"><u><b>HiDoctor Start Date :</b></u><br /><span id="AbsentModalHiDoctorJoindate"></span></div>
+
+                            <div class="floating-box"><u><b>Absent From :</b></u><br /><span id="AbsentModalAbsfrom"></span></div>
+
+                            <div class="floating-box"><u><b>Absent To :</b></u><br /><span id="AbsentModalAbsto"></span></div>
+
+                            <div class="floating-box"><u><b>Manager Name :</b></u><br /><span id="AbsentModalRepusername"></span></div>
+
+                            <div class="floating-box"><u><b>Manager Region Name :</b></u><br /><span id="AbsentModalRepuserreg"></span></div>
+
+                        </div>
+                        <div class="col-xs-12 clearfix" id="absformtitle"style="height: 320px;">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button style="margin-right:530px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+ 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script type="text/javascript">
+    debugger;
+    var Alert_Type = "";
+    var User_Code = "@ViewBag.UserCode";
+    var companycode = "@ViewBag.CompanyCode";
+    var Active_Status = "";
+    var Cust_CallAvg_Status = "";
+
+    $(document).ready(function () {
+        debugger;
+        $("#Curr_Year").html((new Date()).getFullYear());
+        $("#Curr_Year").val((new Date()).getFullYear());
+        $("#Prev_Year").html((new Date()).getFullYear() - 1);
+        $("#Prev_Year").val((new Date()).getFullYear() - 1);
+        $("#AlertYear").val((new Date()).getFullYear());
+
+        $("#dvAjaxLoad").hide();
+       });
+
+      function validate()
+    {
+          $.blockUI({ css: { backgroundColor: '#87ceeb', color: '#fff' } });
+        debugger;
+
+        var Alert_Month = $("#AlertMonth").val();
+        var Alert_Year = $("#AlertYear").val();
+
+        if ($('#AlertType').val() == "1")
+        {
+            Alert_Type = 1;
+
+            //var Method_params = "AlertsReport/TEO00000104/" + User_Code + "/" + Alert_Month + "/" + Alert_Year + "/ " + Alert_Type + "";
+            //HDAjax.requestInvoke("AlertsApi", Method_params, null, "GET", BindSuccessData, BindFailure);
+
+            Method_params = ["AlertsApi/AlertsReport", companycode, User_Code, Alert_Month, Alert_Year, Alert_Type];
+            CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+
+        }
+        else if ($('#AlertType').val() == "2") {
+            Alert_Type = 2;
+
+            //var Method_params = "AlertsReport/TEO00000104/" + User_Code + "/" + Alert_Month + "/" + Alert_Year + "/" + Alert_Type +"";
+            //HDAjax.requestInvoke("AlertsApi", Method_params, null, "GET", BindSuccessData, BindFailure);
+
+            Method_params = ["AlertsApi/AlertsReport", companycode, User_Code, Alert_Month, Alert_Year, Alert_Type];
+            CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+        }
+    }
+    debugger
+    function BindSuccessData(resp) {
+        debugger;
+        if (Alert_Type == 1) {
+            var tblstr = "";
+            if (resp.Message == "SUCCESS" && resp.list.length > 0) {
+                tblstr += "<table id=callavgalert class='sticky'><thead><tr><th class='fixed-side-first' id=Sno width='20%'>S.No</th><th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th>";
+                tblstr += "<th>Employee Number</th><th >Region Name</th><th class=align>Designation</th><th>Reporting Manager</th><th >Reporting Region</th><th class=align>HiDoctor Start Date</th><th class=align>Expected Call Average</th><th class=align>Doctors Visited</th>";
+                tblstr += "<th class=align> Field Days</th><th class=align>Current Call Average</th><th class=align>Alert Raised Date</th><th class=align>Action</th><th >Action Taken By</th><th class=align>Action Taken Date</th><th >Mail Id</th><th class=Remarks>Remarks</th></tr></thead><tbody style='display:Grid'>";
+                var i = 1;
+                for (var l = 0; l < resp.list.length; l++) {
+                    debugger;
+                    if (resp.list[l].Cust_CallAvg_Status == 2) {
+                        var path = encodeURI(resp.list[l].Attachment_Path);
+                        tblstr += "<tr><td class='fixed-side-first' width='20%' id=Sno>" + parseInt(i) + "</td><td class='fixed-side-second' width='20%' id=User_Name_" + parseInt(l + 1) + ">" + resp.list[l].User_Name + "</td><td class='fixed-side-third' width='20%' id=EmpName_" + parseInt(l + 1) + ">" + resp.list[l].Employee_Name + "</td>";
+                        tblstr += "<td>" + resp.list[l].Employee_Number + "</td><td id= RegName_" + parseInt(l + 1) + ">" + resp.list[l].Region_Name + "</td><td class=align id= UserType_" + parseInt(l + 1) + ">" + resp.list[l].User_Type_Name + "</td>";
+                        tblstr += "<td id= RepName_" + parseInt(l + 1) + "> " + resp.list[l].Manager_Employee_Name + "</td><td  id= RepReg_" + parseInt(l + 1) + ">" + resp.list[l].Reporting_Region_Name + "</td><td class=align id=HiDoctorJoinDate_" + parseInt(l + 1) + ">" + resp.list[l].HiDoctor_Start_Date + "</td><td class=align id= ExpcalAvg_" + parseInt(l + 1) + ">" + resp.list[l].Expected_Call_Average + "</td><td class=align id= DocVisit_" + parseInt(l + 1) + ">" + resp.list[l].Doctor_Visit + "</td>";
+                        tblstr += "<td class=align id= FieldDays" + parseInt(l + 1) + ">" + resp.list[l].Field_Days + "</td><td class=align id= CurcalAvg_" + parseInt(l + 1) + ">" + resp.list[l].Current_Call_Average + "</td><td class=align id= Jobrundate_" + parseInt(l + 1) + ">" + resp.list[l].Alert_Run_Date + "</td><td class=align><a href='#' onclick=fnsent(" + parseInt(l + 1) + ",'" + path + "')><u>Sent</u></a></td><td>" + resp.list[l].Action_By + "</td>";
+                        tblstr += "<td class=align>" + resp.list[l].Action_Date + "</td><td id= MailId_" + parseInt(l + 1) + ">" + resp.list[l].Email_ID + "</td><td class=Remarks id= Remarks_" + parseInt(l + 1) + ">" + resp.list[l].Remarks + "</td></tr>";
+                        i++;
+
+                    }
+                    else if (resp.list[l].Cust_CallAvg_Status == 0) {
+                        debugger;
+                        tblstr += "<tr><td class='fixed-side-first' width='20%' id=Sno>" + parseInt(i) + "</td><td class='fixed-side-second' width='20%' id=User_Name_" + parseInt(l + 1) + ">" + resp.list[l].User_Name + "</td><td class='fixed-side-third' width='20%'>" + resp.list[l].Employee_Name + "</td>";
+                        tblstr += "<td>" + resp.list[l].Employee_Number + "</td><td >" + resp.list[l].Region_Name + "</td><td class=align>" + resp.list[l].User_Type_Name + "</td>";
+                        tblstr += "<td> " + resp.list[l].Manager_Employee_Name + "</td><td>" + resp.list[l].Reporting_Region_Name + "</td><td class=align id=HiDoctorJoinDate_" + parseInt(l + 1) + ">" + resp.list[l].HiDoctor_Start_Date + "</td><td class=align>" + resp.list[l].Expected_Call_Average + "</td><td class=align>" + resp.list[l].Doctor_Visit + "</td>";
+                        tblstr += "<td class=align>" + resp.list[l].Field_Days + "</td><td class=align>" + resp.list[l].Current_Call_Average + "</td><td class=align>" + resp.list[l].Alert_Run_Date + "</td><td class=align><font color='blue'>Dismissed</font></td><td >" + resp.list[l].Action_By + "</td><td class=align>" + resp.list[l].Action_Date + "</td>";
+                        tblstr += "<td id= MailId_" + parseInt(l + 1) + ">" + resp.list[l].Email_ID + "</td><td class=Remarks id=Remarks_" + parseInt(l + 1) + ">" + resp.list[l].Remarks + "</td></tr>";
+                        i++;
+                    }
+                }
+            }
+            else {
+                debugger;
+                tblstr += "<table class='sticky' id=callavgalert><thead><tr><th class='removeWidth fixed-side-first' width='20%'>S.No</th><th class='removeWidth fixed-side-second' width='20%'>User Name</th><th class='removeWidth fixed-side-third' width='20%'>Employee Name</th>";
+                tblstr += "<th>Employee Number</th><th class= 'removeWidth'>Region Name</th><th class= 'removeWidth'>Designation</th><th class= 'removeWidth'>Reporting Manager</th><th class= 'removeWidth'>Reporting Region</th>";
+                tblstr += "<th class='removeWidth'>HiDoctor Start Date</th><th class= 'removeWidth'>Expected Call Average</th><th class= 'removeWidth'>Doctors Visited</th><th class= 'removeWidth'>Field Days</th><th class= 'removeWidth'>Current Call Average</th>";
+                tblstr += "<th class= 'removeWidth'>Alert Raised Date</th><th class= 'removeWidth'>Action</th><th class= 'removeWidth'>Action Taken By</th><th class= 'removeWidth'>Action Taken Date</th><th class='removeWidth'>Mail Id</th><th class='removeWidth'>Remarks</th></tr></thead><tbody>";
+                tblstr += "<tr><td colspan=14 style='padding-left: 540px;'>No Records Found</td></tr>";
+            }
+            tblstr += "</tbody></table>";
+            $("#rpt").html(tblstr);
+
+
+        }
+        else if (Alert_Type == 2) {
+            var tblstr = "";
+
+            if (resp.Message == "SUCCESS" && resp.list.length > 0) {
+                tblstr += "<table class='sticky'><thead><tr><th class='fixed-side-first' id=Sno>S.No</th><th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th>";
+                tblstr += "<th>Employee Number</th><th >Region Name</th><th class=align>Designation</th><th>Reporting Manager</th><th>Reporting Region</th><th class=align>HiDoctor Start Date</th><th class=align>Absent From</th><th class=align>Absent To</th>";
+                tblstr += "<th class=align>Alert Days</th><th class=align>Alert Raised Date</th><th class=align>Action</th><th >Action Taken By</th><th class=align>Action Taken Date</th><th >Mail Id</th><th class=Remarks>Remarks</th></tr></thead><tbody style='display:Grid'>";
+                var i = 1;
+                for (var l = 0; l < resp.list.length; l++) {
+                    debugger;
+                    if (resp.list[l].Long_Absence_Status == 2) {
+                        var path = encodeURI(resp.list[l].Attachment_Path);
+                        tblstr += "<tr><td class='fixed-side-first' width='20%' id=Sno>" + parseInt(l + 1) + "</td><td class='fixed-side-second' width='20%' id=User_Name_" + parseInt(l + 1) + ">" + resp.list[l].User_Name + "</td><td class='fixed-side-third' width='20%' id= EmpName_" + parseInt(l + 1) + ">" + resp.list[l].Employee_Name + "</td>";
+                        tblstr += "<td>" + resp.list[l].Employee_Number + "</td><td  id= RegName_" + parseInt(l + 1) + ">" + resp.list[l].Region_Name + "</td><td class=align id= UserType_" + parseInt(l + 1) + ">" + resp.list[l].User_Type_Name + "</td>";
+                        tblstr += "<td  id= RepName_" + parseInt(l + 1) + ">" + resp.list[l].Manager_Employee_Name + "</td><td id= RepReg_" + parseInt(l + 1) + ">" + resp.list[l].Reporting_Region_Name + "</td><td class=align id=HiDoctorJoinDate_" + parseInt(l + 1) + ">" + resp.list[l].HiDoctor_Start_Date + "</td><td class=align id=Absfrom_" + parseInt(l + 1) + ">" + resp.list[l].Absent_From_Date + "</td>";
+                        tblstr += "<td class=align id=Absto_" + parseInt(l + 1) + ">" + resp.list[l].Absent_To_Date + "</td><td class=align>" + resp.list[l].Absence_Counter_Value + "</td><td class=align id=Jobrundate_" + parseInt(l + 1) + ">" + resp.list[l].Alert_Run_Date + "</td><td class=align><a href='#' onclick=fnsent(" + parseInt(l + 1) + ",'" + path + "')><u>Sent</u></a></td><td>" + resp.list[l].Action_By + "</td><td class=align>" + resp.list[l].Action_Date + "</td>";
+                        tblstr += "<td>" + resp.list[l].Email_ID + "</td><td class=Remarks id= Remarks_" + parseInt(l + 1) + ">" + resp.list[l].Remarks + "</td></tr>";
+                        i++;
+
+                    } else if (resp.list[l].Long_Absence_Status == 0) {
+                        tblstr += "<tr><td class='fixed-side-first' width='20%' id=Sno>" + parseInt(l + 1) + "</td><td class='fixed-side-second' width='20%' id=User_Name_" + parseInt(l + 1) + ">" + resp.list[l].User_Name + "</td><td class='fixed-side-third' width='20%' >" + resp.list[l].Employee_Name + "</td>";
+                        tblstr += "<td>" + resp.list[l].Employee_Number + "</td><td >" + resp.list[l].Region_Name + "</td><td class=align>" + resp.list[l].User_Type_Name + "</td>";
+                        tblstr += "<td>" + resp.list[l].Manager_Employee_Name + "</td><td >" + resp.list[l].Reporting_Region_Name + "</td><td class=align id=HiDoctorJoinDate_" + parseInt(l + 1) + ">" + resp.list[l].HiDoctor_Start_Date + "</td><td class=align>" + resp.list[l].Absent_From_Date + "</td>";
+                        tblstr += "<td class=align>" + resp.list[l].Absent_To_Date + "</td><td class=align>" + resp.list[l].Absence_Counter_Value + "</td><td class=align>" + resp.list[l].Alert_Run_Date + "</td><td class=align><font color='blue'>Dismissed</font></td><td >" + resp.list[l].Action_By + "</td><td class=align>" + resp.list[l].Action_Date + "</td><td>" + resp.list[l].Email_ID + "</td>";
+                        tblstr += "<td class=Remarks id= Remarks_" + parseInt(l + 1) + ">" + resp.list[l].Remarks + "</td></tr>";
+                        i++;
+                    }
+                }
+            }
+            else {
+                tblstr += "<table id=absencealert class='sticky'><thead><tr><th class= 'removeWidth fixed-side-first' width='20%'>S.No</th><th class='removeWidth fixed-side-second' width='20%'>User Name</th><th class='removeWidth fixed-side-third' width='20%'>Employee Name</th>";
+                tblstr += "<th>Employee Number</th><th class= 'removeWidth'>Region Name</th><th class= 'removeWidth'>Designation</th><th class='removeWidth'>Reporting Manager</th><th class= 'removeWidth'>Reporting Region</th><th class='removeWidth'>HiDoctor Start Date</th><th class= 'removeWidth'>Absent From</th><th class= 'removeWidth'>Absent To</th>";
+                tblstr += "<th class= 'removeWidth'>Alert Days</th><th class= 'removeWidth'>Alert Raised Date</th><th class= 'removeWidth'>Action</th><th class= 'removeWidth'>Action Taken By</th><th class= 'removeWidth'>Action Taken Date</th><th class='removeWidth'>Mail Id</th><th class='removeWidth'>Remarks</th></tr></thead><tbody>";
+                tblstr += "<tr><td colspan=14 style='padding-left: 540px;' class= 'removeWidth'>No Records Found</td></tr>";
+            }
+            tblstr += "</body></table>";
+            $("#rpt").html(tblstr);
+
+
+        }
+        $('table').on('scroll', function () {
+            $("table > *").width($("table").width() + $("table").scrollLeft());
+        });
+        $.unblockUI();
+    }
+    function BindFailure(resp) {
+        $.unblockUI();
+            alert("Failed");
+        }
+        function fnChangeDate(curr_Month) {
+            $("#mnth").html(curr_Month);
+
+        }
+        function fnChangeAlert(curr_Alert) {
+            $("#alert").html(curr_Alert);
+        }
+        function getyear() {
+            var formattedyear;
+            formattedyear = formattedyear
+        }
+        function fnsent(rowno, Attachment_Path)
+        {
+            debugger;
+          //  $.blockUI({ message: '<h3> Just a moment...</h3>' });
+            var Attachment = decodeURI(Attachment_Path)
+            $("#DocCallMailContent").html();
+            $("#absformtitle").html();
+            debugger;
+            if (Alert_Type == 1) {
+                $('#modaltitle').html('Doctor Call Average Alert');
+                $('#ModalUsername').html($("#User_Name_" + rowno).text() + "(" + $("#EmpName_" + rowno).html() + ")");
+                $('#ModalUserregion').html($("#RegName_" + rowno + "").html());
+                $('#ModalUsertype').html($("#UserType_" + rowno + "").html());
+                $('#ModalHiDoctorJoindate').html($("#HiDoctorJoinDate_" + rowno + "").html());
+                $('#ModalRepusername').html($("#RepName_" + rowno + "").html());
+                $('#ModalRepuserreg').html($("#RepReg_" + rowno + "").html());
+                $('#ModalExpcalAvg').html($("#ExpcalAvg_" + rowno + "").html());
+                $('#ModalCurcalAvg').html($("#CurcalAvg_" + rowno + "").html());
+                $('#formUsername').html($("#EmpName_" + rowno + "").html());
+                $('#formExpcalAvg').html($("#ExpcalAvg_" + rowno + "").html());
+                $('#formCurcalAvg').html($("#CurcalAvg_" + rowno + "").html());
+                $('#formmnth').html($("#AlertMonth").val());
+                $('#formyear').html($("#AlertYear").val());
+                $('#testexpavg').html($("#ExpcalAvg_" + rowno + "").html());
+                $('#ModRepusername').html($("#RepName_" + rowno + "").html());
+                var pdfpath = "callaverage";
+                var path = "https://nbfiles.blob.core.windows.net/" + companycode.toLowerCase() + "/" + pdfpath + "/" + Attachment + "";
+
+                $("#DocCallMailContent").html("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br /><h2 style='text-align:center'><button type='button' class='btn btn-primary' style='margin-right: 465px;'><a href=" + path + "><b style='color:white;'>Download</b></a></button>&nbsp;<button type='button' class='btn btn-primary' style='margin-right:9px;'><a href='https://docs.google.com/viewerng/viewer?url=" + path + "' target='_blank'><b style='color:white;'>View</b></a></button></h2>");
+                $('#myModal').modal('show');
+            }
+            else if (Alert_Type == 2) {
+                debugger;
+                $('#Absmodaltitle').html('Absent Alert');
+                $('#AbsentModalUsername').html($("#EmpName_" + rowno + "").html());
+                $('#AbsentModalUserregion').html($("#RegName_" + rowno + "").html());
+                $('#AbsentModalUsertype').html($("#UserType_" + rowno + "").html());
+                $('#AbsentModalHiDoctorJoindate').html($("#HiDoctorJoinDate_" + rowno + "").html());
+                $('#AbsentModalRepusername').html($("#RepName_" + rowno + "").html());
+                $('#AbsentModalRepuserreg').html($("#RepReg_" + rowno + "").html());
+                $('#AbsentModalAbsfrom').html($("#Absfrom_" + rowno + "").html());
+                $('#AbsentModalAbsto').html($("#Absto_" + rowno + "").html());
+                $('#absformUsername').html($("#EmpName_" + rowno + "").html());
+                $('#absformAbsfrom').html($("#Absfrom_" + rowno + "").html());
+                $('#absmodRepusername').html($("#RepName_" + rowno + "").html());
+                var pdfpath = "longabsence";
+                var path = "https://nbfiles.blob.core.windows.net/" + companycode.toLowerCase() + "/" + pdfpath + "/" + Attachment + "";
+
+                $("#absformtitle").html("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br /><h2 style='text-align:center'><button type='button' class='btn btn-primary' style='margin-right: 465px;'><a href=" + path + "><b style='color:white;'>Download</b></a></button>&nbsp;<button type='button' class='btn btn-primary' style='margin-right:9px;'><a href='https://docs.google.com/viewerng/viewer?url=" + path + "' target='_blank'><b style='color:white;'>View</b></a></button></h2>");
+                $('#myAbsModal').modal('show');
+            }
+          
+        }
+
+</script>
+
+
+

@@ -1,0 +1,48 @@
+﻿<script src="~/Scripts/Mobile/mLogIn.js"></script>
+<div>
+    <div data-role="header" data-theme="b" data-mini="true">
+        <h3 data-mini="true">Login
+        </h3>
+    </div>
+    <div data-role="content" data-theme="d">
+        <span style="color: #C63828" id="spnError"></span>
+        <div class="ui-controlgroup-controls">
+            <label for="txtUserName" class="ui-input-text">
+                User Name
+            </label>
+            <input name="" data-mini="true" id="txtUserName" placeholder="User Name" value="" type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+        </div>
+        <div class="ui-controlgroup-controls">
+            <label for="txtPassword" class="ui-input-text">
+                Password
+            </label>
+            <input name="" data-mini="true" id="txtPassword" placeholder="Password" value="" type="password" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+        </div>
+        <a data-role="button" id="btnLogin" data-mini="true" href="#page1" class="ui-btn-left" onclick="fnUserAuthentication()">Login
+        </a>
+        @*<div>
+            <a id="lnkForgotPass" href="" data-transition="fade" class="ui-link" onclick="fnOpenPassword()">Forgot Password?
+            </a>
+        </div>*@
+        <input type="hidden" id="hdnNeedGeo" />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#hdnNeedGeo").val(@Html.Raw(Json.Encode(ViewBag.IsGeoNeed))); 
+        fninit();
+        $("#spnUserName").css('display', 'none');
+    });
+
+    $(document).keypress(function (e) {
+        if (e.keyCode == 13) {
+            $("#btnLogin").click();
+        }
+    });
+</script>
+
+
+
+
+
+

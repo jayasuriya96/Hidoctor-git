@@ -1,0 +1,318 @@
+﻿@model HiDoctor_Activity.Models.DCRDoctorVisitModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<style type="text/css">
+    .fadeout {
+        background: #666;
+    }
+</style>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRDoctorVisit.js?v=@HiDoctor.BuildNumber.BuildNo")" type="text/javascript"></script>
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css" rel="stylesheet" />
+<div id="actTitle" class="activityTitle"> </div>
+<div id="div_doctorvisit" >
+    <br />
+    <div id="prog-bar">
+        <div class="stepno1  ">
+            <a href="#" id="aDCR" title="click here to redirect to header" onclick="javascript:fnRedirectToHeader()">
+                DCR</a>
+        </div>
+        <div style="width: 16.5%; float: left;">
+            &nbsp</div>
+        <div class=" stepno2 step2Selected">
+            Doctors/Customers & Sample/Promotional items
+        </div>
+        <div style="width: 12.5%; float: left;">
+            &nbsp</div>
+        <div class="stepno3">
+            Stockist - Expense
+        </div>
+    </div>
+<input type="hidden" id="hdnAction" />
+        <input type="hidden" id="hdnbindRowNumber" />
+
+    <div id="dvLoading" style="text-align:center">
+        <img src="../../Content/themes/base/images/hd/loader.gif" />
+    </div>
+    <div id="divPage" style="min-height: 32px; width: 100%; display: none;">
+        <div class="divdoclist" style="background:#EFF3F6">
+            <div id="div_doctorvisit_list" >
+                <div class="listheaderbar" >
+                   <div style="text-align:center;padding-top:2px;font-family:Segoe UI"> Doctor/Customer List (Click on the Doctor/Customer to View the details.)</div> </div>
+                <table id="tbl_doctorvisit_list" runat="server" cellpadding="0" cellspacing="0" style="width: 100%;"
+                    class="">
+                </table>
+            </div>
+            <div style="float: left; width: 50%;margin-top:5px;">
+                <input type="button" value="Add New Doctor/Customer" onclick="fnClear()" />
+            </div>
+            <div style="float: right;margin-top:5px;">
+                <input type="button" value="Go to Stockist Visit >>" onclick="fnInsertCPDoctors();" />
+            </div>
+        </div>
+        <form id="frm1" onkeydown="fnSetFormMode()" onkeypress="fnSetFormMode()" ondblclick="fnSetFormMode()"    >
+        <div id="div_doctorvisit_form" style="float: left; width: 49%; border: 1px solid #c0c0c0;
+            padding: 5px;background:#fafafa">
+            <div id="div_doctordetails_entry">
+                <input id="hdnDoctorVisitCode" type="hidden" />
+                <div class="dcr_doc_name">
+                    <label>
+                        Doctor/Customer</label>
+                    <input type="text" id="txtDocName" class=" dcr_doctor_name required checkspecialchar setfocus" />
+                    <input type="hidden" id="hdnDocName" />
+                    <input type="hidden" id="hdnIsCPDoc" />
+                </div>
+               
+                <div style="width: 100%;  margin-top: 8px;margin-bottom: 8px;">
+                     <div id="div_doc_speciality" class="div_doc_speciality" style="display:none" >
+                        <label>
+                            Speciality
+                        </label>
+                        <input type="text" id="txtDocSpeciality" onblur="return fnCheckSpecialChar(this)"
+                            class="dcr_doc_spec_name setfocus" /><input type="hidden" id="hdnspecname" />
+                </div>
+                   
+                    <div id="div_doc_pob" class="div_doc_pob"  style="display:none">
+                        <label>
+                            POB
+                        </label>
+                        <input type="text" id="txtDocPOB" class="checkcurrencyformat setfocus" onblur="return fnCurrencyFormat(this, 'POB')"  />
+                    </div>
+                </div>
+                <div style="clear: both;">
+                </div>
+                    <div id="div_doc_visitmode" class="dcr_doc_vmvt">
+                        <label  style="padding-right:18px;">
+                            Visit Mode</label>
+                        <input type="radio" name="rdvisitmode" id="rdam" checked="checked" onclick="fnSetFormMode()" />
+                        <span id="spnAM">AM</span>
+                        <input type="radio" name="rdvisitmode" id="rdpm" onclick="fnSetFormMode()" />
+                        <span id="spnPM">PM</span>
+                        <label id="lblvisitmode"></label>
+                    </div>
+                    <div id="div_doc_visittime" class="dcr_doc_vmvt" style="display: none">
+                        <label  style="padding-right:18px;">
+                            Visit Time</label>
+                        <input type="text" id="timepicker" style="width: 45%; " 
+                            onchange="fnSetFormMode()" />
+                        <label id="lbltimepicker"></label>
+                    </div>
+                <div class="div_doc_remarks">
+                    <label>
+                        Remarks
+                    </label>
+                    <textarea id="txtDocRemarks" style="height:30px;"  class="setfocus"  ></textarea>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+            <div style="width: 100%; height: 10px;">
+            </div>
+            <center>
+            <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_Produts','spnproducts')">
+                <div class="collapse" id="spnproducts" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;">Sample/Promotional items<span style="font-size: 11px;
+                    font-style: italic;text-align:left; padding-left:15px;">(Click to Expaned/Collapse!)</span></div> </div>
+            @*<div id="div_productdetails_entry" class="productBox  listheaderbar">*@
+                <center>
+                    <table id="tbl_Produts" style="width: 98%;margin-bottom:10px;">
+                        <tr>
+                            <td class="dcr_product_header" style="text-align:left;">
+                                Name
+                            </td>
+                            <td class="dcr_product_header txtqty" style="text-align:left;padding-left:30px">
+                                QTY
+                            </td>
+                            <td class="dcr_product_header txtqty" style="text-align:left;padding-left:23px;">
+                                Detailed
+                            </td>
+                            <td class="dcr_product_header">
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+        @*    </div>*@
+            </center>
+            <center>
+            <div class="listheaderbar" style="width:98%;" onclick="fnTableShowHide('tbl_chemist','spnchemist')">
+            <div class="collapse" id="spnchemist" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;">Chemist
+            <span style="font-size: 11px;text-align:left;padding-left:15px;
+                    font-style: italic">(Click to Expaned/Collapse!)</span>
+            </div> 
+                
+            </div>
+           @* <div id="div_chemistdetails_entry" class="chemistBox">*@
+                <center>
+                    <table id="tbl_chemist" style="width: 98%">
+                        <tr>
+                            <td class="dcr_chemist_header" style="text-align:left;">
+                                Name
+                            </td>
+                            <td class="dcr_chemist_header txtpob" style="text-align:left;padding-left:11px;">
+                                POB
+                            </td>
+                            <td class="dcr_chemist_header">
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+           @* </div>*@
+            </center>
+            <div style="margin-top: 5px; float: right">
+                <input type="button" id="btnSave" value="Save"  onclick="return fnInsertDoctorVisitData()" />
+                <input type="button"  onclick="fnInsertCPDoctors();" value="Go To Stockiest Visit>>" />
+                <input type="button" value="Reset" onclick="fncancel()" />
+            </div>
+        </div>
+        </form>
+        <div style="clear: both">
+        </div> 
+    </div>
+    </div>
+<script type="text/javascript">
+    var dcrDoctorVisit_g;
+    var RCPA_g
+    var doctorAutoFill_g;
+    var chemistAutoFill_g;
+    var productAutoFill_g;
+    var productAutoFillOri_g;
+    var specialityAutoFill_g;
+    var RCPAProductAutofill_g;
+    var doctorPOBAmount_g;
+    var doctorEntryMode_g;
+    var doctotVisitTime_g;
+    var dcrActualDate_g;
+    var queryString_g;
+    var chemists_mandatory_number_g;
+    var inputs_mandatory_number_g;
+    var input_qty_default_g; 
+    var status_g;
+    var category_g;
+    var travelledKMS_g;
+    var source_g="";
+    var formMode_g="";
+    var flag_g="";
+    var productBringType_g;
+    var dcrDoctorVisitTimeEntryModeValue_g ="";
+    doctorPOBAmount_g = fnGetPrivilegeValue('DCR_DOCTOR_POB_AMOUNT', 'NO');
+    doctorEntryMode_g = fnGetPrivilegeValue('RIGID_DOCTOR_ENTRY', 'YES');
+    doctotVisitTime_g = fnGetPrivilegeValue('DCR_DOCTOR_VISIT_MODE', 'AM_PM');
+    //doctotVisitTime_g = "AM_PM";
+    chemists_mandatory_number_g = fnGetPrivilegeValue('DCR_CHEMIST_MANDATORY_NUMBER', '0');
+    inputs_mandatory_number_g = fnGetPrivilegeValue('DCR_INPUT_MANDATORY_NUMBER', '0');
+    input_qty_default_g = fnGetPrivilegeValue('INPUT_QTY_DEFAULT', '0');
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#hdnAction').val(@Html.Raw(Json.Encode(ViewBag.Mode)));
+        RCPA_g =  @Html.Raw(Json.Encode(ViewBag.RCPA));
+        queryString_g =  @Html.Raw(Json.Encode(ViewBag.QueryString));
+        dcrDoctorVisitTimeEntryModeValue_g =  @Html.Raw(Json.Encode(ViewBag.DCR_DOCTOR_VISIT_TIME_ENTRY_MODE));
+
+        status_g = queryString_g.split('&')[4];
+        category_g = queryString_g.split('&')[5];
+        travelledKMS_g = queryString_g.split('&')[6];
+        source_g = queryString_g.split('&')[7];
+        flag_g = queryString_g.split('&')[8];
+        var accChemistPri = fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+
+        var productBringType = fnGetPrivilegeValue('DCR_PRODUCTS_BRING_TYPE', '') + "^";
+        productBringType_g = productBringType.replace(/,/g, '^');
+        if(productBringType_g == "^")
+        {
+            $('#div_productdetails_entry').css('display','none');
+            $('#productHeader').css('display','none');
+        }
+
+        $('#timepicker').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+    
+   
+        dcrActualDate_g = queryString_g.split('&')[3];
+        var activityFullName = fnGetSelectedActivityFullName(flag_g, RCPA_g);
+        $('#aDCR').html('DCR-'+new Date(dcrActualDate_g.split('-')[1]+'/'+dcrActualDate_g.split('-')[0]+'/'+dcrActualDate_g.split('-')[2]).toDateString()+" "+activityFullName);
+        //$('#spn_cpname').html(queryString_g.split('&')[1].replace('_', ' '));
+        dcrActualDate_g = dcrActualDate_g.split('-')[2]+"-"+dcrActualDate_g.split('-')[1]+"-"+dcrActualDate_g.split('-')[0];
+      
+        $(".checkspecialchar").blur(function () { fnCheckSpecialChar(this); });
+        $(".setfocus").click(function() {$(this).select();});
+        
+        $.ajax({
+            type: 'POST',
+            data:'accRegions='+queryString_g.split('&')[0]+"&accChemist="+accChemistPri+"&ProdBringType="+productBringType_g,
+
+            url: '../DCRDoctorVisit/SetAutofillViewBag',
+            success: function (response) {
+                // we have the response
+                    
+                var result = response.Data;
+
+                if (result.length == 0) {
+                
+                    //fnGetDoctorVisitData();
+                }
+                else {
+                    doctorAutoFill_g = result[0].Data;
+                    chemistAutoFill_g = result[1].Data;
+                    productAutoFill_g = result[2].Data;
+                    productAutoFillOri_g = JSON.stringify(result[2].Data);
+                    RCPAProductAutofill_g = result[3].Data;
+                    specialityAutoFill_g = result[4].Data;
+                    autoComplete(doctorAutoFill_g, "txtDocName", "hdnDocName", "dcr_doctor_name");
+                    $("#txtDocName").blur(function() {fnValidateAutofill(this, doctorAutoFill_g, "txtDocName", "hdnDocName")});
+                    //$("#txtDocName").blur(function() {alert(1)});
+                    autoComplete(specialityAutoFill_g, "txtDocSpeciality", "hdnspecname", "dcr_doc_spec_name");
+
+                    if($('#hdnAction').val().toUpperCase() == "EDIT")
+                    {
+                        fnGetDoctorVisitData(1);
+                    }
+                    else
+                    {
+                        fnOnInit();
+                    }
+
+                }
+                //fnCreateDoctorList();
+                //alert(10);
+            },
+            error: function (e) {
+                alert("Eror"+e);
+            }
+        });
+       
+       
+        if(doctorPOBAmount_g.toUpperCase() == "YES")
+        {
+            $('#div_doc_pob').css('display', '');
+        }
+        if(doctotVisitTime_g.toUpperCase() == "VISIT_TIME" || doctotVisitTime_g.toUpperCase() == "VISIT_TIME_MANDATORY")
+        {
+            $('#div_doc_visitmode').css('display', 'none');
+            $('#div_doc_visittime').css('display', '');
+            if(dcrDoctorVisitTimeEntryModeValue_g.toUpperCase() == "SERVER_TIME")
+            {
+                $('#timepicker').css('display','none');
+               // fnSetServerTime();
+            }
+        }
+        else
+        {
+            if(dcrDoctorVisitTimeEntryModeValue_g.toUpperCase() == "SERVER_TIME")
+            {
+                $('#rdam').css('display','none');
+                $('#rdpm').css('display','none');
+                $('#spnAM').css('display','none');
+                $('#spnPM').css('display','none');
+                //fnSetServerTime();
+            }
+        }
+
+        if(doctorEntryMode_g.toUpperCase() == "NO")
+        {
+            $('#div_doc_speciality').css('display', '');
+        }
+    });
+</script>

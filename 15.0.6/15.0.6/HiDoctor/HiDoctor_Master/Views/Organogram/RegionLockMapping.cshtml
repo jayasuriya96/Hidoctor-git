@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "RegionLockMapping";
+ Layout = null;
+}
+
+
+<style>
+.treebg
+    {
+    background:#fafafa !important;
+    border:1px solid #ddd !important;
+    }
+    .formtextboxfocus {
+        height:22px;
+        clear:both;
+    }
+    .formselectboxfocus {
+        height:30px;
+        clear:both
+    }
+    .dynatree-selected a {
+        background-color: lightgreen !important;
+        pointer-events: none;
+    }
+    .mandatorysymbol {
+        color:red;
+    }
+    .pagenav {
+        color:blue;
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    .pgcont {
+        
+    }
+    .link {
+        color:blue;
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    button.close{
+        margin-top:2px !important;
+        margin-right:7px !important;
+    }
+     .modal-dialog{
+         margin-top:40px !important;
+        -webkit-box-shadow: none !important;
+    /*box-shadow: 0 4px 16px rgba(0,0,0,.2);*/
+    background: none !important;
+    /* opacity: 0.2; */
+    border: none !important;
+     }
+     
+.tree-node-vacant a {
+    background-color: #FCA4AE;
+    color: #fff !important;
+}
+
+    .tree-node-vacant a:hover {
+        color: #000 !important;
+    }
+       a[title="VACANT"] {
+  background-color: pink;
+}
+        a[title="NOT ASSIGNED"] {
+  background-color: pink;
+}
+
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="col-lg-3" id="divleft" class="treebg">
+    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+        onclick="fnOpenTree()" />
+    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+        style="cursor: pointer" />
+    <span>Show / Hide Tree</span>
+    <div id="regiontree"  style="height: 500px;">
+        <div class="dv-controls-load">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+            Loading tree
+        </div>
+    </div>
+</div>
+<div id="dataDiv" class="col-lg-9">
+    
+<form class="form-horizontal" enctype="multipart/form-data" method="post" action="../HiDoctor_Master/SFCRegion/DownloadSFCExcelFormat"  role="form">
+    <div id="dvSFCEntryForm" class="col-sm-10 form-group">
+        @*<div class="col-sm-10 form-group formtextboxfocus" style="height:31px;">
+            <div class="col-sm-4 form-group">Effective From</div>
+            <div class="col-sm-6 form-group">
+                <input type="text" id="txtDateFrom" class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-10 form-group formtextboxfocus" style="height:31px;">
+            <div class="col-sm-4 form-group">Effective To</div>
+            <div class="col-sm-6 form-group">
+                <input type="text" id="txtDateTo" class="form-control" />
+            </div>
+        </div>*@
+        <div style="clear:both"></div>
+            <input type="button" id="btnSave" class="btn btn-primary" value="Map" onclick="fnSave()" />
+        </div>
+            <div style="clear:both"></div>
+        <div style="margin-top:5px">
+            <div id="successmsg" class="alert alert-success" style="display:none"></div>
+            <div id="warningmessage" class="alert alert-warning" style="display:none"></div>
+            <div id="errormsg" class="alert alert-danger" style="display:none"></div>
+        </div>
+   
+</form>
+ 
+
+    <div style="clear:both"></div>
+    
+    <div id="dvRegionLockMappingGrid" class="table-responsive"></div>
+    
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RegionLockMap.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" ></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('.dynatree-container').css('border', 'none');
+            fnTreeWithChkBoxChildSelction("regiontree"); // to bind region tree
+           
+            $("#dvAjaxLoad").hide();
+            
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    var selKeys = '';
+        function fnRegionTreeSelect(select, node) {
+        debugger;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            if (node.data.unselectable == false) {
+                return node.data.key;
+            }
+        });
+    }
+
+    $('#txtDateFrom').datepicker({ dateFormat: 'dd/mm/yy', });
+    $('#txtDateTo').datepicker({ dateFormat: 'dd/mm/yy', });
+    function fnRegionTreeActivate(node) {
+//        $("#hdnRegionCode").val(node.data.key);
+    }
+    fnGetActiveRegionLockMappingTableFormat();
+    fnGetMappedRegion();
+
+    //fnGetActiveRegionLockJson();
+    function fnRegionTreePostInit() {
+      //  fnGetActiveRegionLockJson();
+    }
+   
+    function fnActivityTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            if (node.data.unselectable==false) {
+                return node.data.key;
+            }
+        });
+    }
+</script>

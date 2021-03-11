@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "EditCourse";
+}
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdvancedCourse.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdminMaster.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateQuestion.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateCourse.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ViewCourse.js"></script>
+<style>
+    #txtCourseName {
+        height: 40px!important;
+        margin-top: 0px;
+    }
+
+    #btnSESubmit {
+        border-top-right-radius: 5px!important;
+        border-bottom-right-radius: 5px!important;
+        height:3.3em;
+    }
+    #tblCourseQuestion tr {
+        border-bottom: 1px solid #0173ba;
+    }
+    #tblCourseQuestion tr td {
+        padding-top: 1%;
+        vertical-align: top;
+    }
+    .modal-dialog {
+        width:800px!important;
+    }
+    #btnEditPre,#btnEditNxt {
+        height: 32px;
+        width: 25px;
+        border:0px;
+    }
+    
+</style>
+
+<!-- Edit Search -->
+<div id="courseSearchdv" class="col-md-12 clsPaddingNone clearfix" style="padding-bottom: 10px!important; height:3.3em;">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4">
+        <div class="col-sm-12">
+            <div class="input-group">
+                <input type="text" id="txtCourseName" class="form-control" title="Type the first few letters of the course name to find a course" />
+                <span class="input-group-btn">
+                    <input type="button" id="btnSESubmit" class="btn btn-primary btn-sm" />
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Pagination -->
+<div class="col-md-12 clearfix">
+    <div id="coursePaging" class="pull-right col-md-4 cls_paging">
+        <span id="spncurPgno"></span>Of <span id="spnTotpgno"></span>
+        <input type="button" id="btnEditPre" class="btn-paging btn-primary " value="<" />
+        <select class="btn-paging " onchange="QUESTIONS.PageChange(this.value)" id="drpPages">
+        </select>
+        <input type="button" id="btnEditNxt" class="btn-paging btn-primary" value=">" />
+    </div>
+</div>
+<!-- Edit Pagination -->
+
+<!-- Edit Course Display -->
+<div class="col-md-12 cls_nomargin_nopadding">
+    <div class="col-md-12 clsPaddingNone">
+        <div class="col-lg-12 clsPaddingNone" id="dvEditView">
+            <div class="col-lg-12 clearfix">
+                <div id="dvCrDetails" class="table-responsive"></div>
+            </div>
+            <div class="col-lg-12 clearfix">
+            </div>
+        </div>
+        <div class="col-lg-12" id="dvPreview">
+        </div>
+    </div>
+    <input type="hidden" id="hdnCourseId" />
+</div>
+<!-- Edit Course Display -->
+
+<div class="col-md-12">
+    <p><span style="color: red;">*</span>NA - User already taken the course</p>
+</div>
+
+<div class="modal" id="dvViewCourse" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px!important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvViewCourse');"><span aria-hidden="true">&times;</span></button>
+                <h4 id="thumbnailsinglemodallbl" class="modal-title">Course Preview</h4>
+            </div>
+            <div class="modal-body" style="height:450px;overflow:auto;">
+                <div class="col-lg-12 clsPaddingNone" id="dvViewHeader">
+                    <div class="col-md-4 img_left ">
+                        <img class="clsCompLogo img-responsive thumnail" id="imgComLogo" />
+                    </div>
+                    <div class="col-md-8 clsPaddingNone count_right" style="text-align: right;">
+                        <div class="col-lg-12 clsPaddingNone" id="dvPageInfo">
+                            <div class="col-lg-12 page_div" style="display: none;">
+                                <div class="col-lg-12" id="">
+                                    <div class="col-xs-1 clsFloatRight">
+                                        <select id="cboPageNo"></select>
+                                    </div>
+                                    <div class="col-xs-5 clsFloatRight" id="dvQ">
+                                        Questions per page
+                                    </div>
+                                    dvQuesPagePer
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="dvTotalQues" style="font-weight: bold;"></div>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 clsPaddingNone clearfix" id="dvViewMid" style="color: #5E87B0 !important; text-align: left; font-weight: bold;">
+                    <div class="col-md-9">
+                        <div id="dvCourseName" class="col-lg-12"></div>
+                        <div id="dvCourseDesc" class="col-lg-12"></div>
+                    </div>
+                    <div class="col-md-3" id="dvSurImage">
+                        <img id="dvImgSurImg" class="thumbnail img-responsive" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-12" id="dvViewQuestions" style="height: 375px; overflow: scroll;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        AjaxGlobalHandler.Initiate();
+        $("#home-btn").attr("title", "Home");
+        $("#pop-settings").attr("title", "Settings");
+        $("#notify-btn").attr("title", "Notification Hub");
+    });
+    $("#dvPageHeader").html(@Html.Raw(Json.Encode(ViewBag.PageHeader)));
+
+    var tooltips = $("[title]").tooltip({
+        position: {
+            my: "left top",
+            at: "right+5 top-5"
+        }
+    });
+    var DATE_FORMAT = "dd/mm/yyyy";
+
+    var disp_SurevyDesc = "@Resources.AdCourse.Course_E_Header_Tbl_Course_Desc";
+    var disp_CourseEHeader = "@Resources.AdCourse.Course_Edit_Header";
+    var disp_CourseEFilter = "@Resources.AdCourse.Course_EFilter";
+    var disp_EFSurEffecFrom = "@Resources.AdCourse.Course_EFilter_Course_Effc_From";
+    var disp_EFSurEffecTo = "@Resources.AdCourse.Course_EFilter_Course_Effc_To";
+    var disp_EFCourseName = "@Resources.AdCourse.Course_EFilter_Course_Name";
+    var disp_EFSurSubmit = "@Resources.AdCourse.Course_EFilter_Course_Submit";
+    var disp_EFtblSurSNo = "@Resources.AdCourse.Course_EHeader_Tbl_SNo";
+    var disp_EFtblSurAction = "@Resources.AdCourse.Course_EHeader_Tbl_Course_Action";
+    var disp_EFtblSurDelete = "@Resources.AdCourse.Course_EHeader_Tbl_Course_Delete";
+    var disp_EFtblSurName = "@Resources.AdCourse.Course_EHeader_Tbl_Course_Name";
+    var disp_EFtblSurAction = "@Resources.AdCourse.Course_EHeader_Tbl_Course_No_Of_Asset";
+    var disp_EFtblSurNoOfQues = "@Resources.AdCourse.Course_EHeader_Tbl_Course_No_Of_Ques";
+    var disp_EFtblSurPre = "@Resources.AdCourse.Course_EHeader_Tbl_Course_Preview";
+    var surDeleteConfirm = "@Resources.AdCourse.Course_Delete_Confirm";
+    var surDeleteConfirmMsg = "@Resources.AdCourse.Course_Delete_Confirm_Msg";
+
+    $('#dvPubFEffFrom').html("@Resources.AdCourse.Course_Pub_Effe_From");
+    $('#dvPubFEffTo').html("@Resources.AdCourse.Course_Pub_Effe_To");
+    $('#btnSPubSubmit').val("@Resources.AdCourse.Course_Pub_Save");
+    $('#btnSPubPreview').val("@Resources.AdCourse.Course_Pub_Preview");
+    $('#btnSurPublish').val("@Resources.AdCourse.Course_Pub_Publish_button");
+    $('#btnQuestionNext').val("@Resources.AdCourse.Course_Question_Next");
+    var surPubEffecFromEmpty = "@Resources.AdCourse.Course_Pub_EffecFrom_Empty";
+    var surPubEffecToEmpty = "@Resources.AdCourse.Course_Pub_EffecTo_Empty";
+
+    $('#dvEFCourseName').html(disp_EFCourseName);
+    $('#dvEFEffFrom').html(disp_EFSurEffecFrom);
+    $('#dvEFEffTo').html(disp_EFSurEffecTo);
+    $('#btnSESubmit').val('Search');
+    var editCourseValidMsg = "@Resources.AdCourse.Course_Edit_Valid_Message";
+    $('#btnSESubmit').click(function () {
+        QUESTIONS.fnGetCourseDetails();
+    });
+    QUESTIONS.fnGetCourseDetails();
+    //$('#btnSPubSubmit').click(function () { SURVEY.fnCoursePublish($('#hdnCourseId').val()); });
+    $('#btnEditPre').on("click", function () { QUESTIONS.fnGetCourseDetails("p") });
+    $('#btnEditNxt').on("click", function () { QUESTIONS.fnGetCourseDetails("n") });
+</script>
+

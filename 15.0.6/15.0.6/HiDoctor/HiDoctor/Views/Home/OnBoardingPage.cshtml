@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "OnBoardingPage";
+    Layout = null;
+}
+
+<div class="col-sm-12" id="dvImg" onclick="fnRedirectToHdReports()" style="cursor: pointer;">
+    <img src="~/Content/coming-soon.png" />
+    <input type="hidden" id="hdnCompanyCode" />
+    <input type="hidden" id="hdnUserCode" />
+    <input type="hidden" id="hdnUrl" />
+    <input type="hidden" id="hdnUserName" />
+
+</div>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/HD/OnBoardPage.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#hdnCompanyCode').val(@Html.Raw(Json.Encode(ViewBag.CompanyCode)))
+        $('#hdnUserCode').val(@Html.Raw(Json.Encode(ViewBag.UserCode)));
+        $('#hdnUrl').val(@Html.Raw(Json.Encode(ViewBag.Url)));
+        $('#hdnUserName').val(@Html.Raw(Json.Encode(ViewBag.UserName)));
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRedirectToHdReports() {
+        debugger;
+        var paramvalue = "CompanyCode=" + $('#hdnCompanyCode').val() + "^UserCode=" + $('#hdnUserCode').val() + "^UserName=" + $('#hdnUserName').val() + "^Url=" + $('#hdnUrl').val();
+
+        //var params = [];
+        //var param = {};
+
+        //param.name = "parameters"
+        //param.value = paramvalue;
+        //params.push(param);
+
+        $.ajax({
+            type: 'POST',
+            url: "../Home/ConvertParamEncode/",
+            data: "parameters=" + paramvalue,
+            success: function (result) {
+                debugger;
+                window.open("http://hdreports.hidoctor.me" + '/?lid=' + result);
+            },
+            error: function (result) {
+                alert('error');
+            }
+        });
+    }
+</script>

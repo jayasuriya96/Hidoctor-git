@@ -1,0 +1,149 @@
+﻿
+/***********************************ICE Rating Parameters************************************************/
+
+
+#RPMain {
+    padding-top: 15px;
+    overflow: auto;
+}
+#RPsub{
+    padding: 25px;
+    background: rgb(241, 241, 241);
+}
+#usertype{
+    width:25% !important
+}
+#CompParaMain{
+    display:none;
+    padding-top: 15px;
+    overflow: auto;
+}
+#backgrndmain{
+    padding: 40px;
+    background: rgb(241, 241, 241);
+}
+#Addbtn{
+    display:none;
+}
+
+#UserType{
+    padding-top:3px;
+    font-size:18px;
+}
+.QstnsDrpdwn{
+    width:97.1%;
+}
+.remove{
+     font-size: 22px !important;
+    color: red !important;
+    padding-top: 5px !important;
+    padding-left:10px !important;
+    display:none;
+}
+#NOQstns{
+    padding: 20px;
+    background: rgb(241, 241, 241);
+    text-align:center; 
+    display:none;
+}
+#alert{
+     padding-top: 15px;
+}
+.Remove{
+       font-size: 22px !important;
+    color: red !important;
+    padding-top: 5px !important;
+    padding-left:10px !important;
+    display:none;
+
+}
+.add{
+      font-size: 22px !important;
+    color: black !important;
+    padding-top: 5px !important;
+    padding-left:10px !important;
+   
+}
+.param{
+    width:65% !important;
+}
+.pval{
+    width:15% !important;
+}
+.seprtr{
+    font-size:20px;
+    text-align:center;
+    width:5% !important;
+}
+.minus{
+       font-size: 22px !important;
+    color: red !important;
+    padding-top: 5px !important;
+    padding-left:10px !important;
+}
+.plusbtn{
+    width:5% !important;
+}
+.minusbtn{
+    width:5% !important;
+    display:none;
+}
+.RowData{
+    border-spacing:0px !important;
+}
+.Qstnsset{
+    padding-top:15px;
+}
+textarea.form-control{
+    height:auto !important;
+    resize:none !important;
+}
+.tbl_Params{
+    width:100%;
+    padding-left:40px !important;
+    padding-right:100px !important;
+    padding-top:15px;
+}
+#submitbtn{
+    float:right;
+}
+#submit {
+    padding: 0px !important;
+    padding-right: 55px !important;
+}
+#buttonsAS{
+    padding:20px !important;
+}
+
+
+@media screen and (max-width: 495px) {
+
+
+    .QstnsDrpdwn {
+        width: 80%;
+    }
+
+
+}
+
+@media screen and (max-width: 230px) {
+
+
+    .QstnsDrpdwn {
+        width: 60%;
+    }
+
+
+}
+
+@media screen and (max-width: 1200px) {
+
+
+    .QstnsDrpdwn {
+        width: 90%;
+    }
+
+
+}
+
+

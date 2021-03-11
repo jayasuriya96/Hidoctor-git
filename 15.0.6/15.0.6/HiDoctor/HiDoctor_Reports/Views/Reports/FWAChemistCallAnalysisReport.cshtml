@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "FWAChemistCallAnalysisReport";
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <td colspan="2" align="center">
+        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetChemistCallAnalysis();" />
+    </td>
+</div>
+<div>
+    <div id="divheader"></div>
+    <div id="divChemistcallAnalysisReport"></div>
+</div>
+<iframe id="ifrmPrintchemist" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintChemistMetanalysis" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/FWAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+
+</script>

@@ -1,0 +1,282 @@
+﻿@model HiDoctor_Master.Models.DoctorMasterModel
+@{
+    ViewBag.Title = "ExcelUpload";
+    Layout = null;
+}
+
+<link href="../../Areas/HiDoctor_Master/Content/DoctorMaster.css" type="text/css" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+
+<style>
+    .cls-ErrorindicationRow td {
+        border: 1px solid black !important;
+        background-color: #F0C08D !important;
+    }
+
+        .cls-ErrorindicationRow td input {
+            border: 1px solid black !important;
+            background-color: #F0C08D !important;
+        }
+
+    .cls-dvLegend {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #tblBulkDoctor input.cls_Errorindication {
+        border: 1px solid yellow !important;
+        background-color: yellow !important;
+    }
+</style>
+
+<form action="../HiDoctor_Master/DoctorMaster/ExcelUpload" method="post" enctype="multipart/form-data" onsubmit="return fnValidate();" target="_blank">
+
+    <div style="width: 100%; margin-top: 1%;">
+        <div style="width: 100%; background-color: #f2f2f2; border: 1px solid #EFEFEF; height: 55px;">
+            <div style="width: 75%; float: left; margin-top: 10px;">
+                <span style="font-size: 19px; font-weight: bold;" id="spnEntity"></span>
+                <span id="spnRegionName" style="font-size: 19px; font-weight: bold;"></span>
+                <input type="hidden" id="seletedRegionCodeExcelUpload" />
+            </div>
+            <div style="float: right; padding-right: 3px; width: 20%; display: none;">
+                <div id="dvOptions" class="dvOptions" onclick="fnOpenOptions('EXCEL');" style="margin-left: 50%;"></div>
+                <div id="dvPages" style="display: none; margin-left: 2%;">
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%; float: left;">
+
+    <div style="width: 15%; float: left; border: 1px solid #f2f2f2; height: 725px; -webkit-border-radius: 5px;
+        -moz-border-radius: 5px; border-radius: 5px;"
+        id="dvLeftPanel">
+        <div id="dvRegionTree" style="height: 100%;">
+        </div>
+            </div>
+            <div style="width: 80%; float: left; border: 1px solid #EFEFEF; display: none;" id="dvRightPanel">
+
+                <div style="width: 100%;">
+                    <div style="float: left; width: 50%; border: 1px solid #f2f2f2;">
+
+                        <table>
+                            <tr>
+                                <td style="text-align: center">
+                                    <br />
+                                    @* 
+                                    <input type="button" id="btnDownload" value="Step1:Download" class="btn small primary" />*@
+                                    <label style="font-weight: bold; color: blue; font-size: 14px;">Step 1: Download</label>
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br />
+                                    1.Please Download the excel file  @Html.ActionLink("Download Excel", "Download", new { Entity = Model.Entity })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.Enter Details in Bulk Add Sheet.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.Do not alter the Excel file structure (like adding or removing a column)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.Do not rename columns
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>7.Click 'Choose file' button to save the doctor details
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8.Click upload button to save the doctor details
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="float: left; width: 49%;">
+                        <table>
+                            <tr>
+                                <td style="text-align: center">
+                                    <br />
+                                    @* 
+                                    <input type="button" id="btnUpload" value="Step 2 : Upload" class="btn small primary" />*@
+                                    <label style="font-weight: bold; color: blue; font-size: 14px;">Step 2 : Upload</label>
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    <br />
+                                    <input type="file" id="file" name="file" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" id="btnUp" value="Upload" class="btn small primary" />
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    @Html.HiddenFor(model => model.Region_Code)
+        @Html.HiddenFor(model => model.Customer_Code)
+        @Html.HiddenFor(model => model.Entity)
+        @Html.HiddenFor(model => model.Table_Name)
+    
+</form>
+
+<script type="text/javascript">
+    var rowNumber = "0";
+    var entityColumns_g = "";
+    var entity_g = "";
+    var tableName_g = "";
+    var currentDate = "";
+    var userPrivilege_g = "";    
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {          
+            //  $("#spnEntity").html($("#Entity").val().toUpperCase() + " Master Bulk Add (Excel Upload)");
+            $("#spnRegionName").html($("#Entity").val() + ' Master Excel Bulk Add');
+            fnBindRegionTree("dvRegionTree");
+            currentDate=@Html.Raw(Json.Encode(ViewBag.CurrentDate))
+            var regionCode= @Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[0] ;
+            var regionName=@Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[1];
+            $("#Region_Code").val(regionCode);
+            $("#seletedRegionCodeExcelUpload").val(regionCode);
+            userCode=@Html.Raw(Json.Encode(ViewBag.userCode));           
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreeActivate(node) {
+        $("#file").val('');
+        $("#Region_Code").val(node.data.key);
+        $("#seletedRegionCodeExcelUpload").val(node.data.key);
+        //if ($('#imgScroll').hasClass("ScrollUp")) {
+        //    $('#imgScroll').removeClass("ScrollUp");
+        //    $('#imgScroll').addClass("ScrollDown");
+        // $("#dvLeftPanel").show();
+        $("#dvRightPanel").css('display', '');
+        $("#dvRightPanel").css('width', '80%');
+        $("#spnRegionName").html($("#Entity").val() + ' Master Excel Bulk Add ( Region Name : '+ node.data.title  +' ) ');
+        //Get User specific privilegs
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/GetRegionwiseUser/',
+            type: "POST",
+            data: "DateTime=" + new Date().getTime() + "&RegionCode=" + $("#Region_Code").val() + "",
+            success: function (result) {
+                result = eval('('+result+')');
+                if(result!='')  {
+                    if(result.Tables[0].Rows[0]!=undefined){
+                        var selectedUserCode= result.Tables[0].Rows[0].User_Code;
+                        fnGetUserPrivileges(selectedUserCode);
+                    }
+                    else{
+                        fnGetUserPrivileges(selectedUserCode);
+                        // fnMsgAlert('info','Information','User details not found for the selected region');
+                    }
+                }
+                else{
+                    fnGetUserPrivileges('');
+                }
+            },
+            error: function () {
+            }
+        });
+        //}
+        //else {
+        //    $("#dvLeftPanel").hide();
+        //    $("#dvRightPanel").css('display', '');
+        //    $("#dvRightPanel").css('width', '98%');
+        //    $('#imgScroll').removeClass("ScrollDown");
+        //    $('#imgScroll').addClass("ScrollUp");
+        fnSelectedregionCode();
+        //Used to get the dotor category only based on the Selected Region
+        fnGetDoctorCategoryBasedonselectedRegion();
+        $("#dvAjaxLoad").hide();
+        //}
+    }
+
+    function fnRegionTreePostInit(node) {
+
+        var treeobj = $("#dvRegionTree").dynatree("getTree")
+        var childCount = treeobj.tnRoot.countChildren();
+        if (childCount == 1) {
+            $("#Region_Code").val(treeobj.tnRoot.childList[0].data.key);
+            $("#seletedRegionCodeExcelUpload").val(treeobj.tnRoot.childList[0].data.key);
+            //  $("#dvLeftPanel").hide();
+            //  $("#dvRightPanel").css('display', '');
+            //  $("#dvRightPanel").css('width', '98%');
+        }
+        else{
+            $("#dvRegionTree").dynatree("getTree").activateKey($("#Region_Code").val());
+        }
+        fnSelectedregionCode();
+        //Used to get the dotor category only based on the Selected Region
+        fnGetDoctorCategoryBasedonselectedRegion();
+        $("#dvAjaxLoad").hide();
+    }
+
+
+    //$("#imgScroll").click(function () {
+    //    if ($('#imgScroll').hasClass("ScrollUp")) {
+    //        $('#imgScroll').removeClass("ScrollUp");
+    //        $('#imgScroll').addClass("ScrollDown");
+    //        $("#dvLeftPanel").show();
+    //        $("#dvRightPanel").css('width', '80%');
+    //    }
+    //    else {
+    //        $("#dvLeftPanel").hide();
+    //        $("#dvRightPanel").css('width', '98%');
+    //        $('#imgScroll').removeClass("ScrollDown");
+    //        $('#imgScroll').addClass("ScrollUp");
+    //    }
+    //});
+    function fnValidate() {
+        var fileName = $("#file").val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xls") {
+                return true;
+                // $("#dvBody").load('DoctorMaster/DataQuality');
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xls file only');
+                return false;
+            }
+        }
+        //if ($("#Value").val() != '') {
+        //    $("#dvBody").load('DoctorMaster/DataQuality');
+        //}
+    }
+
+
+    function fnSelectedregionCode(){
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/SetSession/',
+            type: "POST",
+            data: "selectedRegionCode=" +  $("#seletedRegionCodeExcelUpload").val(),
+            success: function (result) {
+                // result = eval('('+result+')');
+         
+            },
+            error: function () {
+            }
+        });
+    }  
+</script>

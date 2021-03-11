@@ -1,0 +1,340 @@
+﻿body {
+}
+
+
+/**************** STRAT: Doctor 360 * *********************************/
+
+#divdoctor360 span {
+    font-family: segoe UI;
+    color: #777;
+}
+
+#divlast3visit span {
+    color: #333222 !important;
+}
+
+#divdoctorDetails, #divcampaign_list, #divlast3visit, #divproduct_details, #divnonsample_details, #divchemist_details, #divrcpa_details, #divmapped_details, #divrcpa {
+    width: 100%;
+    clear: both;
+    padding: 10px;
+}
+
+#divrcpa {
+    color: #777;
+    font-size: 12px;
+}
+
+.tdrcpa {
+    border: 1px solid green !important;
+}
+
+.spnYield {
+    color: #996666 !important;
+}
+
+.TableTools_print {
+    display: none !important;
+}
+
+
+.spntotPres {
+    color: #0065FC !important;
+}
+
+#divdoctorDetails span {
+    font-family: Vrinda !important;
+    font-size: 25px;
+}
+
+.page {
+    width: 92%;
+    margin: 0px auto;
+    background-color: #fff;
+}
+
+
+#divcampaign_list span {
+    color: #0033CC;
+    text-decoration: underline;
+}
+
+.title {
+    font-size: 15px;
+    color: #323232 !important;
+}
+
+.dotline {
+    border: 2px dashed #f8f8fa;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.sample {
+    background: transparent url('/Areas/HiDoctor_Reports/Content/images/Green-Capsule16.png') no-repeat top left !important;
+    height: 16px;
+    width: 19px;
+    float: left;
+}
+
+.chemist {
+    background: transparent url('/Areas/HiDoctor_Reports/Content/images/Parcel-icon1.png') no-repeat top left !important;
+    height: 20px;
+    width: 30px;
+    float: left;
+}
+
+
+.div-reports {
+    background-color: #EFEFEF;
+    margin-top: 6px;
+    text-align: center;
+    width: 98%;
+}
+
+.div-report-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.div-report {
+    font-size: 12px;
+    padding-left: 20%;
+}
+
+.ul-img {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    list-style-image: url("../Content/DataTable/media/images/arrow.gif");
+}
+
+
+.expanded-group {
+    background: url("../Content/DataTable/media/images/minus.jpg") no-repeat scroll left center transparent !important;
+    padding-left: 15px !important;
+    background-color: darkgray !important;
+}
+
+.collapsed-group {
+    background: url("../Content/DataTable/media/images/plus.jpg") no-repeat scroll left center transparent !important;
+    padding-left: 15px !important;
+    background-color: darkgray !important;
+}
+
+
+.dvImgLayout {
+    width: 100%;
+}
+
+.dvImgMain {
+    width: 20%;
+    height: 140px;
+    float: left;
+}
+
+.td-a {
+    color: #06C;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.text_filter, .search_init {
+    width: 80px !important;
+}
+
+.number_range_filter {
+    width: 35px !important;
+    display: compact !important;
+}
+
+.date_range_filter {
+    width: 73px !important;
+    display: compact !important;
+}
+
+.TableTools_csv {
+    display: none !important;
+}
+
+.gridHeader {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+}
+
+    .gridHeader h3 {
+        border: 1px solid #6082AD;
+        background: url(/Areas/HiDoctor_Activity/content/images/Web/hd/titlebg.png) repeat-x scroll left top #688AB5;
+        height: 20px;
+        color: #fff !important;
+        -webkit-border-top-left-radius: 4px;
+        -webkit-border-top-right-radius: 4px;
+    }
+
+
+.expand {
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/expand1.png') no-repeat left center !important;
+}
+
+.collapse {
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/expand2.png') no-repeat left center !important;
+}
+
+.hand {
+    background: #066ECD url('/Areas/HiDoctor_Activity/content/images/hand.png') no-repeat right center !important;
+}
+
+.listheaderbar {
+    background-color: #3B6792 !important;
+    color: #fff;
+    height: 16px !important;
+    padding: 8px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial,Helvetica, sans-serif !important;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.TableTools_print {
+    display: none !important;
+}
+
+/********************** COMPREHENSIVE ANALYSIS *****************/
+.CA_Div {
+    border-top: 4px solid #e0e0e0 !important;
+    float: left;
+    width: 95%;
+    margin-left: 1%;
+    margin-bottom: 20px;
+    padding: 2%;
+    border: 1px solid #cccccc;
+    overflow: auto;
+}
+
+.CA_Header_Tbl, .CA_Detail_Tbl {
+    width: 99%;
+    flex-align: center;
+    font-size: 10px;
+}
+
+    .CA_Header_Tbl tr th {
+        font-weight: bold;
+    }
+
+    .CA_Header_Tbl tr td {
+        padding-left: 2px;
+    }
+
+        .CA_Header_Tbl tr td:nth-child(odd) {
+            background-color: red;
+        }
+
+    .CA_Detail_Tbl tr th {
+        background-color: #e0e0e0;
+        padding: 3px;
+    }
+
+    .CA_Detail_Tbl tr td {
+        padding-left: 2px;
+        border-bottom: 1px dotted #d3d3d3;
+    }
+
+#CA_Excel {
+    background: url(/Content/DataTable/media/images/xls.png) no-repeat center center;
+    border: 1px solid #f0f0f0;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    float: right;
+}
+
+.CA_Div_Company {
+    width: 95%;
+    margin-left: 1%;
+    float:left;
+    font-weight:bold;
+}
+
+.CA_Div_Left {
+    width:60%;
+    float:left;
+    font-size:13px;
+}
+
+.CA_Div_Right {
+     width:37%;
+    float:right;
+}
+
+
+@media screen and (min-width:1230px) {
+    .CA_Div {
+        width: 88%;
+        margin-left: 4%;
+        padding: 2%;
+    }
+
+    .CA_Header_Tbl, .CA_Detail_Tbl {
+        font-size: 11px;
+    }
+
+    .CA_Div_Company {
+        width: 99%;
+        margin-left: 4%;
+    }
+
+    .CA_Div_Left {
+    }
+
+    .CA_Div_Right {
+    }
+}
+
+/********************** COMPREHENSIVE ANALYSIS *****************/
+
+.simple_overlay .close
+{
+    background-image: url(/Areas/HiDoctor_Reports/Content/images/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    z-index:99;
+}
+
+
+.dvRptInput {
+    border: 1px solid #dddddd !important;
+    background: #fafafa !important;
+    padding: 5px !important;
+}
+.shInput, .spnTreeToggle  {
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.div-alert
+{
+    border: 1px solid #F0C36D !important;
+    background-color: #F9EDBE;
+    padding: 4px;
+    font-size: 12px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 95%;
+}
+
+#dvAsynMsg {
+     border: 1px solid #F0C36D !important;
+    background-color: #F9EDBE;
+    margin-bottom: 10px;
+    padding: 4px;
+    font-size: 12px;
+    font-weight:bold;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 95%;
+}
+
+.table thead {
+    text-align: center;
+}

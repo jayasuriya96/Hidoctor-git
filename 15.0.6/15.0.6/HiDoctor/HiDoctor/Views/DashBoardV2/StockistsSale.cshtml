@@ -1,0 +1,21 @@
+﻿                        <div class="panel cls-cat-cov-main cls-common-head" style="height: 360px;" id="StockistSaleDashboard">
+                              <div class="panel-heading">
+                           
+                                   <label id="DrCaption" style="font-size:14px; font-weight:400" >  </label>
+                                    <select id="Stockist_Division" class="dropdown" style="color:blue;height: 32px;left: 100px;"></select>                                                            
+                                </div>
+                            <div id="tbl_Stockist">                              
+                            </div>
+                            
+                            
+                            </div>
+
+ <script src="~/Scripts/HD/OzoneDashboard.js"></script>    
+<script type="text/javascript">
+    var stockist_caption = "";
+    $(document).ready(function () {
+        debugger;
+        stockist_caption=@Html.Raw(Json.Encode(ViewBag.stockist_caption));      
+        $("#DrCaption").html( stockist_caption +" in Different brackets sale");
+ });
+    </script>

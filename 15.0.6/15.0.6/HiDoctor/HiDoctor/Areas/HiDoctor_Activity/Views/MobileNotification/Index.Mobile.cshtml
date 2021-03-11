@@ -1,0 +1,55 @@
+﻿
+
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>Notification
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+     <a href="#"  class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">
+                Menu
+            </a>
+    <div id="dvNotification"></div>
+    <div id="dvAppliedDCR"></div>
+</div>
+<div data-role="footer"></div>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mNotification.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var notification_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        // User Name bind
+        $('span.cls_usernamespn').text(loginUserName_g);
+       // $("#notificationloginUserName").html(loginUserName_g);
+        //to get the notification 
+        $.ajax({
+            type: "POST",
+            url: '/HiDoctor_Activity/MobileMenu/GetNotification',
+            data: "a",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                notification_g = result;
+
+                var content = '<ul data-role="listview" data-divider-theme="b" data-inset="true">';
+                content += '<li data-role="list-divider" role="heading">Notifications</li>';
+
+                content += '<li data-theme="c">';
+                content += '<a href="#" data-transition="slide" onclick="fnGetUnApprovedDCR()">';
+                content += '<span><span style="color:green">' + result.Tables[0].Rows[0].COUNT + '</span> Unapproved DCR</span>';
+                content += '</a>';
+                content += '</li>';
+
+                content += '<li data-theme="c">';
+                content += '<a href="#" data-transition="slide" onclick="fnGetApprovedDCR()">';
+                content += '<span><span style="color:green">' + result.Tables[1].Rows[0].Count + '</span> DCR need to be approve</span>';
+                content += '</a>';
+                content += '</li>';
+
+                content += "</ul>";
+
+                $("#dvNotification").html(content).trigger('create');
+            }
+        });
+    });
+
+
+</script>

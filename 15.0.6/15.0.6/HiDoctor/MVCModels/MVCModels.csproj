@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F1D03A7-4C34-4368-83AE-039F1795D700}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MVCModels</RootNamespace>
+    <AssemblyName>MVCModels</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAzure.Storage">
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient">
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminDashboardModel.cs" />
+    <Compile Include="Allow_PreviousDayDCR.cs" />
+    <Compile Include="APIModel.cs" />
+    <Compile Include="ApprovalModel.cs" />
+    <Compile Include="AsynReportModel.cs" />
+    <Compile Include="Batch.cs" />
+    <Compile Include="BeatPlanModel.cs" />
+    <Compile Include="CampaignPlannerModel.cs" />
+    <Compile Include="CCMModel.cs" />
+    <Compile Include="ChangePasswordModel.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="CloudFile.cs" />
+    <Compile Include="CMEModel.cs" />
+    <Compile Include="CPD.cs" />
+    <Compile Include="Customer360Model.cs" />
+    <Compile Include="CustomerModel.cs" />
+    <Compile Include="CycleMasterModel.cs" />
+    <Compile Include="DashBoardLanding.cs" />
+    <Compile Include="DashboardModel.cs" />
+    <Compile Include="DashBoardV2Model.cs" />
+    <Compile Include="DCRConsolidatedReportModel.cs" />
+    <Compile Include="DCRFreezeModel.cs" />
+    <Compile Include="DCRLockModel.cs" />
+    <Compile Include="DCRStatusModel.cs" />
+    <Compile Include="DCRV4Model.cs" />
+    <Compile Include="DepotModel.cs" />
+    <Compile Include="DieticianModel.cs" />
+    <Compile Include="DistanceFareChartModel.cs" />
+    <Compile Include="DivisionModel.cs" />
+    <Compile Include="DivisionUserProducts.cs" />
+    <Compile Include="DoctormasterModel.cs" />
+    <Compile Include="DoctorMissedReason.cs" />
+    <Compile Include="DoctorsBirthday.cs" />
+    <Compile Include="DomainMasterModel.cs" />
+    <Compile Include="ExpenseClaimModel.cs" />
+    <Compile Include="FeatureMasterModel.cs" />
+    <Compile Include="FormControl.cs" />
+    <Compile Include="ICEModels.cs" />
+    <Compile Include="InwardAckModel.cs" />
+    <Compile Include="JQueryDataTableParamModel.cs" />
+    <Compile Include="LeaveModel.cs" />
+    <Compile Include="LeaveTypeMasterModel.cs" />
+    <Compile Include="LockRelease.cs" />
+    <Compile Include="MarketingCampaignModel.cs" />
+    <Compile Include="MasterDataModel.cs" />
+    <Compile Include="MenuModel.cs" />
+    <Compile Include="MessagingModel.cs" />
+    <Compile Include="MTO.cs" />
+    <Compile Include="MyDocumentsModel.cs" />
+    <Compile Include="MyProfilePopupModel.cs" />
+    <Compile Include="NoticeBoardModel.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderFulfillment.cs" />
+    <Compile Include="OTCModel.cs" />
+    <Compile Include="OutPutJson.cs" />
+    <Compile Include="Passwordreset.cs" />
+    <Compile Include="PayrollModel.cs" />
+    <Compile Include="PrimarySalesModel.cs" />
+    <Compile Include="PrivilegeMasterModel.cs" />
+    <Compile Include="ProductMapping.cs" />
+    <Compile Include="ProductModel.cs" />
+    <Compile Include="ProductPriceMasterModel.cs" />
+    <Compile Include="ProjectMasterModel.cs" />
+    <Compile Include="PromotionalInputModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PSAndSSSalesEntry.cs" />
+    <Compile Include="PTSModels.cs" />
+    <Compile Include="PurchaseRequisitionModel.cs" />
+    <Compile Include="RCPA.cs" />
+    <Compile Include="RegionCreationModel.cs" />
+    <Compile Include="RegionLockMappingModel.cs" />
+    <Compile Include="RegionModel.cs" />
+    <Compile Include="ReportsModel.cs" />
+    <Compile Include="RequestMasterModel.cs" />
+    <Compile Include="RequestModel.cs" />
+    <Compile Include="SalesOrderStatusModel.cs" />
+    <Compile Include="SecondarySalesModel.cs" />
+    <Compile Include="SendSMS.cs" />
+    <Compile Include="SFCRegionModel.cs" />
+    <Compile Include="ShieldRCPA.cs" />
+    <Compile Include="SMSReportModel.cs" />
+    <Compile Include="SplashScreenModel.cs" />
+    <Compile Include="SSModels.cs" />
+    <Compile Include="StatusMasterModel.cs" />
+    <Compile Include="StockiestInheritance.cs" />
+    <Compile Include="SubRegionMasterModel.cs" />
+    <Compile Include="TargetSetting.cs" />
+    <Compile Include="TourPlanner.cs" />
+    <Compile Include="TravelModeModel.cs" />
+    <Compile Include="UsercreationWizardModel.cs" />
+    <Compile Include="UserModel.cs" />
+    <Compile Include="UserProjectMapping.cs" />
+    <Compile Include="WeekendGroup.cs" />
+    <Compile Include="WLReports.cs" />
+    <Compile Include="WorkCategoryRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\MVCModels.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="obj\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

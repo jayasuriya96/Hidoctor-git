@@ -1,0 +1,934 @@
+/** * html5doctor.com Reset Stylesheet v1.6.1 (http://html5doctor.com/html-5-reset-stylesheet/) * Richard Clark (http://richclarkdesign.com) * http://cssreset.com */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	/*font-size: 100%;*/
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+	overflow-x: hidden;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+nav ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+a {
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}/* change colours to suit your needs */
+ins {
+	background-color: #ff9;
+	color: #000;
+	text-decoration: none;
+}/* change colours to suit your needs */
+mark {
+	background-color: #ff9;
+	color: #000;
+	font-style: italic;
+	font-weight: bold;
+}
+del {
+	text-decoration: line-through;
+}
+abbr[title], dfn[title] {
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}/* change border colour to suit your needs */
+hr {
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #cccccc;
+	margin: 1em 0;
+	padding: 0;
+}
+input, select {
+	vertical-align: middle;
+}
+
+/*** fonts css ***/
+@font-face {
+ font-family: 'OpenSansLight';
+ src: url("../../Content/fonts/OpenSans-Light.eot?v=1.1.0");
+ src: url("../../Content/fonts/OpenSans-Light.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../../Content/fonts/OpenSans-Light.woff?v=1.1.0") format("woff"), url("../../Content/fonts/OpenSans-Light.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans-Light.svg?v=1.1.0#OpenSansBold") format("svg");
+ font-weight: 300;
+ font-style: normal;
+}
+@font-face {
+ font-family: 'OpenSansRegular';
+ src: url("../../Content/fonts/OpenSans-Regular.eot?v=1.1.0");
+ src: url("../../Content/fonts/OpenSans-Regular.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../../Content/fonts/OpenSans-Regular.woff?v=1.1.0") format("woff"), url("../../Content/fonts/OpenSans-Regular.ttf?v=1.1.0") format("truetype"), url("../../Content/fonts/OpenSans-Regular.svg?v=1.1.0#OpenSansBold") format("svg");
+ font-weight: normal;
+ font-style: normal;
+}
+@font-face {
+ font-family: 'OpenSansSemiBold';
+ src: url("../../Content/fonts/OpenSans-Semibold.eot?v=1.1.0");
+ src: url("../../fonts/OpenSans-Semibold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../../Content/fonts/OpenSans-Semibold.woff?v=1.1.0") format("woff"), url("../../Content/fonts/OpenSans-Semibold.ttf?v=1.1.0") format("truetype"), url("../../Content/fonts/OpenSans-Semibold.svg?v=1.1.0#OpenSansBold") format("svg");
+ font-weight: 600;
+ font-style: normal;
+}
+@font-face {
+ font-family: 'OpenSansBold';
+ src: url("../../Content/fonts/OpenSans-Bold.eot?v=1.1.0");
+ src: url("../../Content/fonts/OpenSans-Bold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../../Content/fonts/OpenSans-Bold.woff?v=1.1.0") format("woff"), url("../../Content/fonts/OpenSans-Bold.ttf?v=1.1.0") format("truetype"), url("../../Content/fonts/OpenSans-Bold.svg?v=1.1.0#OpenSansBold") format("svg");
+ font-weight: bold;
+ font-style: normal;
+}
+
+
+/*** Main css ***/
+ul{
+	list-style:none;
+}
+body {
+	font-family: "OpenSansLight", Arial, Helvetica, sans-serif;
+    background-color: #EBEBEB;
+}
+
+/*** header ***/
+header {
+	height: 38px;
+	background-color: #0054a5;
+	padding: 6px 5px 0px;
+}
+.doc-logo {
+    background-image: url("/Images/DocPorch/UserLandingPage/004_DocPorch_Logo.png");
+    background-size: 100% 100%;
+    height: 32px;
+    width: 98px;
+    display: inline-block;
+}
+header ul {
+	width: auto;
+	display: inline-block;
+    float: right;
+}
+header ul li {
+	display: inline-block;
+	position: relative;
+	width: 40px;
+	height: 32px;
+}
+header ul li a {
+	display: block;
+	font-size: 11px;
+	/* delete */
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+}
+header ul li a.fa {
+	font-size: 30px;
+	color: #fff;
+    cursor: pointer;
+}
+
+#content {
+    /*margin-top: 40px;*/
+    margin-top: 56px;
+}
+
+/*** NOtification drop ***/
+/*.notification-drop {
+	position: absolute;
+	width: 310px;
+	left: -160px;
+	padding-left: 10px;
+	margin-left: 50%;
+	background-color: #fff;
+	padding-top: 10px;
+	z-index: 10;
+	top: 44px;
+	display: none;
+}
+.notification-drop ul {
+	list-style: none outside none;
+    min-width: initial;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+.notification-drop ul li {
+	width: 100%; 
+	float: none;
+	height: auto;
+	padding-bottom: 10px;
+}
+.notification-items .prof-img {
+	float: left;
+	max-width: 40px;
+}
+.notification-items .prof-img img {
+	height: 40px;
+	width: 40px;
+}
+.notification-items .prof-desc {
+	padding-left: 50px;
+}
+.notification-items .prof-desc .notf-title {
+    padding-bottom: 8px;
+    text-align: left;
+}
+.notf-request-actions {
+	text-align: left;
+}
+.notf-request-actions a {
+	margin-right: 10px;
+	margin-top: 0px;
+	display: inline-block;
+	color: #fff;
+	font-size: 12px;
+}
+.notf-request-actions a.btn {
+	line-height: 24px;
+	height: 24px;
+}*/
+.notification-drop {
+    display: none; 
+    position: fixed; 
+    z-index: 999; 
+    top: 42px; 
+    right: 10px; 
+    color: #141823;
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid rgba(100, 100, 100, 0.4);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    width: 430px;
+}
+.notification-drop .arrow-drop {
+    position: relative;
+}
+.notification-drop .header {
+    padding: 4px 8px;
+    font-size: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #aaa;
+}
+.notification-drop .notification-body {
+    max-height: 300px;
+}
+.notification-drop .notification-body ul {
+    max-height: 300px;
+    overflow: auto;
+}
+.notification-drop ul li {
+    padding: 4px 8px;
+    text-decoration: none;
+    list-style: none;
+    border-bottom: 1px solid #DDDDDD;
+}
+.notification-drop ul li .prof-desc {
+    float: left; 
+    padding-left: 10px;
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.notification-drop ul li .actions-div {
+    float: right;
+    margin-top: 17px;
+}
+
+.notification-drop .accept-button {
+    padding: 4px 8px;
+    background-color: #4e69a2;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: #435a8b #3c5488 #334c83;
+    font-weight: bold;
+}
+.notification-drop .accept-button:hover, 
+.notification-drop .accept-button:active {
+    text-decoration: none;
+}
+
+.notification-drop .reject-button {
+    margin-left: 5px;
+    padding: 4px 8px;
+    background-color: #FDFDFD;
+    color: #4e5665;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: #cdced0 #c5c6c8 #b6b7b9;
+    font-weight: bold;
+}
+.notification-drop .reject-button:hover, 
+.notification-drop .reject-button:active {
+    text-decoration: none;
+}
+
+#notf-count, #msg-count {
+    border-radius: 12px;
+    color: #fff;
+    height: 15px;
+    position: absolute;
+    right: 0px;
+    width: 15px;
+    background: #ff6000;
+    text-align: center;
+    top: -2px;
+    line-height: 15px;
+    width: 15px;
+    font-size: 10px;
+    border: 2px solid #fff;
+}
+#notf-count, #msg-count {
+    display: none;
+}
+
+/*.left {
+	background-color:#fff;
+	width: 330px;
+	float: left;
+	border-right: 1px solid #bbb;
+}*/
+
+.doctor-img {
+	position: relative;
+	height: 150px;
+	text-align: center;
+    overflow: hidden;
+}
+.main-profile .doctor-img {
+    height: 416px;
+}
+.doctor-img .transparent {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 2;
+	background: url('/Images/RxBook/blue_bg.png') repeat-x;
+	height: 100%;
+	width: 100%;
+}
+.doctor-img .doctor-picture {
+	margin: 0px auto;
+	width: 220px;
+	height: 220px;
+	border-radius: 100%;
+	-moz-border-radius: 100%;
+	-webkit-border-radius: 100%;
+	overflow: hidden; 
+    margin-right: 10px;
+    position: relative;
+}
+.doctor-detail .upload-picture {
+    width: 40px;
+    height: 40px;
+    background: #333;
+    color: #fff;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    text-decoration: none;
+    display: none;
+}
+.doctor-detail .upload-picture span {
+    font-size: 24px;
+    line-height: 40px;
+    color: #fff;
+}
+.doctor-img img {
+	width: 100%;
+	height: 100%;
+}
+.doctor-img > img {
+	width: 100%;
+    height: auto;
+}
+.user-location span{
+	margin-right:5px;
+	font-size:25px;
+}
+.doctor-detail{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	z-index: 3;
+	width: 100%;
+	color: #fff;
+	padding-top: 55px;
+}
+.doctor-detail h2 {
+	padding-top: 8px;
+	font-size: 24px;
+	font-weight: normal;
+    font-family: "OpenSansSemiBold", Arial, Helvetica, sans-serif;
+}
+.doctor-detail p { 
+	font-size: 16px;
+	line-height: 32px;	
+	color: #C4CCDF;
+    display: block;
+}
+.doctor-detail .user-location { 
+	font-size: 16px;
+	line-height: 32px;	
+	color: #C4CCDF;
+    padding-top: 5px;
+    font-family: "OpenSansRegular", Arial, Helvetica, sans-serif;
+}
+.doctor-speciality{
+	width:100%;
+	min-height:62px;
+    display:none;
+}
+.doctor-speciality .col-two{
+	width:100%;
+	height:62px;
+	border:1px solid #dbdada;
+	border-left: 0px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	padding-top: 8px;
+	text-align: center;
+}
+.doctor-speciality .col-two:last-child {
+	border-right: 0px;
+}
+.doctor-speciality .col-two .label { 
+	font-family: "OpenSansRegular", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 16px;	
+	padding-bottom: 5px;
+    position: relative;
+}
+.doctor-speciality .col-two .value { 
+	font-family: "OpenSansBold", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+    height: 18px;
+    overflow: hidden;
+    width: 98%;
+}
+.doctor-speciality .col-two select {
+    width: 200px;
+    display: none;
+}
+.doctor-speciality .col-two .label a {
+    right: 10px;
+    position: absolute;
+    z-index: 1;
+    text-decoration: none;
+    color: #44AEE3;
+    font-size: 16px;1
+}
+.doctor-contact{
+	width:100%;
+	height:auto;
+	box-sizing:border-box;
+	padding:4px 30px;
+	border-bottom:1px solid #908D8E;
+	
+}
+/*.doctor-contact ul{
+	text-align:left;
+	line-height:30px;
+	text-indent:5px;
+}
+.doctor-contact ul li a{
+	color:#000000;
+	text-decoration:none;
+}
+.doctor-contact ul li a span{
+	color:#3A5694;
+	margin-right:5px;
+	font-size:25px;
+}*/
+.doctor-contact {
+	padding: 10px 30px;
+}
+.doctor-contact ul li {
+	height: 18px;
+	padding-bottom: 5px;
+}
+.doctor-contact ul li a {
+	display: block;
+	font-size: 15px;
+	color: #3A5694;
+	text-decoration: none;
+	font-family: "OpenSansRegular", Arial, Helvetica, sans-serif;
+	color: #000;
+}
+.doctor-contact ul li a span {
+	margin-right: 10px;
+	color: #3A5694;
+	font-size: 18px;
+	float: left;
+}
+.menu{
+	width:100%;
+	height:auto;
+	box-sizing:border-box;
+	border-bottom:1px solid #908D8E;
+	height:auto;
+	margin:0px;
+	line-height:30px;
+}
+.menu ul{
+ text-indent:5px;
+}
+.menu ul li{
+	height: 47px;
+	border-bottom:1px solid #908D8E;
+	padding:10px 30px 10px 16px;
+}
+.menu ul li.active {
+	background-color: #3A5694;
+}
+.menu ul li a span{
+	margin-right:5px;
+	float:left;
+	font-size:25px;
+	line-height: 47px;
+	width: 40px;
+	text-align: center;
+	display: inline-block;
+}
+.menu ul li a{
+	text-decoration:none;
+	color:#000000;
+	font-family: "OpenSansSemiBold", Arial, Helvetica, sans-serif;
+	line-height: normal;
+	display: block;
+	line-height: 47px;
+}
+.menu ul li a .fa-graduation-cap {
+	font-size: 22px;
+}
+.menu ul li.active a {
+	color: #fff; 
+}
+.option{
+	display:none;
+}
+
+
+/* right section*/
+/*.right{
+	width:auto;
+	height:auto;
+	padding-left:335px;
+}*/
+
+
+ul#menunavigator {
+    margin-right: 0px;
+    margin-top: 5px;
+}
+ul#menunavigator li {
+    list-style: none;
+    padding: 0px 10px;
+    position:relative;
+}
+ul#menunavigator li a {
+    color: white;
+    text-decoration: none;
+    color: #052A47;
+}
+ul#menunavigator li a.fa {
+    font-size: 22px;
+    line-height: 32px;
+}
+ul#menunavigator li a.fa.fa-home {
+    font-size: 25px;
+    line-height: 33px;
+}
+ul#menunavigator li.icon-msg {
+    border-right: 1px solid #ddd;
+    padding-right: 25px;
+}
+ul#menunavigator li.icon-home {
+    border-left: 1px solid #ddd;
+    padding-left: 25px;
+}
+ul#menunavigator li a:active, ul#menunavigator li a:hover {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+ul#menunavigator li a:hover {
+    color: #052A47;
+}
+ul#menunavigator li span {
+    border-radius: 12px;
+    color: #fff;
+    height: 21px;
+    position: absolute;
+    width: 20px;
+    background: #ff6000;
+    text-align: center;
+    top: -2px;
+    right:-5px;
+    line-height: 17px;
+    width: 20px;
+    font-size: 12px;
+    border: 2px solid #fff;
+}
+    ul#menunavigator li span#messagesCount {
+        right:5px;
+    }
+/*ul#menunavigator li span {
+    border-radius: 12px;
+    color: #fff;
+    height: 21px;
+    position: absolute;
+    width: 20px;
+    background: #DE1525;
+    text-align: center;
+    top: 2px;
+    line-height: 20px;
+    width: 20px;
+    font-size: 12px;
+    border: 2px solid #fff;
+}*/
+/** Profile Upload css - END **/
+
+/*ul#menunavigator {
+    margin-right: 20px;
+}
+ul#menunavigator li {
+    list-style: none;
+    padding: 0px 10px;
+    position: relative;
+}
+ul#menunavigator li a {
+    color: white;
+    text-decoration: none;
+}
+
+ul#menunavigator li > a {
+    margin-top: 6px;
+}
+
+ul#menunavigator li a#rxBookHome {
+    margin-top: 0px;
+}
+ul#menunavigator li a:active, ul#menunavigator li a:hover {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    ul#menunavigator li span {
+        background-clip: padding-box;
+        display: inline-block;
+        font-family: "Helvetica Neue",Helvetica,sans-serif;
+        font-size: 10px;
+        line-height: normal;
+        background-color: #dc0d17;
+        background-image: linear-gradient(#fa3c45, #dc0d17);
+        color: #fff;
+        min-height: 13px;
+        padding: 1px 3px;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        border-radius: 2px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
+        position: absolute;
+        right: 0px;
+        top: 0px;
+    }
+
+.dp-header {
+    background: none repeat scroll 0 0 #0054a5;
+    color: white;
+    font-size: 24px;
+    height: 40px;
+    padding: 5px;
+}
+
+.user_sec{
+    float:right;
+    height:45px;
+    margin-right:10px;
+
+}
+.user_sec ul li{
+    list-style:none;
+    float:left;
+    padding: 0px !important; 
+    margin-right: 5px
+}
+.user_sec ul li p{
+    line-height:15px;
+    font-size:11px;
+    margin:0px;
+    text-align: left;
+}
+.user_sec ul li .p-logout a {
+    color: #FFFFFF !important;
+}
+.user_sec ul li .p-logout a:hover {
+    color: #E9EAED !important;
+}
+.user_sec ul li.profile_img{
+    
+}
+.user_sec ul li img.image{
+    border-radius:2px;
+    max-width:100%;
+    width:30px;
+    height:30px;
+}
+.logo {
+    background-repeat: no-repeat;
+    background-size: 181px auto;
+    cursor: pointer;
+    float: left;
+    height: 60px;
+    margin: 0 10px;
+    width: 280px;
+}*/
+.dp-header {
+   color: white;
+    height: 55px;
+    font-size: 24px;
+    background: #fff url('/Images/back_rpt.png') repeat-x left bottom;
+    padding: 5px;
+    box-shadow: 0px 3px 8px -2px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 3px 8px -2px rgba(0,0,0,0.4);
+    -webkit-box-shadow: 0px 3px 8px -2px rgba(0,0,0,0.4);
+    /*color: white;
+    height: 40px;
+    font-size: 24px;
+    background: none repeat scroll 0 0 #0054a5;
+    padding: 5px;*/
+}    
+
+ul#menunavigator li a.fa.fa-power-off {
+    color: #052A47;
+    font-weight: normal;
+    font-size: 30px;
+    display: inline-block;
+    line-height: 36px;  
+    padding: 0px 10px;
+}
+ul#menunavigator li a#rupeeIcon img {
+    position: relative;
+    z-index: 2;
+}
+ul#menunavigator li a#rupeeIcon p {
+    font-size: 12px;
+    line-height: 20px;
+    background-color: #ADBCDD;
+    font-weight: bold;
+    padding: 0px 10px 0px 30px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    position: relative;
+    left: -25px;
+    top: 5px;
+}
+
+
+.logo {
+    width: 280px;
+    /*height: 60px;*/
+    height: 45px;
+    background-repeat: no-repeat;
+    margin: 0px 10px;
+    float: left;
+    cursor: pointer;
+    background-size: auto 45px;
+    /*background-size: 181px;*/
+    width: 280px;
+    background-repeat: no-repeat;
+    margin: 0px 10px;
+    float: left;
+    cursor: pointer;
+    
+}
+#mLogout {
+    display: none;
+}
+
+@media screen and (min-width:240px) and (max-width:767px) {
+    .user_sec {
+        display: none;
+    }
+
+    #mLogout {
+        display: block;
+    }
+
+    .navbar-fixed-top .logo {
+        width: 150px;
+    }
+}
+
+/*design for header*/
+@media screen and (max-width: 1700px) {
+        /*** header ***/
+    header {
+	    height: 43px;
+	    background: #fff url('/Images/back_rpt.png') repeat-x left bottom;
+	    text-align: center;
+	    padding: 6px 5px;
+    }
+    header ul {
+	    width: auto;
+	    display: inline-block;
+    }
+    header ul.header-menu {
+        float: right;
+        margin-right: 10px;
+        padding: 0px 5px;
+        margin-top: 6px;
+        /*border: 1px solid #efefef;*/
+        border-width: 0px 1px;
+    }
+    header ul li {
+	    display: inline-block;
+	    position: relative;
+	    width: 35px;
+	    height: 32px;
+    }
+    header ul li a {
+	    display: block;
+	    font-size: 32px;
+	    /* delete */
+	    width: 100%;
+	    height: 100%;
+	    text-decoration: none;
+    }
+    header ul li a.fa {
+	    font-size: 22px;
+	    color: #052A47;
+        line-height: 32px;
+    }
+    header ul li a.fa.fa-home {
+        font-size: 24px;
+    }
+    header .logo {
+        float: left;
+    }
+    header .logo a {
+        width: 30px;
+        height: 45px;
+        display: block;
+        background-size: auto 45px;
+    }
+    header .head-points {
+        width: 40px;
+        height: 32px;
+        float: right;
+        margin-top: 6px;
+    }
+    header .head-points img {
+        height: 32px;
+        width: auto;
+    }
+    .logo {
+        background-size: auto 45px;
+        width:33px;
+    }
+    .profile_img {
+        display: none;
+    }
+    #user_name {
+        display: none;
+    }
+    ul#menunavigator li {
+        padding: 0px 8px;
+        margin: 0px;
+    }
+    ul#menunavigator li.icon-home {
+        padding-left: 20px;
+    }
+    ul#menunavigator li.icon-msg {
+        padding-right: 20px;
+    }
+    ul#menunavigator li a.fa.fa-power-off {
+        padding-right: 0px;
+    }
+    ul#menunavigator li a#rupeeIcon img {
+        padding-right: 10px;
+    }
+    .notification-drop {
+        width: 95%;
+    }
+    .user_sec {
+        padding: 0px;
+        margin-right: 0px;
+    }
+    .header .top-sec .logo {
+        width: 30px !important;
+    }
+    #pPoints {
+        float: left;
+        display: none;
+    }
+    .header .top-sec .logo {
+        margin-top:-3px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+    .two-col-field .field > b {
+        width: 38%;
+        margin-right: 8px;
+    }
+
+    .two-col-field .field .date-input {
+        width: auto;
+    }
+
+        .two-col-field .field .date-input select {
+            margin-right: 6px;
+            width: 40px;
+        }
+
+    .doctor-profile .contents ul li.list-item.list-edit {
+        padding-left: 0px;
+    }
+
+    select.year {
+        width: 55px;
+    }
+}
+.notificationhub-count {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: #ff6000;
+        border: 2px solid #fff;
+        color: #fff;
+        position: absolute;
+        top: -8px;
+        right: 1px;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: center;
+        border-radius: 100%;
+        -moz-border-radius: 100%;
+        -wekit-border-radius: 100%;
+        display: none;
+    }

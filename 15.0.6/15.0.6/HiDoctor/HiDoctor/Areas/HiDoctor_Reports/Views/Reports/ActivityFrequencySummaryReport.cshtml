@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "ActivityFrequencySummaryReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+<div id="dvActivityfrequencysummary">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+            <div style="clear: both"></div>
+            <div id="dvuserTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-sm-9" style="display: none">
+            <input type="hidden" id="hdnUserCode" value="" />
+
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div style="clear: both"></div>
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('ACTIVITY_FREQUENCY_SUMMARY','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-7">
+                    <div class="col-lg-3">Start Date:</div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txtStartDate" class="datepicker" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-7">
+                    <div class="col-lg-3">End Date:</div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txtEndDate" class="datepicker" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div style="margin-left: 16%;">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <input type="button" class="btn btn-primary" style="margin-left: 16%" value="View" onclick="fnGetActivityFrequencySummaryRept()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="divActivityfrequencySummary"></div>
+            <div />
+            <div style="clear: both"></div>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ActivitySummary.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvActivityfrequencysummary').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnBindUserTreeWithCheckBoxDoubleClick("dvuserTree") //To Bind The UserTree
+            $("#dvTree").show();
+            $("#dvdata").show();
+            $('#divActivityfrequencySummary').html('');
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvActivityfrequencysummary").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        //showButtonPanel: true
+    });
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnUserTreePostInit() {
+        $("#dvActivityfrequencysummary").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvuserTree").slideDown();
+
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-sm-12')
+        $('#dvdata').addClass('col-sm-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvuserTree").slideUp();
+
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-sm-12')
+        $('#dvdata').removeClass('col-sm-9')
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdnUserCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#divActivityfrequencySummary').html('');
+    }
+
+    function fnUserTreeActivate(node) {
+        $('#hdnUserCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#divActivityfrequencySummary').html('');
+    }
+
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnUserCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+</script>

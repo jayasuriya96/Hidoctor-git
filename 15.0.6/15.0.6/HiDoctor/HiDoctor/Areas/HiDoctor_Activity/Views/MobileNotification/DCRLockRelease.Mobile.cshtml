@@ -1,0 +1,52 @@
+﻿<div style="clear: both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>DCR Lock Release
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <a onclick="fngoBack()" href="#" data-icon="arrow-l" id="aback" style="display: none"><< Back</a>
+    <div data-role="collapsible-set">
+        <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="d" data-mini="true">
+            <h3>DCR Lock Release    
+            </h3>
+            <div class="dvSOsub">
+                <div data-role="content">
+                    <div data-role="fieldcontain">
+                        <label for="txtUserSelection" style="display: block; -webkit-padding-start: 2px; -webkit-padding-end: 2px; font-size: 16px !important;">
+                            User Name
+                        </label>
+                        <input name="custName" id="txtUserSelection" placeholder="Enter atleast 3 characters"
+                            value="" type="search">
+                    </div>
+                </div>
+            </div>
+            <div class="dvSOsub">
+                <div data-role="content">
+                    <input id="btnSearchCust" type="button" data-theme="b" data-icon="search"
+                        data-iconpos="left" value="Search" data-mini="true" onclick="fnUserSearch();">
+                </div>
+            </div>
+ <div class="dvSOsub" id="dvSearchUserList">
+    </div>
+
+        </div>
+    </div>
+</div>
+<div data-role="footer"></div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var sPersonName_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+
+    });
+
+    function fnUserSearch() {
+        fnLockUsersearch();
+    }
+
+
+</script>

@@ -1,0 +1,351 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+    .collapseHeader
+    {
+        text-align: left;
+        background-color: #d3d3d3 !important;
+    }
+
+    #tblDFC thead tr th
+    {
+        background-color: #428bca;
+        color: #fff;
+        border-right: 1px solid #fff;
+    }
+
+    .DeleteDFRow
+    {
+        background-color: #f1f1f1;
+        color:#f1f1f1;
+    }
+    .DeleteDFRow input[type='text']
+    {
+        background-color: #f1f1f1;
+        color:#f1f1f1;
+    }
+    .cursor-pointer
+    {
+        cursor:pointer;
+    }
+    .link
+    {
+        text-decoration:underline;
+        color:blue;
+        cursor:pointer;
+    }
+</style>
+<div id="dvDFCDataDiv">
+    <ul class="nav nav-pills">
+        <li><a href="#dvDFCInput">Add/Edit DFC</a></li>
+        <li><a href="#dvDFC">View DFC</a></li>
+    </ul>
+    <div class="col-lg-12 form-group">
+        <div class="col-lg-12 form-group" id="dvDFCInput">
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>User Type</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <select id="ddlUserType" class="form-control"></select>
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Entity</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <select id="ddlEntity" class="form-control"></select>
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Mode</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                     <select id="drpTravelMode" class="form-control">                        
+                    </select>                  
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Date From</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtDateFrom" class="form-control datepicker" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Date To</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtDateTo" class="form-control datepicker" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <table id="tbl_DFCEntry" class="table table-stripped" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>From Km</th>
+                        <th>To Km</th>
+                        <th>Fare</th>
+                        <th>X</th>
+                        <th>Is Fixed?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="DFCRow_1">
+                        <td><span id="spnSno_1">1.</span><span id="SPNDFCCode_1" style="display:none;"></span></td>
+                        <td>
+                            <input type="text" id="txtFromKm_1" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtToKm_1" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtFare_1" maxlength="5" /></td>
+                        <td><span id="spnDele_1" onclick="fnDeleteRow(1)"  class="cursor-pointer">X</span></td>
+                        <td>
+                            <input type="checkbox" id="isFixed_1" /></td>
+                    </tr>
+                    <tr id="DFCRow_2">
+                        <td><span id="spnSno_2">2.</span><span id="SPNDFCCode_2" style="display:none;"></span></td>
+                        <td>
+                            <input type="text" id="txtFromKm_2" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtToKm_2" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtFare_2" maxlength="5" /></td>
+                        <td><span id="spnDele_2" onclick="fnDeleteRow(2)"  class="cursor-pointer">X</span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    <tr id="DFCRow_3">
+                        <td><span id="spnSno_3">3.</span><span id="SPNDFCCode_3" style="display:none;"></span></td>
+                        <td>
+                            <input type="text" id="txtFromKm_3" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtToKm_3" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtFare_3" maxlength="5" /></td>
+                        <td><span id="spnDele_3" onclick="fnDeleteRow(3)"  class="cursor-pointer">X</span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr id="DFCRow_4">
+                        <td><span id="spnSno_4">4.</span><span id="SPNDFCCode_4" style="display:none;"></span></td>
+                        <td>
+                            <input type="text" id="txtFromKm_4" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtToKm_4" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtFare_4" maxlength="5" /></td>
+                        <td><span id="spnDele_4" onclick="fnDeleteRow(4)" class="cursor-pointer">X</span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    <tr id="DFCRow_5">
+                        <td><span id="spnSno_5">5.</span><span id="SPNDFCCode_5" style="display:none;"></span></td>
+                        <td>
+                            <input type="text" id="txtFromKm_5" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtToKm_5" maxlength="4" /></td>
+                        <td>
+                            <input type="text" id="txtFare_5" maxlength="5" /></td>
+                        <td><span id="spnDele_5" onclick="fnDeleteRow(5)"  class="cursor-pointer">X</span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <input type="hidden" id="hdnDFCRowNo" value="5" /><span class="link" onclick="fnAddDFCRow()">Add
+                    Row</span></div>
+
+            @*           
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>dfsdfsdf Km</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtFromKm" class="form-control checknumeric" />
+                    <input type="hidden" id="hdnDistanceRangeCode" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>To Km</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtToKm" class="form-control checknumeric" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Fare Amount</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtFare" class="form-control checkFloat" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+
+
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>Is fixed Amount</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="checkbox" id="chkFixedAmount" />
+                </div>
+                <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            *@
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-6 form-group">
+                    <input type="button" class="btn btn-primary" value="Submit" onclick="fnSaveDistanceFareChart();" />
+                    <input type="button" class="btn btn-primary" value="Cancel" onclick="fnCancelDistanceFareChart();" />
+                </div>
+                <div class="col-lg-6 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="dvTablePrint" style="display: none;" class="col-lg-12 form-group">
+            <div style="float: right;">
+                @Html.ActionLink("Download Distance Fare Chart details", "GetDistanceFareChartExcel",new
+                {})
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div style="clear: both;"></div>
+        <div class="col-lg-12 form-group" id="dvDFC">
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    <label>User Type</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <select id="ddlFilterUserType" class="form-control"></select>
+                </div>
+                   <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                <label>Entity</label>
+            </div>
+            <div class="col-lg-2 form-group">
+                <select id="ddlFilterEntity" class="form-control"></select>
+            </div>
+               <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div  class="col-lg-12 form-group">
+
+          
+            <div class="col-lg-2 form-group">
+                <label>Travel Mode</label>
+            </div>
+              <div class="col-lg-2 form-group">
+                        <select class="form-control" id="drpFilterTravelMode">
+
+                        </select>
+            </div>
+              <div class="col-lg-8 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-6 form-group">
+                    <input type="button" class="btn btn-primary" value="Search" onclick="fnGetDFCRecords();" />
+                </div>
+                <div class="col-lg-6 form-group">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvDFCGrid"></div>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/DistanceFareChart.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvDFCDataDiv').tabs();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            $(".checknumeric").blur(function () {
+                if ($(this).val() != "") {
+                    if (fnCheckNumericWithPrecScale(this, 9, 2)) {
+                        var value = parseInt($(this).val());
+                        $(this).val(value);
+                    }
+                }
+            });
+
+            $(".checkFloat").blur(function () {
+                if ($(this).val() != "") {
+                    if (fnCheckNumericWithPrecScale(this, 9, 2)) {
+                        $(this).val(parseFloat($(this).val()).toFixed(2));
+                    }
+                }
+            });
+            $('#dvDFCDataDiv').tabs('option', 'selected', 0);
+            $('#dvDFCDataDiv').tabs('option', 'selected', 1);
+            fnBindEntityAndUsertype();
+            fnGetTravelModes();
+            //fnBindDistanceFareChart();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>
+

@@ -1,0 +1,320 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .dropdown-menu {
+        margin-left: 198px !important;
+    }
+
+    #content {
+        margin-top: 5px;
+    }
+
+    .jumbotron {
+        line-height: 5%;
+    }
+
+    #txtFromDate {
+        margin-right: 8px;
+    }
+
+    .form-group {
+        padding-top: 10px;
+    }
+</style>
+<hr style="margin: 0px;" />
+<div id="Assetrpt">
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div style="text-align: center; height: 15em; width: 45em; margin-left: 300px; background-color: #efefef; display: none; box-shadow: 8px 8px 5px grey;" id="rptInputs" class="col-lg-5 dvRptInput">
+            <div>
+                <div style="padding-top: 0.2cm;" class="form-group">
+                    <label for="txtMonth">Select Month:</label>
+                    <input type="text" id="txtMonth" readonly="readonly">
+                </div>
+                <div style="padding-top: 0.2cm;" class="form-group">
+                    <div style="float: left; padding-left: 24%;">
+                        <label for="txtMonth">Select Category:</label>
+                    </div>
+                    <div class="dropdown" id="ddlCategoryName" style="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="AssetCheck" onclick="fnChangeststatus()" value="0">Include Reporting regions</label>
+                    <input type="hidden" id="hdnRegionCode" />
+                    <input type="hidden" id="hdnRegionName" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-13" style="padding-left: 16px;">
+                    <div style="margin-left: 7%">
+                    </div>
+                    <button id="btnSave" type="button" class="btn btn-primary" onclick="fnGetAssetAnalyticsReport()">Show Report</button>
+                </div>
+            </div>
+        </div>
+        <div id="divReport" style="margin-left: 5%; margin-right: 5%; padding-top: 15%;">
+        </div>
+        <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 800px; height: 600px; overflow: hidden">
+            <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+            <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+            <div id="divHeader">
+            </div>
+            <div id="divModel" style="height: 100px; background: #666">
+            </div>
+            <div style="clear: both">
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        debugger;
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var currYear = new Date();
+        var MonthName = months[currYear.getMonth()];
+        var mm = MonthName + "-" + currYear.getFullYear();
+        $('#txtMonth').monthpicker({
+            finalYear: currYear.getFullYear()
+        });
+        $('#txtMonth').val(mm);
+    });
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        try {
+            //$("#divMain").block();
+            $("#dvPageHeader").html("Top 10 Asset-CategoryWise");
+            fnBindRegionTree("tree");
+            fnGetCategory();
+            $("#dvTree").show();
+            $('#rptInputs').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            // $("#divMain").unblock();
+        }
+
+        // $("#divMain").unblock();
+    });
+
+
+    function fnRegionTreeActivate(node) {
+        debugger;
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $('#rptInputs').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        $("#hdnRegionName").val(node.data.title);
+    }
+    function fnRegionTreePostInit() {
+
+    }
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $("#dvTree").hide();
+            $("#divMain").css('width', '100%');
+            $("#spnTreeToggle").html('Show Tree');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $("#dvTree").show();
+            $("#divMain").css('width', '80%');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#rptInputs").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#rptInputs").slideDown();
+            $("#spnInputToggle").html("Hide Input");
+        }
+    }
+    function fnGetCategory() {
+        $.ajax({
+            type: 'POST',
+            url: '../EdReports/GetCategory',
+            success: function (result) {
+                debugger;
+                var CatResult = "<select name='ddlCategory' style='width: 50%;'>";
+                for (var i = 0; i < result.length; i++) {
+                    CatResult += "<option value=" + result[i].Category_Code + ">" + result[i].Category_Name + "</option>  ";
+                }
+                CatResult += "</select>";
+                $("#ddlCategoryName").append(CatResult);
+            },
+            error: function () {
+            },
+            complete: function () {
+            }
+        });
+    }
+
+    function fnGetAssetAnalyticsReport() {
+        debugger;
+        //$('#divMain').block({
+        //    message: '<h3>Processing</h3>',
+        //    css: { border: '2px solid #ddd' }
+        //});
+        $("#divReport").empty();
+        var SpecialityReport = "";
+        var nodeVal = $('#hdnRegionCode').val();
+        //  var Spl_Date = $("#txtMonth").val();
+        var Cat_Name = $("#ddlCategoryName :selected").val();
+        var Cat_Month = fnGetMonthNum($("#txtMonth").val().split("-")[0]);
+        var Cat_Year = $("#txtMonth").val().split("-")[1];
+        var currYear = new Date();
+        var year = currYear.getFullYear();
+        var month = currYear.getMonth() + 1;
+        var mmyy = year + "-" + month;
+        var MMYYYY = Cat_Year + "-" + Cat_Month;
+        if (new Date(MMYYYY) > new Date(mmyy)) {
+            //if (mmyy > MMYYYY) {
+            fnMsgAlert('info', 'Asset Analytics Report', 'You Can not select Future Month');
+            return false;
+        }
+        var IsSubRegionNeeded = $("#AssetCheck").val();
+        $.ajax({
+            type: 'POST',
+            url: '../EdReports/GetCategoryWiseAnalyticsReport',
+            data: 'RegionCode=' + nodeVal + '&Category_Name=' + Cat_Name + '&Category_Month=' + Cat_Month + '&Category_Year=' + Cat_Year + '&IsTeam=' + IsSubRegionNeeded,
+            success: function (Result) {
+                debugger;
+                SpecialityReport += "<div style='border: 6px solid #E5E5E3; padding: 12px;width: 85%;'>";
+                SpecialityReport += "<div style='padding-right: 33px;font-size: 17px;font-weight: 500;color: #32ac54;'>Asset Category wise Visit Report</div>";
+                SpecialityReport += "<div><span style='padding-right: 33px;font-size: 14px;font-weight: inherit;color: blue;'>Month </span><span style='font-size: 14px;font-weight: inherit;color: blue;'>: " + $("#txtMonth").val() + "</span></div>";
+                SpecialityReport += "<div><span style='padding-right: 14px;font-size: 14px;font-weight: inherit;color: blue;'>Username </span><span style='font-size: 14px;font-weight: inherit;color: blue;'>: " + $("#hdnRegionName").val();
+                if (IsSubRegionNeeded == '1') {
+                    SpecialityReport += "[Include Reporting regions]";
+                }
+                SpecialityReport += "</span></div></div>";
+                SpecialityReport += "<table style='width: 83%;' id='tblAsset' class='table table-striped AssetInfotbl'><thead><tr>";
+                SpecialityReport += "<th style=text-align:center>Asset_Name</th><th style=text-align:center>Total_visits</th><th style=text-align:center>Avg Play Time</th></tr></thead><body>";
+                for (var i = 0; i < Result.length; i++) {
+                    SpecialityReport += "<tr><td>" + Result[i].Asset_Name + "</td><td style=text-align:center>" + Result[i].Total_Visits + "</td>";
+                    SpecialityReport += "<td style=text-align:center>" + (Result[i].Total_Durations / Result[i].Total_Visits).toFixed(2) + "</td></tr>";
+                }
+                SpecialityReport += "</body></table>";
+                $("#divReport").html(SpecialityReport);
+                $("#divPrint").html(SpecialityReport);
+                if ($.fn.dataTable) {
+                    $('#tblAsset').dataTable({
+                        "oLanguage": {
+                            "sEmptyTable": "No Data Available"
+                        },
+                        "sPaginationType": "full_numbers", "bSort": false, "bDestroy": true, "sDom": 'T<"clear">lfrtip'
+                    });
+                    $(".dataTables_filter").hide();
+                    $(".TableTools_button.TableTools_clipboard").hide();
+                    $(".TableTools_button.TableTools_csv").hide();
+                    $(".TableTools_button.TableTools_print").hide();
+                    $("#tblAsset_length").hide();
+                    $("#tblAsset_info").hide();
+                    $("#tblAsset_paginate").hide();
+                };
+                fninializePrint("divPrint", "ifrmPrint", "divReport");
+                $("#divMain").unblock();
+            },
+            error: function () {
+                $("#divMain").unblock();
+            },
+            complete: function () {
+                $("#divMain").unblock();
+            }
+
+        });
+    }
+    function fnChangeststatus() {
+        debugger;
+        if ($("#AssetCheck").val() == "1") {
+            $("#AssetCheck").val("0");
+        }
+        else {
+            $("#AssetCheck").val("1");
+        }
+    }
+    function fninializePrint(divId, iFrameId, mainDiv) {
+        $('#' + mainDiv + ' #dvPrint').remove();
+        $("#" + mainDiv + " .TableTools").append("<div id='dvPrint' onclick='fnPrint(\"" + divId + "\",\"" + iFrameId + "\");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center;border: 1px solid #f0f0f0;height: 30px; width: 30px;cursor:pointer;'></div>");
+    }
+    function fnPrint(divId, iFrameId) {
+        try {
+            var oIframe = document.getElementById(iFrameId);
+            var oContent = document.getElementById(divId).innerHTML;
+            var oDoc = (oIframe.contentWindow || oIframe.contentDocument);
+            if (oDoc.document) oDoc = oDoc.document;
+            oDoc.write("<html><head> <style media='all'>th, td{border-left:1px solid #000;border-top:1px solid #000;} table{border:1px solid #111;font-family:Arial;font-size:10px} </style> </head><body  onload='this.print();' this.print();'><center>");
+            oDoc.write(oContent + "</center></body></html>");
+            // oDoc.write("<html><head></head><body  onload='this.print();'><center>");
+            // oDoc.write(oContent + "</center></body></html>");
+            oDoc.close();
+        }
+        catch (e) {
+            self.print();
+        }
+    }
+    function fnChangeSpeciality(speciality) {
+        debugger;
+        $("#CategoryName").html(decodeURIComponent(speciality));
+    }
+    function fnGetMonthNum(spl_Month) {
+        debugger;
+        if (spl_Month.toUpperCase() == "JAN") {
+            return 1;
+        }
+        if (spl_Month.toUpperCase() == "FEB") {
+            return 2;
+        }
+        if (spl_Month.toUpperCase() == "MAR") {
+            return 3;
+        }
+        if (spl_Month.toUpperCase() == "APR") {
+            return 4;
+        }
+        if (spl_Month.toUpperCase() == "MAY") {
+            return 5;
+        }
+        if (spl_Month.toUpperCase() == "JUN") {
+            return 6;
+        }
+        if (spl_Month.toUpperCase() == "JUL") {
+            return 7;
+        }
+        if (spl_Month.toUpperCase() == "AUG") {
+            return 8;
+        }
+        if (spl_Month.toUpperCase() == "SEP") {
+            return 9;
+        }
+        if (spl_Month.toUpperCase() == "OCT") {
+            return 10;
+        }
+        if (spl_Month.toUpperCase() == "NOV") {
+            return 11;
+        }
+        if (spl_Month.toUpperCase() == "DEC") {
+            return 12;
+        }
+    }
+</script>
+

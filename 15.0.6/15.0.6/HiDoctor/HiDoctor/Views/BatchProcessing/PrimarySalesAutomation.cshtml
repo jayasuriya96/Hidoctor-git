@@ -1,0 +1,355 @@
+﻿@{
+    ViewBag.Title = "PrimarySalesAutomation";
+    //Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+    Layout = null;
+}
+
+<style>
+    .dvHeader {
+        width: 100%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    #JsonDownload{
+        width: 119px;
+    float: right;
+    }
+
+    .simple_overlay {
+        display: none;
+        z-index: 10000;
+        background-color: #fff;
+        width: 961px !important;
+        min-height: 530px;
+    }
+
+    #dvOverLay {
+        left: 162.5px !important;
+        top: 18px !important;
+    }
+
+    .font_class {
+        font-size: 13px;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+</style>
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+
+<script src="~/Scripts/HD/BatchProcessing.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+
+<div>
+    <div id="dvErrMsg" class="BPErrMsg" style="display: none"></div>
+    <div class="dvHeader" style="margin-top:15px;"></div>
+    <div style="border: 1px solid #0072c6; width: 100%;">
+        <div id="dvBpTypes" style="width: 95%; clear: both;margin-left:5%;">
+            <div style="width: 90%; padding-left: 1%;">
+                <label style="font-size:14px;"><b style="margin-left:19%;">Select Month and Year</b></label>
+                <input id="bday-month" type="month" name="bday-month" value="2017-06" style="margin-top:12px;margin-left:3%;">
+                <input type="button" style="margin-left:2%;" onclick="fnGetPrimarySalesData();" class="btn small primary" value="Get Primary Sales Data" />
+                @*<select id="batchtype" style="margin-top:12px;margin-left:3%;">
+                         <option>--Select Batch Processing Type--</option>
+                         <option value="PS_AUTOMATION_UPLOAD" name="BpType">Ps Automation Upload</option>
+
+                    </select>*@
+
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="margin-top:1%;">
+            <div class="col-xs-3" style="margin-left:10%;">
+                <label style="font-size:14px;padding-left:10%;"><b>Effective from</b></label>
+                <input type="text" style="margin-left:1%;" name="frmDateReg" required id="fromDate" value="">
+                <label style="font-size:14px;margin-left:8%;"><b>Effective To</b></label>
+                <input type="text" style="margin-left:2%;" name="frmDateReg" required id="toDate" value="">
+                <input type="button" style="margin-left:2%;" onclick="fnGetBPHeaderForPrimarySalesAutomation();" class="btn small primary" value="GO" />
+                <input type="button" style="margin-left:10%;" onclick="fnGetBPHeaderForPrimarySalesAutomation();" class="btn small primary" value="Refresh" />
+            </div>
+            @*<div class="col-xs-3" style="margin-left:3%;">
+                    <label style="font-size:14px;"><b>Effective To</b></label>
+                </div>
+                <div class="col-xs-3" style="margin-left:3%;">
+                    <input type="date" />
+                </div>*@
+        </div>
+        <div style="clear: both"></div>
+        <div id="batchProcessingGRD" style="margin-bottom: 5px;">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvOverLay">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#dvOverLay').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Error Details</span>
+    </div>
+    <div id="batchProcessingErrorLogGRD" style="height: 500px;"></div>
+</div>
+<script>
+    var bpType = "";
+    var Company_Code="";
+    var User_Code="";
+    var inwardType=@Html.Raw(Json.Encode(ViewBag.InwardType));
+
+    bpType = @Html.Raw(Json.Encode(ViewBag.BpType));
+
+    $(document).ready(function () {
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        User_Code = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        fnGetdate();
+        fnBindMonthAndYear();
+        $(function () {
+            $("#fromDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+            });
+        });
+        $(function () {
+            $("#toDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+                //showButtonPanel: true
+            });
+        });
+
+        AjaxGlobalHandler.Initiate();
+        $('#divPageHeader').html('Primary Sales Automation');
+       $("#dvOverLay").overlay().load();
+
+        debugger;
+        if(inwardType.toUpperCase()=="YES" && bpType=="")
+        {
+            debugger;
+            $("#optInward").val('INWARD_BULK_UPLOAD');
+        }
+        else{
+            $("#optInward").val('INWARD_BULK_UPLOAD');
+        }
+
+        if(bpType=='INWARD_UPLOAD' || bpType=='INWARD_BULK_UPLOAD')
+        {
+            debugger;
+            $("#optInward").val(bpType);
+        }
+
+        if(bpType != '' && bpType != null) {
+            $("#batchtype").val(bpType);
+            var value=0;
+            fnGetBPHeaderForPrimarySalesAutomation(value);
+        }
+
+        $('#dvAjaxLoad').hide();
+
+    });
+
+    function fnDownloadErrorReportForPSAutomation(bpId)
+    {
+        debugger;
+        var bpId= $("#excelDownload").attr('value');
+        if(bpId!='')
+            $.ajax({
+                url: "BatchProcessing/GetErrorReportID",
+                type: "POST",
+                data: "bpId=" + bpId,
+                success: function () {
+                    window.open('/BatchProcessing/DownloadErrorReportForPSAutomation')
+                },
+            });
+    }
+    function fnDownloadJsonDataForPSAutomation(bpId)
+    {
+        debugger;
+        var bpId= $("#excelDownload").attr('value');
+        if(bpId!='')
+            $.ajax({
+                url: "BatchProcessing/GetErrorReportID",
+                type: "POST",
+                data: "bpId=" + bpId,
+                success: function () {
+                    window.open('/BatchProcessing/DownloadPSAutomationJsData')
+                },
+            });
+    }
+    //For Primary Sales Automation Upload
+    function fnGetBPHeaderForPrimarySalesAutomation(value, bpType) {
+        debugger;
+        if (value == undefined) {
+            var value = 0;
+        }
+        // $("#dvAjaxLoad").show();
+        $.blockUI();
+        //fnGetMenuContentBP();
+        //var bpType = $("#dvBpTypes input[type='radio']:checked").val();
+
+        var bpType = 'PS_AUTOMATION_UPLOAD';
+
+        //if ($("#batchtype").val() == "--Select Batch Processing Type--") {
+        //    fnMsgAlert('info', 'Info', 'Please select Batch Processing type.');
+        //    $.unblockUI();
+        //    return false;
+        //}
+        var effectivefrm = $("#fromDate").val();
+        var arrEffectivefrom = effectivefrm.split('/');
+        var effectivefromdate = arrEffectivefrom[2] + '-' + arrEffectivefrom[1] + '-' + arrEffectivefrom[0]
+        var effectiveto = $("#toDate").val();
+        var arrEffectiveto = effectiveto.split('/');
+        var effectivetodate = arrEffectiveto[2] + '-' + arrEffectiveto[1] + '-' + arrEffectiveto[0]
+        if (bpType != null && bpType.length > 0) {
+            $('#dvErrMsg').css('display', 'none');
+            $('#dvErrMsg').html('');
+            $.ajax({
+                url: '../BatchProcessing/GetBPHeaderForPSAutomation',
+                // dataType:"Application/json",
+                type: "GET",
+                data: "bp_Type=" + bpType + "&Effective_from=" + effectivefromdate + "&Effective_to=" + effectivetodate + "&Value=" + value,
+                success: function (JsonResult) {
+                    debugger;
+                    $("#dvAjaxLoad").hide();
+                    $.unblockUI();
+                    Json_Batch = JsonResult;
+                    var jsonresult = eval('(' + Json_Batch + ')');
+
+                    //var a = jsonresult.Tables["0"].Rows.Upload_Date;
+                    //var b = a.split('T');
+                    //var c = b[0].split('-');
+                    //var d = c[2] + '/' + c[1] + '/' + c[0];
+                    //var e = d + ' ' + b[1];
+
+                    $("#batchProcessingGRD").html('');
+                    if (jsonresult != '') {
+                        // $('#batchProcessingGRD').html(jsonresult);
+                        debugger;
+                        var grid = new ej.grids.Grid({
+                            dataSource: jsonresult.Tables[0].Rows,
+                            showColumnChooser: true,
+                            allowPaging: true,
+                            allowGrouping: true,
+                            allowSorting: true,
+                            allowFiltering: true,
+                            allowResizing: true,
+                            allowCellMerging: true,
+                            allowScrolling: true,
+                            pageSettings: { pageSize: 100, pageSizes: [20, 40, 60, 80, 100], pageCount: 5 },
+                            filterSettings: { type: 'CheckBox' },
+                            toolbar: ['Search', 'ColumnChooser'],
+                            // rowSelected: fnRowSelected,
+                            aggregates: [],
+
+
+                            columns: [
+                                    { field: 'Upload_File_Name', headerText: 'PS Attempt Details', width: 280, textAlign: 'center' },
+                                    { field: 'Upload_Type', headerText: 'Upload Type', width: 200, textAlign: 'center' },
+                                    { field: 'Upload_Date', headerText: 'Date of Upload', width: 200, textAlign: 'center' },
+                                    { field: 'User_Name', headerText: 'Uploaded By', width: 200, textAlign: 'center' },
+                                    { field: 'No_Of_Records', headerText: 'Total Records', width: 200, textAlign: 'center' },
+                                    { field: 'Total_Processed_Records', headerText: 'Total Processed Records', width: 250, textAlign: 'center' },
+                                    { field: 'Total_No_Of_Error_Records', headerText: 'Total Error Records', width: 250, textAlign: 'center' },
+                                    { field: 'Status', headerText: 'Upload Status', width: 200, textAlign: 'center' },
+                                   //{ field: 'Reupload', headerText: 'Action', width: 200, textAlign: 'center' },
+
+
+                            ],
+                            queryCellInfo: queryCellInfo,
+
+
+                        });
+                        grid.appendTo('#batchProcessingGRD');
+
+                    }
+                    else {
+                        $('#batchProcessingGRD').html("No uploaded found.");
+                    }
+                },
+                error: function (res) {
+                    debugger;
+                    fnMsgAlert('info', 'Error', 'ERROR.');
+                    // alert("ERROR");
+                }
+            });
+
+        }
+
+        else {
+            $('#dvErrMsg').html('Please select Batch Processing type.')
+            $('#dvErrMsg').css('display', '');
+        }
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.field == "Status") {
+            if (args.data.Status == "FAILED") {
+
+                args.cell.style.cursor = "pointer";
+                args.cell.style.color = "blue";
+                args.cell.style.cursor = "pointer";
+                args.cell.style.textDecoration = "underline";
+                args.cell.innerHTML = "Error"
+            }
+        }
+        if (args.column.field == "Status") {
+            if (args.data.Status == "ERROR") {
+                args.cell.style.cursor = "pointer";
+                args.cell.style.color = "blue";
+                args.cell.style.cursor = "pointer";
+                args.cell.style.textDecoration = "underline";
+                args.cell.innerHTML = "Error"
+            }
+            $(args.cell).bind("click", function () {
+                if (args.data.Status == "ERROR" || args.data.Status == "FAILED") {
+                    BPPopupForPSAutomation(args.data.BP_ID);
+                }
+
+            })
+        }
+        //if (args.column.field == "Reupload") {
+        //    //args.column.field.style.fontSize = "16px";
+        //    if (args.data.Reupload == "Retry") {
+        //        args.cell.style.cursor = "pointer";
+        //        args.cell.style.color = "blue";
+        //        args.cell.style.cursor = "pointer";
+        //        args.cell.style.textDecoration = "underline";
+        //        args.cell.innerHTML = "Retry"
+        //    }
+        //    $(args.cell).bind("click", function () {
+        //        debugger;
+        //        if (args.data.Reupload == "Retry") {
+        //            fnRedirectToUploadScreen();
+        //        }
+        //    })
+        //}
+        if (args.column.field == "Status") {
+            if (args.data.Status == "SUCCESS") {
+                args.cell.innerHTML = "Success"
+            }
+        }
+
+    }
+
+</script>

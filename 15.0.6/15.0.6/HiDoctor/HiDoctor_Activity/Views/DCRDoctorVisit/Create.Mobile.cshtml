@@ -1,0 +1,233 @@
+﻿@*<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mDCRDoctorVisit.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>*@
+@Scripts.Render("~/bundles/dcrdoctorjs");
+<script>
+    var dcrActualDate_g;
+    var accUsers_g;
+    var RCPA_g;
+    var doctorAutoFill_g;
+    var chemistAutoFill_g;
+    var productAutoFill_g;
+    var productAutoFillOri_g;
+    var RCPAProductAutofill_g;
+    var specialityAutoFill_g;
+    var doctorPOBAmount_g;
+    var doctorEntryMode_g;   
+    var doctotVisitTime_g;
+    var chemists_mandatory_number_g;
+    var inputs_mandatory_number_g;
+    var input_qty_default_g;
+    var productBringType_g;
+    var accChemistPri_g;
+    var docname_g;
+    var speciality_g;
+    var DCR_ENTRY_TIME_GAP_VALUE_g = "";
+    var dcrDoctorVisitTimeEntryModeValue_g = "";
+    var travelKm_g="";
+    $(document).ready(function () {
+        try{
+            $.mobile.loading('show');
+            $("#dcrdoctorvisitloginUserName").html(loginUserName_g);
+            queryString_g = @Html.Raw(Json.Encode(ViewBag.mQueryString));
+            DCR_ENTRY_TIME_GAP_VALUE_g = @Html.Raw(Json.Encode(ViewBag.DCR_ENTRY_TIME_GAP_VALUE));
+            dcrDoctorVisitTimeEntryModeValue_g = @Html.Raw(Json.Encode(ViewBag.DCR_DOCTOR_VISIT_TIME_ENTRY_MODE));
+            dcrActualDate_g = queryString_g.split('&')[1];
+            accUsers_g = queryString_g.split('&')[2];
+            RCPA_g = queryString_g.split('&')[3];
+            docname_g = queryString_g.split('&')[4];
+            travelKm_g = queryString_g.split('&')[5];
+            //codes_g = codes_g.split('&')[0];
+            $('#txtDocName').val(docname_g);
+            doctorPOBAmount_g = fnGetPrivilegeValue('DCR_DOCTOR_POB_AMOUNT', 'NO');
+            doctorEntryMode_g = fnGetPrivilegeValue('RIGID_DOCTOR_ENTRY', 'YES');
+            doctotVisitTime_g = fnGetPrivilegeValue('DCR_DOCTOR_VISIT_MODE', 'AM_PM');
+            // doctotVisitTime_g = "AM_PM";
+            chemists_mandatory_number_g = fnGetPrivilegeValue('DCR_CHEMIST_MANDATORY_NUMBER', '0');
+            inputs_mandatory_number_g = fnGetPrivilegeValue('DCR_INPUT_MANDATORY_NUMBER', '0');
+            input_qty_default_g = fnGetPrivilegeValue('INPUT_QTY_DEFAULT', '0');
+            accChemistPri_g = fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+            
+            var productBringType = fnGetPrivilegeValue('DCR_PRODUCTS_BRING_TYPE', '') + "^";
+            productBringType_g = productBringType.replace(/,/g, '^');
+            fnSetFormControls();
+            // fnAddProductRow();
+            //fnAddChemistRow();
+            fnGetPrefillData();
+        }
+        // fnGetAutoFillData();
+        
+        
+        catch(e)
+        {
+            $.mobile.loading('hide');
+            fnMsgAlert('info', screenTitle, e.message);
+        }
+    });
+</script>
+<style>
+    .ui-listview-filter {
+        width: 250px !important;
+        margin: 5px !important;
+    }
+
+    .prdselected, .cheselected {
+        background-color: green !important;
+        color: #fff !important;
+    }
+
+    .duplicateProductHighlight, .duplicateChemistHighlight {
+        background-color: #FF9494;
+        border: 1px solid red;
+    }
+</style>
+<div id="doctor">
+        <a href="#"  class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">
+                Menu
+            </a>
+    <div style="float: right; margin-right: 19px; margin-top: 5px;clear:both">
+     <span id="dcrdoctorvisitloginUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div style="clear:both"></div>
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-mini="true" data-inset="false">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true" data-inset="false">
+            <h3>Doctor
+            </h3>
+            <div data-role="fieldcontain" data-mini="true" id="dvDocName">
+                <fieldset data-role="controlgroup" data-mini="true">
+                    <label for="txtDocName">
+                        Doctor Name
+                    </label>
+                    <input name="" id="txtDocName" placeholder="Doctor Name" value="" type="text" readonly="readOnly">
+                    <input type="hidden" id="hdnDocCode" value="" />
+                    <input type="hidden" id="hdnDVCode" value="" />
+                    <a href="#" onclick="fnGoToDoctorsSelection()" >Doctors Selection</a>
+                </fieldset>
+            </div>
+           <div data-role="fieldcontain" id="dvDocVisitTime">
+                <fieldset data-role="controlgroup" data-mini="true">
+                    <label for="txtDocVisitTime">
+                        Visit Time
+                    </label>
+                </fieldset>
+                <label id="lblVisitTime" style="display:none"></label>
+            <div id="dvVisitTime" data-role="content">
+                <div data-role="fieldcontain">
+                    <div>
+                        <select id="drpHour" name="drpHour" data-mini="true">
+                            <option value="HH">HH</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <div style="height:5px;width:100%;"></div>
+                        <select id="drpMin" name="drpMin" data-mini="true">
+                            <option value="MM">MM</option>
+                        </select>
+                        <div style="height:5px;width:100%;"></div>
+                        <select id="drpTimeMode" name="drpTimeMode" data-mini="true">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div data-role="fieldcontain" data-mini="true" id="dvDocVisitMode">
+                <fieldset data-role="controlgroup">
+                    <label for="togDocVisitMode">
+                        VisitMode
+                    </label>
+                    <label id="lblvisitmode" style="display:none"></label>
+                    <div id="dvVisitMode">
+                    <select name="togDocVisitMode" id="togDocVisitMode" data-theme="b" data-role="slider"
+                        data-mini="true">
+                        <option value="AM">AM
+                        </option>
+                        <option value="PM">PM
+                        </option>
+                    </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain" data-mini="true" id="dvDocPOB">
+                <fieldset data-role="controlgroup" data-mini="true">
+                    <label for="txtDocPOB">
+                        POB
+                    </label>
+                    <input name="" id="txtDocPOB" placeholder="" value="" type="text" maxlength="6">
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain" id="dvDocRemarks">
+                <fieldset data-role="controlgroup">
+                    <label for="txtDocRemarks">
+                        Remarks
+                    </label>
+                    <textarea name="" id="txtDocRemarks" placeho    lder="Remarks" data-mini="true" onkeypress="return fnEnterKeyPrevent(event)"></textarea>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+<div  id="productmodaldiv" style="overflow:scroll;padding:5px;display:none;"
+data-options='{"mode":"blank","headerText":"Sample/Promotional items","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+<div id="selectedInputsdiv" style="margin:3px;border:1px solid #aaa">
+<ul id="slectedinputslist" data-role="listview" data-mini="true" data-split-icon="Delete" data-theme="b" data-split-theme="b" data-split-icon-postion="left" data-split-icon="Delete" data-inset="true">
+
+</ul>
+<input type="button" value="Done" onclick="fnAddProducts()" />
+</div>
+<ul id="productmodal" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search Sample/Promotional items..."> 
+</ul>
+</div>
+
+<div  id="chemistmodaldiv" style="overflow:scroll;padding:5px;display:none;"
+data-options='{"mode":"blank","headerText":"Chemists","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+<div id="selectedChemistsdiv" style="margin:3px;border:1px solid #aaa">
+<ul id="slectedchemistslist" data-role="listview" data-mini="true" data-split-icon="Delete" data-theme="b" data-split-theme="b" data-split-icon-postion="left" data-split-icon="Dlete" data-inset="true">
+
+</ul>
+<input type="button" value="Done" onclick="fnAddChemists()" />
+</div>
+
+<ul id="chemistmodal" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search chemists..." >
+</ul>
+</div>
+<div  id="saleproductmodaldiv" style="width:80%;height:200px;overflow:scroll;padding:5px;display:none;border:1px solid #aaa;" >
+<ul id="saleproductmodal" data-role="listview" >
+</ul>
+</div>
+<div data-role="collapsible-set"  style="background:#fafafa;" data-theme="b" data-content-theme="c" data-mini="true" data-inset="false" style="margin:3px;padding:0px;" >
+    <div data-role="collapsible" data-collapsed="false" data-mini="true" data-inset="false" id="div-product">
+        <h3>Sample/Promotional items</h3>
+        <div><a href="#" style="padding-top:5px;padding-bottom:5px;margin-top:15px" onclick="showProductDialog()">Add Sample/Promotional items</a> </div>
+        <div id="productlist"  class="ui-collapsible-content ui-body-d ui-corner-bottom" style="margin:0px;padding:0px;border:0px solid" aria-hidden="false">
+        </div>
+         <div id="dvBotAddInputs" style="display:none"><a href="#" style="padding-top:5px;padding-bottom:5px;margin-top:15px" onclick="showProductDialog();">Add Sample/Promotional items</a> </div>
+    </div>
+     
+</div>
+<div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-mini="true" data-inset="false" style="margin:3px;padding:3px;" >
+    <div data-role="collapsible" data-collapsed="false" data-mini="true" data-inset="false">
+        <h3>Chemist</h3>
+        <div style="padding-top:5px;padding-bottom:5px;margin-top:15px"><a href="#" onclick="showChemistDialog();">Add Chemist</a> </div>   
+        
+        <div id="chemistlist" class="ui-collapsible-content ui-body-d ui-corner-bottom" style="margin:0px;padding:0px;border:0px solid" aria-hidden="true">
+        </div>
+     <div style="padding-top:5px;"><a href="#" onclick="fnAddChemistRow();">Add Flexi Chemist</a> </div>   
+    </div>
+     
+</div>
+<div>
+    <input type="button" value="Save" id="btnSave" onclick="fnValidation()" data-theme ="b" />
+    <input type="button" value="Cancel" id="btnCancel" onclick="fnCancel()" data-theme ="b"/>
+</div>

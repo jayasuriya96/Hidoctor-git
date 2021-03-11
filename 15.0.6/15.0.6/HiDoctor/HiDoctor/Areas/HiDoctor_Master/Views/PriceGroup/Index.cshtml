@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+
+</style>
+<form action="../HiDoctor_Master/PriceGroup/PriceGroupExcelUpload" onsubmit="return fnvalidateFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div style="width: 100%;" id="dvTabs">
+        <ul>
+            <li><a href="#dvInsert">Add Price Group</a></li>
+            <li><a href="#dvEdit">View/Edit Price Group</a></li>
+            <li><a href="#dvMapping">Region Price Group Mapping</a></li>
+            <li><a href="#dvCustomerMapping">Customer Price Group Mapping</a></li>
+        </ul>
+        <div style="width: 100%;" id="dvInsert">
+            <div style="width: 100%;">
+                <div style="width: 10%; float: left;">Price Group Name</div>
+                <div style="width: 70%; float: left;">
+                    <input type="text" id="txtPriceGroupName" style="width: 30%;" onblur="fnValidatePriceGroupName();" />
+                    <input type="hidden" id="hdnPriceGroupCode" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%; padding-top: 5px;" id="dvDataEntry">
+                <div style="width: 10%; float: left;">Data Entry Option</div>
+                <div style="width: 90%; float: left;">
+                    <input type="radio" id="rdCopy" name="DataOption" checked="checked" onchange="fnShowExcel();" value="1" />Copy Data from a price group
+                <input type="radio" id="rdExcel" name="DataOption" onchange="fnShowExcel();" value="2" />Import from Excel
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%; padding-top: 5px;" id="dvOldPriceGroup">
+                <div style="width: 10%; float: left; padding-top: 3px;">Select Price Group Name</div>
+                <div style="width: 70%; float: left;">
+                    <input type="text" id="txtOldPriceGroup" style="width: 30%;" class="autoPriceGroup" /><input type="button" id="btnGroup" value="Go" onclick="fnGetPriceGroupDetails()" />
+                    <input type="hidden" id="hdnOldPriceGroup" />
+                </div>
+                <div style="clear: both; float: left;"></div>
+            </div>
+            <div style="width: 100%; display: none; padding-top: 5px;" id="dvExcelUpload">
+                <div style="width: 10%; float: left; padding-top: 3px;">Import from Excel</div>
+                <div style="width: 80%; float: left; border: 1px solid #DDD;">
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="#" id="aGenerateExcel" onclick="fnGenerateExcelData();" style="text-decoration: underline;">Click here 
+                                </a>to Generate Price group Excel File
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="dvDownoad" style="display: none;">
+                                    Download 
+                                    <a id="aDownload" style="display: none;"></a>&nbsp; file
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="width: 100%; float: left;">
+                                    <input type="file" id="file" name="file" />
+                                    &nbsp;
+                                    <input type="submit" id="btnUpload" value="Upload" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    @* 
+                    <div style="width: 30%; float: left;">Please Download the excel file  @Html.ActionLink("Download Excel", "Download")</div>
+                    <div style="width: 30%; float: left;">
+                        <input type="file" id="file" name="file" />
+                    </div>
+                    <div style="width: 30%;">
+                        <input type="submit" id="btnUpload" value="Upload" />
+                    </div>
+                    *@
+                </div>
+                <div style="clear: both; float: left;"></div>
+            </div>
+            <div style="width: 100%; padding-top: 5px; display: none;" id="dvUploadedData">
+                <div style="width: 10%; float: left; padding-top: 3px;">Import from Excel</div>
+                <div style="width: 70%; float: left; padding-top: 4px; color: green;" id="dvUploadedMsg">
+                </div>
+                <div style="clear: both; float: left;"></div>
+            </div>
+            <div style="width: 100%; padding-top: 5px;">
+                <div style="width: 20%; float: left;"></div>
+                <div style="width: 80%; float: right;">
+                    <input type="button" id="btnGetProducts" value="Choose from Product List" onclick="fnOpenProductPopUp();" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%;" id="dvPriceGroup">
+            </div>
+            <div style="width: 100%; display: none;" id="dvRegionGroupMap"><a href="#" id="lnkRegGroup" onclick="fnOpenMapping();">Region priceGroup Mapping</a></div>
+            <div style="width: 100%; display: none; padding-top: 5px;" id="dvSave">
+                <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnSubmit();" />
+                <input type="button" id="btnReset" value="Reset" class="btn small primary" onclick="fnClearAll();" />
+                <input type="hidden" id="hdnMode" value="INSERT" />
+            </div>
+        </div>
+        <div id="dvEdit">
+            <div id="dvPriceGroupHeader" style="width: 100%;">
+                <table style="width: 50%; border: 1px solid #EFEFEF;" id="tblPriceGroupHeader" class="data display datatable">
+                    <tr>
+                        <td style="width: 30%;">Price group Name</td>
+                        <td style="width: 20%;">View/Edit</td>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="dvMapping" style="width: 100%;"></div>
+        <div id="dvCustomerMapping" style="min-height: 450px; overflow: auto;">
+            <div class="col-lg-12">
+                <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()" style="cursor: pointer; text-decoration: underline;">Hide Tree</span></div>
+                <div class="col-lg-12 form-group">
+                    <div class="col-sm-4" style="float: left; height: 450px; overflow: auto; border: 1px solid #ddd;" id="dvLeftCustPanel">
+                        <div id="dvRegionTree"></div>
+                    </div>
+                    <div class="col-lg-8" id="dvRightCustomerPanel" style="display: none;">
+                        <div class="col-lg-12 form-group">
+                            <div class="col-sm-3">
+                                Price Group Name 
+                            </div>
+                            <div class="col-lg-9">
+                                <select id="cboCustPriceGroup"></select>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="col-sm-3">
+                                Customer Entity Type
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="radio" value="DOCTOR" name="rdCustomer" checked="checked" />Doctor
+                                <input type="radio" value="STOCKIEST" name="rdCustomer" />Stockist
+                                <input type="radio" value="CHEMIST" name="rdCustomer" />Chemist
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="button" class="btn btn small primary" value="Get Customer" onclick="fnGetCustomers();" />
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div id="dvCustomer" class="col-lg-12 form-group" style="height: 300px; overflow: auto;"></div>
+                        <div class="col-lg-12">
+                            <input type="button" value="Submit" class="btn btn small primary" onclick="fnUpdateCustomer();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <iframe name="ifrmExcel" id="ifrmExcel"></iframe>
+    <div class="simple_overlay" id="dvProducts" style="width: 300px !important; min-height: 235px !important; height: 400px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <div>
+            <div style="width: 100%; height: 20px;">
+                <a class="popUpTitle-close" style="background: url(../Content/images/cross.png) no-repeat !important; height: 15px; cursor: pointer;" onclick="fnClosePopUp('dvProducts');"></a>
+            </div>
+            <div style="width: 100%; height: 345px;">
+                @*<div style="width: 100%;">
+                    <div style="float: right; border: 1px solid #F2F2F2; margin-right: 20px; margin-bottom: 3px;">
+                        <input type="text" id="txtProductSearch" placeholder="Search Product" style="background: #FFFFFF url(../Content/images/search.png) no-repeat 4px 4px; padding: 4px 4px 4px 22px; border: 1px solid #CCCCCC; width: 150px; height: 18px; float: right; margin-right: 14px;" />
+                    </div>
+                </div>
+                *@
+                <div style="width: 95%; overflow: auto; height: 340px;"
+                    id="dvAllProducts">
+                </div>
+            </div>
+            <div style="width: 100%; margin-left: 20px;">
+                <input type="button" value="Done" class="btn small primary" onclick="fnGetSelectedProducts();" />
+            </div>
+        </div>
+    </div>
+    <div id="dvPriceView" class="simple_overlay" style="width: 40% !important; min-height: 450px !important; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <div class="">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Price Group Details</span> <a class="popUpTitle-close" style="background: url(../Content/images/cross.png) no-repeat !important;" onclick="fnClosePopUp('dvPriceView');"></a>
+            </div>
+            <br />
+            <div style="width: 100%; height: 325px; overflow: auto;">
+                <div style="width: 100%;" id="dvPrice">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dvTemp" style="display: none;">
+    </div>
+</form>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PriceGroup.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvTabs").tabs();
+        $("#dvProducts").overlay().load();
+        $("#dvPriceView").overlay().load();
+        fnBindRegionTree("dvRegionTree");
+        $("#dvMapping").load("../HiDoctor_Master/PriceGroup/RegionPriceMapping");
+        fnGetAllSalesProduct();
+
+        $("#dvAjaxLoad").hide();
+        //document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('dvData').innerHTML
+    });
+    function fnRegionTreePostInit(node) {
+    }
+
+    function fnRegionTreeActivate(node) {
+        fnHideTree();
+        $('#dvCustomer').html('');
+        $('#dvRightCustomerPanel').show();
+    }
+</script>

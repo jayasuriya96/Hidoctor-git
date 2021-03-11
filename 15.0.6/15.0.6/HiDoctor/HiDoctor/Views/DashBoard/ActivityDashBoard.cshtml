@@ -1,0 +1,506 @@
+﻿@{
+    ViewBag.Title = "ActivityDashBoard";
+    Layout = null;
+}
+<style type="text/css">
+    .dvActivityDashHead {
+        background-color: #A5A5A5;
+        color: #fff;
+        height: 30px;
+        font-size: 19px;
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+
+    #page-header {
+        display: none;
+    }
+
+    .ui-multiselect {
+        width: 100% !important;
+    }
+
+    .ScrollDown {
+        background-image: url('../Content/images/gr.png');
+        height: 25px;
+        width: 32px;
+    }
+
+    .ScrollUp {
+        background-image: url('../Content/images/less.png');
+        height: 25px;
+        width: 32px;
+    }
+
+    .tdBorder {
+        padding-left: 5px;
+        border-right: 1px solid #ddd;
+    }
+
+    .dvFullSpark {
+    }
+
+    .ui-progressbar {
+        height: 11px;
+        width: 100px;
+    }
+
+        .ui-progressbar span {
+            width: 100px;
+            position: absolute;
+            text-align: center;
+            font-size: 11px;
+            height: 11px !important;
+            margin-top: -5px;
+        }
+
+    #dvField .ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+        border-bottom-left-radius: 0px !important;
+    }
+
+    #dvField .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .ui-corner-all {
+        -webkit-border-radius: 0px !important; /*{cornerRadius}*/
+        border-radius: 0px !important; /*{cornerRadius}*/
+    }
+
+    #dvGaugeIcon {
+        background-image: url('../Content/images/less.png');
+        height: 25px;
+        width: 32px;
+    }
+
+    #dvGauge {
+        width: 400px !important;
+        height: 250px !important;
+        min-height: 150px !important;
+    }
+
+        #dvGauge input[type=text] {
+            width: 50px !important;
+            text-align: right;
+            padding-right: 3px;
+        }
+
+    #dvTotalDoc {
+        width: 25%;
+        float: left;
+    }
+
+    #dvnoOfDocPlanned {
+        width: 23%;
+        float: left;
+    }
+
+    #dvnoOfDocVisit {
+        width: 25%;
+        float: left;
+    }
+
+    #dvCatTitle {
+        width: 100%;
+        float: left;
+        display: none;
+        margin-left: 13%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    #dvWork {
+        width: 64%;
+        float: left;
+        background-color: #F1F1F1;
+        height: 310px;
+    }
+
+    #dvField {
+        width: 100%;
+        float: left;
+        height: 120px;
+        margin-bottom: 2px;
+    }
+
+    #dvCall {
+        width: 100%;
+        float: left;
+        height: 165px;
+    }
+
+    #dvLegend {
+        width: 15%;
+        float: left;
+        overflow: auto;
+        height: 150px;
+    }
+
+    #dvActivityDashHead {
+        width: 100%;
+    }
+
+    #dvRegion {
+        font-size: 14px;
+        float: left;
+        margin-top: 5px;
+    }
+
+    #dvRegionNotes {
+        float: left;
+        width: 39%;
+        font-size: 10px;
+        font-style: italic;
+    }
+
+    #dvLeftPanel {
+        z-index: 9999;
+        /*width: 20%;*/
+        float: left;
+        border: 1px solid #efefef;
+        background-color: #efefef;
+        position: absolute;
+    }
+
+        #dvLeftPanel .ui-multiselect-menu {
+            z-index: 99999 !important;
+            position: absolute !important;
+        }
+
+    #dvRightPanel {
+        width: 100%;
+        float: left;
+        border: 1px solid #efefef;
+    }
+</style>
+
+<div style="width: 100%;">
+    <div class="dvActivityDashHead">
+        <div style="float: left; width: 17%;">
+            @*   <div>
+                <img src="~/Content/images/less.png" />
+            </div>*@
+            <a href="#" style="color: white; font-size: 12px; text-decoration: underline;" onclick="fnLoadBody('DashBoard/Index',this,'DashBoard');">Back</a>
+            Activity Dashboard
+        </div>
+        <div class="helpIcon">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_DASHBOARD','PAGE')" />
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div id="imgScroll" class="ScrollUp" style="cursor: pointer; float: left;"></div>
+        <div style="width: 100%">
+            <div style="width: 50%; float: left;">
+                @*<div style="font-size: 20px; float: left; width: 170px">Activity insights of </div>*@
+                <div id="dvRegion"></div>
+            </div>
+            <div id="dvRegionNotes">
+                * figures indicated in the dashboards are showing approximate values.To see accurate value,please see the relevant reports.
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div id="dvLeftPanel">
+            <table style="width: 100%;">
+                <tr id="trDiv">
+                    <td style="width: 30%;">Division
+                    </td>
+                    <td>
+                        <select id="drpDivision" onchange="fnGetRegionType();" style="width: 100%;">
+                            <option value="0">-Select Division-</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Region Type
+                    </td>
+                    <td>
+                        <select id="drpRegionType" onblur="fnBindRegions()" style="width: 100%;">
+                            <option value="0">-Select RegionType-</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Territory
+                    </td>
+                    <td>
+                        <div style="width: 100%;" id="dvRegionList"></div>
+                        @*  <select id="drpTerritory" style="width: 100%;display: none;" multiple="multiple">*@
+                        @*  <option value="0">-Select Region-</option>*@
+                        @*    </select>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td>Period Type
+                    </td>
+                    <td>
+                        <select id="drpPeriodType" onchange="fnBindMonth();" style="width: 100%;">
+                            <option value="0">Select Option</option>
+                            <option value="M">Month</option>
+                            <option value="Q">Quarter</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="tdPeriod">Select Month
+                    </td>
+                    <td>
+                        <select id="drpPeriod" style="width: 100%;">
+                            <option value="0">Select Period</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Show" class="btn primary small" onclick="fnSubmit()" />&nbsp&nbsp<img src="~/Images/load.gif" style="display: none" id="imgloginLoad" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="dvRightPanel">
+            <div style="width: 100%; margin: 5px;">
+                <div style="width: 35%; float: left; height: 310px; background-color: #FFF; border: 1px solid #DDD;">
+                    <div>
+                        <div class="dvChartTitle" style="float: left; margin-left: 26%; font-weight: bold;">
+                            Category wise Met Analysis
+                        </div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_DASHBOARD','CATEGORY_WISE_VISIT_ANALYSIS')" />
+                        </div>
+                    </div>
+
+                    <div id="dvCategoryVisit" style="width: 100%; float: left; height: 250px;">
+                        <img src="../../Images/load.gif" />
+                        Loading 
+                    </div>
+                    <div id="dvCatTitle" style="height: 40px;">
+                        <div id="dvTotalDoc">Total Doctors in List</div>
+                        <div id="dvnoOfDocPlanned">No of Doctors Planned</div>
+                        <div id="dvnoOfDocVisit">No of Doctors Visited</div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="dvWork">
+                    <div class="helpIcon" style="float: right;">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_DASHBOARD','WORK_CALCULATION')" />
+                    </div>
+                    <div id="dvField">
+                        <img src="../../Images/load.gif" />
+                        Loading 
+                    </div>
+                    <div id="dvCall">
+                        <div id="dvLegend">
+                        </div>
+                        <div style="width: 60%; float: left; padding-right: 4px">
+                            <div style="width: 100%; background-color: #fff; margin: 5px;">
+                                @*  <div style="float: left; width: 100%; text-align: center;">Doctor Call Average</div>*@
+                                <div style="float: left; width: 100%; min-height: 150px;" id="dvDocCalAvg">
+                                    <img src="../../Images/load.gif" />
+                                    Loading 
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                        <div style="width: 23%; float: right;">
+                            <div style="width: 94%; background-color: #fff; margin: 5px; border: 1px solid #ddd; min-height: 150px;">
+                                <div>
+                                    <div style="width: 100%; text-align: center; float: left" id="dvTitleCheCallAvg"></div>
+                                    <div class="helpIcon">
+                                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_DASHBOARD','CHECALLAVG')" />
+                                    </div>
+                                </div>
+                                <div style="clear: both"></div>
+                                <div style="width: 100%;">
+                                    <div style="width: 100%;" id="dvCheCallAvg">
+                                        <img src="../../Images/load.gif" />
+                                        Loading 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%; clear: both;">
+            <div id="dvGaugeSetting" style="float: left; width: 100%; display: none;">
+                <div id="dvGaugeIcon" style="float: right;" onclick="fnOpenGaugeSettings();"></div>
+            </div>
+            <div id="dvCatAvg" style="margin-left: 5px;">
+                <img src="../../Images/load.gif" />
+                Loading 
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<div style="clear: both;"></div>
+<input type="hidden" id="hdnCurrentDate" />
+
+<div class="simple_overlay" id="dvGauge">
+    <div style="width: 95%; padding: 3%;">
+        <div style="font-size: 15px; padding-left: 1%;">Gauge Options</div>
+        <div>
+            <table style="width: 90%; padding: 5%;" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>Red color </td>
+                    <td>From
+                        <input type="text" id="txtRedFrom" value="0" class="integer" />
+                    </td>
+                    <td>To
+                        <input type="text" id="txtRedTo" value="60" class="integer" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yellow color </td>
+                    <td>From
+                        <input type="text" id="txtYellowFrom" value="60" class="integer" />
+                    </td>
+                    <td>To
+                        <input type="text" id="txtYellowTo" value="80" class="integer" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Green color </td>
+                    <td>From
+                        <input type="text" id="txtGreenFrom" value="80" class="integer" />
+                    </td>
+                    <td>To
+                        <input type="text" id="txtGreenTo" value="100" class="integer" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="clear: both">
+            <div style="padding-right: 15%; float: right;">
+                <input type="button" value="Save" class="btn small primary" onclick="fnShowConfigSettings()" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/HD/Dashboard.js?v=@HiDoctor.BuildNumber.BuildNo" language="javascript"></script>
+<script type="text/javascript">
+    var currentDate = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#drpTerritory").multiselect().multiselectfilter();
+        try {
+            currentDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate))
+                $("#hdnCurrentDate").val(currentDate);
+            //function to bind the divison
+            fnGetDivisionCount();
+            fnGetGaugeSettings();
+            //fnPageLoad();
+            $("#dvGauge").overlay().load();
+            $(".integer").keypress(function () { return fnIsNumber(event) });
+            $(".integer").blur(function () { fnValidateSettingsValue(this); });
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function Test() {
+
+        alert(1);
+    }
+
+    $("#imgScroll").click(function () {
+        if ($('#imgScroll').hasClass("ScrollUp")) {
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+            $("#dvLeftPanel").hide();
+            // $("#dvRightPanel").css('width', '79%');
+        }
+        else {
+            $("#dvLeftPanel").show();
+            //$("#dvRightPanel").css('width', '98%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+        }
+    });
+    //function to bind the division
+    function fnGetDivisionCount() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            type: 'GET',
+            url: "DashBoard/GetDivisionCount",
+            async: false,
+            success: function (response) {
+                response = eval('(' + response + ')');
+                var count = 0;
+                if (response.Tables[0].Rows.length > 0) {
+                    count = response.Tables[0].Rows[0].Count;
+                }
+
+                if (count == 0) {
+                    $("#trDiv").css('display', 'none');
+                    // fnGetRegionType();
+                    var divisionCode = "";
+                    if ($("#drpDivision").is(":visible")) {
+                        divisionCode = $("#drpDivision").val();
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: "DashBoard/GetRegionTypesByDivision",
+                        data: "DivisionCode=" + divisionCode + "",
+                        success: function (response) {
+                            response = eval('(' + response + ')');
+                            $('option', $("#drpRegionType")).remove();
+                            $("#drpRegionType").append("<option value=0>Select RegionType</option>");
+                            $("#drpRegionType").append("<option value=ALL>ALL</option>");
+                            for (var i = 0; i < response.Tables[0].Rows.length; i++) {
+                                $("#drpRegionType").append("<option value=" + response.Tables[0].Rows[i].Region_Type_Code + ">" + response.Tables[0].Rows[i].Region_Type_Name + "</option>");
+                            }
+                            //   $("#drpTerritory").multiselect('destroy');
+                            //$("#drpTerritory").multiselect();
+                            if ($.fn.dataTable) { $('.datatable').dataTable({ "sPaginationType": "full_numbers" }); };
+                            $("#selectall").click(function () {
+                                $('.case').attr('checked', this.checked);
+                            });
+                            // $("#drpTerritory").multiselect().multiselectfilter();
+                            fnPageLoad();
+                        },
+                        error: function (e) {
+                            fnMsgAlert('error', 'Error', 'Bind Region Type failed');
+                            $("#dvAjaxLoad").hide();
+                        }
+                    });
+                }
+                else {
+                    $("#trDiv").css('display', '');
+                    // fnBindDivision();
+                    $.ajax({
+                        type: 'GET',
+                        url: "DashBoard/GetDivision",
+                        success: function (response) {
+                            response = eval('(' + response + ')');
+                            $('option', $("#drpDivision")).remove();
+                            $("#drpDivision").append("<option value=0>-Select Division-</option>");
+                            for (var i = 0; i < response.Tables[0].Rows.length; i++) {
+                                $("#drpDivision").append("<option value=" + response.Tables[0].Rows[i].Division_Code + ">" + response.Tables[0].Rows[i].Division_Name + "</option>");
+                            }
+
+                            fnPageLoad();
+                        },
+                        error: function (e) {
+                            fnMsgAlert('error', 'Error', 'Bind User Division failed');
+                            $("#dvAjaxLoad").hide();
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error', 'Error', 'Bind User Division failed');
+            }
+        });
+    }
+
+
+</script>

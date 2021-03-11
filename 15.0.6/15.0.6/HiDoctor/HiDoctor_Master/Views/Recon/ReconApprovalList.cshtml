@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "ReconApprovalList";
+    Layout = null;
+}
+
+
+<style>
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    #modal {
+        display: block;
+        /*top: 10px !important;*/
+        margin-left: -35% !important;
+        width: 70% !important;
+    }
+
+    #modal_content {
+        width: 100% !important;
+    }
+
+    #modal_close {
+        font-size: 26px !important;
+        right: 13px !important;
+        top: 15px !important;
+    }
+       .right {
+    float:right;
+    }
+</style>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+<link href="~/Content/Bootstrap/font-awesome.min.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<input id="btnRefresh" type="button" class="btn btn-success right" value="Refresh" onclick="ReconApproval.fnGetApprovalList();" /> 
+<div id="dvGrid" >
+    <div class="col-xs-12" id="ProductApproval" style="width:98%;margin-top:30px;">
+    </div>
+</div>
+<br />
+<input id="btnApprove" type="button" class="btn btn-success" value="Approve" onclick="ReconApproval.fnApproved();" />&nbsp;
+<input id="btnReject" type="button" class="btn btn-danger" value="Reject" onclick="ReconApproval.fnReject();" />
+<div style="display:none">
+    <div id="dvView"></div>
+</div>
+
+
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/Recon/ReconApprovalList.js"></script>
+<script>
+    ReconApproval.defaults.CompanyCode =@Html.Raw(Json.Encode(ViewBag.Compnay_Code));
+    ReconApproval.defaults.UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+    ReconApproval.defaults.CompanyId= @Html.Raw(Json.Encode(ViewBag.Compnay_Id));
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate(); 
+        $('#dvAjaxLoad').hide();
+        ReconApproval.fnGetApprovalList();
+    });
+
+</script>
+

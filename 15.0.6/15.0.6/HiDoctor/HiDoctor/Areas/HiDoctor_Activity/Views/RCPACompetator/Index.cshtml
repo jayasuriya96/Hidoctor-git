@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<style>
+    .treebg {
+        background: #fafafa !important;
+        border: 1px solid #ddd !important;
+    }
+
+    #ifrmExcel {
+        width: 100%;
+        padding: 2%;
+    }
+
+    #dvRedirect {
+        font-size: 14px;
+        width: 90%;
+        padding-left: 10%;
+    }
+
+    /*#dvRCPAMain {
+        border-bottom: 1px solid #0072c6;
+        border-right: 1px solid #0072c6;
+        border-left: 1px solid #0072c6;
+        min-height: 450px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }*/
+
+    .dvHeader {
+        width: 81.2%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 1%;
+        padding-top: 4px;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+
+<div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top create" id="RCPAMaster">
+            <a href="#Master" data-toggle="tab"><b>Excel Upload</b></a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="Master" style="height: 720px;">
+            <div class='col-xs-3 leftNav' id='leftNav' style="margin-top: 50px;">
+                <div id="regiontree" style="float: left; height: auto; width: 100%">
+                </div>
+                <div style="width: 1px;"></div>
+            </div>
+            <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+                <div style="display: none;" id="divToggle">
+                    <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                          onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline;
+                                     cursor: pointer; padding: 5px" onclick="fnToggleInput()">Hide Input</span>
+                </div>
+
+                <div id="divInput" style="display: none; padding: 5px">
+
+                    <div id="ssHeader" class="row" style="padding-top:5px;">
+                        <div class="col-xs-12" style="text-align:center;">
+                            <p><span style="font-weight:bold;font-size:15px;" id="ssregionName"></span><b><span style="margin:0px 5px;font-size:15px;" id="FdBckFor"></span></b></p>
+                        </div>
+                        <div class="container" id="dvRCPAMain" style="width:100%">
+                            @using (Html.BeginForm("Index", "RCPACompetator", FormMethod.Post, new { enctype = "multipart/form-data", target = "ifrmExcel", id = "RCPAForm" }))
+                            {
+
+                                <div style="clear: both"></div>
+                                <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="margin-top:1%;border: ridge;">
+                                    <div class="col-xs-12" style="margin-left:4%;margin-top: 15px;">
+                                        <label style="font-size:14px;padding-left:10%;"><b>Period From</b></label>
+                                        <input type="text" style="margin-left:1%;" name="txtPeriodFrom" required id="txtPeriodFrom" value="">
+                                        <label style="font-size:14px;margin-left:8%;"><b>Period To</b></label>
+                                        <input type="text" style="margin-left:2%;" name="txtPeriodTo" required id="txtPeriodTo" value="">
+                                    </div>
+                                    <div class="clearfix" style="width: 100%; padding: 5px;margin-left: 15%;">
+                                        <div style="width: 36.7%; float: left;">
+                                            <label>Step 1 : <a onclick="fndownloadxcel();" style="color:dodgerblue;">Download</a></label>
+                                            <div style="clear: both;"></div>
+                                            <label>Step 2 : Upload</label>
+                                            <div style="clear: both;"></div>
+                                            <div style="margin-left: 87px;">
+                                                @Html.TextBox("file", "", new { type = "file" }) <br />
+                                                <input type="submit" value="Upload" class="btn small primary" onclick="fnValidateUploadedFile();" />
+                                            </div>
+                                        </div>
+                                        @ViewBag.Message
+                                    </div>
+                                </div>
+                                <div id="dvFrame" style="height: 70px;">
+                                    <iframe name="ifrmExcel" style="width: 100%;height: 50px;"></iframe>
+                                </div>
+                                <input type="hidden" id="hdnRegion_Code" name="hdnRegion_Code" value="" />
+                            }
+                            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                                <div style="clear: both"></div>
+                                <div id="dvFiles">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <script src="../../Areas/HiDoctor_Activity/Scripts/HD/RCPAExcel.js"></script>
+        <script>
+            var currentRegionCode_g = "";
+            var RegionCode = "";
+            $(document).ready(function () {
+                debugger;
+                AjaxGlobalHandler.Initiate();
+                $('#dvTab').tabs();
+                $('#dvTab').block();
+                selKeys = "";
+                var message="";
+                $('#dvTab').unblock();
+
+                $(function () {
+                    $("#txtPeriodFrom").datepicker({
+                        dateFormat: 'dd/mm/yy',
+                        numberOfMonths: 1,
+                        maxDate:0,
+                        changeMonth: true,
+                        changeYear:true,
+                    });
+                });
+                $(function () {
+                    $("#txtPeriodTo").datepicker({
+                        dateFormat: 'dd/mm/yy',
+                        numberOfMonths: 1,
+                        maxDate:0,
+                        changeMonth: true,
+                        changeYear:true,
+                        //showButtonPanel: true
+                    });
+                });
+                try {
+                    debugger;
+                    currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+                   
+                    if(currentRegionCode_g != null && currentRegionCode_g != '')
+                    {
+                        $("#leftNav").show();
+                        fnRegionTreePosition("regiontree");
+                        fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+                        $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                        $('#txtSearchNode').bind("keypress", function (e) {
+                            if (e.keyCode == 13) {
+                                fnSearchRegions();
+                                return false;
+                            }
+                        });
+                        // $("#dvTree").show();
+                        $('#divInput').hide();
+                        $('#divToggle').hide();
+                        $("#divMain").addClass('col-xs-9');
+                        $('#dvAjaxLoad').hide();
+
+                    }
+                }
+                catch (err) {
+                    $("#dvAjaxLoad").hide();
+                }
+            });
+
+            function fnRegionTreeNodeClick(node){
+                debugger
+                $('#divInput').show();
+                $("#leftNav").show();
+                // $("#spnTreeToggle").html('Show Tree');
+                $('#divToggle').show();
+                $("#divMain").addClass('col-xs-9');
+                $("#ssregionName").html(node.data.title)
+                $("#hdnRegion_Code").val(node.data.key);
+                RegionCode = node.data.key;
+                fnGetExcelList(RegionCode);
+            }
+
+
+            function fnRegionTreeActivate(node) {
+                $('#divInput').show();
+                $("#leftNav").show();
+                // $("#spnTreeToggle").html('Show Tree');
+                $('#divToggle').show();
+                $("#divMain").addClass('col-xs-9');
+            }
+            function fnRegionTreePostInit() {
+
+            }
+            function fnToggleTree() {
+                if ($("#spnTreeToggle").html() == "Hide Tree") {
+                    $('#regiontree').hide();
+                    $('#leftNav').removeClass('col-xs-5');
+                    $('#leftNav').removeClass('col-xs-4');
+                    $('#leftNav').removeClass('col-xs-3');
+                    $("#divMain").removeClass('col-xs-9');
+                    $("#divMain").removeClass('col-xs-8');
+                    $("#divMain").removeClass('col-xs-7');
+                    $("#divMain").addClass('col-xs-11');
+                    $("#spnTreeToggle").html('Show Tree');
+
+                    //Expand the Tree
+                    $('#spnTreeResize').attr('title', 'Click here to expand tree');
+                    $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+                }
+                else if ($("#spnTreeToggle").html() == "Show Tree") {
+                    $('#regiontree').show();
+                    $('#leftNav').addClass('col-xs-3');
+                    $('#divMain').removeClass('col-xs-7');
+                    $('#divMain').removeClass('col-xs-8');
+                    $('#divMain').removeClass('col-xs-9');
+                    $("#divMain").addClass('col-xs-9');
+                    $("#spnTreeToggle").html('Hide Tree');
+                }
+            }
+            function fnToggleInput() {
+                if ($("#spnInputToggle").html() == "Hide Input") {
+                    $("#divInput").slideUp();
+                    $("#spnInputToggle").html("Show Input");
+                }
+                else if ($("#spnInputToggle").html() == "Show Input") {
+                    $("#spnInputToggle").html("Hide Input");
+                    $("#divInput").slideDown();
+                }
+            }
+            function fnValidateUploadedFile() {
+                debugger
+                //var fileName = $('#file').val();
+                //if (fileName.length == 0) {
+                //    fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+                //    return false;
+                //}
+                if ($("#file").val() == "") {
+                    $.unblockUI();
+                    HideModalPopup("dvloading");
+                    fnMsgAlert('info', 'Info', 'Please choose an excel file to upload');
+                    return false;
+                }
+                else {
+                    var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+                    if (ext == "xlsx" || ext == "xls") {
+                        return true;
+                    }
+                    else {
+                        fnMsgAlert('info', 'Info', 'Please select xlsx/xls file only');
+                        return false;
+                    }
+                }
+            }
+                function Submit()
+                {
+                    $("#RCPAForm" ).submit();
+                    $("#txtPeriodFrom").val('');
+                    $("#txtPeriodTo").val('');
+                    $("#file").val('');
+                    //  $.blockUI();
+                }
+        </script>
+

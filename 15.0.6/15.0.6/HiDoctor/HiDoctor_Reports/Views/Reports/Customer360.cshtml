@@ -1,0 +1,471 @@
+﻿@{
+    ViewBag.Title = "Customer360";
+    Layout=null;
+
+}
+<style>
+    .dvHeader {
+        width: 100%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    #dvCustomer360 div {
+        width: 98%;
+        float: left;
+    }
+
+    #dvCustomerName {
+        /*border-bottom: 2px solid #27a9e3;*/
+        font-size: 20px;
+    }
+
+
+    .dvTitle {
+        color: #264A80;
+        font-size: 14px;
+        padding-left: 5px;
+        border-bottom: 1px solid #27a9e3;
+        padding-top: 1%;
+        padding-bottom: 1%;
+    }
+
+    .dvDetails {
+        padding-left: 3%;
+        padding-top: 1%;
+        font-size: 13px;
+    }
+
+    #tblRCPA td {
+        border-bottom: 1px solid #EFEFEF;
+        border-right: 1px solid #EFEFEF;
+        text-align: right;
+    }
+
+    #tblRCPA {
+        width: 100%;
+    }
+
+        #tblRCPA thead td {
+            text-align: center !important;
+        }
+
+        #tblRCPA tbody tr td:first-child {
+            text-align: left !important;
+        }
+
+    /*#modal {
+        background: #FFF;
+        margin-left: -240px;
+        position: absolute;
+        top: 100px;
+        left: 40% !important;
+        z-index: 1000;
+        -moz-border-radius: 0px !important;
+        -webkit-border-radius: 0px !important;
+        border-radius: 0px !important;
+        -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        -moz-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.7);
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
+    }*/
+
+    .dvTitleImg {
+        width: 4% !important;
+        float: left !important;
+    }
+
+    #dvCustomer360Main {
+        /*width: 700px;*/
+        padding: 1%;
+        height: 600px;
+        overflow: scroll;
+        
+    }
+
+    .modalLeftCon {
+        background: #FFF;
+        margin-left: -240px;
+        position: absolute;
+        /*top: 15% !important;*/
+        left: 35% !important;
+        z-index: 2147483649!important;
+        -moz-border-radius: 0px !important;
+        -webkit-border-radius: 0px !important;
+        border-radius: 0px !important;
+        -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        -moz-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.7);
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
+        width: 950px !important;
+        min-width: 600px !important;
+    }
+
+    .modalLeft {
+        background: #FFF;
+        margin-left: -240px;
+        position: absolute;
+        /*top: 15% !important;*/
+        left: 40% !important;
+         z-index:2147483649!important;
+        -moz-border-radius: 0px !important;
+        -webkit-border-radius: 0px !important;
+        border-radius: 0px !important;
+        -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        -moz-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.7);
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
+        width: 800px !important;
+        min-width: 600px !important;
+    }
+
+    #dvCustomer360Consolidated {
+        width: 100%;
+    }
+
+    #modal_content {
+        width: 98% !important;
+    }
+
+    #tblCustomer360 {
+        width: 100%;
+        padding: 1%;
+    }
+
+        #tblCustomer360 thead {
+            border: 1px solid #efefef;
+            background-color: #246BB2;
+            color: white;
+        }
+
+            #tblCustomer360 thead th {
+                border-right: 1px solid #efefef;
+            }
+
+        #tblCustomer360 tbody td {
+            border-right: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+        }
+
+    .dvRCPA {
+        cursor: pointer;
+        font-weight: bold;
+        padding-left: 3%;
+        /*color: blue;*/
+    }
+
+    .dvRCPALnk {
+        padding-left: 1%;
+        width: 90%;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .dvYield {
+        padding-left: 3%;
+        width: 90%;
+    }
+
+    #tblRCPA thead {
+        border: 1px solid #efefef;
+        background-color: #246BB2;
+        color: white;
+    }
+
+        #tblRCPA thead th {
+            border-right: 1px solid white;
+        }
+
+    #tblRCPA tbody td {
+        border-right: 1px dotted #efefef;
+        border-bottom: 1px dotted #efefef;
+    }
+
+    #dvRCPAContent {
+        width: 95% !important;
+        padding-left: 3%;
+        padding-top: 3%;
+    }
+
+    #dvPopTitle {
+        height: 40px;
+        background-color: #efefef;
+        width: 98%;
+        padding: 1%;
+        padding-top: 3%;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    #dvChildUsers {
+        padding: 3px;
+    }
+
+    #cboUnderUsers {
+        width: 150px;
+    }
+
+    #cboRegion {
+        width: 200px !important;
+    }
+
+    .imgDoctorName360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/chemisticon.JPG') no-repeat top left !important;
+        height: 16px;
+        width: 4% !important;
+        float: left;
+    }
+
+    .imgCampaign360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/campaign_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgLastVisit360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/last_visit_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgSample360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/sample_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgNonSample360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/non_sample_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgChemist360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/Chemist_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgYield360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/Yield_Potentials_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgMapping360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/Product_Map_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .imgRemarks360 {
+        background: transparent url('/Areas/HiDoctor_Reports/Content/images/Remarks_D360.png') no-repeat top left !important;
+        height: 16px;
+        width: 20px;
+        float: left;
+    }
+
+    .dvDoctorName {
+        width: 90% !important;
+        float: left;
+    }
+</style>
+<div id="dvCustomer360Main">
+
+    <div id="dvChildUsers">
+        <div style="float: left;">
+          <label id="dvdoctor"></label>
+        <select id="cboUnderUsers">
+        </select>
+           <lable id="dvdoctorregion"></lable>
+            <select id="cboRegion"></select>
+        </div>
+        <div style="float: left; padding-left: 1%;">
+            <input type="button" value="Go" class="btn small primary" onclick="fnGetCustomer360();" />
+            <input type="button" value="Consolidated" id="btnConsolidated" class="btn small primary" onclick="fnGetCustomer360ConsolidatedDetails();" />
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div>
+        <div id="dvCustomer360"></div>
+        <div id="dvCustomer360Consolidated" style="z-index:2147483990 !important">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+
+</div>
+
+<div class="simple_overlay" id="dvRCPA" style="height: 500px !important; min-height: 350px !important;">
+    <div id="dvPopTitle">
+        <span id="spnRCPATitle">RCPA Details</span> <a class="popUpTitle-close" style="background: url(../Content/images/cross.png) no-repeat !important;" onclick="fnClosePopUp('dvRCPA');"></a>
+    </div>
+    <div id="dvRCPAContent" style="width: 100%;"></div>
+</div>
+<script>
+    var customerCode_g = "";
+    var userCode_g = "";
+    var childUsers_g = "";
+    var doctor_caption="";
+    $(document).ready(function () {
+        //  $(document).ajaxStop($.unblockUI);
+        //  $("#dvChildUsers").hide();
+        $('#dvCustomer360Main').block({ 
+            message: '<h3>Processing</h3>', 
+            css: { border: '2px solid #ddd' } 
+        }); 
+        debugger;
+        customerCode_g=  @Html.Raw(Json.Encode(ViewBag.Customer_Code));
+        userCode_g=  @Html.Raw(Json.Encode(ViewBag.User_Code));
+        doctor_caption=@Html.Raw(Json.Encode(ViewBag.Doctor_Caption));
+        userCode_g = userCode_g;//+"^";
+        fnGetChildUsers();
+        fnGetCustomerRegion();
+        $("#dvRCPA").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $("#dvDocPro").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $("#dvdoctor").html(doctor_caption+" Visited by");
+        $("#dvdoctorregion").html(doctor_caption+" Region");
+        $("#dvAjaxLoad").hide();
+
+    });
+
+    function fnGetChildUsers() {
+        $('option', $("#cboUnderUsers")).remove();
+        // $.blockUI();
+        $.ajax({
+            url: '../HiDoctor_Reports/Reports/GetChildUsersFor360',
+            type: "POST",
+            data: "userCode=" + userCode_g + "&doctorCode="+customerCode_g+"",
+            success: function (jsData) {
+                
+                $("#cboUnderUsers").append("<option value=" + userCode_g + ">Self</option>");
+                if (jsData != '') {
+                    
+                    childUsers_g = jsData;
+                    if (jsData.length > 0) {
+                        //  $("#dvChildUsers").show();
+                        $("#btnConsolidated").show();
+                        for (var i = 0; i < jsData.length; i++) {
+                            if (jsData[i].User_Code != userCode_g) {
+                                $("#cboUnderUsers").append("<option value=" + jsData[i].User_Code + ">" + jsData[i].User_Name.toUpperCase() + " | " + jsData[i].User_Type_Name.toUpperCase() + " | " + jsData[i].Region_Name.toUpperCase() + "</option>");
+                            }
+                        }
+                    }
+                    else {
+                        //$("#cboUnderUsers").append("<option value=" + userCode_g + ">Self</option>");
+                        // $("#dvChildUsers").hide();
+                        $("#btnConsolidated").hide();
+                    }
+                }
+            }
+        });
+    }
+    function fnGetCustomer360Details(userCode) {
+        //$.blockUI();
+        $("#dvCustomer360").html('');
+        $('#dvCustomer360Main').block({ 
+            message: '<h3>Processing</h3>', 
+            css: { border: '2px solid #ddd' } 
+        }); 
+        $.ajax({
+            url: '../HiDoctor_Reports/Reports/GetCustomer360Details/',
+            type: "POST",
+            data: "userCode=" + userCode + "&doctorCode=" + customerCode_g + "&Mode=SINGLE&regionCode=" + $("#cboRegion").val() + "",
+            success: function (result) {
+                if (result != '') {
+                    $("#modal").removeClass("modalLeftCon");
+                    $("#modal").addClass("modalLeft");
+                    $("#dvCustomer360Main").css("width", "700px !important");
+                    $("#dvCustomer360Consolidated").hide();
+                    $("#dvCustomer360").show();
+                    $("#dvCustomer360").html(result);
+                    $("#dvCustomer360Main").unblock(); 
+                }
+            },
+            error: function() {
+                $("#dvCustomer360Main").unblock(); 
+            }
+        });
+    }
+    function fnGetCustomer360ConsolidatedDetails() {
+        $('#dvCustomer360Main').block({ 
+            message: '<h3>Processing</h3>', 
+            css: { border: '2px solid #ddd' } 
+        }); 
+        var allUserCodes = "";
+        if (childUsers_g != '') {
+            for (var i = 0; i < childUsers_g.length; i++) {
+                allUserCodes += childUsers_g[i].User_Code + "^";
+            }
+        }
+        //  $.blockUI();
+        $("#dvCustomer360Consolidated").html('');
+        $.ajax({
+            url: '../HiDoctor_Reports/Reports/GetCustomer360Details/',
+            type: "POST",
+            data: "userCode=" + allUserCodes + "&doctorCode=" + customerCode_g + "&Mode=CONSOLIDATED&regionCode=" + $("#cboRegion").val() + "",
+            success: function (result) {
+                $("#modal").addClass("modalLeftCon");
+                $("#dvCustomer360Main").css("width", "900px !important");
+                $("#dvCustomer360Consolidated").show();
+                $("#dvCustomer360").hide();
+                if (result != '') {
+                    $("#dvCustomer360Consolidated").html(result);
+                }
+                $("#modal").removeClass("modalLeft");
+                $("#dvCustomer360Main").unblock(); 
+            },
+            error: function()  {
+                $("#dvCustomer360Main").unblock(); 
+            }
+        });
+    }
+
+    function fnGetCustomer360() {
+        fnGetCustomer360Details($("#cboUnderUsers").val());
+    }
+
+    function fnShowRCPA(rowNo) {
+        $("#dvRCPAContent").html('');
+        $("#dvRCPAContent").html($("#dvRCPA_" + rowNo).html());
+        $("#dvRCPA").overlay().load();
+    }
+    function fnClosePopUp(id) {
+        $("#" + id).overlay().close();
+    }
+    function fnGetCustomerRegion() {
+        $.ajax({
+            url: '../HiDoctor_Reports/Reports/GetCustomerRegions/',
+            type: "POST",
+            data: "customerCode=" + customerCode_g + "",
+            success: function (jsData) {
+                if (jsData != '') {
+                    for (var i = 0; i < jsData.length; i++) {
+                        $("#cboRegion").append("<option value=" + jsData[i].Region_Code + ">" + jsData[i].Region_Name + " (" + jsData[i].Region_Type_Name + ")</option>");
+                    }
+                    fnGetCustomer360Details(userCode_g);
+                }
+            }
+        });
+    }
+</script>

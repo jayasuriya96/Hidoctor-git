@@ -1,0 +1,241 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<div>
+    <form>
+        <div class="form-row" style="margin-top:10px">
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                            <label>Leave Type</label>
+                            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="leavetype">
+                            </div>
+                        </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <label>Reason</label>
+                                <input class="form-control" type="text" id="reason" maxlength="300">
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;">
+                <button type="button" class="btn btn-primary" id="Back" onclick="fnBack()">Back</button>
+                <button type="button" class="btn btn-primary" id="Draft" onclick="fnInsertLeave(0)">Draft</button>
+                <button type="button" class="btn btn-primary" id="save" onclick="fnInsertLeave(1)">Save</button>
+               
+            </div>
+
+        </div>
+    </form>
+</div>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var MTO_Date='';
+    var MTO_ID=0;
+    var Lid='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        MTO_Date=@Html.Raw(Json.Encode(ViewBag.MTO_Date));
+        MTO_ID=@Html.Raw(Json.Encode(ViewBag.MTO_ID));
+        Lid=@Html.Raw(Json.Encode(ViewBag.LID));
+        fngetLeavetype();
+    });
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/MTO/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else 
+                    result = false;
+            }
+        })
+        return result;
+    }
+    function fngetLeavetype() {
+
+        var _objData = new Object();
+        _objData.User_Code = LoginUserCode;
+        _objData.subDomainName = subDomainName;
+        $('#txtDoctor').html('');
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/MTO/GetLeavetype',
+                       success: function (response) {
+                           debugger;
+                           var str='';
+                           if (response != null && response.length > 0) {
+
+                               str+='<select class="form-control" id="selected">';
+                               if(response.length >1)
+                               {
+                                   str+='<option value="0" selected>--Select Leave Type--</option>';
+                               }
+                               for(var i=0;i< response.length;i++)
+                               {
+                                   str+=' <option value='+response[i].Leave_Type_Code+'>'+response[i].Leave_Type_Name+'</option>'
+                               }
+                               str+='</select>';
+                               $('#leavetype').html(str);
+                               if(MTO_ID !=0)
+                               {
+                                   fngetLeaveValues();
+                               }
+                               $('#Draft').show();
+                               $('#save').show();
+                           }
+                           else{
+                               swal("You are not having any Leave Types you cannot able to enter Leave","", "info");
+                               //$('#Draft').hide();
+                               //$('#save').hide();
+                           }
+                       },
+                       error: function () {
+
+                       }
+                   });
+    }
+    function fngetLeaveValues()
+    {
+        debugger;
+        var _objData = new Object();
+        //_objData.User_Code = LoginUserCode;
+        _objData.subDomainName = subDomainName;
+        _objData.MTO_ID=MTO_ID;
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/MTO/GetLeaveValues',
+                       success: function (response) {
+                           if(response.length >0)
+                           {
+                               $('#selected').val(response[0].Leave_Type_Code);
+                               $('#reason').val(response[0].LeaveReason);
+                           }
+                       },
+                       error:function()
+                       {
+
+                       }
+                   });
+    }
+    function fnReChkSplChar(id) {
+        debugger;
+        //Remark
+        if ($('#' + id).val() != "") {
+            var specialCharregex = new RegExp("^[-a-zA-Z0-9 _().,\n\r\r\n]+$");
+            if (!specialCharregex.test($('#' + id).val())) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return true
+
+    }
+    function fnInsertLeave(val)
+    {
+        if (navigator.onLine == true){
+            var Userstatus= fnuserstatus();
+            if(Userstatus){
+                //$('#Draft').prop('disabled', true);
+                //$('#save').prop('disabled', true);
+
+                debugger;
+                var LeaveCode=$('#selected').val();
+                var Reason=$('#reason').val();
+                if($('#selected').val()=='0')
+                {
+                    swal("Please Select Leave Type","", "info");
+                    $('#Draft').prop('disabled', false);
+                    $('#save').prop('disabled', false);
+                    return false;
+                }
+                var Remark = fnReChkSplChar('reason');
+                if (Remark == false) {
+                    swal('Special characters are not allowed in remarks except - _ . , ( )', "", "info");
+                    $('#Draft').prop('disabled', false);
+                    $('#save').prop('disabled', false);
+                    return false;
+                }
+                var _objData = new Object();
+                _objData.subDomainName = subDomainName;
+                _objData.Region_Code = LoginRegionCode;
+                _objData.User_Code = LoginUserCode;
+                _objData.MTODate = MTO_Date;
+                _objData.MTO_ID = MTO_ID;
+                _objData.MTOValue =val;
+                _objData.LeaveCode=LeaveCode;
+                _objData.Reason=Reason;
+                $.ajax({
+                    type: 'POST',
+                    data: _objData,
+                    url: '../../HiDoctor_Activity/MTO/GetInsetLeave',
+                    success: function (response) {
+                        debugger;
+                        if(response!=0)
+                        {
+                            swal({
+                                title: "Leave Entry Saved Successfully",
+                                showCancelButton: false,
+                                closeOnConfirm: false,
+                            }, function (inputValue) {
+                                if (inputValue === false) return false;
+                                window.location.href = '../MTO/MTOMobile?Lid='+Lid;
+                            });
+                            $('#Draft').prop('disabled', false);
+                            $('#save').prop('disabled', false);
+                 
+                        }
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            else
+            {
+                swal("", "Your account has been deactivated.", "");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+    function fnBack()
+    {
+        if (navigator.onLine == true){
+            var Userstatus= fnuserstatus();
+            if(Userstatus){
+                window.location.href = '../MTO/MTOMobile?Lid='+Lid;
+            }
+            else
+            {
+                swal("", "Your account has been deactivated.", "");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+</script>

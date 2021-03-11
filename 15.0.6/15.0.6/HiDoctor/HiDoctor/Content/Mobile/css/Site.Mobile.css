@@ -1,0 +1,478 @@
+﻿.view-switcher {
+    padding: 0.5em;
+    font-weight: normal;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input[type="text"].input-validation-error,
+input[type="password"].input-validation-error {
+    border: solid 1px #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.ui-icon-delete, .delete-icon {
+    background: url('/Content/Mobile/images/Close-icon.png') no-repeat !important;
+    height: 24px;
+    width: 24px;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.logo {
+    background: url(/Content/Mobile/images/hi-doctor-logo.png) no-repeat left top;
+    height:64px;
+    width:64px;
+    float:right;
+}
+
+.clearboth {
+    clear:both !important;
+}
+.ver-alig-top {
+    vertical-align:top;
+}
+.lblbold {
+    font-weight:bold;
+}
+.headercontent {
+    float: right; 
+    margin-top: 5px;
+    width:100%;
+}
+.menucontent {
+    width:100%;
+    height:20px;
+    border-bottom:1px solid #dedede;
+    border-bottom:1px solid #E4E2E4;
+    margin-bottom:14px;
+}
+    .menucontent a {
+        padding:3px !important;
+        color:#2489ce;
+        text-decoration:none !important;
+        font-size:13px;
+    }
+    .homeicon {
+    background: url(/Content/Mobile/images/home-16.png) no-repeat left top;
+    height:16px;
+    width:16px;
+    float:left;
+    }
+.calendaricon {
+    background: url(/Content/Mobile/images/calendaricon-16.png) no-repeat left top;
+    height:16px;
+    width:16px;
+    float:left;
+}
+.menuicon {
+    background: url(/Content/Mobile/images/menu-16.png) no-repeat left top;
+    height:16px;
+    width:16px;
+    float:left;
+}
+.plusicon {
+    background: url(/Content/Mobile/images/plus16x16.png) no-repeat left top;
+    height:16px;
+    width:16px;
+}
+.plmicollapse {
+    background: url(/Content/Mobile/images/plus24.png) no-repeat left top;
+    height:24px;
+    width:24px;
+}
+
+.plmiexpand {
+    background: url(/Content/Mobile/images/Minus24.png) no-repeat left top;
+    height:24px;
+    width:24px;
+}
+.divider {
+    height:5px;
+    width:100%;
+    border-bottom:1px solid #dedede;
+    margin-bottom:37px;
+}
+ 
+#productlist label, #chemistlist label, #doctor label {
+    font-weight:bold !important;
+}
+.accpageheader, .detailedProductsHeader {
+    height:37px !important;
+}
+.customerStatus {
+    color:red !important;
+}
+.spn-menu {
+    position: absolute;
+    top: 58%;
+    left: -6%;
+    margin-left: 64px;
+    margin-top: -18px;
+    color: white;
+    font: 100 33px/1.167 'Segoe UI Light','Segoe UI',Helvetica,Garuda,Arial,sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+}
+
+li {
+    font-weight: normal !important;
+    font-size: 12px !important;
+    border: 1px solid hsl(0, 0%, 80%) /*{c-bup-border}*/;
+}
+
+    li a {
+        font-weight: normal !important;
+        font-size: 12px !important;
+    }
+
+.clearboth {
+    clear: both;
+}
+
+label {
+    font-size: 12px !important;
+}
+
+input[type="text"] {
+    font-size: 12px !important;
+    height: 25px !important;
+}
+/******************START: Mobile Menu**************************/
+.menuhidden {
+    display: none;
+}
+.menuShow {
+    display:block;
+}
+/******************END: Mobile Menu**************************/
+
+/********************* START: Mobile HOME**********************/
+#dvmobileHome {
+    font-weight: normal !important;
+    font-size: 12px !important;
+}
+
+.home_placelabel {
+    width: 35%;
+    text-align: right;
+    float: left;
+}
+
+.homeplace_value {
+    width: 60%;
+    text-align: left;
+    float: left;
+    padding-left: 5px;
+}
+
+.dvchemlist {
+    padding: 3px;
+}
+/* Force table to not be like tables anymore */
+table, thead, tbody, th, td, tr {
+    padding: 0px !important;
+}
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+tr {
+}
+
+td {
+    /* Behave  like a "row" */
+    border: none;
+    position: relative;
+}
+
+    td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+.tick {
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-top: 8px;
+    margin-left: 8px;
+    background: url(/Areas/HiDoctor_Activity/Content/images/Mobile/tick-icon.png) no-repeat left top;
+}
+
+.delete {
+    height: 10px;
+    float: right;
+    margin-right: 30px;
+    vertical-align: top;
+    text-decoration: underline;
+    color: blueviolet;
+}
+/********************* END: Mobile HOME**********************/
+/***************************** Mobile Leave *********************/
+
+.leaveLink {
+    color: Blue;
+    text-decoration: underline;
+}
+
+    .leaveLink:hover {
+        color: #0033CC;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+/***************************** Mobile Leave-end *********************/
+
+/***************************** Mobile DCR Doctor Visit *********************/
+#doctor label {
+    font-size: 12px !important;
+}
+
+#doctor label {
+    font-size: 12px !important;
+}
+
+.productdialogicon {
+    background: url(/Content/images/tablet-16.png) no-repeat left top;
+    height: 16px;
+    width: 16px;
+}
+
+.chemistdialogicon {
+    background: url(/Content/images/chemis16x16.png) no-repeat left top;
+    height: 16px;
+    width: 16px;
+}
+
+/***************************** Mobile DCR Doctor Visit *********************/
+/***************************** Dcr Approval Start ******************/
+.dv-bold-width {
+    width: 100% !important;
+    font-weight: bold;
+}
+
+.dv-product {
+    width: 100% !important;
+    padding: 2px 0px 2px 15px !important;
+}
+
+.dv-comp-border {
+    width: 90% !important;
+    border: 1px solid gray;
+    padding: 3px;
+    margin: 3px;
+}
+/***************************** Dcr Approval End ******************/
+/**********Reports************************************/
+.div-align-width {
+    float: left !important;
+    width: 30% !important;
+    font-size: 12px !important;
+}
+
+.div-align-left {
+    float: left !important;
+    font-size: 12px !important;
+}
+
+/**********End Reports************************************/
+
+/******************Start- Mobile OTC*********************/
+.menuOTChidden {
+    display: none;
+}
+
+.dvSOsub {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.OHDOrderSummaryL {
+    float: left;
+    width: 80%;
+    color: #fff;
+    font-size: 12px;
+}
+
+.OHDOrderSummaryR {
+    float: left;
+    width: 19%;
+    color: #fff;
+    font-size: 12px;
+}
+
+.OHDRow {
+    width: 100%;
+    border-bottom: 1px solid #d3d3d3;
+    float: left;
+    font-size: 12px;
+}
+
+.OHDL {
+    float: left;
+    width: 70%;
+}
+
+.OHDR {
+    float: left;
+    width: 29.5%;
+}
+
+.OHDL1 {
+    float: left;
+    width: 4.5%;
+}
+
+.OHDL2 {
+    float: left;
+    width: 95%;
+}
+
+    .OHDL2 div {
+        float: left;
+        width: 100%;
+        line-height: 1.5em;
+    }
+
+.SCHRow {
+    width: 100%;
+    float: left;
+    font-size: 12px;
+}
+
+#OHDSchemeDetails h6 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.oldremarksDiv {
+    font-size: 12px;
+    width: 100%;
+    float: left;
+}
+/********************End Mobile OTC*********************/
+
+/**************Mobile common -start*/
+.ui-header .ui-title {
+    text-align: left !important;
+    margin: .3em 2% .8em !important;
+}
+/**************Mobile common -end*/
+
+.ui-body-a, .ui-bar-a, .ui-btn-up-a,.ui-btn-hover-a,.ui-btn-down-a,
+
+.ui-body-b,.ui-bar-b,.ui-btn-up-b,.ui-btn-hover-b,.ui-btn-down-b,
+
+.ui-body-c,.ui-bar-c,.ui-btn-up-c,.ui-btn-hover-c,.ui-btn-down-c,
+
+.ui-body-d,.ui-bar-d,.ui-btn-up-d,.ui-btn-hover-d,.ui-btn-down-d,
+
+.ui-body-e,.ui-bar-e,.ui-btn-up-e,.ui-btn-hover-e,.ui-btn-down-e,
+
+.ui-shadow-inset,
+
+.ui-icon-shadow,
+
+.ui-focus,
+
+.ui-overlay-shadow,
+
+.ui-shadow,
+
+.ui-btn-active{
+
+    text-shadow: none !important;
+
+    box-shadow: none !important;
+
+    -moz-box-shadow: none !important;
+
+    -webkit-box-shadow: none !important;
+
+    -webkit-transform: translateZ(0);
+
+}
+.ui-title {
+    font-weight:normal !important;
+    font-family: wf_segoe-ui_light,"Segoe UI Light","Segoe WP Light","Segoe UI","Segoe WP"
+}
+input[type="button"] {
+    font-weight:normal;
+}
+.cls_logout
+{
+    background: url(../../Content/Mobile/images/menu_logout.png) no-repeat left top;
+    height:24px;
+    width:24px;
+    float:right;
+}
+.cls_usernamespn
+{
+    float:right;
+   display:inline-block;
+   padding-top:2px;
+   padding-right:3px;
+}
+ .ui-li-pos
+    {
+        right:70px !important;
+        background-color:#FF0000;
+        color:#fff;
+    }
+    .ul-li-no
+    {
+        background-color:#D4E9F3;
+    }
+    .fonts
+    {
+        font-family: Helvetica,Arial,sans-serif;
+    }
+    .cls_legends
+    {
+        width:18px;
+        height:40%;
+        float:left;
+        margin-bottom:2px;
+        clear:both;
+    }
+    .fontsize12
+    {
+        font-size:12px;
+    }
+    .fontsize14
+    {
+        font-size:14px;
+    }
+    .cls_legendscaption
+    {
+        display:inline-block;
+         font-size:12px;
+         padding-left:3px;
+         padding-top:3px;
+    }
+    .cls_height
+    {
+        height:45px;
+    }

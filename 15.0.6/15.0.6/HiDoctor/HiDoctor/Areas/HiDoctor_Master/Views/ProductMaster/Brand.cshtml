@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Brand";
+    Layout = null;
+}
+<div id="message">
+
+</div>
+
+<div class="col-xs-12 clearfix">
+    <div class="col-xs-3">
+        <label>Brand Name</label>
+    </div>
+    <div class="col-xs-3">
+        <input type="text" class="form-control" id="txtBrandName" />
+        <input type="hidden" id="hdnBrandCode" />
+        <input type="hidden" id="hdnMode" value="S" />
+        <input type="hidden" id="hdnBrandRowIndex" />
+    </div>
+</div>
+<div class="col-xs-12 clearfix" style="position: relative;left: 14%;margin-top: 10px;margin-bottom: 10px;">
+    <input type="button" value="Save" class="btn btn-success" onclick="fnInsertBrand()" />
+    <input type="button" value="Reset" class="btn primary" onclick="fnClearAll()" />
+</div>
+<div class="separator">
+</div>
+<div id="divBrand" style="overflow:auto">
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#hdnBrandRowIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+        fnGetAllBrand();
+    });
+    var brandlst_g = '';
+    function fnGetAllBrand() {
+        $.ajax({
+            type: "POST",
+            url: "ProductMaster/GetAllBrand",
+            data: "A",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                brandlst_g = result;
+                //var content = "";
+                //content += "<table class='data display' id='tblBrand'>";
+                //content += "<thead><tr><td>Brand Name</td><td>Status</td><td>Action</td></tr></thead>";
+                //content += "<tbody>";
+                //for (var i = 0; i < result.Tables[0].Rows.length; i++) {
+                //    content += "<tr>";
+                //    content += "<td id='tdBrand_" + i + "'>" + result.Tables[0].Rows[i].Brand_Name + "</td>";
+                //    content += "<td>" + result.Tables[0].Rows[i].Status + "<input type='hidden' id='hdnBrand_" + i + "' value='" + result.Tables[0].Rows[i].Brand_Code + "' /></td>";
+                //    content += "<td><span style='cursor:pointer;text-decoration:underline' onclick='fnEditBrand(" + i + ")'>Edit</span> | <span style='cursor:pointer;text-decoration:underline'  onclick='fnBrandChangeStatus(" + i + ")'>Change status</span></td>";
+                //    content += "</tr>";
+                //}
+                //content += "<tbody>";
+                //content += "</tbody>";
+                //content += "</table>";
+                $("#divBrand").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: result.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: true,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'Brand_Name', headerText: 'Brand Name', width: 200, textAlign: 'center' },
+                            { field: 'Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                            { headerText: 'Edit', width: 200, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#divBrand');
+                //if ($.fn.dataTable) { $('#tblBrand').dataTable({ "sPaginationType": "full_numbers", "bDestroy": true }); };
+            }
+        });
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnEditBrand(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnEditBrand(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnBrandChangeStatus(" + args + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnBrandChangeStatus(args);
+            })
+        }
+    }
+    function fnEditBrand(rowIndex) {
+        $("#hdnMode").val("E");
+        //var brandCode = $("#hdnBrand_" + rowIndex).val();
+        //var brandName = $("#tdBrand_" + rowIndex).html();
+        var brandCode = rowIndex.data.Brand_Code;
+        var brandName = rowIndex.data.Brand_Name;
+        $("#hdnBrandCode").val(brandCode);
+        $("#txtBrandName").val(brandName);
+    }
+    function fnBrandClearAll() {
+        $("#hdnBrandCode").val('');
+        $("#txtBrandName").val('');
+        $("#hdnMode").val('S');
+    }
+
+    function fnClearAll() {
+        debugger;
+        $("#txtBrandName").val('');
+        $("#message").hide();
+    }
+    $('#modal_close').click(function () {
+        fnEdit($('#hdnBrandRowIndex').val());
+    });
+
+</script>

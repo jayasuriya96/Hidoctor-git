@@ -1,0 +1,350 @@
+﻿@{
+
+    string IsResponsive = Convert.ToString(HttpContext.Current.Session["IsResponsive"]);
+    switch (IsResponsive)
+    {
+        case "Yes":
+            Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+            break;
+    }
+
+}
+<style>
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #007bff !important;
+        border-top-color: #e0e0e0 !important;
+        color: white !important;
+    }
+</style>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<div class="container">
+    <div class="col-lg-12 row">
+        <div class="col-lg-2">
+            <label>Region Name : </label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" tabindex="1" id='Region' />
+        </div>
+    </div>
+    <div class="col-lg-12 row cmename mt-3" style="display: flex !important;">
+        <div class="col-lg-2">
+            <label>CME Name : </label>
+        </div>
+        <div class="col-lg-3" id="cmeinput">
+            <input type='text' tabindex='1' id='CME' />
+        </div>
+    </div>
+    <div class="col-lg-12 mt-3">
+        <input type="button" id="go" value="Go" onclick="GetApprovalData()"class="col-lg-0 offset-lg-2 btn btn-primary" />
+    </div>
+</div>
+<div>
+
+    <div id="Approval" style="margin-top:1%">
+
+    </div>
+    <div style="margin-top:2%" id="AButton">
+
+    </div>
+</div>
+<script>
+    var RegionCode= @Html.Raw(Json.Encode(ViewBag.Region_Code));
+    var UserCode= @Html.Raw(Json.Encode(ViewBag.User_Code));
+    var Company_Code= @Html.Raw(Json.Encode(ViewBag.Company_Code));
+    var grid;
+    var Details=[];
+        $(document).ready(function () {
+            AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        debugger
+        $('.cmename').hide();
+        getAllCMERegion()
+    });
+    function GetApprovalData()
+        {
+        var Region_Code=$('#Region_hidden').val()
+        var Campaign_Code=$('#CME_hidden').val()
+        Method_params = ["CMEApi/GetCMEReleaseData",Company_Code,UserCode,Region_Code,Campaign_Code];
+        CoreREST.get(null, Method_params, null, getDataSuccess,getDataFailure);
+    }
+    function getDataSuccess(response) {
+        debugger;
+        debugger;
+        var result = response.list;
+        if(result.length==0)
+        {
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            $('#Approvaltable').html('<label>No Record Found</label>');
+            $('#AButton').html('');
+        }
+        else{
+            Details = response.list;
+            $('#Summary').html('');
+            grid = new ej.grids.Grid({
+                dataSource: result,
+                toolbar: ['Search'],
+                showColumnChooser: true,
+                allowTextWrap: true,
+                allowResizing: true,
+                //allowFiltering: true,
+                allowSorting: true,
+                allowPaging: true,
+                allowGrouping: true,
+                allowScrolling: true,
+                selectionSettings: { checkboxOnly: true },
+                pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                height: 400,
+                columns: [
+                      { type: "checkbox", headerText: 'Select', field: "", allowFiltering: false, allowSorting: false, width: '60' },
+                     { headerText: 'Remark', width: 150, textAlign: 'center' },
+                  //  { field: 'Campaign_Name', headerText: 'Campaign Name', textAlign: 'center' },
+                     { field: 'CustomerRegion_Name', headerText: 'Customer Region Name ', textAlign: 'center' },
+                      { field: 'Customer_Name', headerText: 'Customer Name', textAlign: 'center' },
+                     { field: 'MDL_Number', headerText: 'MDL Number ', textAlign: 'center' },
+                          { field: 'Speciality_Name', headerText: 'Speciality Name ', textAlign: 'center' },
+                            { field: 'Category_Name', headerText: 'Category Name ', textAlign: 'center' },
+                      { field: 'Product_Name', headerText: 'Product Name ', textAlign: 'center' },
+                      { field: 'Year', headerText: 'Year', textAlign: 'center' },
+                       { field: 'Months', textAlign: 'center' },
+                    { field: 'Value', headerText: 'Value', textAlign: 'center' },
+                     { field: 'User_Name', headerText: 'Entered By', textAlign: 'center' },
+                ],
+                checkBoxChange: (args) => {
+                    var customselect = [];
+                    if (args.checked && args.target.classList.contains('e-checkselectall')) {
+                        for (var i = 0; i < args.selectedRowIndexes.length; i++) {
+                            var row = grid.getRowByIndex(args.selectedRowIndexes[i]);
+                            if (!row.querySelector('.disablecheckbox')) {
+                                customselect.push(args.selectedRowIndexes[i])
+                            }
+                        }
+                        grid.selectRows(customselect)
+                    }
+                },
+                queryCellInfo: fnQueryCellInfo,
+            });
+            $('#Approval').html('');
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            grid.appendTo('#Approvaltable');
+            $('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction(2)">Release</button>');
+        }
+
+    }
+    function getDataFailure(response)
+    {
+
+    }
+    function fnQueryCellInfo(args) {
+        if (args.column.headerText == 'Remark') {
+            args.cell.innerHTML = '<textarea class="form-control" rows="1" id="remark_'+args.data.A_Id+'"></textarea>';
+        }
+        if(args.column.headerText == 'Months')
+        {
+            var Monthsname=fnGetMonth(args.data.Month);
+            args.cell.innerHTML = '<label>'+Monthsname+'('+args.data.Months+')</label>';
+        }
+
+    }
+    function fnAction(Action)
+    {
+        var Message='';
+        if(Action==2)
+        {
+            Message='approve';
+        }
+        else{
+            Message='unapprove';
+        }
+        debugger;
+        var response=grid.getSelectedRecords();
+        var arr=[];
+        var error=true;
+        for (var i=0;i<response.length;i++)
+        {
+           
+                if($('#remark_'+response[i].A_Id+'').val()=='')
+                {
+                    fnMsgAlert('info', 'CME', 'Enter Remark.');
+                    error=false;
+                    return false;
+                }
+                var Value=regExforAlphaNumericSpecificRemarks($('#remark_'+response[i].A_Id+'').val());
+                if(Value==false)
+                {
+                    fnMsgAlert('info', 'CME', 'Only (a-z A-Z 0-9 (){}[]\/.,-_:;!?) special characters are allowed in the Remark');
+                    error=false;
+                    return false;
+                }
+            
+            var obj = {
+                "Action": Action,
+                "P_Id":response[i].A_Id,
+                "Remark":$('#remark_'+response[i].A_Id+'').val(),
+            }
+            arr.push(obj);
+
+        }
+
+        if(error=true)
+        {
+            if(arr.length >=1)
+            {
+                var objects={
+                    "lstApproval":JSON.stringify(arr),
+                }
+                swal({
+                    text: "Are you Sure? Do you want to Release  the CME  ",
+                    buttons: true,
+                    dangerMode: true,
+                })
+        .then((willDelete) => {
+            if (willDelete) {
+                Method_params = ["CMEApi/InsertCMERelease", Company_Code,UserCode];
+                CoreREST.post(null, Method_params, objects,fnStatusChangeSuccessCallback,fnStatusChangeFailureCallback);
+
+            }
+        });
+            }
+            else{
+                fnMsgAlert('info', 'CME', 'Please Select atleast one CME.');
+                return false;
+            }
+         
+        }
+    }
+    function fnStatusChangeSuccessCallback(response)
+    {
+        if(response==1)
+        {
+            swal('Success', 'Released sucessfully', 'success');
+            GetApprovalData();
+        }
+        else {
+            fnMsgAlert('error', 'CME', 'Error.');
+        }
+    }
+    function fnStatusChangeFailureCallback(response)
+    {
+
+    }
+    function  regExforAlphaNumericSpecificRemarks(value) {
+        var specialCharregex = new RegExp(/[*&%$^#<>+=~`""|]/g);
+        if (specialCharregex.test(value) == true) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function getAllCME()
+    {
+        var region=$('#Region_hidden').val()
+        debugger;
+        Method_params = ["CMEApi/GetCMENameDetails", Company_Code,region];
+        CoreREST.get(null, Method_params, null, getAllCMESuccess,getAllCMESuccessFailure);
+    }
+    function getAllCMESuccess(response)
+    {
+        debugger;
+        var dropDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a CME Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Name', value: 'Code' },
+            popupHeight: '250px',
+            allowFiltering: true,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Name', 'contains', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        $('.cmename').show();
+        $('#cmeinput').html('');
+        $('#cmeinput').html("<input type='text' tabindex='1' id='CME' />");
+        dropDownListObj.appendTo('#CME');
+    }
+    function getAllCMESuccessFailure(response)
+    {
+
+    }
+    function getAllCMERegion()
+    {
+        debugger;
+
+        Method_params = ["CMEApi/GetCMERegionNameDetails", Company_Code, RegionCode];
+        CoreREST.get(null, Method_params, null, getAllCMERegionSuccess,getAllCMERegionSuccessFailure);
+    }
+    function getAllCMERegionSuccess(response)
+    {
+        debugger;
+        var dropDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a Region Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Region_Name', value: 'Region_Code' },
+            popupHeight: '250px',
+            change:getAllCME,
+            allowFiltering: true,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Region_Name', 'contains', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        dropDownListObj.appendTo('#Region');
+    }
+    function getAllCMERegionSuccessFailure(response)
+    {
+
+    }
+    function fnGetMonth(Month) {
+        var str;
+        switch (Month) {
+            case "1":
+                str = "Jan";
+                break;
+            case "2":
+                str = "Feb";
+                break;
+            case "3":
+                str = "Mar";
+                break;
+            case "4":
+                str = "Apr";
+                break;
+            case "5":
+                str = "May";
+                break;
+            case "6":
+                str = "Jun";
+                break;
+            case "7":
+                str = "Jul";
+                break;
+            case "8":
+                str = "Aug";
+                break;
+            case "9":
+                str = "Sep";
+                break;
+            case "10":
+                str = "Oct";
+                break;
+            case "11":
+                str = "Nov";
+                break;
+            case "12":
+                str = "Dec";
+                break;
+        }
+        return str;
+    }
+</script>

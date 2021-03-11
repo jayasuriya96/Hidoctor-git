@@ -1,0 +1,422 @@
+﻿@{
+    ViewBag.Title = "Doctor Chemist Tabular";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div id="dvDocCheMetRpt">
+    <div class="col-lg-12" style="min-height: 500px; overflow: auto;">
+        <div class='col-xs-4 leftNav' id='leftNav' style="margin-top:12px;">
+            <div id="usertree" style="float: left; height: 500px; width: 100%">
+            </div>
+            @*<span id="spnTreeResize" onclick="fnUserTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+            <div style="width: 1px;"></div>
+        </div>
+        <div class='col-xs-8 rghtInputandRpt' style="float: left" id="divMain">
+            <div style="display: none;" id="divToggle">
+                <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                      onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                        onclick="fnToggleInput()">Hide Input</span>
+            </div>
+        </div>
+        <div id="dvdata" class="col-sm-8">
+            <div>
+                <span onclick="fnToggleTree()" id="lnkTree" class="shInput" style="margin-right: 3px">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" id="lnkInput" class="shInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <form class="form-horizontal" enctype="multipart/form-data" method="post" role="form">
+                    <div id="dvManualLockEntryForm" class="col-sm-10 form-group">
+                        <div class="col-sm-10 form-group formtextboxfocus" style="height: 31px;">
+                            <div class="col-sm-4 form-group">Lock Period From</div>
+                            <div class="col-sm-6 form-group">
+                                <input type="text" id="txtDateFrom" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group formtextboxfocus" style="height: 31px;">
+                            <div class="col-sm-4 form-group">Lock Period To</div>
+                            <div class="col-sm-6 form-group">
+                                <input type="text" id="txtDateTo" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div hidden class="col-sm-10 form-group formtextboxfocus" style="height: 31px;">
+                            <div class="col-sm-4 form-group">Lock Reason</div>
+                            <div class="col-sm-6 form-group">
+                                <input type="text" id="txtReason" class="form-control" maxlength="255" />
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                        <input type="button" id="btnSave" class="btn btn-primary" value="Submit" onclick="fnSave()" />
+                    </div>
+                    <div style="clear: both"></div>
+                </form>
+            </div>
+            <span><b>NOTE :</b></span>
+            <br/>
+            <span>Manual Lock will not be applied for dates that meet the requirements for any of the situations given below :</span>
+            <br/>
+            <span>1.Lock will not be applied for Holiday's(if present) in the selected date range where lock needs to be applied.</span>
+            <br/>
+            <span>2.Lock will not be applied for dates that have applied or approved DCR's within the given date range regardless of the DCR Type (Field/Attendance/Leave)</span>
+            <br/>
+            <span>3.Lock will not be applied for dates(between the given range) that have already been locked for the selected User(s).</span>
+            <br/>
+            <span>4.Lock will not be applied for dates that come on Weekends.</span>
+            <br/>
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/DCRManualLock.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+
+    debugger;
+    var currentUserCode_g = '';
+    var userCodes = "";
+    var selKeys = "";
+    $(document).ready(function () {
+        debugger;
+        //AjaxGlobalHandler.Initiate();
+
+        currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+    
+        try {
+            $('#dvDocCheMetRpt').block({
+                message: 'Loading and Bind the tree...',
+                css: { border: '1px solid #ddd' }
+            });
+
+            $("#leftNav").show();
+            fnTreePositionForMasterDataMD("usertree");
+            fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchUsersNewMD();
+                    return false;
+                }
+            });
+            //fnBindUserTreeWithCheckBoxDoubleClick("dvusertree")
+            //$("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $("#txtDateTo").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+            $("#txtDateFrom").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+            $('#dvDocCheMetRpt').unblock();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+            $("#dvDocCheMetRpt").unblock();
+        }
+    });
+
+    function fnUserTreePostInit() {
+        // fnRootNodeDisable();
+    }
+    function fnTreePositionForMasterDataMD(id) {
+        debugger;
+        var tblContent = "";
+        tblContent += "<div id='treeNav'>";
+        tblContent += "<div id='dvNodeSearch'>";
+        tblContent += "<div class='input-group col-xs-8'>";
+        tblContent += "<input type='text' id='txtSearchNode' placeholder='Search' class='form-control'/>";
+        tblContent += "<span class='input-group-addon' onclick='fnSearchUsersNewMD();'><i class='fa fa-search'></i></span></div>";
+        tblContent += "<span onclick='fnShowFullTreeClickMD();' id='dvFullTree' class='pull-right' style='margin-right: 4%;cursor:pointer;' title='Click here to show all users'><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<span onclick='fnLoadInitialTreeMD();' id='dvLoadTree' class='pull-right' style='display: none; margin-right: 4%;cursor:pointer;' title='Click here to show all users' ><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<div class='clearfix'></div></div>";
+        tblContent += "<div id='dvFilteredNode' class='dvFilteredNode' style='display: none;'></div>";
+        tblContent += "<div id='dvMainTree'>";
+        //tblContent += "<div id='dvPreviousNode' class='dvPreviousNode' onclick='fnBindUsersWithOneLevelParentNewMD();'>";
+        //tblContent += "<i class='fa fa-arrow-up '></i></div>";
+        tblContent += "<div id='dvUserTree' class='dvNewUserTree' style='height:450px'><img src='../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif'/>Loading tree</div>";
+        tblContent += "<div class='clearfix' style='height: 676px' ></div>";
+        tblContent += "</div></div>";
+        $('#' + id).html(tblContent);
+    }
+    function fnShowFullTreeClickMD() {
+        debugger;
+        $('#dvPreviousNode').hide();
+        $('#dvFullTree').hide();
+        $('#dvLoadTree').show();
+        $('#dvLoadTree').attr("title", "Click here to show users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode", "NO");
+    }
+    function fnLoadInitialTreeMD() {
+        debugger;
+        $('#dvFullTree').show();
+        $('#dvLoadTree').hide();
+        $('#dvFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+    }
+    function fnBindUsersWithOneLevelParentNewMD() {
+        debugger;
+        var userCode = $("#dvUserTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        fnGetUserTreeByUserWithOnelevelParentNew(userCode, "dvUserTree", "dvFilteredNode");
+    }
+    function fnSearchUsersNewMD() {
+        debugger;
+        if ($.trim($('#txtSearchNode').val()) == '') {
+            if(selKeys.length==0){
+                fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }else{
+                fnGetUserTreeByUserwithcheckboxMD(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }
+
+
+        }
+        else {
+            fnGetUsersByUserNameEmployeeNameMD($('#txtSearchNode').val(), "dvUserTree", "dvFilteredNode");
+        }
+    }
+    function fnGetUsersByUserNameEmployeeNameMD(userName, treeId, filterId) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: 'HiDoctor_Master/HidoctorStartDate/GetUsersByUserNameEmployeeNameMD',
+            data: "userName=" + userName + "&treeId=" + treeId + "&filterId=" + filterId + "",
+            success: function (result) {
+                debugger;
+                if (result != "") {
+                    $('#' + filterId).html(result);
+                    $('#' + treeId).hide();
+                    $('#' + filterId).show();
+
+                }
+                else {
+                    debugger;
+                    fnGenerateUserTree("dvUserTree");
+                    $('#' + treeId).show();
+                    $('#' + filterId).hide();
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+            }
+        });
+    }
+    function fnBindTreeWithSelectedUserChecked(userCode,treeId,filterId){
+        debugger;
+        if(userCode!=""){
+            fnGetUserTreeByUserwithcheckboxMD(userCode, treeId,filterId);
+        }
+    }
+    function fnGetUserTreeByUserwithcheckboxMD(userCode, treeId, filterId) {
+        debugger;
+        if (userCode == "") {
+            userCode = currentUserCode_g;
+        }
+        //if (userCode == curUserCode_g) {
+        //    $('#dvPreviousNode').hide();
+        //}
+        //else {
+        //    $('#dvPreviousNode').show();
+        //}
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode',
+            data: "userCode=" + userCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            // Close menu on click
+                            //if ($(event.target).hasClass("parent")) {
+                            //    alert("You clicked " + node + ",  url=" + node.url);
+                            //}
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onSelect: function (select, node) {
+                            //// Get a list of all selected nodes, and convert to a key array:
+                            fnUserTreeSelect(select, node);
+                        },
+                        //onLazyRead: function (node) {
+                        //    // In real life we would call something like this:
+
+                        //    // .. but here we use a local file instead:
+                        //    //node.appendAjax({
+                        //    //    url: "sample-data2.json",
+                        //    //    // We don't want the next line in production code:
+                        //    //    debugLazyDelay: 750
+                        //    //});
+                        //    fnAddNode(node);
+                        //},
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onDblClick: function (node, event) {
+                            fnUserTreeNodeDblClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+
+
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").unbind("click");
+                    $("span.childIcon").live("click", function (e) {
+                        //alert("Edit " + $.ui.dynatree.getNode(e.target));
+                        fnShowChildNodes(e.target);
+                    });
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                debugger;
+                var testKey=selKeys;
+                for (var i = 0; i < testKey.length; i++) {
+                    $("#"+treeId).dynatree("getRoot").visit(function (node) {
+                        if(testKey[i]==node.data.key){
+                            node.select(true);
+                        }
+                    });
+                }
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $('#usertree').hide();
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#usertree').show();
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7');
+            $('#divMain').removeClass('col-xs-8');
+            $('#divMain').removeClass('col-xs-9');
+            $("#divMain").addClass('col-xs-9');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    //Used To Resize the Tree
+    function fnUserTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'usertree');
+    }
+
+    // Default function for toggling tree and inputs
+    //function fnToggleTree() {
+    //    if ($('#dvTree').hasClass('col-sm-4')) {
+    //        fnCloseTree();
+    //    }
+    //    else {
+    //        fnOpenTree();
+    //    }
+    //}
+    //function fnUserTreePostInit() {
+    //    $("#dvDocCheMetRpt").unblock();
+    //}
+    //function fnOpenTree() {
+    //    $('#lnkTree').html('Hide Tree')
+    //    $("#dvusertree").slideDown();
+    //    $('#dvTree').addClass('col-sm-4')
+    //    $('#dvdata').removeClass('col-lg-12')
+    //    $('#dvdata').addClass('col-sm-8')
+    //}
+    //function fnCloseTree() {
+    //    $('#lnkTree').html('Show Tree')
+    //    $("#dvusertree").slideUp();
+    //    $('#dvTree').removeClass('col-sm-4')
+    //    $('#dvdata').addClass('col-lg-12')
+    //    $('#dvdata').removeClass('col-sm-8')
+    //}
+    //function fnToggleInputs() {
+    //    if ($("#rptInputs").hasClass('col-lg-12')) {
+    //        $('#lnkInput').html('Show Inputs')
+    //        $("#rptInputs").hide();
+    //        $("#rptInputs").removeClass('col-lg-12')
+    //    }
+    //    else {
+    //        $('#lnkInput').html('Hide Inputs')
+    //        $("#rptInputs").show();
+    //        $("#rptInputs").addClass('col-lg-12');
+    //    }
+    //}
+    //function fnUserTreeNodeClick(node) {
+    //}
+    // Default function for toggling tree and inputs
+    //var selKeys = "";
+    //function fnUserTreeSelect(select, node) {
+    //    var lastSelectedNode = node.data.key;
+    //    selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+    //        return node.data.key;
+    //    });
+    //}
+
+</script>
+

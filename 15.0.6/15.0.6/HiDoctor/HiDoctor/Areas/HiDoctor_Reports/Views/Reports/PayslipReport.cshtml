@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "PayslipReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .table-striped tbody tr .highlight {
+        background-color: #00ABEC !important;
+        color: #fff !important;
+    }
+</style>
+<div id="divheadPaySlip">
+    <div>
+
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="overflow: auto;">
+        <div id="dvdata" class="col-lg-9">
+            <div>
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-12">
+                    <div>
+                        <label class="lblText">Month & year</label>
+                        <input type="text" id="txtFromDate" />
+                    </div>
+
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12" style="display: none;">
+                    <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="button" class="btn btn-primary" value="View" onclick="fnBindPayslipReport()" />
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div>
+        <h2 id="h4title" style="margin-left: 2.5%; margin-top: 15px;"></h2>
+    </div>
+    <div id="divprintArea">
+        <div style="width: 90%; float: left;"></div>
+        <div style="width: 9%; float: right; padding-right: 1%;">
+            <div id='dvPrint' onclick='fnPaySlipPrint("divPrint","ifrmPrint");' title='Print Table' class='TableTools_button'
+                style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'>
+            </div>
+        </div>
+    </div>
+    <hr style="margin-left: 3.5%; margin-right: 3.5%" />
+    <div id="dvGrid" class="col-lg-12" style="padding-left: 30px; padding-right: 30px;">
+    </div>
+    <div></div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#txtFromDate').monthpicker();
+    });
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $("#dvAjaxLoad").hide();
+            $("#divprintArea").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    function fnRegionTreeActivate(node) {
+
+        $('#h4title').html(node.data.title + "&nbsp;<img src='../Images/HelpIcon.png' onclick=\"fnHelp('PAYSLIP_REPORT','HEADER')\" />")
+
+        fnCloseTree();
+        $("#dvdata").show();
+    }
+
+
+    function fnGetViewType() {
+        return "1";
+    }
+
+    function fnPaySlipPrint(divId, iFrameId) {
+        try {
+            var oIframe = document.getElementById(iFrameId);
+            var oContent = document.getElementById(divId).innerHTML;
+            var oDoc = (oIframe.contentWindow || oIframe.contentDocument);
+            if (oDoc.document) oDoc = oDoc.document;
+            oDoc.write("<html><head> </head><body style=\"testStyle\" onload='this.focus(); this.print();'>");
+            oDoc.write(oContent + "</body></html>");
+            oDoc.close();
+        }
+        catch (e) {
+            self.print();
+        }
+    }
+    // Default function for toggling tree and inputs
+</script>
+

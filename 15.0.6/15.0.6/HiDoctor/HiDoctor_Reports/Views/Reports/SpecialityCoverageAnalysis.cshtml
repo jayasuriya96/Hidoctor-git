@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "SpecialityCoverageAnalysis";
+    Layout = null;
+}
+<style type="text/css">
+    .col-lg-12 {
+        padding-bottom: 5px;
+    }
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<div>
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+
+            <div style="clear: both"></div>
+            <div id="dvuserTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <input type="hidden" value="" id="hdnUserCode" />
+            <input type="hidden" value="" id="hdnUserName" />
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-12">
+                    <div class="helpIconright">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('SPECIALITYCOVERAGEANALYSIS','PAGE')" />
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-2">
+                        Start Date
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" id="txtStartDate" class="form-control datepicker" />
+                    </div>
+                    <div class="col-lg-8">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-lg-2">
+                        End Date
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" id="txtEndDate" class="form-control datepicker" />
+                    </div>
+                    <div class="col-lg-8">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-sm-2">
+                        DCR Status
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="2">
+                            Approved</label>
+                        <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="1">
+                            Applied</label>
+                        <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="0">
+                            Unapproved</label>
+                        <input type="checkbox" id="chkDrafted" value="3" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                        <label for="3">
+                            Drafted</label>
+                        <input type="checkbox" id="rbAllWOD" name="dcrStatusAllWOD" value="0,1,2" onclick="fnChangeCheckWithoutDraft();" checked="checked" />
+                        <label for="0">
+                            All without draft</label>
+                        <input type="checkbox" id="rbAllWD" name="dcrStatusAllWD" value="0,1,2,3" onclick="fnChangeCheckWithDraft();" />
+                        <label for="0">
+                            All with draft</label>
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-6">
+                        <input type="radio" value="N" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="Y" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <div class="col-lg-4"></div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <input type="button" class="btn btnprimary" value="Show Report" onclick="fnBindSpecialityCoverageAnalysis()" />
+                    </div>
+                    <div class="col-lg-5"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div id="dvDataTable" style="padding-top: 5px;">
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+    </div>
+    <div style="clear: both"></div>
+</div>
+<div id="dvloading" style="display: none">
+    <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+</div>
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            fnBindUserTree("dvuserTree")
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClick(node) {
+        fnCloseTree();
+        $("#hdnUserCode").val(node.data.key);
+        $("#hdnUserName").val(node.data.title);
+        fnClearSpecialityCoverageAnalysis();
+        $("#dvdata").show();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#rptInputs").addClass('col-lg-12');
+        $("#dvDataTable").empty();
+    }
+
+    function fnUserTreePostInit() {
+    }
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvuserTree").slideDown();
+
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvuserTree").slideUp();
+
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+</script>

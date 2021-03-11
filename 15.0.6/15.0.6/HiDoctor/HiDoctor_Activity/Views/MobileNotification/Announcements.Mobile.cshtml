@@ -1,0 +1,219 @@
+﻿<style type="text/css">
+    .pageLink {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .lstNotBold {
+        float: left;
+        width: 100%;
+   margin-top:3px;margin-bottom:3px;    }
+    .margingset
+    {
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+    .lstBold {
+        float: left;
+        width: 100%;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="clearboth"></div>
+<div class="menucontent">
+    <a href="#"  onclick="fnGoToMenu()">Menu
+    </a>
+</div>
+<div style="clear: both"></div>
+
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>Announcements
+    </h3>
+</div>
+<div data-role="content" data-theme="d">   
+    <div id="dvMainMessage">
+        <div id="dvMessages"></div>
+        <div id="dvPagination" style="width: 100%; float: left;">
+            <div id="dvPageLable" style="width: 100%; float: left; margin-top:10px;font-size:14px;margin-bottom:10px">Showing <span id="spnCurPage"></span>of <span id="spnTotPage"></span>Pages</div>
+            <div style="width: 100%; float: left;">
+                <div id="dvPagePrevious" style="width: 40%; float: left;" class="pageLink" onclick="fnClickPrevious();">Previous</div>
+                <div id="dvPageNext" style="width: 40%; float: right; text-align: right;" class="pageLink" onclick="fnClickNext();">Next</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dvDetailedMessage" style="display: none;">
+        <ul data-role='listview' data-divider-theme='b' data-inset='true'>
+            <li data-role='list-divider' role='heading'>Announcement</li>
+            <li>
+            <div id="btnBack1" style="width: 40%; float: left;" class="pageLink" onclick="fnBackToAnnList();">Back</div>
+                <span class="lstNotBold" id="spnAuthor"></span>
+                <span class="lstNotBold" id="spnTitle"></span>
+                <span class="lstNotBold" id="spnHyperink"></span>                
+                <div style="clear: both;"></div>
+            </li>
+            <li>
+                <div class="lstNotBold" id="spnMsgFull"></div>
+                <span class="lstNotBold" id="spnMsgAttchment" style="color: red;"></span>
+                <div style="clear: both;"></div>
+            </li>
+            <li>
+                <div style="width: 100%; float: left;">
+                    <div id="btnBack" style="width: 40%; float: left;" class="pageLink" onclick="fnBackToAnnList();">Back</div>
+                    @*<div id="dvDetailPagePrevious" style="width: 40%; float: left;" class="pageLink" onclick="fnDetailClickPrevious();">Previous</div>
+                    <div id="dvDetailPageNext" style="width: 40%; float: right; text-align: right;" class="pageLink" onclick="fnDetailClickNext();">Next</div>*@
+                </div>
+                <div style="width: 100%; float: left;" class="pageLink" onclick="fnOpenMessageHome()">Announcement Home</div>
+                <div style="clear: both;"></div>
+            </li>
+        </ul>
+    </div>
+
+    <input type="hidden" id="hdnPrevCode" />
+    <input type="hidden" id="hdnNextCode" />
+    <div data-role="footer"></div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mNotification.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+    <script>
+        var notification_g = "";
+        $(document).ready(function () {
+            AjaxGlobalHandler.Initiate();
+            // User Name bind
+            $('span.cls_usernamespn').text(loginUserName_g);
+           // $("#announcementloginUserName").html(loginUserName_g);
+            fnGetMessagesForUser(0, 1);
+        });
+
+        function fnClickNext() {
+            fnGetMessagesForUser($("#spnCurPage").html(), 1);
+        }
+
+        function fnClickPrevious() {
+            fnGetMessagesForUser($("#spnCurPage").html(), -1);
+        }
+
+        function fnBackToAnnList() {
+            $("#dvDetailedMessage").hide();
+            $("#dvMainMessage").show();
+            fnGetMessagesForUser($("#spnCurPage").html(), 0);
+        }
+
+        function fnOpenMessageHome() {
+            $("#dvDetailedMessage").hide();
+            $("#dvMainMessage").show();
+            fnGetMessagesForUser(0, 1);
+        }
+
+
+        function fnGetMessagesForUser(currentPage, isPrevious) {
+            //to get the Messages 
+            $.mobile.loading('show');
+            $.ajax({
+                type: "POST",
+                url: '/HiDoctor_Activity/MobileNotification/GetAnnouncementForUser',
+                data: "pageNo=" + currentPage + "&isPrevious=" + isPrevious,
+                success: function (result) {
+                    if (result.split('^')[0] != 'FAIL') {
+                        
+                        var totPage = parseInt(result.split('^')[0]);
+                        var newPage = parseInt(result.split('^')[1]);
+                        var msgLst = result.split('^')[2];
+                        if (totPage != 0) {
+                            //
+                            $("#spnCurPage").html(newPage);
+                            $("#spnTotPage").html(totPage);
+
+                            //
+                            $("#dvPagination").show();
+                            if (newPage == 1) {
+                                $("#dvPagePrevious").hide();
+                            }
+                            if (newPage == totPage) {
+                                $("#dvPageNext").hide();
+                            }
+
+                            if (newPage != 1 && newPage != totPage) {
+                                $("#dvPagePrevious").show();
+                                $("#dvPageNext").show();
+                            }
+
+                            $("#dvMessages").html(msgLst).trigger('create');
+                        }
+                        else {
+                            $("#dvMessages").html("<div class='lstNotBold fonts margingset'>No Meassages Found</div>").trigger('create');
+                            $("#dvPagination").hide();
+                        }
+                    }
+                    else {
+                        fnMsgAlert('error', 'Error', 'Error.' + result.split('^')[1]);
+                        return;
+                    }
+                    $.mobile.loading('hide');
+                }
+            });
+        }
+
+        function fnDetailClickPrevious() {
+            fnOpenDetailMessage($("#hdnNextCode").val());
+        }
+        function fnDetailClickNext() {
+            fnOpenDetailMessage($("#hdnPrevCode").val());
+        }
+
+        function fnOpenDetailMessage(msgCode) {
+            $("#dvDetailedMessage").show();
+            $("#dvMainMessage").hide();
+            $.mobile.loading('show');
+            //to get the Messages 
+            $.ajax({
+                type: "POST",
+                url: '/HiDoctor_Activity/MobileNotification/GetAnnouncementFullDetail',
+                data: "msgCode=" + msgCode,
+                success: function (result) {
+                    if (result != null) {
+                        var previousMsgCode = result[1].Data[0].Previous_Announcement_Code;
+                        var nextMsgCode = result[1].Data[0].Next_Announcement_Code;
+
+                        $("#hdnPrevCode").val(previousMsgCode);
+                        $("#hdnNextCode").val(nextMsgCode);
+
+                        if (previousMsgCode == "") {
+                            $("#dvDetailPageNext").hide();
+                        }
+                        if (nextMsgCode == "") {
+                            $("#dvDetailPagePrevious").hide();
+                        }
+
+                        if (previousMsgCode != "" && nextMsgCode != "") {
+                            $("#dvDetailPagePrevious").show();
+                            $("#dvDetailPageNext").show();
+                        }
+
+                        // Fill data
+                        $("#spnAuthor").html("<span style='float:left;'>Author : </span><span style='float:left;width:80%;white-space: normal;'>" + result[0].Data[0].Employee_Name + "( " + result[0].Data[0].Author + ")" + "</span>");
+                        $("#spnTitle").html("<span style='float:left;'>Title : </span><span style='float:left;width:80%;white-space: normal;'>" + result[0].Data[0].Title + "</span>");
+                        $("#spnHyperink").html("<span style='float:left;'>Hyperlink : </span><span style='float:left;width:80%;white-space: normal;'>" + result[0].Data[0].Hyperlink + "</span>");
+
+                        $("#spnMsgFull").html(result[0].Data[0].Message);
+                        if (result[0].Data[0].FilePath != "" && result[0].Data[0].FilePath != "null" && result[0].Data[0].FilePath != null) {
+                            $("#spnMsgAttchment").html("Note: This message has some attachment(s). Please log on your web version of HiDoctor to view the same.");
+                        }
+                        else {
+                            $("#spnMsgAttchment").html("");
+                        }
+                    }
+                    else {
+                        fnMsgAlert('error', 'Error', 'Error.');
+                        return;
+                    }
+                    $.mobile.loading('hide');
+                }
+            });
+
+        }
+
+    </script>

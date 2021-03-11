@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "CourseCertificate";
+    Layout = "~/Views/Shared/_HeaderLayout.cshtml";
+}
+<style>
+    #nav_list {
+        display: none;
+    }   
+    .sub-wrapper {
+        display:none;
+    }
+</style>
+
+<link href=../../Areas/HDNextGen/Content/CourseCertificate.css" rel="stylesheet" />
+<div style="text-align: right; padding-right: 20px;" id="buttonsDiv" class="certificate-wrapper">
+    <div class="certificate-container" style="background: none; border: none;">
+        <input type="button" id="btnCertificate" class="a-btn" value="Done">
+        <input type="button" class="a-btn" id="printCertificate" value="Print Certificate">
+    </div>
+</div>
+
+<div class="certificate-wrapper" id="dvcertificate">
+    <div class="certificate-container">
+        <div class="stamp stamp-pass">
+            <img style="width: 160px;" src="/Images/Certified.png"></div>
+        <div class="certificate-company-logo">
+            <img src="@System.Web.HttpContext.Current.Session["Client_Logo"]" id="companyLogo">
+        </div>
+        <div class="certificate-company-title">
+            Certificate of Completion
+        </div>
+        <div class="certificate-italic certificate-start">
+            This is to certify that <b id="certificateUserName">Loading...</b> has completed <b id="courseName" style="padding: 10px;">Loading...</b> on <b id="courseDate">Loading...</b>
+        </div>
+        <div class="certificate-end">
+            Congratulations!
+        </div>
+        <div class="certificate-company-name" id="companyName">
+            
+        </div>
+    </div>
+</div>
+<!--<div id="buttonsDiv" style="padding-bottom: 50px; text-align: right; padding-right: 20px;">
+    <input type="button" value="Done" class="a-btn" onclick="window.location.href='/Course/UserCourseDetails'"/>
+    <input type="button" value="Print Certificate" id="printCertificate" class="a-btn">
+</div>-->
+
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CourseCertificate.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ADCourseServices.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#printCertificate').bind('click', function(e) {
+            window.print();
+        });
+        rxBookInit.enableCurUserInfo(function (data) {
+            fnSetFooter($('body'));
+        }, false);
+        companyId =@Html.Raw(Json.Encode(ViewBag.CompanyId)); 
+        courseUserAssignmentId =  @Html.Raw(Json.Encode(ViewBag.CourseUserAssignmentId));
+        courseCertificate.getCourseCentification(companyId, courseUserAssignmentId);
+
+        $('#btnCertificate').click(function()
+        {
+            $("#main").load('/HDNextGen/AdCourse/UserAdCourseDetails');
+        });
+    });
+</script>

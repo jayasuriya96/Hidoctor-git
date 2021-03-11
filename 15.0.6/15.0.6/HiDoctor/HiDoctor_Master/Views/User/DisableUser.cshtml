@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "DisableUser";
+    Layout= null;
+}
+<style>
+    .dvHeader {
+        width: 98%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+</style>
+<div style="width: 100%; padding: 5px;">
+    <div class="dvHeader">
+       Permanent Removal of User
+    </div>
+    <div style="width: 95%; padding: 10px;">
+        <div style="width: 98%; padding-left: 5px; font-size: 14px;" id="dvUserCountInfo">
+        </div>
+        <div style="width: 100%;">
+            <div style="width: 90%; padding-left: 3%; padding-top: 5px; padding-bottom: 5px; height: 200px; overflow-y: auto; overflow-x: hidden;"
+                id="dvUsers">
+            </div>
+        </div>
+        <div style="width: 98%; padding-left: 5px; color: #A4A4A4; clear: both;" id="dvReporingInfo">
+            * This user has reporting person(s) under him.you cannot disable these users.<br />
+            To disable this user, you need to move all the reporting person under someother reporting manager.
+        </div>
+        <div style="width: 98%; padding-left: 5px;">
+            <div style="width: 100%;">
+                <input type="button" value="Disable User" class="btn small primary" onclick="fnDisableUser();" />
+                <input type="button" value="Cancel" class="btn small primary" onclick="fnCloseDisableUserPopUp();" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var disRegionCode_g="";
+    var disRegionName_g="";
+    var disableUserCode_g="";
+    var disableUserName_g="";
+    var disableMode_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $(".datepicker").datepicker({ "changeMonth": true, "changeYear": true, "dateFormat": "dd/mm/yy" });
+        disableMode_g= @Html.Raw(Json.Encode(ViewBag.Mode));
+        if(disableMode_g=="REGION")
+        {
+            var regionDetails= @Html.Raw(Json.Encode(ViewBag.Value));
+            if(regionDetails != null)
+            {
+                disRegionCode_g=regionDetails.split('_')[0];
+                disRegionName_g= regionDetails.split('_')[1];
+                fnGetChildUsersFromRegion();
+            }
+        }
+        else if(disableMode_g=="BULK_USER")
+        {
+            fnBindBulkDisableUserDetails();
+        }
+        else
+        {
+            var userDetails= @Html.Raw(Json.Encode(ViewBag.Value));
+            if(userDetails != null)
+            {
+                disableUserCode_g=userDetails.split('_')[0];
+                disableUserName_g= userDetails.split('_')[1];
+                fnGetChildUsersFromRegion();
+            }
+        }
+        $("#dvUsers input[type=text]").blur(function () { fnRemoverErrorIndicator(this); });
+        $("#dvAjaxLoad").hide();
+    });
+
+    
+</script>

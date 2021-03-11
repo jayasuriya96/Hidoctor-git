@@ -1,0 +1,525 @@
+﻿@{
+    ViewBag.Title = "RegionCreationWizard";
+    Layout = null;
+}
+<script>
+    $("script[src='../../Scripts/jquery.mtz.monthpicker.js?v=12.8.6.5']").remove();
+</script>
+<style>
+    #ullist li.tick_img.cls_up_stpe1 a {
+        background-position: 151px 12px !important;
+    }
+
+    #ullist li.tick_img.cls_up_step2 a {
+        background-position: 163px 11px !important;
+    }
+</style>
+
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div id="create">
+        <div class="col-md-12 cls_nomargin_nopadding" id="dvPanel">
+            <div class="col-md-10 cls_nomargin_nopadding clearfix" style="margin-top: 10px;">
+                <div class="cls_div_header">Setup Wizard For Region Creation </div>
+            </div>
+
+            <div class="col-md-10 cls_nomargin_nopadding">
+                <ul id='ullist' class="cls_profile_wizard_header">
+                    <li class="cls_up_stpe1 cls_up_active">
+                        <a href="#">
+                            Step - 1/3
+                            <br />
+                            <span>Creation</span>
+                        </a>
+                    </li>
+                    <li class="cls_up_step2 cls_up_inactive">
+                        <a href="#">
+                            Step - 2/3
+                            <br />
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="cls_up_step3 cls_up_inactive">
+                        <a href="#">
+                            Step - 3/3
+                            <br />
+                            <span>Holiday</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="clearboth">&nbsp;</div>
+            </div>
+
+
+            <div id="divMaininputs" class="col-md-10 cls_nomargin_nopadding form-group">
+                @*Step 1*@
+
+                <div class="col-sm-12 clearfix">
+                  
+                        <div class="col-sm-3">
+                            <label>Region Name</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                        </div>
+                        <div class="col-sm-3">
+                            <input style="display: inline-block !important;" class="form-control" autocomplete="off" maxlength="50" type="text" id="regname" onkeypress="return alpha(event)"/>
+                        </div>
+                
+                        <div class="col-sm-3">
+                            <label>Division</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;margin-right:49px;"></i></span>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="division" multiple="multiple" onchange="fngetunderregiondetails();"></select>
+                
+                    </div>
+                </div>
+                <br />
+                <div class="col-sm-12 clearfix" >
+            
+                        <div class="col-sm-3">
+                            <label>Under Region Name</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                        </div>
+                        <div class="col-sm-3"id="dvUnderRegion">
+                            <input id="underreg" placeholder="--Choose a Under Region" >
+                            @*<select id="underreg" class="form-control" style="width:85% !important;" onchange="fngetregiontype();" placeholder="--Choose a Under Region --"></select>*@
+                            @*<input type="hidden" id="hdnunderregid" />*@
+                        </div>
+               
+                  
+                        <div class="col-sm-3">
+                            <label>Region Type</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                        </div>
+                        <div class="col-sm-3" id="dvRegionType">
+                            <input id="regtype" placeholder="Choose a region type">
+                            @*<input type="hidden" id="hdnregtype" />*@
+
+                            @*<select id="regtype" class="form-control" style="width:85% !important;" placeholder="--Choose a region type--"></select>*@
+                       
+                    </div>
+                </div>
+
+                <br />
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-3" >
+                        <label>Region Classification</label>
+                    </div>
+                    <div class="col-sm-3"id="dvRegionClassifi">
+                        <input type="text" id="regclass" placeholder="Choose a Region Classification">
+                        @*<input type="hidden" id="hdnregclass" />*@
+                        @*<select id="regclass" class="form-control" style="width:85% !important;" placeholder="--Choose a Region Classification--"></select>*@
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Expense Group</label>
+                    </div>
+                    <div class="col-sm-3" id="dvExpenseGrp">
+                        <input type="text" id="expgrp" placeholder="Choose a Expense Group">
+                        @*<input type="hidden" id="hdnexpgrp" />*@
+                        @*<select id="expgrp" class="form-control" style="width:85% !important;" placeholder="--Choose a Expense Group--">
+                                <option value="">Select Expense Group</option>
+                            </select>*@
+                    </div>
+                </div>
+                <br />
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-3">
+                        <label>State</label>
+                    </div>
+                    <div class="col-sm-3" id="dvStates">
+                        @*<select id="state" class="form-control" style="" onchange="fngetcities();" placeholder="--Choose a state--"></select>*@
+                        <input id="state" style="" placeholder="--Choose a State--" autocomplete="off" />
+                        @*<input type="hidden" id="hdnstate" />*@
+                    </div>
+                    <div class="col-sm-3">
+                        <label>City</label>
+                    </div>
+                        <div class="col-sm-3" id="dvCities">
+                        <input id="city" style="" placeholder="Choose a City" autocomplete="off" />
+                        @*<select id="city" class="form-control" style="" placeholder="--Choose a city--"></select>*@
+                    </div>
+                     </div>
+                <br />
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-3">
+                        <label>Country</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" style="" id="country" value="India" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Local Area</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" style="" id="lclarea" />
+                    </div>
+                </div>
+                <br/>
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-3">
+                        <label>Ref Key 1</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" style="" id="refkey1" onkeypress="return alpha(event)" max="50"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Ref Key 2</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" style="" id="refkey2" onkeypress="return alpha(event)" max="50"/>
+                    </div>
+                </div>
+                <br />
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-3">
+                        <label>Depo Mapping</label>
+                        
+                    </div>
+                    
+                        <div class="col-sm-3"id="dvdepo">
+                            <input id="Depomap" style="" placeholder="Choose a City" autocomplete="off" />
+
+                        </div>
+                        
+                    </div>
+                <br />
+                <div class="col-sm-10 clearfix" style="text-align:center; padding-top: 10px;">
+
+                    <input type="button" id="btnBack1" value="Back" class="btn btn-primary" onclick="fnBack1();" />
+                    <input type="button" id="btnNext1" value="Next" class="btn btn-success" onclick="fngetprimarydivision();" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Step 2*@
+    <div id="Mapping">
+        <div class="col-md-10 cls_nomargin_nopadding clearfix" style="margin-top: 10px;">
+            <div class="cls_div_header">Setup Wizard For Region Creation</div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding">
+            <ul id='ullist' class="cls_profile_wizard_header">
+                <li class="cls_up_stpe1 cls_up_inactive tick_img">
+                    <a href="#">
+                        Step - 1/3
+                        <br />
+                        <span>Creation</span>
+                    </a>
+                </li>
+                <li class="cls_up_step2 cls_up_active">
+                    <a href="#">
+                        Step - 2/3
+                        <br />
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="cls_up_step3 cls_up_inactive">
+                    <a href="#">
+                        Step - 3/3
+                        <br />
+                        <span>Holiday</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearboth">&nbsp;</div>
+        </div>
+
+        <div id="mappingcontent">
+
+            <div class="col-sm-12 clearfix" style="margin-left:34px;">
+
+                <div class="col-sm-3">
+                    <label>Choose Weekend</label>
+                </div>
+                <div class="col-sm-3">
+                    <select id="weekendmap">
+                        <option>--Choose Weekend Option--</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;">
+
+
+                <div class="col-sm-3" style="margin-left: 60px;">
+                    <label>Effective From</label>
+
+                </div>
+                <div class="col-sm-3" style="position:  relative;right: 27px;">
+                    <input type="text" class="weekendeff" id="weekendeff" />
+                    <span><i id="remefffrom" class="fa fa-times Ndisplay" aria-hidden="true" title="Clear" onclick="fnClearEffFrom();" style="font-size: 18px;margin-left: 10px;"></i></span>
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;">
+
+                <div class="col-sm-3" style="margin-left: 60px;">
+                    <label>Effective To</label>
+                </div>
+                <div class="col-sm-3" style="position:  relative;right: 27px;">
+                    <input type="text" class="weekendefto" id="weekendefto" />
+                    <span><i id="remeffto" class="fa fa-times Ndisplay" aria-hidden="true" title="Clear" onclick="fnClearEffTo();" style="font-size: 18px;margin-left: 10px;"></i></span>
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;margin-left:34px;">
+
+                <div class="col-sm-3">
+                    <label>Price Grouping</label>
+                </div>
+                <div class="col-sm-3">
+                    <select id="pricegrp"></select>
+                </div>
+
+            </div>
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;margin-left:34px;">
+
+                <div class="col-sm-3">
+                    <input type="checkbox" name="lockchk" id="lockcheck" />
+                    <label>Enable Lock</label>
+                </div>
+                <div class="col-sm-3"></div>
+
+            </div>
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;margin-left:34px;">
+
+                <div class="col-sm-3">
+                    <input type="checkbox" name="chemchk" id="chemcheck" />
+                    <label>Enable Chemist Day</label>
+                </div>
+                <div class="col-sm-3"></div>
+
+            </div>
+            <div class="col-sm-12 clearfix" style="margin-top: 12px;">
+                <div class="col-sm-6" style="text-align:center;">
+                    <input type="button" id="btnBack2" value="Back" class="btn btn-primary" onclick="fnback2()" />
+                    <input type="button" id="btnNext2" value="Next" class="btn btn-success" onclick="fnnext2()" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Step 3*@
+    <div id="Holiday">
+        <div class="col-md-10 cls_nomargin_nopadding clearfix" style="margin-top: 10px;">
+            <div class="cls_div_header">Setup Wizard For Region Creation</div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding">
+            <ul id='ullist' class="cls_profile_wizard_header">
+                <li class="cls_up_stpe1 cls_up_inactive tick_img">
+                    <a href="#">
+                        Step - 1/3
+                        <br />
+                        <span>Creation</span>
+                    </a>
+                </li>
+                <li class="cls_up_step2 cls_up_inactive tick_img">
+                    <a href="#">
+                        Step - 2/3
+                        <br />
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="cls_up_step3 cls_up_active">
+                    <a href="#">
+                        Step - 3/3
+                        <br />
+                        <span>Holiday</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearboth">&nbsp;</div>
+        </div>
+
+
+        <div id="Holidaymapping">
+            <div class="col-sm-12 clearfix" style="margin-left: 16px;">
+                <div class="col-sm-3">
+                    <label>Copy Holiday From</label>
+                </div>
+                <div class="col-sm-3">
+                    <select id="holireg" class="form-control" style="position: relative;right:60%;" onchange="fnclearholidays();"></select>
+
+                </div>
+                <div class="col-sm-3" style="right: 13%;bottom: 4px;">
+                    <input type="button" class="btn btn-primary" id="btngrid" onclick="fnbindholidaytbl(holidaylst,holidayYear);" value="Go" />
+                    <input type="button" class="btn btn-primary" id="btngrid" onclick="fnaddnewtextboxes();" value="Add Holiday" />
+                </div>
+            </div>
+            @*<div class="col-sm-12 clearfix" style="margin-top: 26px;">
+                    <div class="col-sm-5" style="margin-left: 16px;">
+                        <label>Holiday Name</label>
+                        <input type="text" id="holidayname_0" class="holidaytxt" style="margin-left: 12px;" />
+                        <input type="hidden" id="hdnholicode_0"/>
+                    </div>
+                    <div class="col-sm-5" style="position: relative;right: 174px;">
+                        <label>Holiday Date</label>
+                        <input type="text" class="holidaydate" id="holidaydate_0" style="margin-left: 12px;" />
+                        <span style="margin-left: 20px;">
+                            <i class="fa fa-plus" aria-hidden="true" onclick="fnaddnewtextboxes()" id="plus_0" style="font-size: 16px;"></i>
+                            <i id='remicon_0' class='fa fa-times Ndisplay' aria-hidden='true' onclick='fnRemoveToggle(i);'></i>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                </div>*@
+            <div id="holidayboxes">
+
+            </div>
+            <div class="col-sm-12 clearfix" style="text-align:center;position:relative;top:12px;right:277px;">
+
+                <input type="button" id="btnBack3" value="Back" class="btn btn-primary" onclick="fnback3()" />
+                <input type="button" id="btnSubmit" value="Submit" class="btn btn-success" onclick="fnsumbit()" />
+
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Holiday List</h4>
+                </div>
+                <div class="modal-body" style="height:300px;overflow:scroll;">
+                    <div class="col-xs-12">
+                        <div class="col-xs-3">
+                            <label>Holiday Year</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="selyear" multiple="multiple" onchange="fnbindholidaybasedondate(holidaylst);"></select>
+                        </div>
+
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbCheckAll" name="chk_Access" onclick="fnselectall();" /></th>
+                                <th>Holiday Name</th>
+                                <th>Holiday Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblholiday"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="fnBindHolidaysFromPopUp();">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PrimaryDivision" role="dialog">
+    <div class="modal-dialog">
+        <div>
+            <div class="modal-body">
+                <h4>Primary Division</h4>
+                <div id="Pd"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="fncloseprimary()">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RegionCreationWizard.js"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    $(document).ready(function () {
+        $("#division").multiselect().multiselectfilter();
+        $("#selyear").multiselect().multiselectfilter();
+        $("#Mapping").hide();
+        $("#Holiday").hide();
+        $("#division option").remove();
+        //  fngetunderregiondetails();
+        fngetdivisions();
+        
+        fngetregiontype();
+        fngetRegions();
+        fnGetStateDetails();
+        //fnbindstate();
+        fngetexpgrp();
+        fngetregclass();
+        fngetdepo();
+        fncopyholidays("holidayname_0");
+        //$(".holidaydate").datepicker({
+        //    dateFormat: 'dd/mm/yy',
+        //   // minDate: new Date(curdate.split('.')[1] + '/' + curdate.split('.')[0] + '/' + curdate.split('.')[2])
+        //});
+        $(".weekendefto").monthpicker();
+        $(".weekendeff").monthpicker();
+        var atcObj = new ej.dropdowns.DropDownList({
+            //set the data to dataSource property
+            dataSource: [],
+            filterBarPlaceholder: 'Search',
+            showClearButton: true,
+            allowFiltering: true,
+            fields: { text: 'label', value: 'id' },
+            placeholder: 'Select Under Region'
+        });
+        atcObj.appendTo('#underreg');
+        var atcObj = new ej.dropdowns.DropDownList({
+            //set the data to dataSource property
+            dataSource: [],
+            filterBarPlaceholder: 'Search',
+            showClearButton: true,
+            allowFiltering: true,
+            fields: { text: 'label', value: 'id' },
+            placeholder: 'Select Region Type'
+        });
+        atcObj.appendTo('#regtype');
+        var atcObj = new ej.dropdowns.DropDownList({
+            //set the data to dataSource property
+            dataSource: [],
+            filterBarPlaceholder: 'Search',
+            showClearButton: true,
+            allowFiltering: true,
+            fields: { text: 'label', value: 'id' },
+            placeholder: 'Select City'
+        });
+        atcObj.appendTo('#city');
+    });
+    function fnBack1() {
+        debugger;
+        $.blockUI();
+        $('#main').load('HiDoctor_Master/RegionCreation/RegionCreation');
+        $("#dvAjaxLoad").hide();
+        $.unblockUI();
+    }
+    function fnClearEffFrom() {
+        debugger;
+        $("#weekendeff").val('');
+    }
+    function fnClearEffTo() {
+        debugger;
+        $("#weekendefto").val('');
+    }
+    $(function () {
+        $(".holidaydate").datepicker({
+            dateFormat: 'mm/dd/yy',
+            numberOfMonths: 1
+        });
+    });
+
+    function alpha(e) {
+        var k;
+        document.all ? k = e.keyCode : k = e.which;
+        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+    }
+
+</script>

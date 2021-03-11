@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "SMS_UserIdCreation";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div>
+    <div style="display:none">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+             onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+             style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div style="display:none">
+        <div id="dvTree" style="width: 30%; float: left" class="col-lg-4 table-responsive">
+            <div id="tree" style="float: left; height: 530px; width: 100%">
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%; float: left;" id="divMain" class="col-lg-12 table-responsive">
+        
+        <div id="divInput" style="padding-left: 20%;">
+
+            <table cellspacing="30">
+                <tr>
+                    <td>
+                        <label>From Date :</label>
+                    </td>
+                    <td>
+                        <input type="text" id="fromDate" readonly="readonly" class="datepicker input-medium form-control" />
+                    </td>
+                    <td>
+                        <label>To Date :</label>
+                    </td>
+                    <td>
+                        <input type="text" id="toDate" readonly="readonly" class="datepicker input-medium form-control" />
+                    </td>
+                    <td>
+                        <button id="ShowUserdetail" type="button" class="btn btn-primary" onclick="fnShowUserDetail()">Show User Details</button>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="lbllable" class="col-lg-8">
+                <label id="lblmessage" style="font-size: 15px; color: green; text-align: center"></label>
+            </div>
+
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loading.gif" />
+            </div>
+        </div>
+        <div id="dvTable" style="-webkit-box-shadow:none;background:none;border:0px; width: 100%; overflow-y: scroll; height: 350px;" >
+        </div>
+        <button id="SendSMS" style="display: none; margin-top: 3%; margin-left: 40%" type="button" class="btn btn-primary" onclick="fnSendSMS()">Send SMS Now</button></td>
+        <div id="dvTable2" style="margin-top: 2%" class="col-lg-8">
+        </div>
+
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog" style="display:none">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:50%">
+        <div class="modal-content" style="height:550px;">
+            <div class="modal-header" id="divHeader">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">
+                    Sent SMS Details
+                </h4>
+            </div>
+            <div class="modal-body" id="divBody" style="margin-top:2%;width:100%;height: 400px;">
+            </div>
+            <div class="modal-footer" id="divFooter">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+      
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/SendSMS.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            var date = @Html.Raw(Json.Encode(ViewBag.date));
+            // fnBindUserTreeWithCheckBox("tree");
+            // fnBindUserTreeWithCheckBoxDoubleClick("tree")
+            $.unblockUI();
+            // $("#dvTree").show();
+            var today = new Date();
+            var cdd = today.getDate();
+            var cmm = today.getMonth() + 1;
+            var arrCmm = ('0' + cmm.toString()).split("");
+            cmm = arrCmm[arrCmm.length - 2] +  arrCmm[arrCmm.length - 1];
+            var cyy = today.getFullYear();
+            var currentDate = cdd + '/' + cmm + '/' + cyy;
+            today.setDate(today.getDate() - 30);
+            var pdd = today.getDate();
+            var pmm = today.getMonth() + 1;
+            var arrpmm = ('0' + pmm.toString()).split("");
+            pmm = arrpmm[arrpmm.length - 2] +  arrpmm[arrpmm.length - 1];
+            var pyy = today.getFullYear();
+            var prevDate = pdd + '/' + pmm + '/' + pyy;
+
+            $('#fromDate').val(prevDate);
+            $('#toDate').val(currentDate);
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+    /* var selKeys = "", selText = "";
+     function fnUserTreeSelect(select, node) {
+         var lastSelectedNode = node.data.key;
+         selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+             return node.data.key;
+         });
+     }
+     */
+    /* function cancel(){
+         $("#tree").dynatree("getRoot").visit(function (node) {
+             node.select(false);
+         });
+         $("input:checkbox[name=chk_UserInfo]").removeAttr('checked');
+         $("input:checkbox[name=bulkchk_User]").removeAttr('checked');
+     }
+
+     function fnOpenTree() {
+         $("#tree").slideDown();
+         $("#ddlmode").slideDown();
+         $("#imggr").hide();
+         $("#imgless").show()
+         $('#dvTree').addClass('col-lg-4')
+         $('#dvdata').removeClass('col-lg-12')
+         $('#dvdata').addClass('col-lg-8')
+         $('#dvTable2').removeClass('col-lg-12')
+         $('#dvTable2').addClass('col-lg-8')
+
+     }
+     function fnCloseTree() {
+         $("#tree").slideUp();
+         $("#ddlmode").slideUp();
+         $("#imggr").show();
+         $("#imgless").hide()
+         $('#divleft').removeClass('col-lg-4')
+         $('#dvdata').addClass('col-lg-12')
+         $('#dvdata').removeClass('col-lg-8')
+         $('#dvTable2').addClass('col-lg-12')
+         $('#dvTable2').removeClass('col-lg-8')
+     }
+     */
+
+</script>

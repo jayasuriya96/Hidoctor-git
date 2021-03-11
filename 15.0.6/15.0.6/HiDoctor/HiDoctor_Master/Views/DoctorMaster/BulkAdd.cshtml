@@ -1,0 +1,570 @@
+﻿@model HiDoctor_Master.Models.DoctorMasterModel
+@{
+    ViewBag.Title = "BulkAdd";
+    Layout = null;
+}
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/HD_Master.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Master/Content/DoctorMaster.css" type="text/css" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style type="text/css">
+    .scroll {
+        height: 300px;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .simple_overlay {
+    }
+
+    #tblBulkDoctor_filter input {
+        border: 1px solid #ddd !important;
+    }
+
+    #tblBulkDoctor_info.dataTables_info {
+        display: none;
+    }
+
+    /*#tblBulkDoctor.dataTables_scrollBody {
+        overflow: hidden !important;
+    }*/
+    tr.odd {
+        background-color: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .odd {
+        background: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    tr.even {
+        background-color: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .even {
+        background: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .DTFC_LeftWrapper {
+        height: 622px !important;
+    }
+
+    #dvBulkDoctors input[type=text], input[type=password] {
+        font-family: inherit !important;
+        font-size: 12px;
+        color: #424242;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        border-top-width: 0px !important;
+        border-bottom-width: 0px !important;
+        border-right-width: 0px !important;
+        border-left-width: 0px !important;
+        border: none !important;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+        border-right-color: transparent !important;
+        border-left-color: transparent !important;
+        outline: none !important;
+        -moz-border-radius: 0px !important;
+        -webkit-border-radius: 0px !important;
+        border-radius: 0px !important;
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        width: 92% !important;
+    }
+
+    .dataTables_wrapper {
+        position: inherit !important;
+    }
+
+    .placeholder {
+        color: #aaa !important;
+        font-style: italic !important;
+    }
+
+    select, input[type=text] {
+        font-family: "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans",Arial, "sans-serif" !important;
+        width: 100%;
+    }
+
+    .cls-ErrorindicationRow td {
+        border: 1px solid black !important;
+        background-color: #F0C08D !important;
+    }
+
+        .cls-ErrorindicationRow td input {
+            border: 1px solid black !important;
+            background-color: #F0C08D !important;
+        }
+
+    .cls-dvLegend {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #tblBulkDoctor input.cls_Errorindication {
+        border: 1px solid yellow !important;
+        background-color: yellow !important;
+    }
+
+    .clsbold {
+        font-weight: bold;
+    }
+
+    .clsDot {
+        font-weight: bold;
+        font-size:22px;
+    }
+
+    .clslebellegend {
+        font-weight: normal !important;
+    }
+</style>
+<div style="width: 100%">
+    <div style="width: 100%; margin-top: 1%;">
+        <div id="imgScroll" class="ScrollUp" style="cursor: pointer"></div>
+        <div style="width: 15%; float: left; border: 1px solid #f2f2f2; height: 630px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; overflow: auto;"
+            id="dvLeftPanel">
+            <div id="dvRegionTree" style="float: left;">
+            </div>
+        </div>
+        <div style="width: 84%; float: left; border: 1px solid #EFEFEF;" id="dvRightPanel">
+            <div style="width: 100%; height: 45px;">
+                <div id="dvLegend" class="cls-dvLegend" style="padding:5px;">
+                    <label style="font-weight:bold;text-decoration:underline;font-style:italic;font-size:15px;">NOTES</label>
+                    <label class="clslebellegend">1. This Bulk Add – Modify screen is where you can upload new doctor details or make changes to the existing details and upload the same in a single go.</label><br />
+                    <label class="clslebellegend">2. You can edit a single column to a particular value, in multiple rows at one shot. For e.g. if you need to change the Qualification column of doctors in rows 1, 5 and 6 to M.D at one go.</label><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="clslebellegend"><span class="clsDot">.</span> Select the rows in which to make the column value change</label><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="clslebellegend"><span class="clsDot">.</span> Select the field from “Field to Edit for selected Row(s)” as <span class="clsbold">Qualification</span>.</label><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="clslebellegend"><span class="clsDot">.</span> Enter Value as <span class="clsbold">M.D</span>.</label><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="clslebellegend"><span class="clsDot">.</span> Click <span class="clsbold">“Edit on Screen”</span>. </label>
+                    <br />
+                    <label class="clslebellegend">3. You can also add additional rows to this list of doctors at the end of the grid and enter the required details and click <span class="clsbold">Save</span>.</label><br />
+                    <label class="clslebellegend">4. Note that the checkboxes given are for easy selection of rows for Bulk Field edit of a column. But because of being a Bulk Operation screen, during <span class="clsbold">Save</span>, the system validates other <span class="clsbold">‘un-selected’</span> rows as well for any errors that might be there so as to ensure complete correctness of data. Rows with incorrect values are shown in <span class="clsbold">ORANGE</span> and specific incorrect Columns in <span class="clsbold">YELLOW</span>. Place the mouse on top of the column to know what the error is. You might need to <span class="clsbold">SCROLL</span> on either side of the grid to check all the columns.</label><br />
+                    <label class="clslebellegend">5. All the errors in <span class="clsbold">EACH PAGE</span> must be corrected before you can Save, so please check and correct the same, and then click <span class="clsbold">Save</span> or <span class="clsbold">Save & Next</span>.</label>
+                </div>
+                <div style="float: left; padding-left: 10px; padding-top: 6px; width: 60%;">
+                    <span></span><span style="font-size: 19px; font-weight: bold;" id="spnEntity"></span>
+                    <span id="spnRegionName" style="font-size: 19px; font-weight: bold;"></span>
+                    <input type="hidden" id="seletedRegionCodeBulkAdd" />
+                </div>
+                <div style="float: right; padding-right: 3px; width: 25%;">
+                    <div id="dvOptions" class="dvOptions" onclick="fnOpenOptions('BULK');" style="margin-left: 50%;"></div>
+                    <div id="dvPages" style="display: none; margin-left: 2%;">
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; float: left;">
+                <div style="width: 100%; background-color: #F0F0F0; height: 28px; padding: 3px; padding-right: 0px !important;">
+                    <div style="float: left; width: 47%; font-size: 12px;">
+                        <input type="checkbox" id="chkAll" name="chkMode" value="ALL" onclick="fnValidateSelection();" />
+                        All
+                        <input type="checkbox" id="chkDraft" name="chkMode" value="UNLISTED" onclick="fnValidateSelection();" />
+                        UnListed
+                        <input type="checkbox" id="chkApplied" name="chkMode" value="2" onclick="fnValidateSelection();" />
+                        Applied
+                        <input type="checkbox" id="chkApproved" name="chkMode" checked="checked" value="1" onclick="fnValidateSelection();" />
+                        Approved
+                        <input type="checkbox" id="chkUnapproved" name="chkMode" value="0" onclick="fnValidateSelection();" />
+                        Unapproved
+                        <input type="button" id="btnGo" value="Go" class="btn small primary" onclick="fnShowSelectedStatusDoctors();" />
+                    </div>
+
+                    <div style="float: left; width: 52%;">
+                        <div style="float: left; width: 100%;">
+                            <div style="float: left; width: 20%; padding-top: 3px;">
+                                Field to Edit for Selected Row(s)
+                            </div>
+                            <div style="float: left; width: 25%;">
+                                <select id="cboFields" style="width: 100%">
+                                </select>
+                            </div>
+                            <div style="float: left; width: 25%;">
+                                <input type="text" id="txtField" placeholder="Field Value" style="width: 80% !important;" onblur="fnValidateSpecialChar();" />
+                            </div>
+                            <div style="float: left; width: 15%; height: 30px; margin-left: -8px; background: url(../Areas/HiDoctor_Master/Content/images/Update.png) no-repeat  !important;"
+                               ><input type="button" value="Edit on Screen" id="btn1"  onclick="fnUpdate();">
+                            </div>
+
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; float: left; margin-left: 6%;" id="dvTopSave">
+                <div style="width: 59%; float: right;" id="dvPagination">
+                    <input type="text" id="txtSearch" maxlength="300" placeholder="Search" style="margin-right: 1%; float: left; width: 25%;" />
+                    <input type="button" class="btn small primary" value="Go" onclick="fnShowSelectedStatusDoctors('NO')" style="margin-right: 1%; float: left;" />
+                    <div id="dvPre" style="background: url('../Content/images/less.png') no-repeat; cursor: pointer; height: 25px; float: left; width: 35px;" onclick="fnPrevious();">
+                    </div>
+                    <div style="width: 8%; float: left; padding-top: 1%; text-align: center;">
+                        <span id="spnPageNo"></span>
+                    </div>
+                    <div id="dvNext" style="background: url('../Content/images/gr.png') no-repeat; height: 25px; cursor: pointer; float: left; width: 35px;" onclick="fnNext();">
+                    </div>
+                    <div style="float: left;">
+                        <input type="button" id="btnTopSave" value="Save & Next" class="btn small primary" onclick="fnBulkCustomerSave('N');" />
+                        <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnBulkCustomerSave('S');" />
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100% !important; float: left; border: 1px solid #f2f2f2; min-height: 500px !important; max-height: 500px !important; overflow: auto; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;">
+                <div id="dvBulkDoctors" style="float: left; width: 100% !important;">
+                </div>
+
+            </div>
+            <div style="width: 100%; float: left; margin-left: 6%;" id="dvSave">
+                <div style="width: 35%; float: right;">
+                    <div style="float: left;">
+                        <input type="button" id="btnSaveNext" value="Save & Next" class="btn small primary" onclick="fnBulkCustomerSave('N');" />
+                        <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnBulkCustomerSave('S');" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="simple_overlay" id="dvColumns" style="width: 300px !important; min-height: 450px !important; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <div class="">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Fields</span> <a class="popUpTitle-close" style="background: url(../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;" onclick="fnClosePopUp('dvColumns');"></a>
+            </div>
+            <br />
+            <div style="width: 100%; height: 325px; overflow: auto;">
+                <div id="dvErrorUserChange" style="padding-left: 20px; padding-right: 20px;">
+                </div>
+                <div style="width: 100%;">
+                    <div style="float: right; border: 1px solid #F2F2F2; margin-right: 20px; margin-bottom: 3px;">
+                        <input type="text" id="txtColumnSearch" placeholder="Search Field" style="background: #FFFFFF url(../Content/images/search.png) no-repeat 4px 4px !important; padding: 4px 4px 4px 22px !important; border: 1px solid #CCCCCC !important; width: 150px !important; height: 18px !important; float: right !important; margin-right: 14px !important;" />
+                    </div>
+                </div>
+                <div style="width: 100%;" id="dvField">
+                </div>
+            </div>
+            <div style="width: 100%; margin-left: 20px;">
+                <input type="button" value="Done" class="btn small primary" onclick="fnShowColums();" />
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Region_Code)
+    @Html.HiddenFor(model => model.Customer_Code)
+    @Html.HiddenFor(model => model.Entity)
+    @Html.HiddenFor(model => model.Table_Name)
+</div>
+<div class="simple_overlay" id="dvExcel" style="width: 800px !important; min-height: 450px !important; left: 250px !important;">
+    <div class="">
+        <div class="popUpTitle">
+            <span>Doctor Excel Import</span> <a class="popUpTitle-close" style="background: url(../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;"></a>
+        </div>
+        <br />
+        <div style="padding-left: 20px;">
+            <div id="dvExcelUploadPopUp">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var rowNumber = "0";
+    var entityColumns_g = "";
+    var entity_g = "";
+    var tableName_g = "";
+    var excelValues_g = "";
+    var currentDate="";
+    var userCode="";
+    var userPrivilege_g = "";
+    $(document).ready(function () { 
+        debugger;      
+        AjaxGlobalHandler.Initiate();
+        userPrivilege_g=privilegeContainer_g;
+        $("#spnEntity").html($("#Entity").val().toUpperCase() + " Master Bulk Add / Modify");
+        entity_g=$("#Entity").val().toUpperCase();
+        entityColumns_g = @Html.Raw(Json.Encode(ViewBag.Entity))
+        entityColumns_g = eval('(' + entityColumns_g.Data + ')')
+        currentDate=@Html.Raw(Json.Encode(ViewBag.CurrentDate))
+        userCode=@Html.Raw(Json.Encode(ViewBag.userCode))
+        var regionCode= @Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[0] ;
+        var regionName=@Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[1];
+        $("#Region_Code").val(regionCode);
+        $("#seletedRegionCodeBulkAdd").val(regionCode);
+        fnBindRegionTree("dvRegionTree");
+        fnGetDoctorCategory();
+        fnBindFields();
+        fnGetConfigvalues(entity_g);        
+        //Restrict - Added New Customer
+        ccmConfigValue = @Html.Raw(Json.Encode(ViewBag.ConfigValue))  
+        
+        $("#dvColumns").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $("#dvExcel").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+
+      
+        //   var selectedRegionCode =@Html.Raw(Json.Encode(ViewBag.SelectedRegion_Code));
+        
+
+        $("#seletedRegionCodeBulkAdd").val()
+        $("#spnRegionName").html(' ( Region Name : '+ regionName +' )');
+        // fnGetBulkCustomerDetails();
+        $("#dvLeftPanel").hide();
+        $("#dvRightPanel").css('width', '98%');
+        // Invoke the plugin
+        $('input, textarea').placeholder();
+        fnGetUserPrivileges(userCode);
+    });
+    function fnRegionTreeActivate(node) {
+        
+        $("#Region_Code").val(node.data.key);
+        $("#seletedRegionCodeBulkAdd").val(node.data.key);
+        $("#spnRegionName").html(' ( Region Name : '+ node.data.title +' )');
+        $("#dvBulkDoctors").html('');
+        if ($('#imgScroll').hasClass("ScrollDown")) {
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvLeftPanel").show();
+            $("#dvRightPanel").css('width', '80%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").css('width', '98%');
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+        }
+        $("#chkAll").removeAttr('checked');
+        $("#chkDraft").removeAttr('checked');
+        $("#chkApplied").removeAttr('checked');
+        $("#chkApproved").removeAttr('checked');
+        $("#chkUnapproved").removeAttr('checked');
+        
+        $("#chkApproved").attr('checked',true);       
+        //Get User specific privilegs
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/GetRegionwiseUser/',
+            type: "POST",
+            data: "DateTime=" + new Date().getTime() + "&RegionCode=" + $("#Region_Code").val() + "",
+            success: function (result) {             
+                result = eval('('+result+')');
+                if(result!='')  {
+                    if(result.Tables[0].Rows[0]!=undefined) {
+                        var selectedUserCode= result.Tables[0].Rows[0].User_Code;
+                        //fnGetUserPrivileges(selectedUserCode);
+                        //
+                        //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                        //    fnGetBulkCustomerDetails("NO");                            
+                        //}   
+                        //else
+                        //{
+                        //    fnGetBulkCustomerDetails("YES");
+                        //}                  
+                        fnShowSelectedStatusDoctors();              
+                    }
+                    else  {
+                       // fnGetUserPrivileges('');                        
+                        //// fnMsgAlert('info','Information','User details not found for the selected region');
+                        //// fnGetUserPrivileges('');
+                        //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                        //    fnGetBulkCustomerDetails("NO");                            
+                        //}   
+                        //else
+                        //{
+                        //    fnGetBulkCustomerDetails("YES");
+                        //}  
+                        //// fnGetBulkCustomerDetails("YES");
+                        fnShowSelectedStatusDoctors();              
+                    }
+                }
+                else {
+                 //   fnGetUserPrivileges('');
+                    //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                    //    fnGetBulkCustomerDetails("NO");                            
+                    //}   
+                    //else
+                    //{
+                    //    fnGetBulkCustomerDetails("YES");
+                    //}  
+                    ////fnGetBulkCustomerDetails("YES");
+                    fnShowSelectedStatusDoctors();              
+                }
+            },
+            error: function () {
+            }
+        });
+        
+        fnSelectedregionCode();
+        
+        //Used to get the dotor category only based on the Selected Region
+        fnGetDoctorCategoryBasedonselectedRegion();
+    }
+
+
+    function fnRegionTreePostInit(node) {  
+        
+        if($("#Region_Code").val().length== 0)
+        {
+
+            var treeobj = $("#dvRegionTree").dynatree("getTree");
+            var childCount = treeobj.tnRoot.countChildren();
+            if (childCount == 1) {
+                $("#Region_Code").val(treeobj.tnRoot.childList[0].data.key);
+                $("#seletedRegionCodeBulkAdd").val(treeobj.tnRoot.childList[0].data.key);
+                $("#dvRegionTree").dynatree("getTree").activateKey(treeobj.tnRoot.childList[0].data.key);
+                $("#spnRegionName").html(' ( Region Name : '+ treeobj.tnRoot.childList[0].data.title +' )');
+                $("#dvLeftPanel").hide();
+                $("#dvRightPanel").css('width', '98%');
+                //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                //   $('#dvBulkDoctors').html('');
+                //}
+                //else
+                //{
+                //    fnGetBulkCustomerDetails("YES");
+                //}
+                //fnGetBulkCustomerDetails();
+                
+
+                $.ajax({
+                    url: '../HiDoctor_Master/DoctorMaster/GetRegionwiseUser/',
+                    type: "POST",
+                    data: "DateTime=" + new Date().getTime() + "&RegionCode=" + $("#Region_Code").val() + "",
+                    success: function (result) {
+                        result = eval('('+result+')');
+                        if(result!='')  {
+                            if(result.Tables[0].Rows[0]!=undefined) {
+                                var selectedUserCode= result.Tables[0].Rows[0].User_Code;
+                              //  fnGetUserPrivileges(selectedUserCode);
+                                //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                                //    fnGetBulkCustomerDetails("NO");                            
+                                //}   
+                                //else
+                                //{
+                                //    fnGetBulkCustomerDetails("YES");
+                                //}       
+                                fnShowSelectedStatusDoctors();              
+                            }
+                            else  {
+                               // fnGetUserPrivileges('');                        
+                                //// fnMsgAlert('info','Information','User details not found for the selected region');
+                                //// fnGetUserPrivileges('');
+                                //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                                //    fnGetBulkCustomerDetails("NO");                            
+                                //}   
+                                //else
+                                //{
+                                //    fnGetBulkCustomerDetails("YES");
+                                //}  
+                                //// fnGetBulkCustomerDetails("YES");
+                                fnShowSelectedStatusDoctors();
+                            }
+                        }
+                        else {
+                          //  fnGetUserPrivileges('');
+                            //if (ccmConfigValue.toUpperCase() == 'ENABLED' && $("#Entity").val().toUpperCase() == "DOCTOR") {
+                            // fnGetBulkCustomerDetails("NO");                            
+                            //}   
+                            //else
+                            //{
+                            //    fnGetBulkCustomerDetails("YES");
+                            //}  
+                            ////fnGetBulkCustomerDetails("YES");
+                            fnShowSelectedStatusDoctors();
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+            }
+            else
+            {          
+                $("#dvRegionTree").dynatree("getTree").activateKey($("#Region_Code").val());
+                fnGetSelectedUserPrivilege();
+            }
+            fnSelectedregionCode();
+            //Used to get the dotor category only based on the Selected Region
+            fnGetDoctorCategoryBasedonselectedRegion();
+        }
+        else
+        {
+            $("#dvRegionTree").dynatree("getTree").activateKey($("#Region_Code").val());
+            fnGetSelectedUserPrivilege();
+        }
+    }
+
+    $("#imgScroll").click(function () {
+        if ($('#imgScroll').hasClass("ScrollDown")) {
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvLeftPanel").show();
+            $("#dvRightPanel").css('width', '84%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").css('width', '99%');
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+        }
+    });
+
+
+    function fnSelectedregionCode(){
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/SetSession/',
+            type: "POST",
+            data: "selectedRegionCode=" +  $("#seletedRegionCodeBulkAdd").val(),
+            success: function (result) {
+                //result = eval('('+result+')');
+         
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function fnGetSelectedUserPrivilege(){       
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/GetRegionwiseUser/',
+            type: "POST",
+            data: "DateTime=" + new Date().getTime() + "&RegionCode=" + $("#Region_Code").val() + "",
+            success: function (result) {              
+                result = eval('('+result+')');
+                if(result!='')  {
+                    if(result.Tables[0].Rows[0]!=undefined) {
+                        var selectedUserCode= result.Tables[0].Rows[0].User_Code;
+                      //  fnGetUserPrivileges(selectedUserCode);                                 
+                    }
+                    else  {
+                     //   fnGetUserPrivileges('');   
+                    }
+                }
+                else {
+                 //   fnGetUserPrivileges('');                    
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>
+

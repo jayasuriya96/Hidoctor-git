@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "OrderList";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+
+<style>
+
+
+
+.borderShadow {
+        border-radius: 3px;
+        box-shadow: 0px 40px 20px -40px rgb(133, 133, 133);
+        -webkit-box-shadow: 0px 40px 20px -40px rgb(133, 133, 133);
+    }
+
+.table thead {
+        background: #7986CB !important;
+        color: #fff;
+        text-align: left;
+    }
+
+h1 {
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 1em;
+    margin-bottom: 10px;
+}
+
+ #tblOrderList_filter label {
+margin-right:75px;
+    }
+
+    .TableTools {
+        position: absolute;
+        right: 5px;
+        top: -6px;
+    }
+
+    #tblOrderList_length ,#tblOrderList_filter {
+margin-bottom:0px;
+    }
+
+
+#tblStockist>tr:nth-child(even) {background: #eaebff}
+#tblStockist>tr:nth-child(odd) {background: #FFFFFF}
+
+
+
+
+
+/*******************  OverLay Modal PopUp  *********************/
+   /*#dvInfoContent {
+        max-height: 300px;
+        min-height: 200px;
+        overflow: auto;
+    }*/
+
+    .modal-dialog {
+        padding: 0px !important;
+        margin-top: 50px !important;
+    }
+
+    .PopUpMaxSize {
+        width: 95% !important;
+    }
+
+    .PopUpSmallSize {
+       width: 30% !important;
+        height: 30% !important;
+    }
+
+    .modal-dialog {
+        padding: 0px !important;
+        margin-top: 0px !important;
+    }
+
+
+    #dvOrderListRegionTree {
+    max-height: 775px;
+    overflow-y: scroll;
+    }
+
+/*******************                        *********************/
+
+/* Model PopUp  */
+
+    #dvMoreInfoModal {
+top: 0!important;
+padding-top: 6%!important;
+    }
+
+</style>
+
+<div class="col-sm-12 clearfix">
+<button id="btnListTreeShowHide" class="btn btn-primary" type="button" style="position: absolute;left: 50px;padding: 1px 15px;top: -6px;line-height: 1;border-radius: 0px;">Show/Hide Tree</button>
+<div class="col-sm-3 col-xs-12 clearfix"  id="dvOrderListRegionTreeContainer" style="top: 15px;">
+    <div class="col-xs-12 clearfix" id="dvOrderListRegionTree">
+    
+    </div>
+</div>
+
+<div class="col-sm-9 col-xs-12 clearfix"  id="dvOrderMainContainer">
+
+    <!-- Top Add Order Button -->
+    <div class="col-sm-12 col-xs-12 clearfix" style="padding: 0px;margin: 15px 0px;">
+      <button id="btnAddNewOrder" type="button" class="btn btn-primary btn-sm pull-right" >+ Add New Order</button>
+    </div>
+
+<div id="dvOrderHeadWithTable">
+    <!-- Heading  -->
+    <div class="col-sm-12 col-xs-12 clearfix" style="border-bottom: 1px solid #000;padding: 0px;margin: 15px 0px;" >
+        <div class="col-sm-6 col-xs-12 clearfix" style="padding: 0px;">
+          <h1 id="headerName"></h1>
+        </div>
+       <div class="col-sm-6 col-xs-12 clearfix" style="padding: 0px;">
+         <button id="btnNextMonth" type="button" class="btn-default btn-xs" style="width: 150px;float: right;margin-left: 10px;"  data-month="" data-year="">Next Month</button>
+         <button id="btnPreviousMonth" type="button" class="btn-default btn-xs" style="width: 150px;float: right;"  data-month="" data-year="">Previous Month</button>
+       </div>
+    </div>
+
+    <!-- Filltering's  -->
+    <div class="col-sm-12 col-xs-12 clearfix" style="padding: 0px;margin: 15px 0px;">
+        <div style="margin-left: 0px;float: left;font-weight: bold;">Filter by</div>
+        <div id="dvStockist" style="margin-left: 50px;float: left;"></div>
+        <div id="dvCustomers" style="margin-left: 50px;float: left;"></div>
+        <div id="dvArea" style="margin-left: 50px;float: left;"></div>
+        <div id="dvOrders" style="margin-left: 50px;float: left;"></div>
+    </div>
+
+    <!-- Bottom Table  -->
+    <div class="col-sm-12 col-xs-12 clearfix" style="padding: 0px;margin: 15px 0px;">
+        <div id="dvOrderListTable"></div>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- OverylaY PopUp  -->
+<div class="modal" id="dvMoreInfoModal" role="dialog" aria-hidden="true" style="display: none;margin:0px !important;top:0!important;">
+    <div class="modal-dialog PopUpMaxSize"  id="PopUpCss">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvMoreInfoModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title clsModalTitle" id="dvMoreInfoHeader"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvInfoContent" style="padding: 0px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/OrderList.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script  type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvAjaxLoad").hide();
+        debugger;
+      
+            Order.defaults.LineOfBusiness = @Html.Raw(Json.Encode(ViewBag.LineOfBusiness));
+            Order.defaults.Child_User_Count = @Html.Raw(Json.Encode(ViewBag.Child_User_Count));
+            Order.defaults.action_Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            Order.defaults.regionName =  @Html.Raw(Json.Encode(ViewBag.Region_Name));
+            var cur = @Html.Raw(Json.Encode(ViewBag.Current_Month));
+            var pre = @Html.Raw(Json.Encode(ViewBag.Previous_Month));
+            var next =@Html.Raw(Json.Encode(ViewBag.Next_Month));
+
+            Order.defaults.curMonth=cur.split('-')[0];
+            Order.defaults.preMonth=pre.split('-')[0];
+            Order.defaults.nextMonth=next.split('-')[0];
+
+            Order.defaults.curYear=cur.split('-')[1];
+            Order.defaults.preYear=cur.split('-')[1];
+            Order.defaults.nextYear=cur.split('-')[1];
+
+   
+            setTimeout(function () { Order.initialize(); }, 50);
+
+
+
+    });
+  
+
+
+</script>
+
+

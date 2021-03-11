@@ -1,0 +1,389 @@
+﻿@{
+    ViewBag.Title = "PSAndSSSalesEntry";
+    if (ViewBag.IsResponsive == "No")
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+    }
+
+}
+<style>
+    .mtz-monthpicker {
+        color: black !important;
+    }
+
+    .ui-autocomplete {
+        display: none;
+        top: 1137px;
+        left: 76.0135px;
+        height: 200px;
+        overflow: auto;
+        width: 285px;
+    }
+
+    .tbl1 {
+        width: 270px;
+    }
+
+    .tbl2 {
+        width: 166px;
+    }
+
+    .information {
+        color: blue;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .tables {
+        width: auto !important;
+    }
+
+        .tables thead {
+            background: #5E87B0 !important;
+            color: #fff;
+            text-align: left;
+        }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    .text-line {
+        background-color: transparent !important;
+        outline: none !important;
+        outline-style: none !important;
+        outline-offset: 0;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: solid #eeeeee 2px !important;
+        padding: 10px 7px !important;
+    }
+
+    #Cityname {
+        width: 100%;
+    }
+
+    .datepic {
+        cursor: auto !important;
+    }
+
+    #panel, #flip {
+        padding: 5px;
+        text-align: center;
+        background-color: #fff;
+        border: solid 1px #c3c3c3;
+    }
+
+    #panel {
+        padding: 50px;
+        display: none;
+    }
+
+    @@media (min-width: 576px) {
+        .card-column {
+            column-count: 3;
+            orphans: 1;
+            column-gap: 1.25rem !important;
+            widows: 1;
+        }
+
+            .card-column .panel {
+                display: inline-block;
+                width: 100%;
+            }
+    }
+
+    .divgroup {
+        position: relative;
+        display: table;
+        border-collapse: separate;
+    }
+</style>
+<div class="tab-content clearfix">
+    <div role="tabpanel" class="tab-pane active container-fluid clearfix" id="home">
+        <div class="row flex-row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="top: 36px;">
+                <div class="col-sm-12 col-md-4 col-lg-4 clearfix" style="padding:0px;" id="inputitems">
+                    <div class="panel panel-default list" style="padding:30px 9px 30px">
+                        <div class="panel-body">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Region Name</label>
+                                    <div class="col-lg-7" id="auto">
+                                        <div class="" id="dvtxtregionName">
+                                            <input type="text" class="" id="regionname">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row clearfix" id="TypMap">
+                                    <div class="col-lg-4">
+                                        <label class="TypeOfMapping">Type of Sales</label>
+                                    </div>
+                                    <div class="col-lg-8" style="display :flex;" id="Privillege">
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Sales Month & Year</label>
+                                    <div class="col-lg-7 input-group">
+                                        <input type="text" class="form-control" id="Myear">
+                                        <span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Select Week</label>
+                                    <div class="col-lg-7 input-group">
+                                        <select id="weeksinMonth" class="form-control" placeholder="Select Week"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Stockist Name</label>
+                                    <div class="col-lg-7" style="padding-left:16px" id="dvtxtcustomerName">
+                                        <input type="text" id="customerName">
+                                        @*<select name="customer" class="form-control" id="customerName"></select>*@
+                                        @*<input type="hidden" class="form-control" id="customerCode">*@
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Statement Date</label>
+                                    <div class="col-lg-7 input-group">
+                                        <input type="text" class="form-control datepic" id="SDate" readonly>
+                                        <span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;padding-top: 34px;">
+                                    <input type="button" class="btn btn-primary" id="go" value="Go" onclick="Sales.fnGo()" />
+                                    <input type="button" class="btn btn-primary" id="Goclear" value="Clear" onclick="Sales.fnprodclear()" style="margin-left: 12px;" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="listproduct" style="padding-left: 20px;display:none">List Of Sales Products</div>
+                <div class="col-lg-8 col-md-8 col-sm-12 clearfix" id="product" style="padding:0px">
+                    <div class="panel panel-default list">
+                        <div class="panel-body" style="height:400px;overflow:auto;">
+                            <div id="prodheading" class="clearfix" style="margin-bottom: 5px;"></div>
+
+                            <div class="card-column" id="productAdd">
+                            </div>
+                            <div class="" id="norecordsfound" style="display:none">
+                            </div>
+                            @*<div>
+                                    <input type="button" class="btn btn-primary" id="Prodsave" value="Save" onclick="Sales.fnsaveProduct()" />
+                                    <input type="button" class="btn btn-primary" id="ProdUpdate" value="Update" onclick="Sales.fnUpdateProduct()" />
+                                    <input type="button" class="btn btn-primary card-column" id="Prodclear" value="Clear" onclick="Sales.fnprodutclear()" style="margin-left: 12px;" />
+                                </div>*@
+                        </div>
+                        <div class="btns" style="padding-left:30px">
+                            <input type="button" class="btn btn-primary" id="Prodsave" value="Save" onclick="Sales.fnsaveProduct()" />
+                            <input type="button" class="btn btn-primary" id="ProdUpdate" value="Update" onclick="Sales.fnUpdateProduct()" />
+                            <input type="button" class="btn btn-primary card-column" id="Prodclear" value="Clear" onclick="Sales.fnprodutclear()" style="margin-left: 12px;" />
+                        </div>
+
+                        @* <div id="productAdd"></div>*@
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="margin-top: 20px; padding: 0px;">
+            <div id="detailedSales" class="col-lg-12 col-md-12 col-sm-12 clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="SearchModel">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Search</h4>
+                <button type="button" class="close" onclick="$('#SearchModel').hide()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-lg-3 col-lg-offset-2">
+                                <label class="col-form-label">State</label>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" class="text-line" id="Statename">
+                                <input type="hidden" class="form-control" id="Statecode">
+                            </div>
+                        </div>
+                        @*<div class="form-group row">
+                                <div class="col-lg-3 col-lg-offset-2">
+                                    <label class="col-form-label">City</label>
+                                </div>
+                                <div class="col-lg-5" id="city">
+                                    <input type="text" class="text-line" id="Cityname">
+                                    <input type="hidden" class="form-control" id="Citycode">
+                                </div>
+                            </div>*@
+                        <input type="button" class="btn btn-primary" id="searchgo" value="Go" />
+                    </form>
+                    <div id="tblhospital" style="padding: 18px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="ProductDetails">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Information</h4>
+                <button type="button" class="close" id="closemodel" onclick="$('#ProductDetails').hide();">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="max-height: 500px;overflow:auto;">
+                <div class="panel-group" style="column-count: 1;orphans: 1;column-gap :1.25rem !important; widows :1;" id="tblProductmodel">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/PSAndSSSalesEntry.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="~/Scripts/jquery.mtz.monthpicker.js"></script>
+<script src="~/Scripts/HD/common12.7.0.js"></script>
+<script>
+    //$(document).ready(function(){
+    //    debugger;
+
+    //});
+    var subDomainName = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var CompanyCode='';
+    var Secondary_sales_g ='';
+    var Primary_Sales_g ='';
+    var CompanyId='';
+    var Entity_type_g='';
+    var Entity_Product_g ='';
+    var Closing_Unit_g='';
+    var Sales_Unit_g ='';
+    var Hospital_g ='';
+    var Doctor_g ='';
+    var Transit_g ="";
+    var Chemist_g ='';
+    var Stockist_g ='';
+    var Chemist_Closing_Unit_g ='';
+    var Stockist_Closing_Unit_g ='';
+    var Hospital_Closing_Unit_g ='';
+    var Chemist_Sales_Unit_g ='';
+    var Stockist_Sales_Unit_g ='';
+    var Hospital_Sales_Unit_g ='';
+    var Chemist_Transit_g ='';
+    var Stockist_Transit_g ='';
+    var Hospital_Transit_g ='';
+    var isResponsive = '';
+    $(document).ready(function () {
+        debugger;
+        $("#flip").click(function(){
+            $("#panel").slideToggle("slow");
+        });
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        isResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+        $('#dvAjaxLoad').hide();
+        $('#product').hide();
+        $('#SDate').datepicker({
+
+            dateFormat: 'dd-mm-yy',
+            maxDate: 0,
+
+        });
+
+        //$('#Myear').monthpicker({
+        //    maxDate: 0,
+        //});
+        fnMonthPickerDisableFutureMonths('Myear');
+        //   $('#Myear').monthpicker();
+        Sales.initialize();
+
+    });
+    function fnMonthPickerDisableFutureMonths(id) {
+        var months = new Array();
+        var CurrentMonth = (new Date().getMonth() + 1) + 1;
+        for (var i = CurrentMonth; i <= 12; i++) {
+            months.push(i);
+        }
+        $('#' + id).monthpicker({ startYear: new Date().getFullYear()-8, finalYear: new Date().getFullYear(), pattern: 'mmm-yyyy' }).bind('monthpicker-click-month', function (e, month) {
+            debugger;
+            var value = $('input[name="inputs"]:checked').val();
+            var modeofMapping= $('input[name="inputEntity"]:checked').val();
+            if (value == 'stockist' && modeofMapping.toUpperCase()=="ENTITY")
+            {
+                Sales.GetCustomerDetails();
+            }
+            else{
+                Sales.AddProduct();
+                fnEntityProductOption();
+                Sales.GetCustomerDetails();
+            }
+        });
+        for (var i = 0; i < $('#' + id).length; i++) {
+            $($('#' + id)[i]).monthpicker("disableMonths", months);
+            $($('#' + id)[i]).monthpicker().bind('monthpicker-change-year', function (e, year) {
+                var item = $(e.currentTarget);
+                if (parseInt(year) === new Date().getFullYear()) {
+                    $(item).monthpicker('disableMonths', months);
+                } else {
+                    $(item).monthpicker('disableMonths', []);
+                }
+            });
+        }
+
+    
+        function weeksinMonth() {
+            debugger;
+           var a = $('#Myear').val();
+            var monArray = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var month = parseInt(monArray.indexOf(a.split('-')[0].toUpperCase())) + 1;
+
+            var year = $.trim(a.split('-')[1]);
+
+            year = year || new Date().getFullYear();
+            var d = new Date(year, month, 0);
+            var noOfWeeks= Math.floor((d.getDate() - 1) / 7) + 1;
+            var content=""
+            content += '<option>select Week</option>';
+            for (i = 1; i <= noOfWeeks; i++) {
+                content += '<option value="' + i + '">Week ' + i + '</option>';
+            }
+            $('#weeksinMonth').html(content);
+        }
+
+    }
+</script>
+

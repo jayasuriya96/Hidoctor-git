@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Tourplanner";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div id="divReport" style="width: 100%">
+</div>
+<div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 600px; height: 400px; overflow: auto">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+    <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+    <div id="divModel" style="height: 100px;">
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Reports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $("#dvTree").hide();
+            $("#dvTree").css('display', 'none');
+            $("#main").css('width', '100%');
+            fnFieldWorkPlannerReport();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+</script>

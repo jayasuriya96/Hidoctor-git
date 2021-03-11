@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "QuestionAnswers";
+    Layout=null;
+}
+<style>
+    .sub-wrapper {
+        display: none;
+    }
+
+    .wrapper {
+        background-color: #E9E9E9 !important;
+    }
+
+        .wrapper div {
+            font-family: tahoma, fantasy, arial, times new roman !important;
+        }
+
+    #question-block span, #question-block p {
+        font-family: tahoma, fantasy, arial, times new roman !important;
+    }
+
+    #question-block .radio p {
+        margin: 0px !important;
+    }
+
+    .question .radio input, .question .checkbox input {
+        margin: 5px 10px 0px !important;
+    }
+
+    #dvTotalQues {
+        font-size: 16px !important;
+    }
+</style>
+<div class="wrapper">
+    <input type="hidden" value="" name="hdnPassPercentage" id="hdnPassPercentage" />
+    <div id="dvTotalQues"></div>
+    <div id="question-block">
+    </div>
+</div>
+<link href="../../Areas/HDNextGen/Content/AdCourse/UserAdCourseDetails.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdvancedCourse.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+@*<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/jsonpath-0.8.0.js"></script>*@
+@*<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/RxBook/restHandler.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>*@
+@*<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/AdCourse/Services.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/RxBook/rxBookInit.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+*@
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ADCourseServices.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/AdCourse/CourseTest.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script type="text/javascript">
+    // $(document).ready(function () {
+    var subDomainName = "@ViewBag.subDomainName";
+    //Services.defaults.subDomainName = subDomainName;
+
+    var userId = @ViewBag.userId;
+    var companyId = @ViewBag.companyId;
+    var courseId = @ViewBag.courseId;
+    var publishId = @ViewBag.publishId;
+    var sectionId = @ViewBag.sectionId;
+        
+    var courseUserAssignmentId = @ViewBag.courseUserAssignmentId;
+    var courseUserSectionId = @ViewBag.courseUserSectionId;
+
+   
+    // });
+</script>

@@ -1,0 +1,299 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Index";
+    
+}
+
+<style>
+      .cls-dashboard-content {
+        background-color: #EEEEEE;
+        min-height: 300px;
+        padding: 7px;
+    }
+    .panel {
+        width:480px;
+    }
+         .panel-heading {
+             /*border-radius: 10px;*/
+        /*padding: 5px!important;
+        font-size: 14px;*/
+    }
+        .cls-common-head .panel-heading {
+        background-color: #7986CB !important;
+        color: white;
+        padding:23px 1px;
+    }
+         .ddlPS select {
+        float: right;
+        padding: 1px!important;
+    }
+   .input-group-addon {
+        padding: 8px 12px;
+        position: absolute;
+     top: -14px;
+    right: -236px;
+    bottom: -17px;
+    }
+
+   .table-striped {
+    background-color: gainsboro;
+}
+    .joinAttrition {
+        color:blue;
+       width: 21%;
+      float: right;
+      position: absolute;
+      left: 368px;
+      top: 7px;
+      padding: 6px 1px 5px 19px;
+    }
+         .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    right: 1px;
+    top: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.27);
+    border-radius: 3px;
+}
+    .dropdown {
+        min-width:54px;
+    }
+    #dvCategoryCoverage .table > thead > tr > th, #dvCategoryCoverage .table > tbody > tr > th, #dvCategoryCoverage .table > tfoot > tr > th, #dvCategoryCoverage .table > thead > tr > td, #dvCategoryCoverage .table > tbody > tr > td, #dvCategoryCoverage .table > tfoot > tr > td {
+        padding: 3px !important;
+    }
+    #dvCategoryCoverage .table {
+        margin-bottom: 1px !important;
+    }
+
+    #dvCategoryCoverage {
+            right: 0px;
+    position: absolute;
+    padding: 0px 0px 23px 0px;
+    zoom: 1;
+    height:333px;
+    }
+
+    .btn-active {
+    background-color: cornflowerblue;
+    color: white !important;
+    }
+      .cls-positive .btn-switch .btn-inactive {
+            background-color: #65C0B7 !important;
+        }
+
+    #tillMonth {
+    color: black;
+    /*background-color: #7986CB !important;*/
+    width: 50px;
+    height: 19px;
+    padding: 4px 19px 21px 11px;
+    position: absolute;
+    top: 191px;
+    }
+
+    #previousMonth {
+    color: black;
+    /*background-color: #7986CB !important;*/
+    width: 60px;
+    height: 9px;
+    padding: 4px 19px 20px 13px;
+    position: absolute;
+    /* right: -223px; */
+    top: 111px;
+    left: -14px;
+    }
+
+    #currentMonth {
+        color: black;
+        /*background-color: #7986CB !important;*/
+        width: 60px;
+    /* height: 16px; */
+       padding: 4px 18px 6px 14px;
+       position: absolute;
+       top: 44px;
+    }
+
+    /*#dvJoinAttrion .panel {
+        height: 416px;
+    }*/
+    #excludeSS .hover {
+        background-color: skyblue;
+    }
+    #AtriJoinMonth {
+    }
+
+    #callalinement {
+     bottom: 9px;
+    float: left;
+    padding-left: 0px;
+    }
+
+    #drpcalalinement {
+        bottom: 14px;
+    }
+    #dcrAlinement {
+            bottom: 10px;
+    float: left;
+    padding-left: 2px;
+    /*width: 83px;*/
+    }
+
+    #timealinement {
+    bottom: 11px;
+    float: left;
+    padding-left: 0px;
+    }
+
+    .btn-group {
+            /*width: 43px;*/
+    font-size: larger;
+    float:right;
+    /*padding: 4px 8px 6px 9px;*/
+
+    }
+
+    .btn btn-default {
+        height:25px;
+
+    }
+
+</style>
+<link href="~/Content/SideMenuBar.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+
+
+<div class="cls-dashboard-content">
+     <div style="width:1024px; margin: 0px auto;">
+         <div class="row">    
+
+                        <div class="col-sm-12 clearfix" style="margin-bottom: 10px;">       
+                            <div class ="col-xs-6" id="callAverage">
+                                        <div class="panel cls-cat-cov-main  cls-common-head">
+                                        <div class="panel-heading">
+                                            <div class="col-xs-12">
+                                                <div class="col-xs-4" id="callalinement" style="width:154px;font-size:14px;">
+                                                              Call & Productive Call
+                                                </div>
+                                                <div class="col-xs-8" id="drpcalalinement" style="width: 62%; padding: 0px 0px 0px 0px;">
+                                                    <select id="CallAverageddlName" class="dropdown" style="width:111px;">
+                                                        <option value="Call Average" id="callName">Call Average</option>
+                                                        <option value="Productive Call" id="productiveName">Productive Call</option>
+                                                    </select>
+                                                      <select class="dropdown" id="ddlDivisioncallAverage" style="width:80px;">
+                                                     </select>     
+                                                    <select id="CallMonthddl" class="dropdown" style="width:77px;height:31px;">
+                                                        <option value="Current" id="currentMonth">Current</option>
+                                                        <option value="Previous" id="previousMonth">Previous</option>
+                                                    </select>                                                
+                                                </div>                                               
+                                            </div>      
+                                            </div>                           
+                                                 <div id="tblCallaverage" style="overflow:auto; width: 478px; height: 246px;">
+                                                 </div>                                              
+                                        
+                                            </div>
+
+                            </div>
+                            
+                            <div class="col-xs-6" id="pobloading">
+                                <div class="panel cls-cat-cov-main  cls-common-head">
+                                        <div class="panel-heading">
+                                              <div class="col-xs-12" style="bottom: 11px">
+                                                <div class="col-xs-4" id="pppp" style="font-size:14px;">
+                                                              POB
+                                                </div>
+                                                  
+                                                  <div class="col-xs-8" style="float:right; width:115px">
+                                                        <select class="dropdown" id="ddlDivisionPOB" style="bottom:2px;"></select>
+                                                  </div>                                    
+                                            </div>                                 
+                                    </div>
+                                     <div id="tblPOB" style="overflow:auto; width: 478px; height: 246px;">
+                                    </div>
+                            </div>
+                            </div>
+                            </div>
+
+
+
+
+            <div class="col-sm-12 clearfix" style="margin-bottom: 10px;">
+                <div class="col-xs-6" id="timeInvestment">
+                           <div class="panel cls-cat-cov-main  cls-common-head">
+                                        <div class="panel-heading">
+                    <div class="col-xs-12">
+                        <div class="col-xs-4" id="timealinement" style="font-size:14px;">
+                             Time Investment                      
+                    </div>
+                        <div class="col-xs-8" style="bottom: 14px;">
+                            <select class="dropdown" id="ddlDivisionTime" style="bottom: 0px; left:45px;"></select>
+                            <select class="dropdown" id="ddlMonthofInvestment" style="float:right;">
+                                <option value="Current" id="CurrentMonthTime">Current</option>
+                                <option value="Previous" id="PreviousMonthTime">Previous</option>
+                            </select>
+                           </div>
+                        </div>
+                      </div>
+                   
+                    <div id="tblTimeInvestment" style="height: 238px;" ></div>
+                               </div>
+                </div>
+
+                <div class="col-xs-6" id="timeLag">
+                      <div class="panel cls-cat-cov-main  cls-common-head">
+                                        <div class="panel-heading">
+                    <div class="col-xs-12" style="padding: 0px 5px;">
+                        <div class="col-xs-4" id="dcrAlinement" style="font-size:14px;">
+                            <p class="clearfix">DCR & TP Deviation</p>
+                        </div>
+                        <div class="col-xs-8" style="bottom: 14px;float:right;padding:0px;">
+                            <select class="dropdown" id="ddlDcrDeviation" style="width:35%";>
+                                <option value="DCR Time Lag" id="dcrTimeLag">DCR Time Lag</option>
+                                <option value="TP Deviation" id="TPDeviation">TP Deviation</option>
+                            </select>
+
+                            <select class="dropdown" id="ddldivisionDeviation" style="width: 111px;"></select>
+                            <select class="dropdown" id="ddlMonth">
+                                <option value="Current" id="CurrentMonthDeviation">Current</option>
+                                <option value="Previous" id="PreviousMonthdeviation">Previous</option>
+                            </select>
+                        </div>
+                        </div>
+                                            </div>
+                          <div>
+                            <select class="TPFilters" id="TPactivityfilter" style="float:right;">
+                                <option value="All" id="allfilter">All</option>
+                                <option value="Category" id="CatgFilter">Category</option>
+   								<option value="CP Name" id="cpfilter">CP Name</option>
+  							    <option value="Activity" id="activityfilter">Activity</option>
+                            </select>
+</div>
+                        <div id="tblDCRTPDeviation" style="overflow:auto; width: 478px;height: 230px;"></div>
+                    </div>
+                </div>
+            </div>
+          
+       </div>
+    </div>
+    </div>
+<script src="~/Scripts/HD/DashBoardV2.js"></script>
+<script type="text/javascript">
+    var doctor_caption = "";
+
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        doctor_caption =@Html.Raw(Json.Encode(ViewBag.doctor_caption));  
+        $("#dvAjaxLoad").hide();
+        $('#page-header').hide();
+        $('#main').css('margin', "0px !important");
+        AdmindashboardV2.initialize();
+    });
+</script>

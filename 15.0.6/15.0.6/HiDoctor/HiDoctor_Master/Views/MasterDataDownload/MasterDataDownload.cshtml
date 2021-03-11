@@ -1,0 +1,407 @@
+﻿@{
+    ViewBag.Title = "MasterDataDownload";
+    Layout = null;
+
+}
+<style>
+    .treebg {
+        background: #fafafa !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+</style>
+@*<link href="//cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+<script src="//cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>*@
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<link href="~/Content/simplePagination.css" rel="stylesheet" />
+
+<div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+
+        <li class="ui-state-default ui-corner-top create" id="MasterDataEntry">
+            <a href="#Entry" data-toggle="tab"><b>Entry Screen</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="Viewscreen">
+            <a href="#View" data-toggle="tab"><b>View Screen</b></a>
+        </li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="Entry" style="height: 555px;">
+            <div class='col-xs-3 leftNav' id='leftNav'>
+                <div id="usertree" style="float: left; height: auto; width: 100%">
+                </div>
+                <div style="width: 1px;"></div>
+            </div>
+
+            <div id="dataDiv" class="col-lg-8" style="border: ridge;margin-top: 40px;margin-left: 50px;">
+                @*"border: 1px solid;margin-top: 40px;margin-left: 50px;"*@
+                <div class="col-xs-1" style="margin-top: 10px;">
+                    <label>Entity </label>
+                </div>
+                <div class="col-xs-4" style="margin-top: 10px;">
+                    <input type="text" class="form-control" id="txtEntity" placeholder="Entity Here..."  maxlength="50" onkeypress="return IsAlphaNumeric(event);" ondrop="return false;"
+                           onpaste="return false;" />
+                    <span id="error" style="color: Red; display: none">* Special Characters are not allowed</span>
+                </div>
+                </br></br></br>
+                <div class="col-xs-1">
+                    <label>Info </label>
+                </div>
+                <div class="col-xs-4">
+                    <textarea maxlength="100" cols="50" rows="3" placeholder="Info Here..." style="resize: none;" id="txtinfo" onkeypress="return IsAlphaNumeric(event);" ondrop="return false;"
+                              onpaste="return false;"></textarea>
+                    <span id="error" style="color: Red; display: none">* Special Characters are not allowed</span>
+                </div>
+                </br></br>
+                <div class="col-xs-6" style="clear:both;margin-top: 20px;">
+                    <input type="button" style="margin-left: 20%;margin-bottom: 10px;" onclick="fnInsertMasterData();" class="btn small primary" value="Submit">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane active" id="View" style="height: 1075px;">
+
+            <div style="clear: both"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="margin-top:1%;border: ridge;">
+                <div class="col-xs-12" style="margin-left:10%;margin-top: 15px;">
+                    <label style="font-size:14px;padding-left:10%;"><b>Effective from</b></label>
+                    <input type="text" style="margin-left:1%;" name="frmDateReg" required id="fromDate" value="">
+                    <label style="font-size:14px;margin-left:8%;"><b>Effective To</b></label>
+                    <input type="text" style="margin-left:2%;" name="frmDateReg" required id="toDate" value="">
+                    </br>
+                    <input type="button" style="margin-left: 35%;margin-bottom: 5px;" onclick="fnGetMasterData();" class="btn small primary" value="GO" />
+                </div>
+            </div>
+
+            <div style="clear: both"></div>
+            <div id="dvMasterdatagrid" style="margin-bottom: 5px;">
+            </div>
+            <div style="clear: both;"></div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MasterDataDownload.js"></script>
+<script>
+    var Companycode = @Html.Raw(Json.Encode(ViewBag.Companycode));
+    var UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+    var RegionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+
+    $(document).ready(function () {
+        debugger;
+        $('#userNameHeader').html('');
+        AjaxGlobalHandler.Initiate();
+        $('#dvTab').tabs();
+        $('#dvTab').block();
+        selKeys = "";
+        $('#txtEntity').val('');
+        $('#txtinfo').val('');
+        $('#dvTab').unblock();
+
+        fnGetdate();
+        $(function () {
+            $("#fromDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+            });
+        });
+        $(function () {
+            $("#toDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+                //showButtonPanel: true
+            });
+        });
+
+        try {
+            debugger;
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.Usercode));
+
+            $("#leftNav").show();
+            fnTreePositionForMasterDataMD("usertree");
+            fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            //$('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParentNewMD(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchUsersNewMD();
+                    return false;
+                }
+            });
+            $("#dvAjaxLoad").hide();
+            // $('#divInput').hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnUserTreeNodeClick(node) {
+        $("#hdnUserCode").val(node.data.key);
+        $('#userNameHeader').html(node.data.title);
+
+        // fnBindLockedData();
+        //fnBindRelaeseData(0);
+        $("#Morelink").show();
+    }
+
+    function fnUserTreePostInit() {
+    }
+    var selKeys = new Array();
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+
+    //User Tree With Searcha and Checkbox after Search Also
+
+    function fnTreePositionForMasterDataMD(id) {
+        debugger;
+        var tblContent = "";
+        tblContent += "<div id='treeNav'>";
+        tblContent += "<div id='dvNodeSearch'>";
+        tblContent += "<div class='input-group col-xs-8'>";
+        tblContent += "<input type='text' id='txtSearchNode' placeholder='Search' class='form-control'/>";
+        tblContent += "<span class='input-group-addon' onclick='fnSearchUsersNewMD();'><i class='fa fa-search'></i></span></div>";
+        tblContent += "<span onclick='fnShowFullTreeClickMD();' id='dvFullTree' class='pull-right' style='margin-right: 4%;cursor:pointer;' title='Click here to show all users'><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<span onclick='fnLoadInitialTreeMD();' id='dvLoadTree' class='pull-right' style='display: none; margin-right: 4%;cursor:pointer;' title='Click here to show all users' ><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<div class='clearfix'></div></div>";
+        tblContent += "<div id='dvFilteredNode' class='dvFilteredNode' style='display: none;'></div>";
+        tblContent += "<div id='dvMainTree'>";
+        //tblContent += "<div id='dvPreviousNode' class='dvPreviousNode' onclick='fnBindUsersWithOneLevelParentNewMD();'>";
+        //tblContent += "<i class='fa fa-arrow-up '></i></div>";
+        tblContent += "<div id='dvUserTree' class='dvNewUserTree'><img src='../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif'/>Loading tree</div>";
+        tblContent += "<div class='clearfix'></div>";
+        tblContent += "</div></div>";
+        $('#' + id).html(tblContent);
+    }
+
+
+    function fnShowFullTreeClickMD() {
+        debugger;
+        $('#dvPreviousNode').hide();
+        $('#dvFullTree').hide();
+        $('#dvLoadTree').show();
+        $('#dvLoadTree').attr("title", "Click here to show users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode", "NO");
+    }
+
+    function fnLoadInitialTreeMD() {
+        debugger;
+        $('#dvFullTree').show();
+        $('#dvLoadTree').hide();
+        $('#dvFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+    }
+
+    
+    function fnBindUsersWithOneLevelParentNewMD() {
+        debugger;
+        var userCode = $("#dvUserTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        fnGetUserTreeByUserWithOnelevelParentNew(userCode, "dvUserTree", "dvFilteredNode");
+    }
+
+    function fnSearchUsersNewMD() {
+        debugger;
+        if ($.trim($('#txtSearchNode').val()) == '') {
+            if(selKeys.length==0){
+                fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }else{
+                fnGetUserTreeByUserwithcheckboxMD(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }
+           
+           
+        }
+        else {
+            fnGetUsersByUserNameEmployeeNameMD($('#txtSearchNode').val(), "dvUserTree", "dvFilteredNode");
+        }
+    }
+
+    
+    function fnGetUsersByUserNameEmployeeNameMD(userName, treeId, filterId) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: 'HiDoctor_Master/MasterDataDownload/GetUsersByUserNameEmployeeNameMD',
+            data: "userName=" + userName + "&treeId=" + treeId + "&filterId=" + filterId + "",
+            success: function (result) {
+                debugger;
+                if (result != "") {
+                    $('#' + filterId).html(result);
+                    $('#' + treeId).hide();
+                    $('#' + filterId).show();
+
+                }
+                else {
+                    debugger;
+                    fnGenerateUserTree("dvUserTree");
+                    $('#' + treeId).show();
+                    $('#' + filterId).hide();
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+            }
+        });
+    }
+
+    function fnBindTreeWithSelectedUserChecked(userCode,treeId,filterId){
+        debugger;
+        if(userCode!=""){
+            fnGetUserTreeByUserwithcheckboxMD(userCode, treeId,filterId);
+        }
+    }
+
+    function fnGetUserTreeByUserwithcheckboxMD(userCode, treeId, filterId) {
+        debugger;
+        if (userCode == "") {
+            userCode = currentUserCode_g;
+        }
+        //if (userCode == curUserCode_g) {
+        //    $('#dvPreviousNode').hide();
+        //}
+        //else {
+        //    $('#dvPreviousNode').show();
+        //}
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode',
+            data: "userCode=" + userCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            // Close menu on click
+                            //if ($(event.target).hasClass("parent")) {
+                            //    alert("You clicked " + node + ",  url=" + node.url);
+                            //}
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onSelect: function (select, node) {
+                            //// Get a list of all selected nodes, and convert to a key array:
+                            fnUserTreeSelect(select, node);
+                        },
+                        //onLazyRead: function (node) {
+                        //    // In real life we would call something like this:
+
+                        //    // .. but here we use a local file instead:
+                        //    //node.appendAjax({
+                        //    //    url: "sample-data2.json",
+                        //    //    // We don't want the next line in production code:
+                        //    //    debugLazyDelay: 750
+                        //    //});
+                        //    fnAddNode(node);
+                        //},
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onDblClick: function (node, event) {
+                            fnUserTreeNodeDblClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+                 
+                   
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").unbind("click");
+                    $("span.childIcon").live("click", function (e) {
+                        //alert("Edit " + $.ui.dynatree.getNode(e.target));
+                        fnShowChildNodes(e.target);
+                    });
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                var testKey=selKeys;
+                for (var i = 0; i < testKey.length; i++) {
+                    $("#"+treeId).dynatree("getRoot").visit(function (node) {
+                        if(testKey[i]==node.data.key){
+                            node.select(true);
+                        }
+                    });
+                }
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+    var selKeys = new Array();
+    var SelTitleKeys=new Array();
+    var selKeys_ls = new Array();
+    function fnUserTreeSelect(select, node) {
+        debugger;
+        bindFlag=true;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        SelTitleKeys=$.map(node.tree.getSelectedNodes(),function(node){
+            return node.data.title;
+        });
+
+        //selKeys_ls = selKeys;
+    }
+
+</script>

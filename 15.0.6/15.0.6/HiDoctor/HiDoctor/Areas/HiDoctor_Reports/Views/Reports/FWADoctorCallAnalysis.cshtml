@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "FWADoctorCallAnalysis";
+}
+
+<style>
+    .TableTools_print {
+        display: none !important;
+    }
+
+    .td-hyp {
+        color: #06C !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        font-weight: bold;
+    }
+
+        .td-hyp hover {
+            text-decoration: underline;
+        }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 99%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .popheader {
+        font-size: 15px;
+        color: white;
+        background: #00188F;
+        padding: 10px;
+    }
+    /* Let's get this party started */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+        background: #EFEFEF;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }
+
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: #EFEFEF;
+        }
+</style>
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px; min-height: 150px">
+            <table>
+                <tr>
+                    <td>Report Month</td>
+                    <td>
+                        <input type="text" id="txtMonth" />
+                        <input type="hidden" id="hdnUserCode" />
+                        <input type="hidden" id="hdnUserUsertypeName" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Mode</td>
+                    <td id="tdMode">
+                        <input type="radio" name="mode" value="1" checked="checked" />
+                        Self<br />
+                        <input type="radio" name="mode" value="0" />
+                        Team<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="button" value="Show report" class="btn primary small" onclick="fnGetDoctorCallAnalysiscals()" />
+                    </td>
+                </tr>
+            </table>
+
+            <div style="clear: both">
+            </div>
+        </div>
+        <div id="dvdoctorcall"></div>
+
+
+
+        <div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+            <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+                <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+                    <img src="~/Images/close.png" />
+                </span>
+                <h2 id="popheader" class="popheader"></h2>
+                <div id="divModel" style="height: 500px; overflow: auto">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<iframe id="DaysWorkedfrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="DaysWorkeddivPrint" style="display: none;"></div>
+
+<iframe id="DrcallAnalysisfrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="DrcallAnalysisdivPrint" style="display: none;"></div>
+
+<iframe id="DrdetailPopupfrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="DrdetailPopupdivPrint" style="display: none;"></div>
+
+<iframe id="listedDrPopupfrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="listedDrPopupdivPrint" style="display: none;"></div>
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/FWAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var c_g;
+    $(function () {
+        var curDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate)); 
+        var curmonth = new Date(curDate).getMonth();
+        var curyear = new Date(curDate).getFullYear();
+        var aft3year = parseInt(curyear) + 3;
+         
+        var options = {
+            selectedYear: curyear,
+       
+            pattern: 'mm-yyyy'
+        }; 
+
+        $('#txtMonth').monthpicker(options);
+    });
+   
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        try{
+
+            $("#dvTree").show();
+            var userCod = @Html.Raw(Json.Encode(ViewBag.UserCode)); 
+            //  var dvTree = $("#tree");
+            fnBindUserTree("tree");
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+           // fnGetUnderUserTypes();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });   
+
+    function fnUserTreeNodeClick(node) {
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnUserCode').val(node.data.key);
+        $('#hdnUserUsertypeName').val(node.data.title);
+        fnGetUnderChildUserCount();
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');     
+    }
+
+    function fnUserTreePostInit() {
+
+    }
+    $("#dvOverlay").overlay({
+        onBeforeLoad: function () {
+                
+        },
+        onLoad: function () {
+                
+        }
+    });
+</script>

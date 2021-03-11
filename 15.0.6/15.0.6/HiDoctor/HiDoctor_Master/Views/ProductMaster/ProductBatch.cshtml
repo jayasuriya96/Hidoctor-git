@@ -1,0 +1,474 @@
+﻿@{
+    ViewBag.Title = "View/ Add Batch";
+    Layout = null;
+}
+<script type="text/javascript">
+    var ProductBatch = {
+        _defaults : {
+            ProductName : "",
+            Batches : "",
+            MergeQuantity : "no",
+            Mode:0 // 0 - Add, 1 - Edit
+        },
+        GetProductInfo : function(productCode){
+            $('#dvAjaxLoad').show();
+            $.ajax({
+                type: "POST",
+                url: "ProductMaster/GetProductBatches",
+                data: "ProductCode=" +productCode ,
+                success: function (result) {
+                    result = eval('(' + result + ')');
+                    ProductBatch._defaults.ProductName =  result.Tables[0].Rows[0].Product_Name;
+                    $("#spnProductName").html(ProductBatch._defaults.ProductName);
+                    result = result.Tables[1];
+                    if(result.Rows.length == 0)
+                    {
+                        ProductBatch.ConfirmDialog("Click 'YES' to continue with migration, 'NO' to direct to Create new batch, Existing user product quantity will be added to the new Batch.  ");
+                    }
+
+                    //var content = "";
+                    //content += "<table class='data datatable display' id='tblBatch'>";
+                    //content += "<thead><tr>";
+                    //content += "<td>Batch Number</td>";
+                    //content += "<td>Effective From</td>";
+                    //content += "<td>Effective To</td>";
+                    //content += "<td>Expiry Date</td>";
+                    //content += "<td>Status</td>";
+                    //content += "<td>Action</td>";
+                    //content += "</tr></thead>";
+                    //content += "<tbody>";
+                    //if(result.Rows.length > 0 )
+                    //{
+                    //    Batches = result;
+                    //    for (var i = 0; i < result.Rows.length; i++) {
+                    //        content += "<tr>";
+                    //        content += "<td id='tdBatchNumber" + i + "' >" + result.Rows[i].Batch_Number + "";
+                    //        content += " </td>";
+                    //        content += "<td id='tdEffectiveFrom" + i + "'>" + result.Rows[i].Effective_From + "</td>";
+                    //        content += "<td id='tdEffectiveTo" + i + "'>" + result.Rows[i].Effective_To + "</td>";
+                    //        content += "<td id='tdExpiryDate" + i + "'>" + result.Rows[i].Expiry_Date + "</td>";
+                    //        content += "<td id='tdStatus" + i + "'> " + (result.Rows[i].Batch_Status == "1" ? "Active" : "In-Active" ) + " ";
+                    //        content += "<input type='hidden' id='hdnStatus"+i+"' value='"+ result.Rows[i].Batch_Status+"' />";
+                    //        content += "</td>";
+                    //        content += "<td > " ;
+                    //        content += "<span  onclick='ProductBatch.ChangeStatus("+i+","+result.Rows[i].Mapping_Id+")' style='text-decoration:underline; cursor:pointer;' >Change Status</span> | ";
+                    //        content += "<span  onclick='ProductBatch.EditBatch("+i+","+result.Rows[i].Mapping_Id+")' style='text-decoration:underline; cursor:pointer;' >Edit</span> ";
+                    //        content += "</td>";
+                    //        content += "</tr>";
+                    //    }
+
+                    //}
+                    //else{
+                    //    //content += "<tr><td colspan='5' style='text-align:center;'> No Records Found. </td></tr>";
+                    //}
+                    //content += "</tbody>";
+                    //content += "</table>";
+                    $("#divBatches").html('');
+                    var grid = new ej.grids.Grid({
+                        dataSource: result.Rows,
+                        //  rowSelected: fnRowSelected,
+                        showColumnChooser: true,
+                        allowPaging: true,
+                        allowGrouping: true,
+                        allowSorting: true,
+                        allowFiltering: true,
+                        allowResizing: true,
+                        allowCellMerging: true,
+                        allowScrolling: true,
+                        allowExcelExport: true,
+                        pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                        filterSettings: { type: 'CheckBox' },
+                        width: '100%',
+                        toolbar: ['Search', 'ColumnChooser'],
+
+                        aggregates: [],
+                        columns: [
+                                { field: 'Batch_Number', headerText: 'Batch Number', width: 200, textAlign: 'center' },
+                                { field: 'Effective_From', headerText: 'Effective From', width: 200, textAlign: 'center' },
+                                { field: 'Effective_To', headerText: 'Effective To', width: 200, textAlign: 'center' },
+                                { field: 'Expiry_Date', headerText: 'Expiry Date', width: 200, textAlign: 'center' },
+                                { field: 'Batch_Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                                { headerText: 'Edit', width: 200, textAlign: 'center' },
+                                { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                        ],
+                        queryCellInfo: queryCellInfo,
+                    });
+                    grid.appendTo('#divBatches');
+
+                    $('#dvAjaxLoad').hide();
+                    //if(result.Rows.length > 0 ){
+                   // if ($.fn.dataTable) { $('#tblBatch').dataTable({ "sPaginationType": "full_numbers", "bDestroy": false }); };
+                    //}
+                    $('#dvAjaxLoad').hide();
+                },
+                error:function(result)
+                {
+                    $('#dvAjaxLoad').hide();
+                }
+            });
+        },
+  
+        ValidateInputs : function()
+        {
+            debugger;
+            var BatchNumber =  $("#txtBatchNumber").val();
+            var specialCharregex = new RegExp(/^[A-Za-z0-9]*$/);
+            var Effective_To = $("#txtEffectiveTo").val();
+            var Expiry_Date = $("#txtExpiryDate").val();
+
+            Effective_To = Effective_To.split('-');
+            Effective_To = Effective_To[2] + '/' + Effective_To[1] + '/' + Effective_To[0];
+            var eff_Todt = new Date(Effective_To);
+
+            Expiry_Date = Expiry_Date.split('-');
+            Expiry_Date = Expiry_Date[2] + '/' + Expiry_Date[1] + '/' + Expiry_Date[0];
+            var expdt = new Date(Expiry_Date);
+
+            if (specialCharregex.test(BatchNumber) == false) {
+                fnMsgAlert('error', 'Error', 'Batch Number must be alphanumeric, special characters are not allowed.');
+                return false;
+            }
+            else if(BatchNumber == ""){
+                fnMsgAlert('error', 'Error', 'Enter Batch Number');
+                return false;
+            }
+            else if(BatchNumber.length > 15)
+            {
+                fnMsgAlert('error', 'Error', 'Length of Batch Number cannot be more than 15.');
+                return false;
+            }
+            else if($("#txtEffectiveFrom").val() == "")
+            {
+                fnMsgAlert('error', 'Error', 'Enter Effective From Date');
+                return false;
+            }
+            else if($("#txtEffectiveTo").val() == "")
+            {
+                fnMsgAlert('error', 'Error', 'Enter Effective To Date');
+                return false;
+            }
+            else if($("#txtExpiryDate").val() == "")
+            {
+                fnMsgAlert('error', 'Error', 'Enter Expiry Date');
+                return false;
+            }
+            else if(eff_Todt > expdt)
+            {
+                fnMsgAlert('error', 'Error', 'Enter Expiry date greater than or equal to Effective_To date');
+                return false;
+            }
+
+            if(ProductBatch._defaults.Mode == 0){ // should only validate when add new. not for edit.
+                var Batch = $.grep(ProductBatch._defaults.Batches,function(ele){
+                    if (ele.Batch_Number == BatchNumber)return ele.Batch_Number;
+                });
+
+                if(BatchNumber == Batch)
+                {
+                    fnMsgAlert('error', 'Error', 'Batch Number already exist.');
+                    return false;
+                }
+            }
+
+            return true;
+        },
+        Submit : function(){
+            if(ProductBatch.ValidateInputs() == true)
+            {
+                $('#dvAjaxLoad').show();
+                var EffectiveFrom = $("#txtEffectiveFrom").val();
+                var EffectiveTo = $("#txtEffectiveTo").val();
+                var ExpiryDate = $("#txtExpiryDate").val();
+
+                EffectiveFrom = EffectiveFrom.split("-")[2] + "-" + EffectiveFrom.split("-")[1] + "-" + EffectiveFrom.split("-")[0]
+                EffectiveTo = EffectiveTo.split("-")[2] + "-" + EffectiveTo.split("-")[1] + "-" + EffectiveTo.split("-")[0]
+                ExpiryDate = ExpiryDate.split("-")[2] + "-" + ExpiryDate.split("-")[1] + "-" + ExpiryDate.split("-")[0]
+
+                $.ajax({
+                    type: "POST",
+                    url: "ProductMaster/SaveBatch",
+                    data: "ProductCode=" +productCode +"&Batch_Number=" + $("#txtBatchNumber").val() + "&Expiry_Date="
+                        +ExpiryDate + "&Effective_From=" +EffectiveFrom+ "&Effective_To=" +EffectiveTo
+                        + "&MergeQty="+ProductBatch._defaults.MergeQuantity + "&Mode=" + ProductBatch._defaults.Mode.toString()
+                        + "&MappingId=" + $("#hdnMappingId").val(),
+                    success: function (result) {
+                        ProductBatch._defaults.MergeQuantity = 'no';  // if batch created first time then quantity will be added to the batch, and continuing further this function should not happen.
+                        if(result.split(":")[0].toUpperCase() == "ERROR")
+                        {
+                            $('#dvAjaxLoad').hide();
+                            fnMsgAlert('error', 'Error',result.split(":")[1] );
+                        }
+                        else if(result.split(":")[0].toUpperCase() == "SUCCESS"){
+                            fnMsgAlert('success', 'Success', 'Batch Saved Successfully.');
+                            ProductBatch.GetProductInfo(productCode);
+                            ProductBatch.Clear();
+                            $("#divAddBatch").css("display","block");
+                        }
+                    },
+                    error : function(result)
+                    {
+                        $('#dvAjaxLoad').hide();
+                        fnMsgAlert('error', 'Error', 'Failed to Save Batch.');
+                    },
+                });
+            }
+        },
+        Clear:function(){
+            $("#txtBatchNumber").val("");
+            $("#txtEffectiveFrom").val("");
+            $("#txtEffectiveTo").val("");
+            $("#txtExpiryDate").val("");
+            $("#hdnMappingId").val("");
+            $("#hdnStatus").val("");
+            $("#btnChangeStatus").hide();
+            $("#txtBatchNumber").prop("disabled",false);
+            $("#txtEffectiveFrom").prop("disabled",false);
+            ProductBatch._defaults.Mode = 0;
+        },
+        ConfirmDialog : function (message) {
+            $('<div></div>').appendTo('body')
+            .html('<div><h6>'+message+'?</h6></div>')
+            .dialog({
+                modal: true, title: 'Confirm', zIndex: 10000, autoOpen: true,
+                width: 'auto', resizable: false,
+                buttons: {
+                    Yes: function () {
+                        ProductBatch.BatchAutoCreate(productCode);
+                        $(this).dialog("close");
+                        return true;
+                    },
+                    No: function () {
+                        ProductBatch._defaults.MergeQuantity = 'yes';
+                        $(this).dialog("close");
+                        return false;
+                    }
+                },
+                close: function (event, ui) {
+                    $(this).remove();
+                }
+            });
+        },
+        BatchAutoCreate : function(productCode)
+        {
+            $('#dvAjaxLoad').show();
+            $.ajax({
+                type: "POST",
+                url: "ProductMaster/BatchAutoCreate",
+                data: "ProductCode=" +productCode ,
+                success: function (result) {
+                    debugger;
+                    if(result.split(":")[0].toUpperCase() == "ERROR")
+                    {
+                        $('#dvAjaxLoad').hide();
+                        fnMsgAlert('error', 'Error', result.split(":")[1]);
+                    }
+                    else if(result.split(":")[0].toUpperCase() == "SUCCESS"){
+                        fnMsgAlert('success', 'Success', 'Migration completed successfully.');
+                        ProductBatch.GetProductInfo(productCode);
+                        $("#divAddBatch").css("display","block");
+                    }
+                },
+                error : function(result)
+                {
+                    $('#dvAjaxLoad').hide();
+                    fnMsgAlert('error', 'Error', 'Failed to Save Batch.');
+
+                },
+            });
+        },
+        //ChangeStatus : function(rowId, mappingId){
+        //    var status = $("#hdnStatus"+rowId).val();
+        //    $('#dvAjaxLoad').show();
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "ProductMaster/ChangeBatchStatus",
+        //        data: "MappingId=" +mappingId + "&Status=" + (status == "1" ? "0" : "1" ),
+        //        success: function (result) {
+        //            debugger;
+        //            if(result.split(":")[0].toUpperCase() == "ERROR")
+        //            {
+        //                $('#dvAjaxLoad').hide();
+        //                fnMsgAlert('error', 'Error', 'Failed to update.');
+        //            }
+        //            else if(result.split(":")[0].toUpperCase() == "SUCCESS"){
+        //                fnMsgAlert('success', 'Success', 'Satatus updated successfully.');
+        //                ProductBatch.GetProductInfo(productCode);
+        //            }
+        //        },
+        //        error : function(result)
+        //        {
+        //            $('#dvAjaxLoad').hide();
+        //            fnMsgAlert('error', 'Error', 'Failed to Save Batch.');
+
+        //        },
+        //    });
+        //},
+        ChangeStatus : function(args){
+            var status = args.data.Batch_Status;
+            $('#dvAjaxLoad').show();
+            $.ajax({
+                type: "POST",
+                url: "ProductMaster/ChangeBatchStatus",
+                data: "MappingId=" +args.data.Mapping_Id + "&Status=" + (status == "1" ? "0" : "1" ),
+                success: function (result) {
+                    debugger;
+                    if(result.split(":")[0].toUpperCase() == "ERROR")
+                    {
+                        $('#dvAjaxLoad').hide();
+                        fnMsgAlert('error', 'Error', 'Failed to update.');
+                    }
+                    else if(result.split(":")[0].toUpperCase() == "SUCCESS"){
+                        fnMsgAlert('success', 'Success', 'Satatus updated successfully.');
+                        ProductBatch.GetProductInfo(productCode);
+                    }
+                },
+                error : function(result)
+                {
+                    $('#dvAjaxLoad').hide();
+                    fnMsgAlert('error', 'Error', 'Failed to Save Batch.');
+
+                },
+            });
+        },
+        //EditBatch : function(rowId, mappingId)
+        //{
+        //    ProductBatch._defaults.Mode = 1;
+        //    $("#hdnMappingId").val(mappingId);
+        //    $("#txtBatchNumber").val( $("#tdBatchNumber" + rowId.toString()).html().trim());
+        //    $("#txtEffectiveFrom").val( $("#tdEffectiveFrom" + rowId.toString()).html().trim() );
+        //    $("#txtEffectiveTo").val( $("#tdEffectiveTo" + rowId.toString()).html().trim() );
+        //    $("#txtExpiryDate").val( $("#tdExpiryDate" + rowId.toString()).html().trim() );
+        //    $("#txtBatchNumber").prop("disabled",true);
+        //    $("#txtEffectiveFrom").prop("disabled",true);
+        //},
+        EditBatch : function(args)
+        {
+            debugger;
+            ProductBatch._defaults.Mode = 1;
+            $("#hdnMappingId").val(args.data.Mapping_Id);
+            $("#txtBatchNumber").val((args.data.Batch_Number));
+            $("#txtEffectiveFrom").val((args.data.Effective_From));
+            $("#txtEffectiveTo").val((args.data.Effective_To));
+            $("#txtExpiryDate").val((args.data.Expiry_Date));
+            $("#txtBatchNumber").prop("disabled",true);
+            $("#txtEffectiveFrom").prop("disabled",true);
+        },
+    }
+</script>
+<div id="message">
+</div>
+
+<div style="width:600px;">
+    <div id="divAddBatch">
+        <div class="col-xs-12 clearfix">
+            <div class="col-xs-3">
+                <label>Product Name</label>
+            </div>
+            <div class="col-xs-3">
+                <span id="spnProductName"> </span>
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top:10px;">
+            <div class="col-xs-3">
+                <label>Batch Number</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtBatchNumber" class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top:10px;">
+            <div class="col-xs-3">
+                <label>Effective From </label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtEffectiveFrom" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top:10px;">
+            <div class="col-xs-3">
+                <label>Effective To</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtEffectiveTo" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top:10px;">
+            <div class="col-xs-3">
+                <label>Expiry Date</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtExpiryDate" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top:10px;">
+            <input type="button" value="Save" class="btn btn-success" onclick="ProductBatch.Submit()" style="margin-left: 3%; margin-top: 2%" />
+            <input type="button" value="Reset" class="btn primary" onclick="ProductBatch.Clear()" style="margin-left: 3%; margin-top: 2%" />
+            <input type="hidden" id="hdnMappingId" value="" />
+        </div>
+        <div id="divBatches" style="width:95%;">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var productCode = @Html.Raw(Json.Encode(ViewBag.ProductCode));
+    $(document).ready(function () {
+        debugger;
+        $('#dvAjaxLoad').hide();
+        try{
+            AjaxGlobalHandler.Initiate();
+            ProductBatch.GetProductInfo(productCode);
+            $("#txtEffectiveFrom").datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+            });
+            $("#txtEffectiveTo").datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+            });
+            $("#txtExpiryDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+            });
+        }
+        catch(e)
+        {
+            alert(e.message);
+            $('#dvAjaxLoad').hide();
+        }
+    });
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnEditComp(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                ProductBatch.EditBatch(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='ProductBatch.ChangeStatus(" + args + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                ProductBatch.ChangeStatus(args);
+            })
+        }
+        if(args.column.headerText == "Status"){
+            if(args.data.Batch_Status == 1){
+                args.cell.innerHTML = "<span>Active</span>"
+            }
+            else{
+                args.cell.innerHTML = "<span>In Active</span>"
+            }
+           
+        }
+    }
+</script>

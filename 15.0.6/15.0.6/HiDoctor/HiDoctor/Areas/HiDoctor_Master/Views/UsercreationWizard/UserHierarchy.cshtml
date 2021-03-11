@@ -1,0 +1,345 @@
+﻿@{
+    ViewBag.Title = "UserHierarchy";
+    Layout = null;
+}
+
+
+
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+
+<div class="col-md-12 cls_nomargin_nopadding" id="dvPanel">
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <div class="cls_div_header">SETUP WIZARD FOR USER HIERARCHY/ATTRIBUTE CHANGES</div>
+    </div>
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <ul id='ullist' class="cls_profile_wizard_header">
+            <li class="cls_up_stpe1 cls_up_active">
+                <a href="#">
+                    Step - 1/3
+                    <br />
+                    <span>Employee Details</span>
+                </a>
+            </li>
+            <li class="cls_up_step2 cls_up_inactive" id="leave" style="display:none;">
+                <a href="#">
+                    Step - 2/3
+                    <br />
+                    <span>Leave Details</span>
+                </a>
+            </li>
+            <li class="cls_up_step3 cls_up_inactive" id="product" style="display:none;">
+                <a href="#">
+                    Step - 3/3
+                    <br />
+                    <span>Product Mapping</span>
+                </a>
+            </li>
+
+        </ul>
+        <div class="clearboth">&nbsp;</div>
+    </div>
+    <div id="divMaininputschange" class="col-md-10 cls_nomargin_nopadding form-group">
+        @*<div class="divNew">If Employee already available,Select Employee Name and click Go.</div>*@
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-2">
+                <label>Select the User Name</label>
+            </div>
+            <div class="control-section col-lg-6">
+                @*<input type="text" id="txtsearchUserName" class="form-control Groupnameuser" />
+                    <input type="hidden" id="hdnUserCode" />*@
+                <input type="hidden" id="hdnUserCode" />
+                <input type="text" id="txtsearchUserName" placeholder="Enter User Name..">
+            </div>
+            <div class="col-xs-3">
+                <input type="button" id="btnGochange" value="Go" class="btn btn-info" onclick="fngetprefilluserdetails();" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="divNew"><span class="mandatory">*</span> fields are mandatory.</div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-3">
+                <label>Employee Name<span class="mandatory">*</span></label>
+                <input type="hidden" id="hdnEmployeeCode" />
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtemployeeName" class="form-control" disabled="disabled" style="background-color:gainsboro !important;" />
+            </div>
+            <div class="col-xs-3">
+                <label>User Name<span class="mandatory">*</span></label>
+                <input type="hidden" id="hdnuserCode" />
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtuserName" class="form-control" disabled="disabled" style="background-color:gainsboro !important;" />
+            </div>
+
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+
+            <div class="col-xs-3">
+                <label>Division<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <select multiple="multiple" id="DDlDivision" onchange="fnGetReportingManagerRegionchange();">
+                    @*<option value="0">-Select Division-</option>*@
+                </select>
+                <input type="hidden" id="hdnDivisionCode" />
+            </div>
+            <div class="col-xs-3">
+                <label>User Type Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <input type="hidden" id="hdnUserTypeCode" />
+
+                <div id="dvDesignation">
+                    @*<option value="0">-Select Designation-</option>*@
+                    <input type="text" id="ddlDesignation">
+
+                </div>
+            </div>
+
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+
+            <div class="col-xs-3">
+                <label>Reporting to Region<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <input type="hidden" id="hdnReportingtoRegioncode" />
+                <div id="dvddlUserRegionchange">
+                    <input type="text" id="ddlUserRegionchange">
+                </div>
+            </div>
+
+
+
+
+            <div class="col-xs-3">
+                <label>Reporting Manager Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <input type="hidden" id="hdnReportingtoManagerCode" />
+
+                <div id="dvddlReportingManagechange">
+                    <input type="text" id="ddlReportingManagerchange">
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+
+
+            <div class="col-xs-3">
+                <label>User Region<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <div id="dvUsersRegion">
+                    <input type="text" id="ddlUserRegion">
+                </div>
+                @*<option value="0">-Select Region-</option>
+                    </select>*@
+
+                <input type="hidden" id="hdnUserRegion" />
+            </div>
+            <div class="col-xs-3">
+                <label>HiDoctor Start Date<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txthidoctorstartdatechange" class="datepicker form-control" disabled="disabled" style="background-color:gainsboro !important;" />
+            </div>
+
+
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-3">
+                <label>Password</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="password" id="txtpassword" class="form-control" disabled="disabled" style="background-color:gainsboro !important;" />
+            </div>
+            <div class="col-xs-3">
+                <label>Expense Group</label>
+            </div>
+            <div class="col-xs-3">
+                <div id="dvExpenseHeader">
+                    <input type="text" id="ddlExpemseGroup">
+                </div>
+
+                <input type="hidden" id="hdnExpenseGroupCodechange" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Ref Key1</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+
+                <input type="text" id="reff1" class="form-control" placeholder="Ref Key1">
+
+
+                @*<input type="hidden" id="hdnReportingtoRegioncode" />*@
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Ref Key 2</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="reff2" class="form-control" placeholder="Ref Key2" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" id="Effectivefrm" style="display:none;">
+            <div class="col-xs-3">
+                <label>Effective From</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="Frmdate" style="" readonly placeholder="select Effective From" />
+            </div>
+            @*<div class="col-xs-3">
+                    <label>Expense Group</label>
+                </div>
+                <div class="col-xs-3">
+                    <div id="dvExpenseHeader">
+                        <input type="text" id="ddlExpemseGroup">
+                    </div>
+
+                    <input type="hidden" id="hdnExpenseGroupCodechange" />
+                </div>*@
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Actual Reporting Manager</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                @*<input type="text" id="txtsearchUserName" class="form-control Groupnameuser" />
+                    <input type="hidden" id="hdnUserCode" />*@
+                <input type="hidden" id="hdnUserCode" />
+                <div id="dvddlActualreport">
+                    <input type="text" id="ddlActual" placeholder="Select Actual Reporting Manager..">
+                </div>
+
+            </div>
+
+            <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowtmailbtn" style="display:none;">
+                <div class="col-xs-1">
+                    <input type="checkbox" name="Mailaccess" id="Mailchk" checked="checked" />
+                </div>
+                <div class="col-xs-3">
+                    <label>Send Mail</label>
+                    <span style="margin-left:20px;cursor:pointer;color:#428bca;text-decoration: underline;" onclick="javascript:return fnGetRegionTree(1);"> Copy Holders </span>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="table-responsive col-md-10 cls_nomargin_nopadding form-group">
+                <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                    <div class="col-xs-6">
+                        <input type="button" id="btnBackchange" value="Back" class="btn btn-primary" onclick="fnBackchange();" />
+                        <input type="button" id="btnNextchange" value="Save" class="btn btn-success" onclick="fnupdateuserdetails('Save');" />
+                        <input type="button" id="btnsavechange" value="Next" style="display:none;" class="btn btn-success" onclick="fnupdateuserdetails('Next');" />
+                        <input type="hidden" id="hdnMode" value="I" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModalregion" class="modal" role="dialog" style="overflow-y:hidden;">
+        <div class="modal-dialog" style="background: none;border: none;">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Copy Holders</h4>
+                </div>
+                <div class="modal-body" style="height:400px;overflow:auto;">
+                    <div id="regionTreeNew"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnccsave" onclick="fnSaveCCUsers(2);">Save</button>
+                    <button type="button" class="btn btn-primary" style="display:none" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+    <script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+    <script src="../../Areas/HiDoctor_Activity/Scripts/Notification.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+    <script src="~/Scripts/CompanyEmail.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+    <script type="text/javascript">
+    ShowModalPopup('dvLoading');
+    var Exisempname='';
+    var Exisusername='';
+    var ExisHDdate='';
+    var ExisUserdata='';
+    var Usertypecode_g='';
+    var HirarchyMailarr='';
+    var Maildetails='';
+    var Userdetails=[];
+    var Userdetailsobj={};
+    var sendmail=0;
+    $(document).ready(function () {
+        $("#Frmdate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            numberOfMonths: 1,
+            // maxDate:0,
+            changeMonth: true,
+            changeYear:true,
+            maxDate:0
+            //showButtonPanel: true
+        });
+
+        debugger;
+        try
+        {
+            debugger;
+            var ID = @Html.Raw(Json.Encode(ViewBag.id));
+            $(document).ajaxStop($.unblockUI);
+            debugger;
+            $("#DDlDivision").multiselect().multiselectfilter();
+            fnAllmailprivilege();
+            fngetCompanyEmail();
+            fnGetTemplateDetails();
+            fnGetUserDetails();
+            fnGetUserTypes();
+            fnGetuserDivisions();
+            fnGetReportingtoUsers();
+            fnGetRegions();
+            fnGetReportingtoRegions();
+            fnGetExpenseGroupHeader();
+            fngetActualReport();
+            if (ID==1) {
+
+            }
+            else{
+                fnprefillalldetails();
+            }
+            HideModalPopup('dvLoading');
+
+        }
+        catch (err) {
+            HideModalPopup('dvLoading');
+
+        }
+    });
+
+    function fnRegionTreePostInit() {
+    }
+    </script>
+

@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "UserPerDayReport";
+    Layout = "~/Views/Shared/_RptLayout.cshtml";
+}
+
+
+
+ 
+
+    <div id="dvUserPerDayCont" class="container-fluid">
+        <div class="col-sm-12 ReportHeading" style="text-align: center;">
+            <span>User Per Day Report</span>
+        </div>
+        <div class="col-sm-12">
+            <span style="font-size: 16px;font-weight: 600;border-bottom:1px solid">Input Parameters:</span>
+            <table class="table reporting_input">
+                <tbody>
+                    <tr>
+                        <td>Users:</td>
+                        <td id="userName"></td>
+                    </tr>
+                    <tr>
+                        <td>DCRDate:</td>
+                        <td id="StartDate"></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12" id="dvHeader"></div>
+        <div class="col-sm-12" id="dvsfcdetails"></div>
+        <div id="dvAcc" class="col-sm-12"></div>
+        <div id="dvhopplaces" class="col-sm-12"></div>
+        <div id="dvOwnDoctors" class="col-sm-12"></div>
+        <div id="dvAccDoctors" class="col-sm-12"> </div>
+        <div id="dvProducts" class="col-sm-12"></div>
+        <div id="dvDetailedProductsDetails" class="col-sm-12"></div>
+        <div id="dvDoctorAcc" class="col-sm-12"></div>
+        <div id="dvDetailedProduct" class="col-sm-12"></div>
+        <div id="dvDigitalAssets" class="col-sm-12"></div>
+        <div id="dvChemist" class="col-sm-12"></div>
+        <div id="dvPOB" class="col-sm-12"></div>
+        <div id="dvFollowUps" class="col-sm-12"></div>
+        <div id="dvAttachments" class="col-sm-12"></div>
+        <div id="dvRCPA" class="col-sm-12"></div>
+        <div id="dvStockiest" class="col-sm-12"></div>
+        <div id="dvAttendance" class="col-sm-12"></div>
+        <div id="dvLeave" class="col-sm-12"></div>
+        <div id="dvExpense" class="col-sm-12"></div>
+        <div id="dvEmpty" class="col-sm-12"></div>
+    </div>
+
+
+
+<script src="~/Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Areas/HiDoctor_Reports/Scripts/HD/NextGenUserPerDayReport.js"></script>
+<script type="text/javascript">
+
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    var Company_Code="";
+    var c_g;
+
+  
+
+    Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+    var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+    var  dcrDate = @Html.Raw(Json.Encode(ViewBag.dcrDate));
+    //alert(Company_Code);
+    $(document).ready(function () {
+        fnUserPerDayreport();
+    });
+
+
+
+
+</script>

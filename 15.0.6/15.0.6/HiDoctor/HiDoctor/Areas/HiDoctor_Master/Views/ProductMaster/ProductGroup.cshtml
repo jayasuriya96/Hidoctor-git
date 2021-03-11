@@ -1,0 +1,265 @@
+﻿@{
+    ViewBag.Title = "ProductGroup";
+    Layout = null;
+}
+<div id="message">
+</div>
+@*<div id="wrapper" class="" style="font: 10px; font-family: Calibri">*@
+    <div style=" border: solid 1px #C1C1C1; -webkit-border-radius: 5px; padding: 5px 5px 5px 5px">
+        <div class="col-xs-12 clearfix">
+            <div class="col-xs-3">
+                <label>
+                    Product Group Name
+                </label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtProductGroup" class="form-control" />
+                <input type="hidden" id="hdnRowIndex" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top: 10px;">
+            <div class="col-xs-3">
+                <label>Status</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="radio" id="rdEnabled" name="Status" value="1" checked="checked" />Enabled
+                <input type="radio" id="rdDisabled" name="Status" value="0" />Disabled
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top: 10px;">
+            <div class="col-xs-3">
+                <label>Effective From</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtEffectiveFrom" class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix" style="margin-top: 10px;">
+            <div class="col-xs-3">
+                <label>Effective To</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtEffectiveTo" class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 clearfix">
+            <input type="hidden" id="hdnMode" value="SAVE" />
+            <input type="hidden" id="hdnProductGroupCode" />
+            <input type="button" value="Save" id="btnSave" class="btn btn-success" onclick="fnSubmitProductGroup();" />
+            <input type="button" value="Cancel" id="btnCancel" class="btn primary" onclick="fnClearAll();" />
+        </div>
+        <br />
+        <div id="dvProductGroup">
+        </div>
+    </div>
+@*</div>*@
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#hdnRowIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+        AjaxGlobalHandler.Initiate();
+        $("#txtEffectiveFrom").datepicker({
+            changeMonth: true,
+            changeYear: true, dateFormat: 'dd/mm/yy'
+        });
+        $("#txtEffectiveTo").datepicker({
+            changeMonth: true,
+            changeYear: true, dateFormat: 'dd/mm/yy'
+        });
+        fnFillProductGroup();
+        $("#dvLoading").hide();
+    });
+
+    function fnValidateproductgroup() {
+        if ($("#txtProductGroup").val() == "") {
+            $("#txtProductGroup").addClass('error');
+            return false;
+        }
+        else {
+            if ($("#txtProductGroup").hasClass('error')) {
+                $("#txtProductGroup").removeClass("error");
+            }
+        }
+
+        if ($("#txtEffectiveFrom").val() == "") {
+            $("#txtEffectiveFrom").addClass('error');
+            return false;
+        }
+        else {
+            if ($("#txtEffectiveFrom").hasClass('error')) {
+                $("#txtEffectiveFrom").removeClass("error");
+            }
+        }
+        if ($("#txtEffectiveTo").val() == "") {
+            $("#txtEffectiveTo").addClass('error');
+            return false;
+        }
+        else {
+            if ($("#txtEffectiveTo").hasClass('error')) {
+                $("#txtEffectiveTo").removeClass("error");
+            }
+
+        }
+        return true;
+
+    }
+
+    //function fnInsertBrand() {
+    //    if ($.trim($("#txtBrandName").val()) == "") {
+    //        $("#txtBrandName").addClass('error');
+    //        return false;
+    //    }
+    //    else {
+    //        if ($("#txtBrandName").hasClass('error')) {
+    //            $("#txtBrandName").removeClass("error");
+    //        }
+    //    }
+
+
+
+    function fnClearAll() {
+        $("#txtProductGroup").val("");
+        $("#txtEffectiveFrom").val("");
+        $("#txtEffectiveTo").val("");
+        $("#btnSave").val("Save");
+    }
+    var productGroup_g = "";
+    function fnFillProductGroup() {
+        $.ajax({
+            url: '@Url.Content("~/")ProductMaster/GetProductGroups',
+            type: "POST",
+            data: "A",
+            success: function (productGroupJson) {
+                productGroupJson = eval('(' + productGroupJson + ')');
+                productGroup_g = productGroupJson;
+                //if (productGroupJson.Tables[0].Rows.length > 0) {
+                //    var tableListHTML = "";
+                //    tableListHTML += "<div class='clearfix'>";
+                //    tableListHTML += "<table class='data display datatable' id='tblProductGroup'>";
+                //    tableListHTML += "<thead>";
+                //    tableListHTML += "<tr>";
+                //    tableListHTML += "<th>Product Group Name</th>";
+                //    tableListHTML += "<th>Effective From</th>";
+                //    tableListHTML += "<th>Effective To</th>";
+                //    tableListHTML += "<th>Status</th>";
+                //    tableListHTML += "<th>Action</th>";
+                //    tableListHTML += "</thead>";
+                //    tableListHTML += "</tr>";
+
+                //    tableListHTML += "<tbody>";
+                //    for (var i = 0; i < productGroupJson.Tables[0].Rows.length; i++) {
+                //        tableListHTML += "<td>" + productGroupJson.Tables[0].Rows[i].Product_Group_Name + "</td>";
+                //        tableListHTML += "<td>" + productGroupJson.Tables[0].Rows[i].Effective_From + "</td> <td>" + productGroupJson.Tables[0].Rows[i].Effective_To + "</td>";
+                //        tableListHTML += "<td>" + productGroupJson.Tables[0].Rows[i].Record_Status + "</td>";
+                //        tableListHTML += "<td class='center'><a href='#' rel='#facebox' onclick='fnProductGroupEdit(\"" + productGroupJson.Tables[0].Rows[i].Product_Group_Code + "\")' >Edit</a> | <a href='#' onclick='fnDetails(\"" + productGroupJson.Tables[0].Rows[i].Product_Group_Code + "\",\"" + productGroupJson.Tables[0].Rows[i].Record_Status + "\")'>Change Status </td>";
+                //        tableListHTML += "</tr>";
+                //    }
+                //    tableListHTML += "</tbody>";
+                //    tableListHTML += "</table>";
+                //    tableListHTML += "</div>";
+
+                $("#dvProductGroup").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: productGroupJson.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: false,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'Product_Group_Name', headerText: 'Product Group Name', width: 160, textAlign: 'center' },
+                            { field: 'Effective_From', headerText: 'Effective From', width: 160, textAlign: 'center' },
+                            { field: 'Effective_To', headerText: 'Effective To', width: 160, textAlign: 'center' },
+                            { field: 'Record_Status', headerText: 'Status', width: 100, textAlign: 'center' },
+                            { headerText: 'Edit', width: 100, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 100, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#dvProductGroup');
+
+
+                //   if ($.fn.dataTable) { $('#tblProductGroup').dataTable({ "sPaginationType": "full_numbers" }); };
+
+            }
+        });
+    }
+
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnProductGroupEdit(" + args.data.Product_Group_Code + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnProductGroupEdit(args.data.Product_Group_Code);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnDetails(" + args.data.Product_Group_Code + "\",\"" + args.data.Record_Status + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnDetails(args.data.Product_Group_Code, args.data.Record_Status);
+            })
+        }
+    }
+
+    function fnDetails(id, status) {
+        debugger;
+        var editRow = $('#hdnRowIndex').val();
+        var recordStatus = "";
+        if (status == "Enabled") {
+            recordStatus = "0";
+        }
+        else {
+            recordStatus = "1";
+        }
+        if (id != "") {
+
+            //    $.msgAlert({
+            //        type: 'warning'
+            //, title: 'Delete Product Group'
+            //, text: 'Are you sure you wish to delete?'
+            //, callback: function () {
+            $.ajax({
+                type: "POST",
+                url: 'ProductMaster/ProductGroupDelete',
+                data: 'Product_Group_Code=' + id + '&Status=' + recordStatus + '',
+                success: function (msg) {
+                    //  fnMsgAlert('success', 'Delete Successful', 'Product Group  Successfully');
+                    //   $("#message").html('Product Group Deleted Successfully');
+                    fnMsgAlert('Info', 'Product Master', msg.split(':')[1].toUpperCase());
+                    fnFillProductGroup();
+                    fnEdit(editRow);
+                }
+            });
+        }
+        //    });
+        //}
+    }
+
+
+    $('#modal_close').click(function () {
+        fnEdit($('#hdnRowIndex').val());
+    });
+</script>

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Kennect";
+    Layout = null;
+}
+<meta charset="UTF-8">
+<meta name="description" content="Swaas system">
+<meta name="keywords" content="HTML,CSS,XML,JavaScript">
+<meta name="author" content="Swaas">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+<meta http-equiv="Access-Control-Allow-Headers" content="X-Requested-With" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+    body {
+        margin: 0;
+    }
+</style>
+<body>
+    <iframe id="connectauthenticate" frameborder="0" style="display:block; width:100%; height:100vh;"></iframe>
+</body>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var g_emplist;
+        fngetEmployeedetails();
+
+        var gtoken;
+        var tenantID = g_emplist[0].HDUser_Id;
+        var _token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoyMCwib3duZXIiOiJhZG1pbiIsImlkIjoiNWJjMGY0ZTVkYjcxZjE3NDgzZTc0MGI3IiwidXNlcm5hbWUiOiJ3YWxsYWNlIiwidXNlckRhdGEiOnsibmFtZSI6IldhbGxhY2UgUGhhcm1hY2V1dGljYWxzIiwiZW1haWwiOiJ3YWxsYWNlQGtlbm5lY3QuaW4ifSwidGVuYW50IjoiNWJjMGY0ZTVkYjcxZjE3NDgzZTc0MGI3IiwiaWF0IjoxNTQ3NzkzOTYyLCJleHAiOjE1NzM3MTM5NjJ9.Utpmyk3nN74Wo51c_on94vjCtbP1yLa0Qiijg3f3ndM7CNcDYVGCJDT_1uSxh2b9ynkk1CGHHr-nbaFLFKOIUEK5ByxBUA917fQPcidrb6T_1RWpk_GHZ_PMMKYZNhS20MuFnIPjg9GKON1-Mo-T5GbI2Me4F90fBRXgL-KGgM2tEGsZGlqpbJnTHq5VI1OEeNc9TVZoCp0BfL-j2TsPbKG4K12yMyJLAmlEl-bTZOZmBRiMes6CtJtZLDzkTzy4ma7FbJJnMaFr7-u1yS3h6Y5ZpvdEh0QA-tWwj-1oRUMIThXz9LRPVY56N0WlNoVYC2RMrsG12UxSdhAygR_ZSQ";
+        $.ajax({
+            url: "https://api.betkennect.xyz/tenant/v0.1/user/get-auth",
+            type: 'POST',
+            data: JSON.stringify({ "tenantGID": g_emplist[0].HDUser_Id }), //  g_emplist[0].HDUser_Id }), //""527""
+            contentType: 'application/json',
+            crossDomain: true,
+            dataType: "jsonp",
+            headers: {
+                "Authorization": _token
+            },
+            async: false,
+            success: function (data) {
+                gtoken = data;
+                if (gtoken.ok) {
+
+                    secondApi();
+                }
+
+                //  $("#output_iframe_id").attr('src', data)
+            },
+            error: function(data) {
+                console.log(data);
+        }
+        });
+
+
+        function secondApi() {
+            debugger;
+            $.ajax({
+                url: "https://api.betkennect.xyz/twsa/v0.1/invoke/omkar_dusane-t12-wlc/datastorage",
+                type: 'POST',
+                //data: JSON.stringify({ "data": { "divisionName": " Division", "email": "vignesh.t@swaas.net", "employerGID": "1709", "name": "prakash1709", "role": "DSM" }, "mode": "update", "modelname": "employee_info", "tenantGID": "527" }),
+                data: JSON.stringify({ "data": { "divisionName": g_emplist[0].Division_Name, "email": g_emplist[0].Email_Id, "employerGID": g_emplist[0].Employee_Number, "name": g_emplist[0].User_Name, "role": g_emplist[0].User_Type_Name }, "mode": "update", "modelname": "employee_info", "tenantGID": g_emplist[0].HDUser_Id.toString() }),
+                contentType: 'application/json',
+                crossDomain: true,
+                dataType: "jsonp",
+                headers: {
+                    "Authorization": _token
+                },
+                async: false,
+                success: function (data) {
+                    var _url = "https://betkennect.xyz/appx#load=app&pref=wlc_incentulator&token=" + gtoken.token;
+                    $("#connectauthenticate").attr('src', _url)
+                }
+            });
+        }
+
+        function fngetEmployeedetails() {
+            debugger;
+            $.ajax({
+                url: "HiDoctor_Master/MenuMaster/GetSelectedKennect",
+                type: "Get",
+                async: false,
+                success: function (response) {
+                    g_emplist = response;
+                }
+            })
+
+        }
+    });
+</script>

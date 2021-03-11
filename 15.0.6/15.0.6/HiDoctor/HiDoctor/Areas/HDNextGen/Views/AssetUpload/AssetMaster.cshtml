@@ -1,0 +1,790 @@
+﻿@{
+    ViewBag.Title = "AssetMaster";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/Plugins/moment.min.js"></script>
+<style>
+    .cls-asset {
+    }
+
+    /*.dropbox-dropin-btn, .dropbox-dropin-btn:link, .dropbox-dropin-btn:hover {
+        border: 1px solid #808080;
+        border-radius: 5px;
+        height: 18px;
+        padding: 12px 7px 10px 5px;
+    }*/
+    .cls-main-content div,.cls-main-content p,.cls-main-content span,.cls-main-content a,.cls-main-content label {
+        font-family: "OpenSansRegular" !important;
+    }
+
+    /*.cls-nav-menu div, p, span, a, label {
+        font-family: "OpenSansSemiBold" !important;
+    }*/
+
+    .cls-main-content h1,.cls-main-content h2,.cls-main-content h3,.cls-main-content h4,.cls-main-content h5,.cls-main-content h6,.cls-main-content .h1,.cls-main-content .h2,.cls-main-content .h3,.cls-main-content .h4,.cls-main-content .h5,.cls-main-content .h6 {
+        font-family: "Open Sans","Helvetica",Arial,sans-serif !important;
+    }
+
+    .cls-foot-cancel div, .cls-foot-upload div {
+        font-family: "OpenSansLight", Arial, Helvetica, sans-serif !important;
+    }
+
+    .cls-i-txt-name p, .cls-i-txt-category p {
+        font-family: "oswaldlight" !important;
+    }
+
+    .post-desc-assigned p {
+        font-family: "OpenSansRegular" !important;
+    }
+
+    .cls-main-content .modal-body {
+        font-family: "OpenSansLight", Arial, Helvetica, sans-serif;
+    }
+
+    .asset-group i {
+        display: none;
+        float: right;
+    }
+
+    .cls-right {
+        width: 100% !important;
+    }
+
+    .asset-sort i {
+        display: none;
+        float: right;
+    }
+
+    #dvCustomers .checkbox input[type="checkbox"] {
+        opacity: 1 !important;
+    }
+
+    #tblUrl {
+        border: 1px solid #808080;
+    }
+
+    #dvURL {
+        max-height: 325px;
+        overflow: auto;
+    }
+
+    #dvbox, #dvdpBox {
+        padding-bottom: 5px;
+    }
+    /*.test {
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0!important;
+        border: 0px none!important;
+        font: inherit!important;
+        height: 10px!important;
+        padding: 0px !important;
+    }*/
+    #btnDownload {
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .dropbox-dropin-success .dropin-btn-status {
+        /*background-position: 0 center!important;*/
+    }
+
+    .profile-photo {
+        /*display: inline-block;*/
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 45px;
+        height: 45px;
+        /*vertical-align: middle;*/
+    }
+
+        .profile-photo img {
+            width: 45px;
+        }
+
+    .modal-footer {
+        padding: 0px !important;
+    }
+
+    select.ui-datepicker-month {
+        color: black;
+    }
+
+    select.ui-datepicker-year {
+        color: black;
+    }
+
+    select.ui-datepicker-month option {
+        color: black;
+    }
+</style>
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AssetUpload/fonts/fonts.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AssetUpload/profile.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script type="text/javascript" src="https://app.box.com/js/static/select.js"></script>
+<div id="dvTrdPty" style="display: none;">
+    <ul id="ulTpty">
+        <li><a id="liComp" onclick="Third_Party_Storage.fnOpen(this);" class="cls-tpy-txt">Upload from Computer</a></li>
+        <li><a id="lidpBox" onclick="Third_Party_Storage.fnOpen(this);" class="cls-tpy-txt"></a></li>
+        <li><a id="liBox" onclick="Third_Party_Storage.fnOpen(this);" class="cls-tpy-txt">Upload from Box</a></li>
+    </ul>
+</div>
+
+<div class="col-lg-12 cls-padding-none cls-main-content">
+    <div class="col-lg-12 cls-top-action">
+        <section class="container">
+            <div class="cls-dv-group">
+                <div class="btn-group pull-left col-xs-4 cls-asset-group cls-padding-none">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #fafafa; padding-left: 0px;">
+                        <span class="btn-asset-group">All Assets</span>
+                        <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_dropdown.png" />
+                        @* <span class="caret"></span>*@
+                    </button>
+                    <ul class="dropdown-menu asset-group" style="width: 250px;">
+                        <li><a href="#" id="lnkAllAsset" onclick="$('#hdnAssetGroup').val('ALL ASSETS');" class="active"><span>All Assets</span><label id="lblG1"></label><i style="display: block;" class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" id="lnkUpByMe" onclick="$('#hdnAssetGroup').val('UPLOADED BY ME');"><span>Uploaded by me</span><label id="lblG2"></label>
+                            <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" id="lnkUpOthers" onclick="$('#hdnAssetGroup').val('UPLOADED BY OTHERS');"><span>Uploaded by others</span><label id="lblG3"></label>
+                            <i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" id="lnkShareable" onclick="$('#hdnAssetGroup').val('SHAREABLE WITH CUSTOMER');"><span>Shareable with customer </span>
+                            <label id="lblG4"></label>
+                            <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" id="lnkNonShareable" onclick="$('#hdnAssetGroup').val('NON-SHAREABLE WITH CUSTOMER');"><span>Non-shareable with customer </span>
+                            <label id="lblG5"></label>
+                            <i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" id="lnkDownloadable" onclick="$('#hdnAssetGroup').val('DOWNLOADABLE');"><span>Downloadable</span><label id="lblG6"></label>
+                            <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" id="lnkNonDownloadable" onclick="$('#hdnAssetGroup').val('NON-DOWNLOADABLE');"><span>Online view only</span><label id="lblG7"></label>
+                            <i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" id="lnkInPro" onclick="$('#hdnAssetGroup').val('IN PROGRESS');"><span>In progress</span><label id="lblG8"></label>
+                            <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" id="lnkYetToShare" onclick="$('#hdnAssetGroup').val('YET TO SHARE');"><span>Yet to Share</span><label id="lblG9"></label>
+                            <i class="fa fa-check"></i></a></li>
+
+                    </ul>
+                    <input type="hidden" id="hdnAssetGroup" value="ALL ASSETS" />
+                    <input type="hidden" id="hdnAssetGroupCount" value="0" />
+                </div>
+
+                <div class="input-group pull-left col-xs-4 ">
+                    <div class="input-group">
+                        <i class="fa fa-search txt-search" style="position: absolute; top: 0; left: 0;"></i>
+                        <input type="text" class="form-control cls-ass-search" id="txtAssignSearch" placeholder="Type the asset name to search" style="border-color: #d9d9d9; border-right: none; padding-left: 30px;"
+                            aria-describedby="basic-addon2">
+                        <span class="input-group-addon btn-primary" id="btnSearch" style="background-color: #2962ff; border-color: #d9d9d9; color: white; cursor: pointer; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Go</span>
+                    </div>
+                </div>
+                <div class="btn-group pull-left col-xs-2 cls-filter-sort">
+                    <button type="button" class="mulFun  btn btn-default cls-unass-filters" aria-label="Left Align">
+                        @* <i class="fa fa-filter "></i>*@
+                        <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_filter.png" title="Filter" />
+                    </button>
+
+                    <button type="button" class="mulFun  btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @*<i class="fa fa-sort-alpha-asc"></i>*@
+                        <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_Sort.png" style="" title="Sort" />
+                    </button>
+                    <ul class="dropdown-menu asset-sort" style="width: 200px;">
+                        <li><a href="#" onclick="$('#hdnSort').val('Asset Name_ASC');"><span>Asset Name A-Z</span><i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" onclick="$('#hdnSort').val('Asset Name_DESC');"><span>Asset Name Z-A</span> <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" onclick="$('#hdnSort').val('Date_ASC');"><span>Date - Oldest to Newest</span> <i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" onclick="$('#hdnSort').val('Date_DESC');" class="active"><span>Date - Newest to Oldest </span><i class="fa fa-check" style="display: block;"></i></a></li>
+                        <li><a href="#" onclick="$('#hdnSort').val('Owner Name_ASC');"><span>Owner Name A-Z</span><i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" onclick="$('#hdnSort').val('Owner Name_DESC');"><span>Owner Name Z-A</span> <i class="fa fa-check"></i></a></li>
+                        <li><a href="#" onclick="$('#hdnSort').val('SIZE_ASC');"><span>Size - Smallest to Largest</span> <i class="fa fa-check"></i></a></li>
+
+                        <li><a href="#" onclick="$('#hdnSort').val('SIZE_DESC');"><span>Size - Largest to Smallest</span> <i class="fa fa-check"></i></a></li>
+                    </ul>
+                    <input type="hidden" id="hdnSort" value="Date_DESC" />
+                </div>
+                <div class="pull-right col-xs-2 cls-padding-none">
+                    <button type="button" class="btn btn-primary pull-right btnUploadAsset" id="btnUploadAsset" aria-haspopup="true" aria-expanded="false">
+                        <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_upload_icon.png" title="Filter" />
+                        <span>Upload Assets</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-12 cls-padding-none ">
+        <section class="container">
+            <div class="cls-dv-page">
+                <div class="pull-left cls-spnPaging" id="spnPaging">Showing</div>
+                <div class="pull-right col-xs-5 cls-padding-none" style="margin-top: -9px;">
+                    <div class="btn-group pull-right cls-padding-none cls-mul-act">
+                        <button type="button" id="btnMulDelete" class="mulFun  btn btn-default mul-action-img" aria-label="Left Align" title="Retire">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_delete.png">
+                        </button>
+                        <button type="button" id="btnMulProperty" class="mulFun  btn btn-default mul-action-img" aria-label="Left Align" title="Edit Properties">
+
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_properties.png">
+                        </button>
+                        @* <button type="button" id="btnMulSpec" class="mulFun  btn btn-default mul-action-img" aria-label="Left Align" title="Speciality Mapping">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_Speciality_mapping.png" />
+                        </button>
+                       <div class="btn-group dropleft">
+                            <button type="button" id="btnMulAssign" title="Share" class="dropdown-toggle mulFun mulaction" data-backdrop="static" data-toggle="dropdown" aria-expanded="false" style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
+
+                                <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_share.png" />
+                            </button>
+
+                            <ul class="dropdown-menu" role="menu" style="right: 0px !important; left: auto !important;">
+                                <li><a href="#" data-whatever="mdo" data-toggle="modal" id="lnkQuickShare"><i class="fa fa-share-alt"></i>&nbsp; Quick Share</a></li>
+                                <li id="lnkMainShareCust"><a href="#" data-whatever="mdo" data-toggle="modal" id="lnkShareCustomer"><i class="fa fa-share-alt"></i>&nbsp; Share with customers</a></li>
+                                <li><a href="#" data-whatever="mdo" data-toggle="modal" id="lnkBtnAssignAll"><i class="fa fa-user "></i>&nbsp; Share with all users</a></li>
+                                <li><a href="#" data-whatever="mdo" data-toggle="modal" class="" id="lnkShareUsers"><i class="fa fa-list-ul "></i>&nbsp; Share with selective Users</a></li>
+
+                            </ul>
+                        </div>*@
+                        @*  
+                        <button type="button" class="mulFun  btn btn-default" aria-label="Left Align">
+                            <i class="fa fa-share-alt"></i>
+                        </button>
+                        *@
+                    </div>
+                    <div class="btn-group pull-left cls-padding-none cls-selection" style="display: none;">
+                        <button type="button" id="btnSelAllAsset" class="btn btn-default" aria-label="Left Align">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_select_all.png" title="Select All" />
+                        </button>
+
+                        <button type="button" id="btnUnSelAllAsset" class="btn btn-default" aria-label="Left Align">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_select_none.png" title="Select None" />
+                        </button>
+                        <button type="button" id="btnInvertSelAllAsset" class="btn btn-default" aria-label="Left Align">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_invert_selection.png" title="Invert Selection" />
+                        </button>
+                        <button type="button" id="btnShowSelAllAsset" class="btn btn-default selected" aria-label="Left Align">
+                            <img src="../../Areas/HDNextGen/Content/AssetUpload/imgs/ic_show_only_selected.png" title="Show only selected" />
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-12 cls-padding-none cls-asset-action">
+        <section class="container">
+            <div class="col-lg-12 cls-padding-none" style="clear: both;" id="dvUnassigned">
+            </div>
+        </section>
+    </div>
+
+</div>
+<div class="modal" id="dvUpload" role="dialog" aria-labelledby="filepropsinglelbl" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Upload Asset(s)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none cls-main-upload">
+                    <div class="cls-padding-none cls-right">
+                        <div class="col-lg-12 form-group cls-disclaim-upload">
+                            You can upload maximum of 10 files at a time
+                        </div>
+                        <div class="col-lg-12 form-group cls-upload-content">
+                            <div class="col-lg-12 cls-padding-none cls-drop-main">
+                                <div class="col-lg-12 cls-drop-tbl-head" style="display: none;" id="dvDropResponseHeader">
+                                    <table class="table table-striped table-curved">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 225px;">File Name</th>
+                                                <th style="width: 70px;">Thumbnail</th>
+                                                <th style="width: 180px">Status</th>
+                                                <th style="width: 25px;"></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="table-responsive cls-DropResponse" id="dvDropResponse" style="display: none; clear: both;">
+                                    <table class="table table-striped table-curved" id="tblUploadAsset">
+
+                                        <tbody id="progressresult" style="max-height: 400px; overflow-x: auto">
+                                        </tbody>
+                                    </table>
+                                    <div class="col-lg-12 form-group cls-fail-msg">
+                                        <span style="color: red;">*</span>  Failed assets needs to be uploaded again
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 cls-drop-tbl-head cls-padding-none" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tfoot id="tblUploadFoot">
+                                            <tr>
+                                                <td colspan="4" style="width: 100%;">
+                                                    <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                                                    <div class="col-xs-6 cls-foot-upload">Upload</div>
+                                                    <div class="col-lg-12 cls-up-suc-msg cls-pop-succ" style="display: none;"></div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="notification no-top-margin text-center dropvisible cls-drop-add">
+                                <div id="dropzoneone">
+                                    <form class="dropzone dz-clickable" enctype="multipart/form-data" method="post" id="image" title="Select File(s)">
+                                        <i class="fa fa-10x fa-cloud-upload"></i>
+                                        <span>Drag and drop files here or Click here to select files</span>
+                                        <p>*.doc, *.docx, *.ppt, *.pptx, *.xls, *.xlsx, *.pdf, *.jpg, *.jpeg, *.bmp, *.png, *.gif, *.mp4, *.zip</p>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                            <br />
+                        </div>
+                        <div id="dvThirdPty" class="col-lg-12" style="clear: both;">
+                            <div class="col-lg-12">
+                                <p class="optTag" style="text-align: center">or</p>
+                            </div>
+                            @*<div class="col-lg-3"></div>
+                            *@
+                            <div id="dvbox" class="col-lg-6" style="text-align: center">
+                                <button id="box-select" class="box-img" data-link-type="direct" data-multiselect="true" data-client-id="ty3scl7qcs8u1xygq7187eus2g82j62z"></button>
+                            </div>
+                            <div id="dvdpbox" class="col-lg-6" style="text-align: center">
+                                <a class="test" id="dvDropBox"></a>
+                            </div>
+                            <div class="col-lg-12"></div>
+                            <div class="col-lg-12">
+                                <div class="col-lg-12" id="dvURL"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-lg-12" style="text-align: center;">
+                                <input type="button" class="btn btn-primary" id="btnDownload" style="display: none;" value="Upload" />
+                            </div>
+                            <input type="hidden" id="hdnUpload" />
+                            <input type="hidden" id="hdncboStorageId" />
+                            <input type="hidden" id="hdncboStorageName" />
+                        </div>
+                        <div id="dvdpBtn" class="col-lg-12 cls-padding-none" style="text-align: center; clear: both;">
+                            <button type="button" class="btn btn-primary cls-upload-asset" style="display: none;">Upload</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dvUnAssinThumbChange" role="dialog" aria-labelledby="thumbnailsinglemodallbl" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvUnAssinThumbChange');"><span aria-hidden="true">&times;</span></button>
+                <h4 id="thumbnailsinglemodallbl" class="modal-title">File Thumbnail Change</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="image" class="thumb">
+                    <div class="form-group cls-thumb">
+                        <label for="recipient-name" class="control-label">File Name:</label>
+                        <label id="lblFileName"></label>
+                        <br />
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtThumbChange" placeholder="Select file">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="$('input[id=txtThumbImg]').click()">Browse</button>
+                                <input type="file" id="txtThumbImg" style="opacity: 0" />
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <div class="text-center margin-top-5">
+                        <img width="150" height="113" id="imgThumbPreview" class="img-pre" alt="uploaded image preview" />
+                    </div>
+                    <p class="text-center margin-top-5">Preview</p>
+                    <div class="col-lg-12" id="dvThumbMsg" style="color: red;"></div>
+                </form>
+            </div>
+            <div class="modal-footer nopadding cls-thum-change">
+                <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                <div class="col-xs-6 cls-foot-upload">Save</div>
+                <div id="dvThumbSuccMsg" class="col-lg-12 cls-padding-none cls-pop-succ" style="display: none;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="dvFileProperty" role="dialog" aria-labelledby="filepropsinglelbl" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvFileProperty');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="filepropsinglelbl">File Properties</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvAddPro">
+                    <div class="form-group" id="dvFileName">
+                        <span class="cls-spn-txt">Asset Name</span>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtFileName" maxlength="200" tabindex="0">
+                            <span class="input-group-addon addon-dutch" id="txtFileExt">.jpg</span>
+                        </div>
+                    </div>
+                    <div class="form-group addnewcat">
+                        <span class="cls-spn-txt">Category</span>
+                        &nbsp; &nbsp; 
+                                                            <a href="#" id="lnkAddCategory">Add New Category</a>
+                        <div id="selectbox">
+                            <select id="cboCategory" class="form-control" tabindex="1">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="cls-spn-txt">Description</span>
+                        <textarea class="form-control" id="txtDesc" maxlength="200" tabindex="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <span class="cls-spn-txt">Tags</span>
+                        <div style="max-height: 100px; overflow: auto;">
+                            <input type="text" class="form-control tagdetails" id="txtTagDetails" />
+                        </div>
+                        <div id="dvRetailsPrevious" style="display: none;">
+                            <div class="checkbox checkbox-primary cls-Retain">
+                                <input id="checkbox2" type="checkbox" name="chkRetain">
+                                <label for="checkbox2">Retain all the previous tags attached with these assets</label>
+                                <span><i class="fa fa-question-circle"></i></span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 cls-retain-desc" style="display: none;">Checking "Retain all the previous tags" will add the chosen tags to the assets along with existing tags. If this option is left unchecked, the existing tags for the assets would be overwritten </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="cls-spn-txt">Expiry Date</span>
+                        <div class="input-append">
+                            <input class="date-picker form-control" id="txtExpDate" type="text" />
+                            <label for="txtExpDate" class="add-on"><i class="icon-calendar"></i></label>
+                        </div>
+
+
+                        @*
+                        <input type="text" placeholder="click to show datepicker" class="expdate" id="txtExpDate">*@
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox checkbox-primary">
+                            <input id="chkDwonload" type="checkbox">
+                            <label for="chkDwonload">Allow people to download this asset</label>
+                        </div>
+
+                        <div class="checkbox checkbox-primary cls-allow-share">
+                            <input id="chkShare" type="checkbox" checked="checked">
+                            <label for="chkShare">Allow people to share this files with customers</label>
+                        </div>
+
+                        <div class="checkbox checkbox-primary cls-edu-material" style="display: none;">
+                            <input id="chkEduMat" type="checkbox">
+                            <label for="chkEduMat">Patient Education Material</label>
+                        </div>
+                        <p class="cls-share-dis" style="display: none;">
+                            Disclaimer: 
+                                <br />
+                            Excel and zip files are always downloadable; can not view directly.
+                        </p>
+
+                        @*
+                        <div class="checkbox nomargin nopadding">
+                            <input type="checkbox" checked="checked" id="idIsDownload">
+                            <label for="idIsDownload">Allow people to download this asset</label>
+                        </div>
+                        <div class="checkbox nomargin nopadding">
+                            <input type="checkbox" checked="" id="idIsShare">
+                            <label for="idIsShare">Allow people to share this files with customers</label>
+                        </div>
+                        *@
+                    </div>
+                    <div class="cls-file-pro-act">
+                        <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                        <div class="col-xs-6 cls-foot-upload">Update</div>
+                        <div id="dvProSuccMsg" class="col-lg-12 cls-padding-none cls-pop-succ" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12 cls-padding-none" id="dvAddCat" style="display: none;">
+                    <div class="form-group">
+                        <span class="cls-spn-txt">Category Name</span>
+                        <input type="text" class="form-control" id="txtCategoryName" maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <span class="cls-spn-txt">Thumbnail URL</span>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtCatThumb" placeholder="Select file">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="$('input[id=txtCatThumbImg]').click()">Browse</button>
+                                <input type="file" id="txtCatThumbImg" style="display: none;" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" id="dvCatValidMsg" style="color: red;"></div>
+                    <div class="cls-file-cat">
+                        <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                        <div class="col-xs-6 cls-foot-upload">Update</div>
+                        <div id="dvCatSuccMsg" class="col-lg-12 cls-padding-none cls-pop-succ" style="display: none;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal" id="dvMulProModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvMulProModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="dvProMsg"></div>
+                <br />
+                <div class="col-lg-12">
+                    <p class="cls-share-dis">
+                        <br />
+                        Disclaimer:
+                    You cannot modify the properties of assets that are not uploaded by you. Those assets will be automatically removed from your selection<br />
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-footer nopadding cls-mul-pro-action">
+                <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                <div class="col-xs-6 cls-foot-upload">Ok</div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="dvDeleteAssetModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvDeleteAssetModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvDeleteMsg"></div>
+            </div>
+            <div class="modal-footer nopadding cls-delete-action">
+                <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                <div class="col-xs-6 cls-foot-upload">Ok</div>
+                <div id="dvDeleteSuccMsg" class="col-lg-12 cls-padding-none cls-pop-succ" style="display: none;"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="modal" id="dvFileChange" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvFileChange');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">File Change</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="col-lg-12 form-group cls-padding-none">
+                    <div class="col-xs-4">Asset Name</div>
+                    <div class="col-xs-8"><span id="spnFileName"></span></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-12  form-group cls-padding-none">
+                    <div class="col-xs-4">Category</div>
+                    <div class="col-xs-8"><span id="spnFileCategory"></span></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-12  form-group cls-padding-none">
+                    <div class="col-xs-12">File Path</div>
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtAssetChange" placeholder="Select file">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="$('input[id=txtFile]').click()">Browse</button>
+                                <input type="file" id="txtFile" style="opacity: 0" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-12" id="dvFileMsg"></div>
+            </div>
+            <div class="modal-footer nopadding">
+                <div class="col-xs-6 cls-foot-cancel">Cancel</div>
+                <div class="col-xs-6 cls-foot-upload">Ok</div>
+                <div id="dvFileChangeMsg" class="col-lg-12 cls-padding-none cls-pop-succ" style="display: none;"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal" id="divPreview">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('divPreview');ShowModalPopup('dvShareCustomer');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="divTemplatePreview"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnTemplateId" />
+<input type="hidden" id="hdnStagingCode" />
+@*<script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>*@
+<div class="modal" id="dvCommonMsgModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 0px !important; padding: 10px; overflow: auto;">
+
+            <h4 class="modal-title">Alert</h4>
+            <br />
+            <div class="col-lg-12 cls-padding-none" style="margin-top: 5px;" id="dvCommonMsg"></div>
+
+            <input type="button" class="btn btn-primary pull-right" style="margin-top: 5px;" onclick="HideModalPopup('dvCommonMsgModal');" value="Ok" />
+
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dvAlertModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 8px;">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvAlertModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <div class="dv-modal-body"></div>
+
+            </div>
+            <div class="modal-footer" style="clear: both;">
+                <input type="button" class="btn btn-default" id="btnConfirmCancel" value="Cancel" onclick="HideModalPopup('dvAlertModal');" />
+                <input type="button" class="btn btn-primary" id="btnContinue" value="Continue" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dvAssetSpec" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 8px;">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvAssetSpec');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-ass-spec-main">
+                    <input type="text" class="form-control" style="margin-top: 5px;" id="txtSpecSearch" placeholder="Search Speciality" />
+                    <div class="col-lg-12 cls-ass-spec" id="dvAssSpec" style="height: 300px; overflow: auto;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="clear: both;">
+                <p style="text-align: left; margin: 2px;">
+                    Mapping of these selected speciality(s) with the contents allow your customer to read the content(s) in the mobile application and it makes the individual content sharing as optional sharing
+                </p>
+                <input type="button" class="btn btn-default" id="btnCancelSpec" value="Cancel" onclick="HideModalPopup('dvAssetSpec');" />
+                <input type="button" class="btn btn-primary" id="btnSaveSpec" value="Save" />
+                <p id="spnSpecInfoMsg" style="text-align: center; color: red"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>
+<link href="../../Areas/HDNextGen/Content/plugincss/minoral.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+
+
+<script src="../../Areas/HDNextGen/Scripts/AssetUpload/AssetUploadServices.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script src="../../Areas/HDNextGen/Scripts/AssetUpload/AssetUploadSingle.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script src="../../Areas/HDNextGen/Scripts/Plugins/slidereveal.js"></script>
+<link href="../../Areas/HDNextGen/Content/plugincss/dropzone.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/Plugins/jquery.nicescroll.min.js"></script>
+<link href="~/Content/Bootstrap/bootstrap-multiselect.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AssetUpload/MultiAssetUpload.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script type="text/javascript">
+    var noOfAssets_g="";
+    var daCode_g ="";
+    var mode_g = "ASSIGNED";
+    var slider2="";
+    var subDomainName_g = @Html.Raw(Json.Encode(ViewBag.SubDomainName))
+    var compId_g = @Html.Raw(Json.Encode(ViewBag.Current_Comp_Id))
+    var currentUserId_g = @Html.Raw(Json.Encode(ViewBag.Current_UserId))
+    UploadServices.userCode =  @Html.Raw(Json.Encode(ViewBag.Current_User_Code))
+    UploadServices.companyId =@Html.Raw(Json.Encode(ViewBag.Current_Comp_Id))
+    UploadServices.subdomainName =  @Html.Raw(Json.Encode(ViewBag.SubDomainName))    
+    UploadServices.userId =@Html.Raw(Json.Encode(ViewBag.Current_UserId))
+    UploadServices.companyCode =@Html.Raw(Json.Encode(ViewBag.Current_Comp_Code))
+    UploadServices.empName = @Html.Raw(Json.Encode(ViewBag.Current_Emp_Name))
+    UploadServices.regionCode = @Html.Raw(Json.Encode(ViewBag.Current_Region_Code))
+    UploadServices.currentDate=  @Html.Raw(Json.Encode(ViewBag.Current_Date))
+    UploadServices.is_share_Count_g =  @Html.Raw(Json.Encode(ViewBag.Is_Share_Count))
+    UploadServices.Access_Allowed =  @Html.Raw(Json.Encode(ViewBag.Access_Allowed))
+</script>
+<script lang="ja">
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        if (UploadServices.Access_Allowed == 0) {
+         
+            $('.cls-main-content').html("<p style='text-align:center; font-weight:bold;font-size:15px;padding-top:50px;'>You do not have access to upload the assets</p>");
+        }
+        else
+        {
+           
+            $('.cls-asset-action').block({
+                message: 'Processing...',
+                css: { border: '2px solid #DDD' }
+            });
+            setTimeout(function () { ASSETS.init(); }, 100);
+            Upload_Asset.initializeDropZone();
+            Dropzone.autoDiscover = false;
+            Upload_Asset.initEvents();
+            //$(document).keyup(function (e) {
+            //    if (e.keyCode == 27) {
+            //        $('.silderWrapper').hide();
+            //    }   // escape key maps to keycode `27`
+            //});
+            //slider2 = $("#slider2").slideReveal({
+            //    autoEscape: false,
+            //    push: false,
+            //    position: "right",
+            //    speed: 700,
+            //});
+            //$('.cls-details-scroll').niceScroll();
+            //$("#slidehide").click(function () {
+            //    slider2.slideReveal("hide", false);
+            //});
+            //slider2.niceScroll();
+            //Third_Party_Storage.getFileStorages();    
+            $(".dropbox-dropin-btn").html("<span class='dropin-btn-status'></span>Select from Dropbox");
+        }
+       
+       
+    });
+   
+</script>

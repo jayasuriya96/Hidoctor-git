@@ -1,0 +1,321 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style type="text/css">
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: #E8F1FF !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+</style>
+<div style="width: 100%;" id="dvTabs">
+    <ul>
+        <li><a href="#dvInsert">Region Weekend Mapping </a></li>
+        <li><a href="#dvEdit" onclick="Edit();">Edit</a></li>
+        <li><a href="#dvReport" onclick="Report();">Report</a></li>
+    </ul>
+
+    <div style="width: 100%;" id="dvInsert">
+        <div style="width: 100%;">
+            <div style="width: 100%;">
+                <div style="width: 10%; float: left;">Weekend Off Group </div>
+                <div style="width: 70%; float: left; margin-left: 40px;">
+                    <input type="text" id="txtWeekendGroup" class="Groupname" style="width: 30%;" />
+                    <input type="hidden" id="hdnWeekendGroupCode" />
+                </div>
+                <div style="float: left">
+                    <table>
+                        <tr>
+                            <td>Effective From
+                            </td>
+                            <td style="width: 51%;">
+                                <input style="width: 143%; margin-left: 6%;" type="text" id="txtFrom" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Effective To
+                            </td>
+                            <td>
+                                <input style="width: 143%; margin-left: 6%" type="text" id="txtTo" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 13%; float: left;">Region</div>
+                <div style="width: 70%; float: left;">
+                    <a id="select-all" onclick="fnSelectAllRegion();">Select All</a> | <a onclick="fnUnSelectAllRegion();">Unselect All</a><br />
+                    <div id="tree" style="float: left; height: 350px; width: 38%">
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%; margin-left: 180px; clear: both; padding-top: 15px;"
+                id="dvSave">
+                <div>
+                    <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnSubmit();" />
+                    <input type="button" id="btnReset" value="Reset" class="btn small primary" onclick="fnClearAll();" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div style="width: 100%;" id="dvEdit">
+        <div style="width: 100%;">
+            <div id="dvEditTree" style="width: 20%; float: left">
+                <div id="EditRegiontree" style="float: left; height: 350px; width: 138%">
+                </div>
+            </div>
+            <div style="padding-top: 20px; width: 60%; float: left; margin-left: 10%">
+                <label id="Lbl_Region_name" style="float: left; color: black; font-size: 13px; table-layout: fixed">
+                </label>
+            </div>
+            <div>
+                <input type="hidden" id="hdnEditRegionCode" />
+                <div id="divEdit" style="padding-top: 20px; width: 60%; float: left; margin-left: 10%"></div>
+            </div>
+            <div id="modal2" style="border: 3px solid #676A72; background: #fff; padding: 5px; display: none; position: absolute; margin-left: 50%; width: 34%; height: 60%; overflow: auto">
+                <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal2');">X</span>
+                <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; background-color: #d4cece; color: black">Region Weekend Off Group Mapping</h2>
+                <br />
+                <div style="clear: both">
+                </div>
+                <div id="divModel2">
+                    <table>
+                        <tr>
+                            <td>Region Name </td>
+                            <td>
+                                <label id="Lbl_Region" style="float: left; color: black; font-size: 13px; table-layout: fixed">
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Weekend Off Group</td>
+                            <td>
+                                <input type="text" class="txtGroupname" id="txtgroupname">
+                                <input type="hidden" id="hdngroupnameCode" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>Effective From
+                            </td>
+                            <td>
+                                <input type="text" id="txtFrom_month" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Effective To
+                            </td>
+                            <td>
+                                <input type="text" id="txtTo_month" />
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <input type="button" id="btnEdit" value="Save" class="btn small primary" onclick="fnUpdate();" />
+                    </div>
+                </div>
+
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div style="width: 100%;" id="dvReport">
+        <div style="width: 100%;">
+            <div id="dvreportTree" style="width: 20%; float: left">
+                <div id="Regiontree" style="float: left; height: 530px; width: 100%">
+                </div>
+            </div>
+
+            <div>
+                <input type="hidden" id="hdnRegionCode" />
+                <div id="divReport" style="padding-top: 20px; width: 70%; float: left; margin-left: 5%"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RegionWeekendMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+@*<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js"></script>*@
+<script type="text/javascript">
+    var todaymonth_g = "";
+    var todayyear_g = "";
+
+
+    $(function () {
+        $('#txtFrom').monthpicker();
+        $('#txtFrom_month').monthpicker();
+    });
+    $(function () {
+        $('#txtTo').monthpicker();
+        $('#txtTo_month').monthpicker();
+    });
+
+
+    todaymonth_g = @Html.Raw(Json.Encode(ViewBag.thisMonth));				
+    todayyear_g = @Html.Raw(Json.Encode(ViewBag.thisYear));				
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvTabs").tabs();
+            fnTreeWithChkBoxChildSelction("tree");
+            fnGetWeekendGroupHeader();
+            //fnWeeKEndGroupBindRegionTree("Regiontree");
+            // fnWeeKEndGroupEditRegionTree("EditRegiontree")
+            //fnGetWeekendGroupUpdate();
+            $("#dvTree").show();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+    ////function fnRegionTreeSelect(select, node) {
+    ////}
+    //var selKeys = "", selText = "";;
+    //function fnRegionTreeSelect(node) {
+    //    var lastSelectedNode = node.data.key;
+    //    selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+    //        return node.data.key;
+    //    });
+
+    //}
+
+    //function fnRegionTreeSelect(select, node) {
+    //}
+
+
+    var selKeys = "", selText = "";;
+    function fnRegionTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+
+    }
+
+    function Edit(){
+        fnWeeKEndGroupEditRegionTree("EditRegiontree")
+        fnGetWeekendGroupUpdate();
+    }
+    function Report(){
+        fnWeeKEndGroupBindRegionTree("Regiontree");
+    }
+    function fnRegionTreePostInit() {
+        //get the all users from tree
+        var regionCodes = "";
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "''" + node.data.key + "'',";
+        });
+
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+        $.ajax({
+            type: "POST",
+            url: 'RegionWeekendMapping/GetMappingGroupHeader',
+            data: "RegionCodes=" + regionCodes + "",
+            success: function (jsData) {
+                jsData = eval('(' + jsData + ')');
+                $("#tree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(jsData, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                });
+            }
+        });
+    }
+
+
+    function fnWeekendGroupRegionTreeActivate(node) {
+        $('#hdnRegionCode').val(node.data.key);
+        fnRegionWeekendReport();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+    }
+
+    //Shaow of Repoet screen for region//
+    function fnWeekendGroupRegionTreePostInit() {
+        //get the all users from tree
+        var regionCodes = "";
+        $("#Regiontree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "''" + node.data.key + "'',";
+        });
+
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+        $.ajax({
+            type: "POST",
+            url: 'RegionWeekendMapping/GetMappingGroupHeader',
+            data: "RegionCodes=" + regionCodes + "",
+            success: function (jsData) {
+                jsData = eval('(' + jsData + ')');
+                $("#Regiontree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(jsData, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                });
+            }
+        });
+
+    }
+    //*************************************************************//
+
+    //EDIT SCREEN FUNCTION //
+    function fnWeekendGroupEditRegionTreePostInit() {
+      
+        //get the all users from tree
+        var regionCodes = "";
+        $("#EditRegiontree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "''" + node.data.key + "'',";
+        });
+
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+        $.ajax({
+            type: "POST",
+            url: 'RegionWeekendMapping/GetMappingGroupHeader',
+            data: "RegionCodes=" + regionCodes + "",
+            success: function (jsData) {
+                jsData = eval('(' + jsData + ')');
+                $("#EditRegiontree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(jsData, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                });
+            }
+        });
+
+    }
+
+    function fnWeekendGroupEditRegionTreeActivate(node) {
+        $("#modal2").hide();
+        $('#hdnEditRegionCode').val(node.data.key);
+        //regionname
+        $('#Lbl_Region_name').html(node.data.title);
+        $('#Lbl_Region').html(node.data.title);
+        fnRegionWeekendEdit();
+        $("#spnTreeToggle").html('Show Tree');
+    }
+</script>

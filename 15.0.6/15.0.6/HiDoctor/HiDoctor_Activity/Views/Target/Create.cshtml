@@ -1,0 +1,130 @@
+﻿@model HiDoctor_Activity.Models.TargetModal
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+   @* <div id="sub-page-header">
+        <div class="">
+            <div class="grid grid_24">
+                <div id="divPageHeader">
+                    <h2>
+                        Target</h2>
+                </div>
+            </div>
+        </div>
+    </div>*@
+    <div style="width: 100%; height: auto; font-size: 11px">
+        <div id="divTree1" style='width: 20%; float: left;'>
+            @* <div id="Regiontree">
+                <div id="dvLoad" style="width: 100%; text-align: center; margin-top: 25px; vertical-align: middle">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loading.gif" alt='' />
+                </div>
+            </div>*@
+            <div id="tree" style="height: 600px; width: 98%">
+            </div>
+        </div>
+        <div id="dvMain" style='width: 80%; float: left; display: none'>
+            <div>
+                <div id="dvHeader" class="dvHeader">
+                    Create Target @* <span style="text-decoration: underline; cursor: pointer; float: right"
+                        onclick="fnTargetDetails()">Define Target Detail</span>*@
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            Target Name
+                        </td>
+                        <td>
+                            <input type="text" id="txtTargetName" />
+                            <input type="hidden" id="hdnTargetCode" />
+                            <input type="hidden" id="hdnMode" value="S" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            From
+                        </td>
+                        <td>
+                            <input type="text" id="txtFrom" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            To
+                        </td>
+                        <td>
+                            <input type="text" id="txtTo" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="button" value="Save" class="btn small primary" onclick="fnSubmit()" />
+                            <input type="button" value="Reset" class="btn small primary" onclick="fnClearAll()" />
+                            <input type="hidden" id="hdnTreeNode" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <div class="dvHeader">
+                <p>
+                    Target List</p>
+            </div>
+            <br />
+            <div id="dvTargetDetails">
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+    <div id="popupmodal" class="popup">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/tick.png" alt="" style="display: none;
+            float: left;" id="imgSuccess" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/cross.png" alt="" style="display: none;
+            float: left;" id="imgError" />
+        <div id="dvMessage" style="float: left;">
+        </div>
+        <span style="float: right; cursor: pointer" onclick="Popup.hide('popupmodal')">X</span>
+        @*<input type="button" value="Close" onclick="Popup.hide('popupmodal')" class="btn small primary" />*@
+    </div>
+}
+@*<script src="../../Areas/HiDoctor_Activity/Scripts/HD/popup.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>*@
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/Target.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+    var $this = "";
+    var menuContent = "";
+    var disJson = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#txtFrom').monthpicker();
+            $('#txtTo').monthpicker();
+            if ($.fn.dataTable) { $('.datatable').dataTable({ "sPaginationType": "full_numbers" }); };
+            fnBindRegionTree("tree");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreeActivate(node) {
+        $("#hdnTreeNode").val(node.data.key + "_" + node.data.title);
+        fnTargetHeaderTreeNodeClick();
+    }
+    function fnTargetDetails() {
+        $('#main').load('HiDoctor_Activity/Target/Index');
+    }
+    function fnRegionTreePostInit() {
+        //Tree Post Init
+    }
+</script>

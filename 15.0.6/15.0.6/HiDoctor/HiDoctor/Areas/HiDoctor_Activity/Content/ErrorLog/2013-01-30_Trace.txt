@@ -1,0 +1,834 @@
+11:58:22:320458 : fn-OpenConnection : 1 - data source=192.168.0.17;Initial Catalog=AURA_WallacePharma_04052012;User Id=sa;Password=SwaaSfromfeb2012
+
+_______________________________________________________________________________________________________
+11:58:22:323458 : fn-OpenConnection : 3 - data source=192.168.0.17;Initial Catalog=AURA_WallacePharma_04052012;User Id=sa;Password=SwaaSfromfeb2012
+
+_______________________________________________________________________________________________________
+11:58:22:895458 : fn-OpenConnection : 1 - data source=192.168.0.17;Initial Catalog=AURA_WallacePharma_04052012;User Id=sa;Password=SwaaSfromfeb2012
+
+_______________________________________________________________________________________________________
+11:58:22:896458 : fn-OpenConnection : 3 - data source=192.168.0.17;Initial Catalog=AURA_WallacePharma_04052012;User Id=sa;Password=SwaaSfromfeb2012
+
+_______________________________________________________________________________________________________
+11:59:36:916458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:36:937458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:39:161458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:39:161458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:40:910458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:40:910458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:271458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:271458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:595458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:596458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:915458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:41:915458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:45:042458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:45:042458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:47:435458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:47:436458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:47:792458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:47:792458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:195458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:196458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:563458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:564458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:909458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:48:909458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:49:971458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:49:972458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:50:317458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:50:317458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:50:393458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+11:59:50:393458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:04:56:891458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:04:56:893458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:04:59:099458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:04:59:100458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:00:625458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:00:626458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:00:919458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:00:919458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:01:213458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:01:214458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:01:544458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:01:544458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:06:506458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:06:507458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:08:382458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:08:383458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:08:749458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:08:750458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:081458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:081458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:341458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:341458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:639458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:09:640458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:10:567458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:10:568458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:10:828458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:10:829458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:11:141458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:11:141458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:38:845458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:38:845458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:38:926458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:38:927458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:430458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:431458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:531458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:531458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:615458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:616458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:684458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:685458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:724458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:724458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:865458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:866458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:951458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:40:951458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:41:012458 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:05:41:012458 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:56:382228 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:56:385228 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:58:359425 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:58:359425 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:1045 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:1045 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:167506 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:167506 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:249514 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:249514 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:316521 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:09:59:316521 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:02:174807 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:02:175807 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:1089 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:1089 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:150904 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:150904 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:20491 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:20491 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:254915 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:255915 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:295919 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:295919 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:671957 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:672957 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:738963 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:738963 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:776967 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:03:777967 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:19:625552 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:19:625552 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:19:680557 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:19:680557 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:313621 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:314621 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:41163 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:41263 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:535643 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:536643 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:585648 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:585648 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:624652 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:624652 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:729662 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:729662 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:775667 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:776667 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:823672 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:10:20:823672 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:04:568046 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:04:569046 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:17:297318 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:17:298318 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:34:189007 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:34:190007 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:42:329821 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:42:330821 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:43:01889 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:43:01889 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:45:902179 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:45:903179 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:46:029191 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:46:029191 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:338422 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:338422 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:393428 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:393428 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:444433 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:444433 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:494438 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:494438 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:560444 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:560444 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:990487 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:48:990487 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:49:489537 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:11:49:490537 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:03:302918 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:03:303919 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:03:441932 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:03:441932 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:27:246313 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:27:246313 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:27:399328 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:27:399328 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:30:71966 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:30:71966 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:31:487737 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:31:487737 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:32:613849 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:32:614849 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:33:543942 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:33:543942 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:136101 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:136101 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:337122 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:337122 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:836171 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:12:35:836171 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:16:59:157455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:16:59:158455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:10:835455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:10:836455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:28:964455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:28:964455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:29:853455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:29:853455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:33:347455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:33:348455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:33:699455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:33:699455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:34:002455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:34:003455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:35:088455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:35:089455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:42:281455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:42:338455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:108455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:108455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:546455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:546455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:855455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:43:855455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:44:224455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:44:224455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:44:537455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:44:537455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:244455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:245455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:349455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:349455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:479455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:17:54:480455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:207455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:208455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:306455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:307455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:627455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:51:627455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:050455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:050455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:102455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:103455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:149455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:149455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:189455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:189455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:337455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:18:52:337455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:19:23:017455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:19:23:018455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:19:41:834455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:19:41:835455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:12:151455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:12:152455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:12:308455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:12:308455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:18:761455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:18:761455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:307455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:308455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:344455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:344455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:611455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:612455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:656455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:656455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:697455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:698455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:735455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:735455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:772455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:20:19:772455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:03:928455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:03:929455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:03:994455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:03:995455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:286455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:287455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:495455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:495455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:595455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:07:596455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:023455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:024455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:117455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:118455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:540455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:08:540455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:09:053455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:09:054455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:09:599455 : fn-OpenConnection : 1 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________
+12:21:09:600455 : fn-OpenConnection : 3 - data source=182.18.169.89;Initial Catalog=AURA_TestingMobile_Pfizer_29113;User Id=AURA_Tmpfiz;Password=TesPfiZ29
+
+_______________________________________________________________________________________________________

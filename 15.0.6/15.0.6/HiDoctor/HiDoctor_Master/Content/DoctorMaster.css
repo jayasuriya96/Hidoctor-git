@@ -1,0 +1,839 @@
+﻿
+.tbltr {
+    height: 60px;
+    border-bottom: 1px solid #EFEFEF !important;
+}
+
+.tbltd {
+    width: 98%;
+    padding-top: 15px;
+    border-bottom: 1px solid #EFEFEF !important;
+}
+
+.txtDisplay {
+    -webkit-box-shadow: none !important;
+    -webkit-transition: none !important;
+    border: none !important;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none !important;
+    padding: 0px !important;
+    width: 93% !important;
+    cursor: pointer;
+}
+
+.watermarker {
+    font-style: italic;
+    color: #EFEFEF;
+}
+
+.txtBorder {
+    border: 1px solid #80bfff !important;
+    -moz-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+    -webkit-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+    box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+}
+
+.txtCustomerBorder {
+    height: 30px !important;
+    border: 1px solid #80bfff !important;
+    -moz-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+    -webkit-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+    box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset;
+}
+
+.txtBorderNone {
+    border: none !important;
+}
+
+#tblDoctor.display thead tr {
+    /*background-color: white;*/
+}
+
+#dvDoctors {
+    cursor: pointer;
+}
+
+/*.img_Category {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -279px -1px !important;
+}*/
+
+.dvImg {
+    height: 25px;
+    float: left;
+    margin-right: 3px;
+    padding: 2px;
+    cursor: pointer;
+    width: 15px;
+}
+
+/*.img_MDL_Number {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -342px -1px !important;
+}
+
+.img_Speciality_Code {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -404px -1px !important;
+}
+
+.img_Qualification {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -460px -1px !important;
+}
+
+.imgGender {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -527px -1px !important;
+}
+
+.img_DOB {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -591px -1px !important;
+}
+
+.img_Anniversary_Date {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -650px -1px !important;
+}
+
+.img_Registration_Number {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -716px -1px !important;
+}
+
+.img_Hospital_Name {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -779px -1px !important;
+}
+
+.img_Hospital_Classification {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -839px -1px !important;
+}
+
+.img_Address1 {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -899px -1px !important;
+}
+
+.img_Address2 {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -899px -1px !important;
+}
+
+.img_Local_Area {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -590px -1px !important;
+}
+
+.img_SubRegion_Code {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -1209px -1px !important;
+}
+
+.img_Mobile {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -1026px -1px !important;
+}
+
+.img_Phone {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -1145px -1px !important;
+}
+
+.img_Fax {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -1086px -1px !important;
+}
+
+.img_Email {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -963px -1px !important;
+}*/
+
+.dvAddNew {
+    background: url(../Content/images/btnAddNew.png) no-repeat !important;
+    height: 33px;
+    width: 20%;
+    float: left;
+}
+
+.dvSave {
+    background: url(../Content/images/btnSave.png) no-repeat !important;
+    height: 33px;
+    width: 30%;
+    float: left;
+}
+
+#btnShowProducts {
+    background: url(../Content/images/btnShowProduct.png) no-repeat !important;
+    height: 33px;
+    width: 13%;
+    float: left;
+}
+
+#Customer_Name {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.fontcolor {
+    color: #999;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+    .fontcolor:focus {
+        cursor: pointer;
+    }
+
+.dvlbl {
+    width: 15%;
+    float: left;
+    display: none;
+    padding-top: 7px;
+    color: #999;
+}
+
+.dvWidth {
+    width: 90% !important;
+}
+
+.dvlink {
+    padding-top: 7px !important;
+    float: left;
+    margin-right: 10px !important;
+    width: 15%;
+}
+
+    .dvlink a {
+        text-decoration: none !important;
+        color: #999 !important;
+        width: 100%;
+    }
+
+    .dvlink:hover {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+.dvBackground {
+    background: #F2F2F2 !important;
+}
+
+.dvMain {
+    padding-left: 10%;
+    width: 100%;
+    float: left;
+    height: 37px !important;
+}
+
+.dvSubMain {
+    padding-left: 20%;
+    width: 100%;
+    float: left;
+}
+
+.tblDoctorTr {
+    background: white !important;
+    border-bottom: 1px dotted #DDD !important;
+    border-right: 1px solid #f2f2f2 !important;
+}
+
+#tblDoctor.data thead td {
+    text-align: center !important;
+}
+
+#tblDoctor.data tr td {
+    background: white;
+    border-bottom: 1px dotted #DDD !important;
+    border-right: 1px dotted #DDD !important;
+}
+
+#tblDoctor.data tr td {
+    background: white;
+    border-bottom: 1px dotted #DDD !important;
+}
+
+#tblDoctor.data thead td {
+    background-color: #F8F8F8;
+    border-right: 1px solid #DDD !important;
+}
+
+#tblDoctor.data {
+    cursor: pointer;
+}
+
+#btnRCPA {
+    /*background: url(../Content/images/btnRCPA.png) no-repeat !important;
+    height: 35px;*/
+    float: left;
+    width: 20%;
+    cursor: pointer;
+}
+
+#btnDocProduct {
+    /*background: url(../Content/images/btnDocProduct.png) no-repeat !important;*/
+    /*height: 35px;*/
+    width: 20%;
+    float: left;
+    cursor: pointer;
+}
+
+#btnMoreFields {
+    /*background: url(../Content/images/btnMore.png) no-repeat !important;
+    height: 35px;*/
+    width: 25%;
+    float: left;
+    cursor: pointer;
+}
+
+#dvDoctors div {
+    width: 100% !important;
+}
+
+.imgAdd {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: -62px -1px !important;
+}
+
+.imgDoctor {
+    background-image: url(../Content/images/DoctorMaster.png) !important;
+    background-position: 0px -1px !important;
+}
+
+
+#tblBulkDoctor thead th {
+    border-right: 1px solid #DDD !important;
+}
+
+
+#tblBulkDoctor thead th {
+    text-align: center !important;
+    border-right: 1px solid #DDD !important;
+    background-color: #f2f2f2;
+}
+
+#tblBulkDoctor input[type="text"]:disabled {
+    background-color: white !important;
+}
+
+.dvMore {
+    width: 76px;
+    height: 30px;
+    display: none;
+    cursor: pointer;
+    border: 1px solid #DDD;
+}
+
+.dvDownArrow {
+    background: url('../../Content/images/downarrow.png') no-repeat !important;
+    height: 35px;
+    background-color: #DDE4EA !important;
+    cursor: pointer;
+}
+
+#tblColumns.data tr td {
+    border-bottom: 1px dotted #DDD !important;
+}
+
+#dvBulkDoctor thead tr {
+    background-color: white;
+}
+
+#tblBulkdoctor.even {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+}
+
+#tblBulkdoctor.odd {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+}
+
+#tblBulkDoctor tbody tr {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+    height: 30px !important;
+}
+
+
+    #tblBulkDoctor tbody tr td {
+        border-bottom: 1px dotted #ddd !important;
+        border-right: 1px dotted #ddd !important;
+    }
+
+#tblBulkDoctor tr.even td.sorting_1 {
+    background-color: white !important;
+}
+
+.dvImgText {
+    /*padding-top: 3%;*/
+    color: #999;
+}
+
+.dvImgContainer {
+    width: 50%;
+    float: left;
+    cursor: pointer;
+}
+
+    .dvImgContainer:hover {
+        text-decoration: underline !important;
+        cursor: pointer;
+        /*background-color: #FAFAFA !important;
+        border: 1px solid #F2F2F2;*/
+    }
+
+.dvText {
+    width: 40%;
+    float: left;
+    padding-top: 3px;
+}
+
+
+#tblAddBulkDoctors thead th {
+    border-right: 1px solid #DDD !important;
+}
+
+
+#tblAddBulkDoctors thead th {
+    text-align: center !important;
+    border-right: 1px solid #DDD !important;
+    height: 40px;
+}
+
+#tblAddBulkDoctors input[type="text"]:disabled {
+    background-color: white !important;
+}
+
+#tblAddBulkDoctors.even {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+}
+
+#tblAddBulkDoctors.odd {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+}
+
+#tblAddBulkDoctors tbody tr {
+    background: white !important;
+    background-color: white !important;
+    border-bottom: 1px dotted #ddd !important;
+    height: 30px !important;
+}
+
+
+    #tblAddBulkDoctors tbody tr td {
+        border-bottom: 1px dotted #ddd !important;
+        border-right: 1px dotted #ddd !important;
+        padding-left: 3px;
+    }
+
+#tblAddBulkDoctors tr.even td.sorting_1 {
+    background-color: white !important;
+}
+
+.ScrollDown {
+    background-image: url('/Content/images/gr.png');
+    height: 25px;
+    width: 32px;
+}
+
+.ScrollUp {
+    background-image: url('/Content/images/less.png');
+    height: 25px;
+    width: 32px;
+}
+
+.dvBackHighLight {
+    cursor: pointer;
+    border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+    border-top-color: rgba(0, 0, 0, 0.08) !important;
+    background-color: #FAFAFA !important;
+}
+
+.dvLabel {
+    width: 35%;
+    float: left;
+    padding-top: 1%;
+    padding-left: 3%;
+    color: #999;
+}
+
+/*.clsdvfocus:hover {
+    cursor: pointer;
+    border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+    border-top-color: rgba(0, 0, 0, 0.08) !important;
+    background-color: #FAFAFA !important;
+}*/
+
+/*.dvMain:hover {
+    cursor: pointer;
+    border-bottom: 1px solid #F2F2F2;
+    border-top: 1px solid #F2F2F2;
+    background-color: #FAFAFA !important;
+}*/
+.txtInput {
+    min-width: 150px !important;
+}
+
+    .txtInput:focus {
+        border: 1px solid #80bfff !important;
+        -moz-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset !important;
+        -webkit-box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset !important;
+        box-shadow: 0 0 3px #80bfff, 0 1px 2px rgba(0, 0, 0, .15) inset !important;
+    }
+
+.dataTableTdCss {
+    /*padding: 3px 10px;*/
+    border: none !important;
+    border-bottom: 1px dotted #DDD !important;
+    border-right: 1px dotted #DDD !important;
+    background-color: #fff;
+    /*min-width: 150px !important;
+    width: 150px !important;*/
+}
+
+.dataTableTrCss {
+    height: 30px !important;
+    background: white !important;
+    border-bottom: 1px dotted #DDD !important;
+    border-right: 1px dotted #DDD !important;
+}
+
+.delete {
+    background: url('../Content/images/cross.png') no-repeat !important;
+    height: 20px !important;
+    margin-left: 20px !important;
+    cursor: pointer;
+}
+
+.dvOptions {
+    background: url('../Content/images/options.png') no-repeat !important;
+    height: 45px;
+    cursor: pointer;
+}
+
+#dvPages {
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 17%;
+    position: absolute;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+    #dvPages div {
+        padding-left: 10px;
+        width: 95% !important;
+    }
+
+        #dvPages div:hover {
+            background-color: #f2f2f2;
+        }
+
+/*Coulmn images*/
+.img_Customer_Name {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: 0px 0px !important;
+}
+
+.img_SubRegion_Code {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -42px 0px !important;
+}
+
+.img_Category {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -68px 0px !important;
+}
+
+.img_Speciality_Code {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -94px 0px !important;
+}
+
+.img_Address1 {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -120px 0px !important;
+}
+
+.img_Address2 {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -120px 0px !important;
+}
+
+.img_Local_Area {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -146px 0px !important;
+}
+
+.img_City {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -172px 0px !important;
+}
+
+.img_Pin_Code {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -198px 0px !important;
+}
+
+.img_Phone {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -224px 0px !important;
+}
+
+.img_Mobile {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -250px 0px !important;
+}
+
+.img_Fax {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -276px 0px !important;
+}
+
+.img_Email {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -302px 0px !important;
+}
+
+.img_DOB {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -328px 0px !important;
+}
+
+.img_Anniversary_Date {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -354px 0px !important;
+}
+
+.img_Reminder_Type {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -380px 0px !important;
+}
+
+.img_Reminder_Period {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -406px 0px !important;
+}
+
+.img_Primary_Contact {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -432px 0px !important;
+}
+
+.img_Contact_Relation {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -458px 0px !important;
+}
+
+.img_Primary_Email {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -302px 0px !important;
+}
+
+.img_MDL_Number {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -484px 0px !important;
+}
+
+.img_Qualification {
+    background-image: url(../Content/images/CustomerMaster1.png) !important;
+    background-position: -507px 0px !important;
+}
+
+.img_Remarks {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: 0px 0px !important;
+}
+
+.img_Depot_Code {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -26px 0px !important;
+}
+
+.img_Customer_Group {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -52px 0px !important;
+}
+
+.img_Drug_License_Number1 {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -78px 0px !important;
+}
+
+.img_Drug_License_Number2 {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -78px 0px !important;
+}
+
+.img_Product_Discount_Applicable_Status {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -104px 0px !important;
+}
+
+.img_Special_Discount_Rate {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -138px 0px !important;
+}
+
+.img_Octroi_Rate {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_Octroi_Reimbursment_Status {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_Place_Type {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -200px 0px !important;
+}
+
+.img_Registered_Delear_Status {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -226px 0px !important;
+}
+
+.img_Tax_Exempted_Status {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_Party_Location {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -252px 0px !important;
+}
+
+.img_Additional_Surcharge_Status {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_Tin_Number {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -278px 0px !important;
+}
+
+.img_CST_Number {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -278px 0px !important;
+}
+
+.img_Destination_Place {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -304px 0px !important;
+}
+
+.img_Locked {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -330px 0px !important;
+}
+
+.img_CForm_Availability {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_CST_Applicable {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -170px 0px !important;
+}
+
+.img_Registration_Number {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -278px 0px !important;
+}
+
+.img_Hospital_Name {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -356px 0px !important;
+}
+
+.img_Hospital_Classification {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -382px 0px !important;
+}
+
+.img_Registration_No {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -278px 0px !important;
+}
+
+.img_Sur_Name {
+    background-image: url(../Content/images/CustomerMaster2.png) !important;
+    background-position: -52px 0px !important;
+}
+
+.btnApproval {
+    background: url(../Content/images/btnApproval.png) no-repeat !important;
+    width: 18%;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.btnCopy {
+    background: url(../Content/images/btnCopyRegion.png) no-repeat !important;
+    width: 27%;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.btnChangeRegion {
+    background: url(../Content/images/btnChangeRegion.png) no-repeat !important;
+    width: 55%;
+    height: 40px;
+    cursor: pointer;
+}
+
+.btnGetDoctors {
+    background: url(../Content/images/btnGetDoctor.png) no-repeat !important;
+    width: 15%;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.tooltip {
+    background-color: #ffa;
+    border: 1px solid #cc9;
+    padding: 3px;
+    font-size: 13px;
+    -moz-box-shadow: 2px 2px 11px #666;
+    -webkit-box-shadow: 2px 2px 11px #666;
+}
+
+.docProDelete {
+    background: url('../Content/images/cross.png') no-repeat !important;
+    height: 20px;
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+.txtSearchImg {
+    background: #FFFFFF url(../Content/images/search.png) no-repeat 4px 4px !important;
+    padding: 4px 4px 4px 22px !important;
+    border: 1px solid #CCCCCC;
+    width: 140px;
+    height: 15px;
+    float: right;
+}
+
+
+.TableTools_csv {
+    display: none !important;
+}

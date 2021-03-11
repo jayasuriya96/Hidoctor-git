@@ -1,0 +1,1099 @@
+﻿@{
+    ViewBag.Title = "ExpenseClaimMonthRequest";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<style>
+    #dvLeftPanel {
+        background-color: #efefef;
+    }
+
+    #dvRightPanel {
+        border: 1px solid #ddd;
+    }
+
+    #dvPendingClaimTitle {
+        border-bottom: 1px solid white;
+        height: 50px;
+        padding-top: 1%;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    #dvPendingClaim {
+        /*background-color: #efefef;*/
+    }
+
+        #dvPendingClaim table {
+            width: 100% !important;
+            cursor: pointer;
+        }
+
+        #dvPendingClaim #tblPendingRequest table:first-child {
+            border-top: 1px solid white;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr td {
+            vertical-align: middle !important;
+            border-bottom: 1px solid white;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr:hover {
+            background-color: #ddd;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr td div {
+            vertical-align: middle !important;
+            float: left;
+        }
+
+        #dvPendingClaim .user {
+            height: 32px;
+            background: url(../Content/images/Entity.png) no-repeat 50% 50%;
+            float: left;
+            border: 1px solid #ddd;
+        }
+
+        #dvPendingClaim .calender {
+            height: 25px;
+            background: url(../Content/images/cal.png) no-repeat 0 50%;
+            float: left;
+        }
+
+        #dvPendingClaim .remarks {
+            height: 25px;
+            background: url(../Content/images/chat.png) no-repeat 0 50%;
+            float: left;
+        }
+
+    /*#dvEmpDetails {
+        background-color: #428bca;
+        color: white;
+        height: 30px;
+    }
+
+    #dvClaimHeder {
+        background-color: #428bca;
+        color: white;
+        height: 30px;
+    }
+
+    #dvOtherDeduction {
+        background-color: #428bca;
+        color: white;
+        height: 30px;
+    }
+
+    #dvRemarks {
+        background-color: #efefef;
+        color: white;
+        height: 30px;
+    }*/
+
+    /*.dvclaimTitle {
+        background-color: #428bca;
+        color: white;
+        height: 30px;
+        font-size: 14px;
+        padding-top: 3px;
+        margin-top: 1%;
+    }*/
+
+
+
+    #tblExpDetails {
+        width: 100%;
+    }
+
+        #tblExpDetails thead {
+            background-color: #428bca !important;
+            color: white;
+            height: 30px;
+            padding-top: 3px;
+        }
+
+        #tblExpDetails table tr {
+            height: 25px;
+        }
+
+    #tbldocCRMEdit {
+        width: 100%;
+    }
+
+        #tbldocCRMEdit thead {
+            background-color: #428bca !important;
+            color: white;
+            height: 30px;
+            padding-top: 3px;
+        }
+
+        #tbldocCRMEdit table tr {
+            height: 25px;
+        }
+
+
+    .dvClaimCode {
+        font-size: 16px;
+        font-weight: bold;
+        padding-top: 5px;
+        float: left;
+    }
+
+    .table td {
+        border-top: 1px solid white !important;
+    }
+
+    #tblRemarks {
+        width: 100%;
+    }
+
+        #tblRemarks .user {
+            height: 32px;
+            background: url(../Content/images/Entity.png) no-repeat 50% 50%;
+            float: left;
+            width: 35px;
+            border: 1px solid #ddd;
+            margin-right: 1%;
+        }
+
+    .tdAlignRight {
+        text-align: right;
+        padding-right: 2%;
+    }
+
+    .btnStatus {
+        height: 25px;
+        width: 100px;
+        float: left;
+        padding-left: 1%;
+        min-height: 10px;
+        border: 1px solid green;
+        margin-left: 5px;
+        background-color: #D6EFDE;
+        cursor: pointer;
+    }
+
+    .dvEnteredRemarks {
+        border: 1px solid #ddd;
+        background-color: #F5F5F5;
+        width: 80%;
+        margin-left: 5%;
+        min-height: 35px;
+    }
+
+    #dvAction {
+        padding-top: 1%;
+    }
+
+    #txtAdminRemarks {
+        width: 82%;
+    }
+
+    #dvBottomStatus {
+        overflow: auto;
+        margin-bottom: 3%;
+        padding-left: 10%;
+    }
+
+    .simple_overlay {
+        min-height: 100px;
+        width: 67%;
+    }
+
+    #modal {
+        height: 780px !important;
+        overflow: auto !important;
+        width: 980px;
+    }
+
+    .lnkdownload a {
+        color: blueviolet !important;
+    }
+
+    .clsApplied {
+        background-color: #00A2E8;
+    }
+
+    .clsUnapprove {
+        background-color: #F26269;
+    }
+
+    .clsDraft {
+        background-color: #FFAEC9;
+    }
+
+    .cls_approve_odd {
+        background-color: #f9f9f9;
+    }
+
+    .clsLockLeave {
+        background-color: #808080;
+    }
+
+    .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+        background: none !important;
+    }
+
+    .clsExptotallegend {
+        color: red;
+        font-style: italic;
+    }
+
+    .simple_overlayCus {
+        width: 41%;
+    }
+
+    .usertreeCus {
+        min-height: 250px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        height: 500px;
+    }
+
+    #BoxUpload {
+        border: 1px solid;
+        height: 150px;
+        width: 500px;
+        overflow: scroll;
+    }
+
+    #BoxUpload1 {
+        border: 1px solid;
+        height: 200px;
+        width: 500px;
+        overflow: scroll;
+    }
+
+    #Document {
+        height: 40px;
+        width: 150px;
+        background-color: blue;
+    }
+
+    #dvExpDown {
+        float: left;
+        margin-bottom: 8px;
+    }
+
+    #ChooseFile, #ChooseFile1 {
+        padding: 10px;
+    }
+
+    #referal, #referal1 {
+        background: #5E87B0;
+        color: #fff;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+    .DCRurl
+    {
+         padding: 10px;
+         text-decoration: underline;
+          color: blue;
+    }
+</style>
+<div id="dvTabs" class="col-lg-12  form-group">
+    <ul>
+
+        <li><a href="#dvEntryTab" onclick="fnEditClear()" id="advEntryTab">Expense Claim Request</a></li>
+        <li><a href="#dvSummaryTab" onclick="fnEditClear()">Summary</a></li>
+        <li><a href="#dvEditTab" id="dvEdit" style="display: none">Edit</a></li>
+    </ul>
+    <div id="dvEntryTab" class="col-lg-12  form-group">
+        <div class="col-lg-12 alert alert-success form-group" id="finalAlert" style="display: none;"></div>
+        <div id="dvFavouringUser" class="col-lg-12">
+            <div class="col-lg-3 form-group">
+                <label>Favouring User</label>
+            </div>
+            <div class="col-lg-3 form-group">
+                <input type="text" id="ddlFavouringUser" placeholder="Select FavouringUser">
+                @*<select id="ddlFavouringUser" class="form-control">*@
+                @*<option value="-1">-Select FavouringUser-</option>*@
+                @*</select>*@
+            </div>
+            <div class="col-lg-6 form-group"></div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div style="margin-left: 26%;">
+                <a href="#" onclick="fnUserhierarchy();" class="td-a">Show user hierarchy</a>
+            </div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-3 form-group">
+                <label>Request</label>
+            </div>
+            <div class="col-lg-3 form-group">
+                <select id="ddlRequest" class="form-control">
+                    <option value="">-Select Request-</option>
+                </select>
+                <input type="hidden" id="hdnMainStatusCode" />
+                <input type="hidden" id="hdnRegionName" />
+            </div>
+            <div class="col-lg-6 form-group"></div>
+            <div style="clear: both"></div>
+        </div>
+
+
+        <div class="simple_overlay simple_overlayCus" id="docDetail">
+            <a class="close"></a>
+            <a class="overlayclose" onclick="$('#docDetail').overlay().close();"></a>
+            <div id="usertree" class="usertreeCus">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+        </div>
+        <div style="display: none;" class="col-lg-12 form-group dvDCRDates">
+            <div class="col-lg-3 form-group">
+                <label>DCR Month</label>
+            </div>
+            <div class="col-lg-2 form-group">
+                <input type="text" id="txtMonth" class="input-large form-control" />
+            </div>
+            @*
+                <div class="col-lg-2 form-group">
+                    <label>DCR Date To</label>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <input type="text" id="txtToDate" class="input-large form-control datepicker" />
+                </div>
+            *@
+            @*<div class="col-lg-3 form-group"><a onclick="fnOpenFWA();" class="td-a">Field Work Analysis</a></div>
+            *@
+            <div style="clear: both"></div>
+        </div>
+        <div style="display: none;" class="col-lg-12 form-group dvDCRDates">
+            <div class="col-lg-3 form-group"></div>
+            <div class="col-lg-3 form-group">
+                <input type="button" class="btn btn-primary" value="Show Expenses" onclick="fnShowDCRExpenseDetails(true);" />
+            </div>
+            <div class="col-lg-6 form-group"></div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div style="display: none;" id="dvDoctorCRMButton" class="col-lg-12 form-group">
+            <div class="col-lg-3 form-group"></div>
+            <div class="col-lg-3 form-group">
+                <input type="button" class="btn btn-primary" value="Show Entry Grid" onclick="fnShowDoctorCRMEntryGrid();" />
+            </div>
+            <div class="col-lg-6 form-group"></div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvDetailEntry" class="col-lg-12 form-group">
+        </div>
+        <div class="col-lg-12 form-group" id="dvExpFooter" style="display: none">
+            <div id="AddlExpense" style='font-weight: bold;padding-left: 0px;display:none;' class="col-lg-12 form-group">
+
+            </div>
+            <div id="dvTotExpTypeWise" class="col-lg-12 form-group">
+                <div id="ExpenseTypeName" class="col-lg-3 form-group">
+                </div>
+                <div class="col-lg-4 form-group clsExptotallegend">Note: Only approved records amount will be considered for total.</div>
+                <div class="col-lg-5 form-group" id="dvNew">
+                    <div>
+                        <label id="referal">Referral Documents</label>
+                    </div>
+
+                    <div id="BoxUpload">
+                        <div class="attblock" id="attachment"></div>
+                    </div>
+                    <div id="Expbutton">
+                        <div class="col-lg-12">
+                            <div class="col-lg-6" id="uploadfile">
+                            </div>
+                            <div class="col-lg-6" id="URL" style="text-align:right;">
+                                <label class="DCRurl" onclick="fnshowurl('Entry')"> Choose file from DCR</label> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div><input type="button" value="Upload" class="btn btn-primary" id="btupload" onclick="fnUploadImage()" /></div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div id="dvTotExp" class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Total Expenses Claim Amount &#8377;:</label>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <input type="text" id="txtTotExpense" value="0.00" readonly="readonly" class="input-large form-control" />
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Remarks</label>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <textarea id="txtRemarks" class="form-control"></textarea>
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group"></div>
+                <div class="col-lg-5 form-group">
+                    <input type="button" class="btn btn-primary" value="Submit Expense" id="submitexpense" onclick="fnSaveExpenseClaim();" />
+                    <input type="button" class="btn btn-primary" value="Cancel" onclick="fnCancelExpense_redirect();" />
+                </div>
+                <div class="col-lg-4 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    <div class="col-lg-12 form-group" id="dvCRMSubmit">
+        <div class="col-lg-3 form-group"></div>
+        <div class="col-lg-5 form-group">
+            <input type="button" class="btn btn-primary" value="Submit Expense" onclick="fnSaveCRM();" />
+            <input type="button" class="btn btn-primary" value="Cancel" onclick="fnCancelExpense();" />
+        </div>
+        <div class="col-lg-4 form-group"></div>
+        <div style="clear: both"></div>
+    </div>
+
+    <div id="dvSummaryTab" class="col-lg-12  form-group">
+        <div id="dvTablePrint" style="display: none;" class="col-lg-12 form-group clearfix">
+            <div class="col-lg-12 form-group clearfix">
+                <label>Selection</label>
+                <input type="radio" id="login" name="exp" value="login">
+                <span>Based On logged User </span>
+                <input type="radio" id="fav" name="exp" value="fav" checked="checked">
+                <span> Based on Favoring User</span>
+            </div>
+            <div  class="col-lg-12 form-group clearfix">
+                <div id="userDv" style="display:none" class="col-lg-3">
+                    <label>UserName:</label>
+                    <div id="dvSearchUserName">
+                        <input class="" type="text" id="UserSrch">
+                    </div>
+                </div>
+                <div id="ReqDv" style="display:none" class="col-lg-3">
+                    <label>Requested Date:</label><input class="form-control" type="text" id="DateDrp">
+                </div>
+                <div id="btnSearchDv" style="display:none" class="col-lg-3">
+                    <div class="col-lg-12" style="line-height:6">
+                        <button class="btn btn-success" style="margin-right:15px" onclick="fnSearchExp();" type="button">Search</button>
+                        <button class="btn btn-primary" onclick="fnResetExp();" type="button">Reset</button>
+                    </div>
+                </div>
+                <div style="float: right;" class="col-lg-3 td-a lnkdownload">
+                    @Html.ActionLink("Click here to Download Excel", "GetExpenseClaimSummaryExcel", new { })
+                </div>
+            </div>
+        </div>
+
+        <div id="dvSummaryTabSub" class="col-lg-12 form-group">
+        </div>
+    </div>
+
+
+    <div id="dvEditTab" class="col-lg-12  form-group" style="display: none;">
+        <div class="col-lg-12">
+            <div style="overflow: auto;">
+                <div class="col-lg-6">
+                    <div class="dvClaimCode">
+                        Expense Claim Request :
+                    </div>
+                    <div id="dvClaimCode" class="dvClaimCode" style="float: left;"></div>
+                </div>
+                <div class="col-lg-6" id="dvAction">
+                    <input type="button" class="btn btn-primary" value="Apply Expense" onclick="fnUpdateExpenseClaim('S');" />
+                </div>
+            </div>
+            <div class="col-lg-12" id="dvClaimStatus"></div>
+            <div style="clear: both;"></div>
+            <input type="hidden" id="hdnStatusCode" />
+            <input type="hidden" id="hdnClaimCode" />
+            <input type="hidden" id="hdnRequest" />
+            <input type="hidden" id="hdnFavouringUserCode" />
+            <input type="hidden" id="hdnDCRMonth" />
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" id="dvEmpDetails">Employee Details</div>
+            <div class="col-lg-12 panel-body table-responsive">
+                <table style="width: 80%;" class="table">
+                    <tr>
+                        <td>Employee No</td>
+                        <td><span id="spnEmployeeNo"></span></td>
+                        <td>Reporting Manager Name</td>
+                        <td><span id="spnReportingUserName"></span></td>
+                    </tr>
+                    <tr>
+                        <td>User Name</td>
+                        <td><span id="spnClaimUserName"></span></td>
+                        <td>Reporting Region Name</td>
+                        <td><span id="spnReportingRegionName"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Employee Name</td>
+                        <td><span id="spnEmployeeName"></span></td>
+                        <td>Employee Bank Account No</td>
+                        <td><span id="spnEmpAccountNo"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Region Name</td>
+                        <td><span id="spnRegionName"></span></td>
+                        <td>Mobile No</td>
+                        <td><span id="spnMobileNo"></span></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="panel panel-default notForOthers" id="dvClaimDetailsPanel">
+            <div class="panel-heading" id="dvExpDetails">Expense item details <a class="td-a" id="aExpDetails" onclick="fnExpandItemwiseDetails();">Hide</a></div>
+            <div class="panel-body">
+                <div id="dvClaimDetails" class="table-responsive">
+                    <input type="hidden" id="hf_refdtls" />
+                    <input type="hidden" id="hf_remarks" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <span style="color: red; font-weight: bold; font-style: oblique; margin-left: 2%;">A red color record indicates that the DCR on that date was unapproved, and hence the claim could be re-submitted if needed. </span>
+        </div>
+        <div class="panel panel-default notForOthers" id="dvAddlClaimPanel">
+            <div class="panel-heading" id="dvAddlExp">Additional Expense</div>
+            <div class="panel-body">
+                <div id="dvAddlClaimDetails" class="table-responsive">
+                    <div class='table-responsive'>
+                        <table class='table table-striped AprExpCls' id='tblAddlAprExpense' cellspacing='0' cellpadding='0'>
+                            <thead>
+                                <tr>
+                                    <th>DCR Date</th>
+                                    <th>Flag</th>
+                                    <th>Category</th>
+                                    <th>Expense Type</th>
+                                    <th>Expense Amount</th>
+                                    <th>Reference Details</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="AddlExpBdy"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default notForOthers" id="dvAddlClaimRefPanel">
+            <div class="panel-heading" id="dvAddlExpRef">Additional Expense item Reference<a class="td-a" id="aAddlUnApExpDetails" onclick="fnExpandAddlExpRefDetails();">Hide</a></div>
+            <div class="panel-body">
+                <div id="dvAddlUnApClaimDetails" class="table-responsive">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="panel panel-default notForOthers" id="dvTotExpTypeWiseEdit">
+
+                <div class="panel-heading" id="dvExptypeWiseDetails">Total Expenses Type Wise Amount</div>
+                <div class="col-lg-12 table-responsive">
+                    <div id="ExpenseTypeNameEdit" class="col-lg-6 table-responsive">
+                    </div>
+                    <div class="col-lg-6 form-group" id="dvNew1" style="z-index:80">
+                        <div>
+                            <label id="referal1">Referral Documents</label>
+                        </div>
+
+                        <div id="BoxUpload1">
+                            <div id="block">
+                                <div  class="attblock" id="stable"></div>
+                                <div id="attachment1"></div>
+                            </div>
+                        </div>
+
+                        <div id="Expbutton1">
+                            <div class="col-lg-12">
+                                <div class="col-lg-6" id="uploadfile1">
+                                </div>
+                                <div class="col-lg-6" id="URL1" style="text-align:right;">
+                                    <label class="DCRurl" onclick="fnshowurl('Edit')"> Choose file from DCR</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    <div><input type="button" value="Upload" class="btn btn-primary" id="btupload1" onclick="fnUploadImage2()" />
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dvTotExp" class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Total Expenses Claim Amount &#8377;:</label>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <input type="text" id="txtTotExpenseEdit" value="0.00" readonly="readonly" class="input-large form-control" />
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Remarks</label>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <textarea id="txtRemarks" class="form-control"></textarea>
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div class="panel panel-default notForOthers" style="display: none">
+                <div class="panel-heading" id="dvOtherDeduction">Other deduction</div>
+                <div class="pane-body table-responsive form-group">
+                    <table style="width: 50%;" class="table">
+                        <tr>
+                            <td>Item Wise Deduction </td>
+
+                            <td class="tdAlignRight"><span id="spnItemwiseDeduction"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Deduction</td>
+                            <td class="tdAlignRight">
+                                <span id="spnOtherDeductionAmount"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Total Claimed Amount</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalClaimAmount"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Total Deduction</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalDeductionAmount"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalApprovedAmount"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvRemarks">Remarks</div>
+                <div class="panel-body" id="dvConRemarks">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div id="dvBottomStatus">
+                    <input type="button" class="btn btn-primary" value="Apply Expense" onclick="fnUpdateExpenseClaim('S');" />
+
+                </div>
+            </div>
+        </div>
+        <a href="#" class="scrollup">Scroll</a>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="margin-top:200px;width:500px;margin-left:330px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Expense Additional Claim</h4>
+            </div>
+            <div class="modal-body" style="height:130px;">
+                <div class="col-lg-12 clearfix">
+                    <div class="col-lg-4">
+                        <label>Expense Type Name:</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input id="ExpNameModal" class='form-control AutoDcrExp' type="text" value="" />
+                        <input id="hdnExpCodeModal" type="hidden" value="" />
+                    </div>
+                </div>
+                <br />
+                <div class="col-lg-12 clearfix">
+                    <div class="col-lg-4">
+                        <label>Expense Amount:</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input id="ExpAmtModal" class='form-control' type="text" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <button type="button" style="text-align:center;" class="btn btn-success" id="btnAddlExpSave" onclick="fnAddExpDetails()">Save</button>
+                    <button type="button" style="text-align:center;" class="btn btn-danger" id="btnAddlExpClear" data-dismiss="modal">Cancel</button>
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ExpEditModal" role="dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="margin-top:200px;width:500px;margin-left:330px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Expense Additional Claim</h4>
+            </div>
+            <div class="modal-body" style="height:130px;">
+                <div class="col-lg-12 clearfix">
+                    <div class="col-lg-5">
+                        <label>Expense Type Name:</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input id="ExpNameEditModal" class='form-control AutoDcrExpEdit' type="text" value="" />
+                        <input id="hdnExpCodeEditModal" type="hidden" value="" />
+                    </div>
+                </div>
+                <br />
+                <div class="col-lg-12 clearfix">
+                    <div class="col-lg-5">
+                        <label>Expense Amount:</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input id="ExpAmtEditModal" class='form-control' type="text" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <button type="button" style="text-align:center;" class="btn btn-success" id="btnAddlExpSaveEdit" onclick="fnAddExpDetEdit()">Save</button>
+                    <button type="button" style="text-align:center;" class="btn btn-danger" id="btnAddlExpClearEdit" data-dismiss="modal">Cancel</button>
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="AttModal" role="dialog">
+        <div style="background: none;border: none;box-shadow: none;" class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Expense Attachment</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="ExpContent">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="dvSFCPopUp" class="simple_overlay">
+        <a class="overlayclose" onclick="$('#dvSFCPopUp').overlay().close();"></a>
+        <div class="popUpTitle" style="height: 45px;">
+            <span id="spnPopUpTitle">DCR SFC Details</span>
+        </div>
+        <div id="dvSFC" style="max-height: 490px; overflow: auto;"></div>
+    </div>
+
+    <div id="dvHistoryPopUp" class="simple_overlay">
+        <a class="overlayclose" onclick="$('#dvHistoryPopUp').overlay().close();"></a>
+        <div class="popUpTitle" style="height: 45px;">
+            <span id="spnPopUpTitle">Expense Claim Status History</span>
+        </div>
+        <div id="dvClaimHistoryPopUp" style="max-height: 490px; overflow: auto;"></div>
+    </div>
+
+    <div id="dvOverLay" class="simple_overlay">
+        <a class="overlayclose" onclick="$('#dvOverLay').overlay().close();"></a>
+        <div class="popUpTitle" style="height: 45px;">
+            <span id="spnPopUpTitleField"></span>
+        </div>
+        <div id="divclaimDeductionDetail" style="max-height: 490px; overflow: auto;"></div>
+    </div>
+
+    <div id="dvDoctorClaimPopUp" class="simple_overlay">
+        <a class="overlayclose" onclick="$('#dvDoctorClaimPopUp').overlay().close();"></a>
+        <div class="popUpTitle" style="height: 45px;">
+            <span id="spnPopUpTitleCRM"></span>
+        </div>
+        <div id="dvDoctorClaimPopUpDetail" style="max-height: 490px; overflow: auto;"></div>
+    </div>
+
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+
+    <iframe id="ifrmPrintPopUp" style="height: 0px; width: 0px;"></iframe>
+    <div id="dvPrintPopupContent" style="display: none;">
+    </div>
+    <iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+    <div id="divPrint" style="display: none;"></div>
+    <div id="div" style="display: none;"></div>
+    <iframe id="ifrmSummaryPrint" style="height: 0px; width: 0px;"></iframe>
+    <div id="divSumPrint" style="display: none;"></div>
+    <div id="dvPrintTotal"></div>
+
+    <div id="dvStockiest" class="simple_overlay" style="width: 665px !important; min-height: 500px !important; overflow: scroll; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <a class="overlayclose" style="margin: 10px;" onclick="fnStockiestClose();"></a>
+        <div>
+            <div class="popUpTitle" style="height: 45px;">
+                <span style="font-weight: bold">CustomerWise Stockiest Entry</span>
+            </div>
+            <br />
+            <div style="height: 325px;" class="col-lg-12">
+                <div id="dvStock" class="col-lg-12">
+                </div>
+                <div class="col-lg-12" style="clear: both;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DCRURL" role="dialog">
+    <div style="background: none;border: none;box-shadow: none;" class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 682px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <div id="BindDCRURL" style="max-height: 420px;overflow-y: auto;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="attsave"  onclick="fnattchement('Entry')">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="DCRURLEdit" role="dialog">
+    <div style="background: none;border: none;box-shadow: none;" class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 682px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <div id="BindDCRURLEdit" style="max-height: 420px;overflow-y: auto;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="attsave" onclick="fnattchement('Edit')">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/ExpenseClaimforMonth.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var expenseintPrivilege_g = "";
+    var ExpenseRow="";
+    var Userdropdown="";
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    var fieldExp = "";
+    var doctorCRM = "";
+    var request_g = "";
+    var favouringuser_g= "";
+    var cycleCode_g = "";
+    var SelFavUser_g="";
+    var Company_Code="";
+    var CurrUserCode_g="";
+    var CurUserName="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvCRMSubmit').hide();
+        //$('#dvSummaryTab').hide();
+        //$('#dvSummaryTabSub').hide();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            $("#dvStockiest").overlay().load();
+            var regionName=@Html.Raw(Json.Encode(ViewBag.regionName));
+            expenseintPrivilege_g=@Html.Raw(Json.Encode(ViewBag.expense_Privilege_name));
+            CurrUserCode_g=@Html.Raw(Json.Encode(ViewBag.CurUserCode));
+            var request = @Html.Raw(Json.Encode(ViewBag.request));
+            var favouringUser = @Html.Raw(Json.Encode(ViewBag.favouringUser));
+            var claimCode = @Html.Raw(Json.Encode(ViewBag.claimCode));
+            cycleCode_g = @Html.Raw(Json.Encode(ViewBag.cycleCode));
+            Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+            CurUserName = @Html.Raw(Json.Encode(ViewBag.CurUserName));
+            if(claimCode != null && claimCode != "")
+            {
+                $("#hdnClaimCode").val(claimCode);
+            }
+
+            if(request != null)
+            {
+                request_g = request;
+                //$("#ddlRequest").val(request);
+            }
+            if(favouringUser != null)
+            {
+                favouringuser_g = favouringUser;
+                //$("#ddlFavouringUser").val(favouringUser);
+            }
+
+
+            $("#hdnRegionName").val(regionName);
+            $("#dvTabs").tabs();
+
+            debugger;
+            $('#txtMonth').monthpicker();
+            $('#DateDrp').monthpicker();
+            $("#ddlRequest").unbind().bind("change",function () {  ddlRequest_onChange() });
+            $("#ddlFavouringUser").unbind().bind("change", function () { ddlFavouringUser_OnChange() });
+            var monthName = fnGetLastMonthName(fnMonthName());
+            var SrchMonthName=fnMonthName();
+            var year=curdate.split('.')[2]
+            if(monthName=='Dec')
+                year--;
+            $("#txtMonth").val(monthName + '-' +year );
+            $("#DateDrp").val(SrchMonthName + '-' +year );
+            fieldExp = fnGetPrivilegeValue("FIELD_EXPENSE_REQUEST_FOR", "");
+            doctorCRM = fnGetPrivilegeValue("REQUEST_CUSTOMER_FOR", "");
+            var ChangedFavUser='';
+            if (favouringUser==null?"":favouringUser!="") {
+                ChangedFavUser=favouringUser;
+            }
+            else{
+                ChangedFavUser=$("#ddlFavouringUser").val()==null?"":$("#ddlFavouringUser").val();
+            }
+            if(ChangedFavUser!=""){
+                fnGetFavouringUser();
+                fnBindRequestAndFavouringUserSel(ChangedFavUser);
+            }
+            else{
+                fnBindRequestAndFavouringUser();
+                //fnBindExpenseClaimSummary();
+            }
+            fnBindUserTree("usertree");
+            fnUserhierarchy();
+            fnLoadData();
+            $("#dvAjaxLoad").hide();
+            $("input[name='exp']").click(function(){
+                debugger;
+                if($('input:radio[name=exp]:checked').val() == "login"){
+                    Userdropdown.enabled = false;
+                    fnSearchExp();
+                }
+                else{
+                    Userdropdown.enabled = true;
+                }
+            });
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    if(CurrUserCode_g==favouringuser_g){
+        favouringuser_g="";
+
+    }
+    $("#dvSFCPopUp").overlay().load();
+    $("#dvHistoryPopUp").overlay().load();
+    $("#dvFieldClaimPopUp").overlay().load();
+    $("#dvDoctorClaimPopUp").overlay().load();
+
+    function fnMonthName(date) {
+        var month = new Array(12);
+        month[1] = "Jan";
+        month[2] = "Feb";
+        month[3] = "Mar";
+        month[4] = "Apr";
+        month[5] = "May";
+        month[6] = "Jun";
+        month[7] = "Jul";
+        month[8] = "Aug";
+        month[9] = "Sep";
+        month[10] = "Oct";
+        month[11] = "Nov";
+        month[12] = "Dec";
+        if(date == null || date == "")
+        {
+            return month[parseInt(curdate.split('.')[1])];
+        }
+        else if(date.indexOf("/") > -1)
+        {
+            var dateArr = date.split("/");
+            return month[parseInt(dateArr[1])];
+        }
+    }
+    function fnGetLastMonthName(monthName)
+    {
+        switch(monthName.toLowerCase()){
+            case 'jan':
+                return 'Dec';
+            case 'feb':
+                return 'Jan';
+            case 'mar':
+                return 'Feb';
+            case 'apr':
+                return 'Mar';
+            case 'may':
+                return 'Apr';
+            case 'jun':
+                return 'May';
+            case 'jul':
+                return 'Jun';
+            case 'aug':
+                return 'Jul';
+            case 'sep':
+                return 'Aug';
+            case 'oct':
+                return 'Sep';
+            case 'nov':
+                return 'Oct';
+            case 'dec':
+                return 'Nov';
+
+        }
+    }
+    function fnOpenFWA() {
+        $.modal({ ajax: '../HiDoctor_Reports/Reports/FWAIndex', title: 'Field Work Analysis', overlayClose: false });
+    }
+    $("#dvOverLay").overlay().load();
+    function fnUserTreePostInit()
+    {
+    }
+    function fnUserTreeNodeClick(node)
+    {
+        debugger;
+        UserPreDropdown.value = node.data.key
+        ddlFavouringUser_OnChange();
+        $('#docDetail').overlay().close();
+    }
+    function fnUserhierarchy()
+    {
+        $('#docDetail').overlay().load();
+    }
+</script>

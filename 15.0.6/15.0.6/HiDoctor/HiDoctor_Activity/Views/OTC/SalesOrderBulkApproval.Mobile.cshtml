@@ -1,0 +1,97 @@
+﻿<style type="text/css">
+    .SOALeft {
+        float: left;
+        width: 10%;
+    }
+
+    .SOARight {
+        float: left;
+        width: 89%;
+        padding: 5px 0px 5px 10px;
+        border-left: 1px solid #d3d3d3;
+        background-color: #efefef;
+    }
+
+    .SOARow, .SOARowMain {
+        float: left;
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .SOARowMain {
+        border-bottom: 1px solid #d3d3d3;
+    }
+
+    .ui-checkbox .ui-btn-icon-left .ui-icon {
+        left: 2px !important;
+    }
+</style>
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnSalesOrderBA"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+
+<div data-theme="b" data-role="header">
+    <a data-role="button" href="#page1" data-icon="arrow-l" data-iconpos="notext"
+        class="ui-btn-right" onclick="fnOpenApproveOrder();"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Sales Order - Approval
+        </h5>
+    </div>
+</div>
+
+<div data-role="content">
+    <div data-role="fieldcontain">
+        <label for="ddlSOAUnderUserList">
+            Subordinates List:
+           
+        </label>
+        <select id="ddlSOAUnderUserList" name="" data-theme="b">
+        </select>
+    </div>
+    <div data-role="fieldcontain">
+        <label for="textarea1">
+            Order Details           
+        </label>
+        <a onclick="fnSelectAllOrderForApproval();">Select All</a> | <a onclick="fnUnSelectAllOrderForApproval();">Unselect All</a>
+    </div>
+
+    <div id="dvSOApproveOrderDetails" style="margin-bottom: 10px;">
+    </div>
+
+
+    <div data-role="fieldcontain">
+        <label for="SOAApprovalRemarks">
+            Approval / Unapproval Remarks
+           
+        </label>
+        <textarea name="" id="SOAApprovalRemarks" placeholder=""></textarea>
+    </div>
+    <input type="submit" data-theme="b" value="Approve" onclick="fnBulkApprovalUnapproval('1');">
+    <input type="submit" data-theme="b" value="Unapprove" onclick="fnBulkApprovalUnapproval('0');">
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>   
+    var orders_g = new Array();
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnSalesOrderBA').html(loginUserName_g);
+        try {  
+            var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+            // Bind under user drop down List
+            $("#ddlSOAUnderUserList").change(function () { fnBindOrderBulkApproval(); });
+            fnSOABindUnderUser(userCode);  
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+﻿<style type="text/css">
+    .dvWidth {
+        width: 100% !important;
+        font-size: 13px;
+    }
+
+    .dvPadding {
+        padding-left: 5% !important;
+        font-size: 12px !important;
+    }
+
+    .fontBold {
+        font-weight: bold !important;
+    }
+</style>
+
+<div style="clear: both"></div>
+
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <br />
+
+    <div style="width: 100%;" id="dvReport">
+    </div>
+</div>
+<div data-role="footer"></div>
+@Scripts.Render("~/bundles/mobileReportsjs")
+<script type="text/javascript">
+    var userCode = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('span.cls_usernamespn').text(loginUserName_g);
+        userCode= @Html.Raw(Json.Encode(ViewBag.User_Code));    
+        fnGetTPHeaderDetails(userCode);
+    });
+
+
+</script>

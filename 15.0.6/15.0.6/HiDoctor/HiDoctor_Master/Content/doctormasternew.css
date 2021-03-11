@@ -1,0 +1,81 @@
+﻿@media (max-width: 767px) {
+    #dvQuickLinks {
+        display: none;
+    }
+
+    #dvHeader {
+        display: none;
+    }
+    #load{
+        height:16% !important;
+        margin-top:71% !important;
+        margin-left:40% !important;
+    }
+    #Addbtn {
+        padding-left: 51%;
+        font-size: 16px !important;
+    }
+
+    #hometopimage {
+        display: none;
+    }
+
+    .show {
+        display: none !important;
+    }
+
+    .freshwidget-theme {
+        display: none;
+    }
+
+    #footer {
+        display: none !important;
+    }
+
+    #page-header {
+        display: block !important;
+    }
+    #btnshowcity{
+        margin-left:78% !important;
+        margin-top:3% !important;
+    }
+    .loading-icon {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin: 50px auto;
+    }
+    
+        .loading-icon:before {
+            content: "\f110";
+            font-family: FontAwesome;
+            font-size: 20px;
+            position: absolute;
+            top: 0;
+        }
+#btnshow{
+    margin-left:33% !important;
+}
+    #myModaltreecity {
+        margin-top: 10%;
+    }
+    #myModaltreecat{
+        margin-top:20%;
+    }
+    .msgAlert {
+        width: 275px !important;
+        left: 67% !important;
+    }
+   #loaderimage{
+       margin-left:-84%;
+   }
+}
+ .info .msgAlert_content{
+        font-size:19px;
+    }
+ 
+ @media (min-width: 768px) and (max-width:1024px) {
+     #btnshow{
+         margin-top:30% !important;
+     }
+ }

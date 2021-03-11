@@ -1,0 +1,123 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnSaleOrderSingleApproval"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+
+
+<div data-theme="b" data-role="header">
+    <a data-role="button" href="#page1" data-icon="arrow-l" data-iconpos="notext"
+        class="ui-btn-right" id="SOASHome"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Sales Order - Approval
+        </h5>
+    </div>
+</div>
+
+
+
+<div data-role="fieldcontain">
+    <label for="ddlSOAUnderUserList">
+        Subordinates List:
+           
+    </label>
+    <select id="ddlSOASUnderUserList" name="" data-theme="b">
+    </select>
+</div>
+
+<div id="SOASOrderDetailDisplay">
+    <div data-theme="c" data-role="header" id="SOASCustName">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h5>
+    </div>
+
+    <div data-theme="c" data-role="header">
+        <a data-role="button" data-theme="b" href="#" data-icon="arrow-r"
+            data-iconpos="notext" class="ui-btn-right" onclick="fnShowNextOrderApproval();"></a>
+        <a data-role="button" data-theme="b" href="#" data-icon="arrow-l"
+            data-iconpos="notext" class="ui-btn-left" onclick="fnShowPreviousOrderApproval();"></a>
+        <h3 id="SOASOrderID" style="text-align: center !important;"></h3>
+    </div>
+
+    <div style="border-bottom: 1px solid #d3d3d3;">
+        <h5 id="SOASRefNumb"></h5>
+        <h5 id="SOASOrderDate"></h5>
+        <h5 id="SOASDueDate"></h5>
+    </div>
+
+    <div>
+        <h4 style="border-bottom: 1px solid #d3d3d3;">Order Details</h4>
+        <div id="SOASDetail">
+        </div>
+    </div>
+
+    <div data-role="content">
+        <div id="SOASOrderSummary" data-role="collapsible-set" data-theme="b" data-content-theme="a">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Order Summary
+                </h3>
+                <div class="OHDOrderSummaryL">No of Products Ordered :</div>
+                <div class="OHDOrderSummaryR" id="SOASProductOrd"></div>
+                <div class="OHDOrderSummaryL">No of Quantity Ordered :</div>
+                <div class="OHDOrderSummaryR" id="SOASQtyOrd"></div>
+                <div class="OHDOrderSummaryL">No of Offer Products :</div>
+                <div class="OHDOrderSummaryR" id="SOASOffProductOrd"></div>
+                <div class="OHDOrderSummaryL">No of Offer Products Qty :</div>
+                <div class="OHDOrderSummaryR" id="SOASOffQtyOrd"></div>
+                <div class="OHDOrderSummaryL">Order Value :</div>
+                <div class="OHDOrderSummaryR" id="SOASOrderValue"></div>
+                <div style="clear: both;"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div data-role="content">
+        <div id="SOASSchemeSummary" data-role="collapsible-set" data-theme="b" data-content-theme="a">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Scheme / Offer Products
+                </h3>
+                <div id="SOASSchemeDetails"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="SOASNoOrder" style="display: none;">
+    No Order In Applied Status.
+</div>
+
+<div data-role="content">
+    <div id="SOASApprovalOldRemarks">
+    </div>
+    <div data-role="fieldcontain">
+        <label for="SOASApprovalRemarks">
+            Approval / Unapproval Remarks
+           
+        </label>
+        <textarea name="" id="SOASApprovalRemarks" placeholder=""></textarea>
+    </div>
+
+    <input type="submit" data-theme="b" value="Approve" onclick="fnSingleApprovalUnApproval('1');">
+    <input type="submit" data-theme="b" value="Unapprove" onclick="fnSingleApprovalUnApproval('0');">
+</div>
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();   
+        $('#spnSaleOrderSingleApproval').html(loginUserName_g);     
+        var orderID=@Html.Raw(Json.Encode(ViewBag.orderID));
+        var userCode=@Html.Raw(Json.Encode(ViewBag.userCode));
+        $("#SOASHome").click(function () { fnOpenOrderBulkApproval(userCode); });
+
+        //under user selection
+        $("#ddlSOASUnderUserList").click(function () { fnGetAllOrdersForTheUser(userCode); });        
+        $("#SOASOrderID").html(orderID);
+
+        //$("#OHDCustName h5").html("Name: " + cName_g);
+        fnSOSingleApprovalBindUnderUser(userCode,orderID);       
+    });   
+</script>

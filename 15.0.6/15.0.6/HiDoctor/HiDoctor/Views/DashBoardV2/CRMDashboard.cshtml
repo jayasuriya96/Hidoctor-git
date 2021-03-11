@@ -1,0 +1,24 @@
+﻿
+                     <div class="panel cls-cat-cov-main cls-common-head" style="height: 50%;" id="CRMDashboard">
+                              <div class="panel-heading">
+                           
+                                   <label id="DrCaption" style="font-size:14px; font-weight:400" > CRM Data </label>
+                                    <select id="Ozone_Division" class="dropdown" style="color:blue;height: 32px;left:150px;"></select>                                                            
+                                
+                            
+                                 
+                                    <select id="State" class="dropdown" style="color:blue;width:100px; height: 32px;left:170px;"></select>                                                            
+                                </div>
+
+                            <div id="tbl_CRM" style="height:296px; overflow:auto;"></div>
+                            </div>
+    
+
+                      <script src="~/Scripts/HD/OzoneDashboard.js"></script>    
+<script type="text/javascript">
+    var  doctor_caption=@Html.Raw(Json.Encode(ViewBag.DOCTOR_CAPTION));
+    var  chemist_caption=@Html.Raw(Json.Encode(ViewBag.CHEMIST_CAPTION));
+ $(document).ready(function () {      
+      
+ });
+    </script>

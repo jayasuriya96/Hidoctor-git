@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Menu";
+    Layout = null;
+}
+
+<h2>Menu</h2>
+<div id="dvMenu"></div>
+<style>
+    #dvMenu ul li {
+        list-style-type: none;
+        border: 1px solid #cccccc;
+        padding: 5px;
+        border-top: 3px solid #00A0CF;
+        margin:3px;
+    }
+    #dvMenu ul li a {
+      font-size:15px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#dvMenu").html(menu);
+        $("#dvAjaxLoad").hide();
+    });
+</script>
+

@@ -1,0 +1,200 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<div>
+    <form>
+        <div class="form-row" style="margin-top:10px">
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                            <label>Leave Type</label>
+                            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="leavetype">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                            <label>Reason</label>
+                            <input class="form-control" type="text" id="reason" maxlength="300">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;">
+                <button type="button" class="btn btn-primary" id="Back" onclick="fnBack()">Back</button>
+                <button type="button" class="btn btn-primary" id="Draft" onclick="fnInsertLeave(0)">Draft</button>
+                <button type="button" class="btn btn-primary" id="save" onclick="fnInsertLeave(1)">Save</button>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var CPD_Date='';
+    var CPD_ID=0;
+    var Lid='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        CPD_Date=@Html.Raw(Json.Encode(ViewBag.CPD_Date));
+        CPD_ID=@Html.Raw(Json.Encode(ViewBag.CPD_Id));
+        Lid=@Html.Raw(Json.Encode(ViewBag.LID));
+        fngetLeavetype();
+    });
+    function fngetLeavetype() {
+
+        var _objData = new Object();
+        _objData.User_Code = LoginUserCode;
+        _objData.subDomainName = subDomainName;
+        $('#txtDoctor').html('');
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/CPD/GetLeavetype',
+                       success: function (response) {
+                           debugger;
+                           var str='';
+                           if (response != null && response.length > 0) {
+
+                               str+='<select class="form-control" id="selected">';
+                               if(response.length >1)
+                               {
+                                   str+='<option value="0" selected>--Select Leave Type--</option>';
+                               }
+                               for(var i=0;i< response.length;i++)
+                               {
+                                   str+=' <option value='+response[i].Leave_Type_Code+'>'+response[i].Leave_Type_Name+'</option>'
+                               }
+                               str+='</select>';
+                               $('#leavetype').html(str);
+                               if(CPD_ID !=0)
+                               {
+                                   fngetLeaveValues();
+                               }
+                               $('#Draft').show();
+                               $('#save').show();
+                           }
+                           else{
+                               swal("You are not having any Leave Types you cannot able to enter Leave","", "info");
+                               $('#Draft').hide();
+                               $('#save').hide();
+                           }
+                       },
+                       error: function () {
+
+                       }
+                   });
+    }
+    function fngetLeaveValues()
+    {
+        debugger;
+        var _objData = new Object();
+        _objData.subDomainName = subDomainName;
+        _objData.CPD_ID=CPD_ID;
+        $.ajax(
+                   {
+                       type: 'POST',
+                       data: _objData,
+                       url: '../../HiDoctor_Activity/CPD/GetLeaveValues',
+                       success: function (response) {
+                           debugger
+                           if(response.length >0)
+                           {
+                               $('#selected').val(response[0].Leave_Type_Code);
+                               $('#reason').val(response[0].LeaveReason);
+                           }
+                       },
+                       error:function()
+                       {
+
+                       }
+                   });
+    }
+    function fnInsertLeave(val)
+    {
+        $('#Draft').prop('disabled', true);
+        $('#save').prop('disabled', true);
+
+        debugger;
+        var LeaveCode=$('#selected').val();
+        var Reason=$('#reason').val();
+        if($('#selected').val()=='0')
+        {
+            swal("Please Select Leave Type","", "info");
+            $('#Draft').prop('disabled', false);
+            $('#save').prop('disabled', false);
+            return false;
+        }
+        var Remark = fnReChkSplChar('reason');
+        if (Remark == false) {
+            swal('Special characters are not allowed in remarks except - _ . , ( )', "", "info");
+            $('#Draft').prop('disabled', false);
+            $('#save').prop('disabled', false);
+            return false;
+        }
+        var _objData = new Object();
+        _objData.subDomainName = subDomainName;
+        _objData.CompanyId = CompanyId;
+        _objData.Region_Code = LoginRegionCode;
+        _objData.User_Code = LoginUserCode;
+        _objData.CPDDate = CPD_Date;
+        _objData.CPD_ID = CPD_ID;
+        _objData.Activity = 3;
+        _objData.CPDValue =val;
+        _objData.LeaveCode=LeaveCode;
+        _objData.Reason=Reason;
+        $.ajax({
+            type: 'POST',
+            data: _objData,
+            url: '../../HiDoctor_Activity/CPD/InsertLeave',
+            success: function (response) {
+                debugger;
+                if(response!=0)
+                {
+                    swal({
+                        title: "Leave Entry Saved Successfully",
+                        showCancelButton: false,
+                        closeOnConfirm: false,
+                    }, function (inputValue) {
+                        if (inputValue === false) return false;
+                        //window.location.href = '../CPD/CPDMobile?Lid='+Lid;
+                        window.location.href = '../CPD/CPDMobile';
+                    });
+                    $('#Draft').prop('disabled', false);
+                    $('#save').prop('disabled', false);
+                 
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+    function fnReChkSplChar(id) {
+        debugger;
+        //Remark
+        if ($('#' + id).val() != "") {
+            var specialCharregex = new RegExp("^[-a-zA-Z0-9 _().,\n\r\r\n]+$");
+            if (!specialCharregex.test($('#' + id).val())) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return true
+
+    }
+    function fnBack()
+    {
+        window.location.href = '../CPD/CPDMobile';
+    }
+</script>

@@ -1,0 +1,119 @@
+﻿@model HiDoctor_Activity.Models.TargetModal
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="../../Areas/HiDoctor_Activity/Content/Activity.css" rel="stylesheet" />
+@*<div id="sub-page-header">
+    <div class="">
+        <div class="grid grid_24">
+            <div id="divPageHeader">
+                <h2>Target</h2>
+            </div>
+        </div>
+    </div>
+</div>
+*@
+<div style="width: 100%; height: auto; font-size: 11px">
+    <div id="divTree1" style='width: 20%; float: left;'>
+        @*<div id="Regiontree">
+            <div id="dvLoad" style="width: 100%; text-align: center; margin-top: 25px; vertical-align: middle">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loading.gif" alt='' />
+            </div>
+        </div>
+        *@
+        <div id="tree" style="float: left; height: 600px; width: 98%">
+        </div>
+    </div>
+    <div id="divMain" style='width: 80%; float: left; display: none;'>
+        <div class="dvDetheader">
+            Select Target
+            <select id="drpTarget" onchange="fnTargetChange()">
+            </select>
+            <input type="hidden" id="hdnTreeNode" />
+            <input type="hidden" id="hdnTargetCode" />
+            <input type="radio" name="group" id="radInUnit" checked="checked" />In Unit<input
+                type="radio" name="group" id="radInAmt" />In Amount
+            <input type="button" value="Go" class="btn small primary" onclick="fnGo()" />
+            <div style="float: right">
+                Use Data Of
+                <select id="drpRegion">
+                </select>
+                @* <a onclick="fnTargetHeader()">Target Header</a>*@
+            </div>
+        </div>
+        <br />
+        <span class="regionHeader">Region : </span><span id="spnRegionName" class="regionHeader"></span><span style="cursor: pointer; text-decoration: underline" onclick="fnShowTree()"
+            id="aShowTree">Show Tree</span>
+        <div>
+            <div style="float: left; width: 20%;" id="dvProduct">
+            </div>
+            <div id="dvTargetDtl" style="float: left; width: 80%; overflow: auto;">
+            </div>
+        </div>
+        <div id="dvButton" style="display: none">
+            <input type="button" id="btnSubmit" class="btn small primary" value="Save" onclick="fnInsertTargetDetails()" />
+            <input type="button" id="btnReset" class="btn small primary" value="Reset" onclick="fnGo()" />
+        </div>
+    </div>
+    <div style="clear: both">
+    </div>
+    <div id="popupmodal" class="popup">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/tick.png" alt="" style="display: none; float: left;"
+            id="imgSuccess" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/cross.png" alt="" style="display: none; float: left;"
+            id="imgError" />
+        <div id="dvMessage" style="float: left;">
+        </div>
+        <span style="float: right; cursor: pointer" onclick="Popup.hide('popupmodal')">X</span>
+        @*<input type="button" value="Close" onclick="Popup.hide('popupmodal')" class="btn small primary" />*@
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/Target.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+            fnBindRegionTree("tree");
+            $("#hdnTargetCode").val('');
+            //        var targetCode = @Html.Raw(Json.Encode(ViewBag.TargetCode));
+            //        
+            //        if(targetCode != null && targetCode != ""){
+            //            var target = targetCode.split('_')[0].toString();
+            //            var regionCode = targetCode.split('_')[1].toString();
+            //            $("#tree").dynatree("getTree").activateKey(regionCode)
+            //        }
+
+            $("#drpRegion").change(function () { fnUseDataOf();});
+            $("#dvAjaxLoad").hide();
+        }
+        catch(err)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnTargetHeader(){
+        $('#main').load('../Target/Create');
+    }
+    function fnRegionTreeActivate(node){
+        $("#hdnTargetCode").val('');
+        $("#hdnTreeNode").val(node.data.key + "_" + node.data.title);
+        $("#divTree1").hide();
+        $("#divMain").css('width', '100%')
+        $("#divMain").show();
+        $("#dvProduct").html('');
+        $("#dvTargetDtl").html('');
+        $("#aShowTree").html('Show Tree')
+        fnDetailTreeNodeClick();
+    }
+    function fnRegionTreePostInit(){
+        $("#hdnTargetCode").val('');
+        var targetCode = @Html.Raw(Json.Encode(ViewBag.TargetCode));
+        if(targetCode != null && targetCode != ""){
+            var target = targetCode.split('_')[0].toString();
+            var regionCode = targetCode.split('_')[1].toString();
+            $("#tree").dynatree("getTree").activateKey(regionCode);
+            $("#hdnTargetCode").val(target);
+        }
+    }
+</script>

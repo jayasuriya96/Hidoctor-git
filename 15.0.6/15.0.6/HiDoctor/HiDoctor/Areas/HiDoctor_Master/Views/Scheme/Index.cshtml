@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style type="text/css">
+    .dvHeaderStyle {
+        float: left !important;
+        text-align: center;
+        background-color: #0A0A62;
+        color: white;
+        border-right: 1px solid white;
+        height: 25px;
+        font-size: 14px;
+    }
+
+    .dvInputStyle {
+        float: left !important;
+        /*text-align: center;*/
+        /*border-right: 1px solid #EFEFEF;*/
+        /*height: 30px;*/
+        /*width: 95% !important;*/
+    }
+
+        .dvInputStyle input {
+            width: 95% !important;
+        }
+
+    .tdHeaderStyle {
+        text-align: center;
+        background-color: #0A0A62;
+        color: white;
+        border-right: 1px solid white;
+        height: 25px;
+        font-size: 14px;
+    }
+
+        .tdHeaderStyle input {
+            width: 95% !important;
+        }
+
+
+    input[type=text], input[type=password], textarea, select {
+        padding: 0px !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    #dvScheme input[type=text] {
+        border-color: #c5dbec;
+    }
+
+    #dvInsert input[type=text]:disabled {
+        background-color: #FBFDFF !important;
+    }
+
+    #tblScheme td {
+        vertical-align: middle;
+    }
+
+    .txtOffer {
+        width: 98% !important;
+    }
+
+    .widget {
+        background: #fff;
+        clear: both;
+        margin-bottom: 20px;
+        margin-top: 0;
+        /*-webkit-box-shadow: 0 0px 5px #ddd;
+        -moz-box-shadow: 0 0px 5px #ddd;
+        box-shadow: 0 0px 5px #ddd;*/
+        border: 1px solid #c5dbec;
+    }
+
+    .widget-title {
+        /*background: #f2f2f2;
+        background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#ffffff), to(#f2f2f2));
+        background-image: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+        background-image: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+        background-image: -ms-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+        background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 );*/
+        height: 30px;
+        /*border-bottom: 1px solid #fff;*/
+        text-align: center;
+        font-size: 14px;
+        border: 1px solid #c5dbec;
+        background: #dfeffc url(../content/themes/base/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+        /*font-weight: bold;*/
+        color: #2e6e9e;
+    }
+
+        .widget-title span.tools {
+            border-left: 1px solid #E0DEDE;
+            float: right;
+            margin: 2px 0 0;
+            padding: 6px 5px 6px 10px;
+        }
+
+        .widget-title > .tools, .widget-title > .actions {
+            float: right;
+            margin: 0;
+            padding: 3px 5px 2px;
+        }
+
+        .widget-title span.tools > a {
+            display: inline-block;
+            margin-right: 5px;
+            color: #979797;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+    .widget-body {
+        padding: 5px 5px;
+        /*-webkit-border-radius: 0px 0px 3px 3px;
+        -moz-border-radius: 0px 0px 3px 3px;
+        border-radius: 0px 0px 3px 3px;*/
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+        border-collapse: separate;
+        /*border-left: 0;*/
+        /*-webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;*/
+    }
+
+    .table-hover tbody tr:hover > td, .table-hover tbody tr:hover > th {
+        background-color: #f5f5f5;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .table-advance thead tr th {
+        /*background-color: #F0F6FC;
+        color: #666;*/
+        color: #2e6e9e;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border: none !important;
+        /*border-left: 1px solid #ddd !important;*/
+    }
+
+    .table th {
+        /*font-weight: bold;*/
+    }
+</style>
+<div style="width: 100%">
+    <div style="width: 100%;" id="dvTabs">
+        <ul>
+            <li><a href="#dvInsert">Add Scheme</a></li>
+            <li><a href="#dvEdit">View/Edit Scheme</a></li>
+            <li><a href="#dvMapping">Region Scheme Mapping</a></li>
+        </ul>
+        <div style="width: 100%;" id="dvInsert">
+            <div style="width: 100%;">
+                <table cellspacing="5" cellpadding="5" style="width: 100%;">
+                    <tr>
+                        <td style="width: 12%;">Scheme Name
+                        </td>
+                        <td>
+                            <input type="text" id="txtSchemeName" maxlength="255" style="width: 30%;" onblur="fnValidateSchemeName();" />
+                            <input type="hidden" id="hdnSchemeCode" />
+                        </td>
+                    </tr>
+                    <tr style="display: none;">
+                        <td>Scheme Base
+                        </td>
+                        <td>
+                            <input type="radio" id="rdQuantity" value="Quantity" name="rdSchemeBase" checked="checked" disabled="disabled" />
+                            Quantity
+                <input type="radio" name="rdSchemeBase" value="Value" id="rdValue" disabled="disabled" />
+                            Value </td>
+                    </tr>
+                    <tr>
+                        <td>Effective From
+                        </td>
+                        <td>
+                            <input type="text" id="txtEffectiveFrom" style="width: 30%;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Effective To
+                        </td>
+                        <td>
+                            <input type="text" id="txtEffectiveTo" style="width: 30%;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 60%;" id="dvScheme">
+                </div>
+            </div>
+            <div style="width: 100%; padding-top: 5px; clear: both;" id="dvSave">
+                <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnSubmit();" />
+                <input type="button" id="btnReset" value="Reset" class="btn small primary" onclick="fnClearAll();" />
+                <input type="hidden" id="hdnMode" value="INSERT" />
+            </div>
+        </div>
+        <div id="dvEdit">
+            <div id="dvSchemeHeader" style="width: 100%;">
+            </div>
+        </div>
+        <div id="dvMapping" style="width: 100%;"></div>
+    </div>
+</div>
+<div id="dvSchemeView" class="simple_overlay" style="width: 40% !important; min-height: 450px !important; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+    <div class="">
+        <div class="popUpTitle" style="height: 45px;">
+            <span>Scheme Details</span> <a class="popUpTitle-close" style="background: url(../Content/images/cross.png) no-repeat !important;" onclick="fnClosePopUp('dvSchemeView');"></a>
+        </div>
+        <br />
+        <div style="width: 100%; height: 325px; overflow: auto;">
+            <div style="width: 100%;" id="dvAllScheme">
+            </div>
+        </div>
+    </div>
+</div>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Scheme.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvTabs").tabs();
+        $("#txtEffectiveFrom").datepicker({
+            dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, onSelect: function (dateText, inst) {
+                fnFillEffectiveFrom(inst);
+            }
+        });
+        $("#txtEffectiveTo").datepicker({
+            dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, onSelect: function (dateText, inst) {
+                fnFillEffectiveTo(inst);
+            }
+        });
+        $("#dvSchemeView").overlay().load();
+        $("#dvMapping").load("../HiDoctor_Master/Scheme/RegionSchemeMapping");
+        //fnCreateSchemeTable();
+        fnGetSalesProducts();
+        $("#dvAjaxLoad").hide();
+    });
+</script>

@@ -1,0 +1,145 @@
+﻿<script type="text/javascript">
+    $('#dvheaderCont').css('display', 'block');
+</script>
+<style>
+   
+    
+</style>
+<div class="clearboth"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>Menu
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <div class="cls_height">
+        <div id="legPendingDCR" class="ui-li-pos cls_legends" style="display: none">&nbsp;</div>
+        <span id="spnPendDCRCount" class="fonts cls_legendscaption" style="display: none;">Pending DCRs</span>
+        <div id="legUnapproveDCR" class="ul-li-no cls_legends" style="display: none">&nbsp;</div>        
+        <span id="spnUnappDCRCount" class="fonts cls_legendscaption" style="display: none;">Unapproved DCR</span>
+    </div>
+    <ul data-role="listview" data-divider-theme="d" data-inset="true">
+        <li data-theme="d" id="menuDCR" class="menuhidden">
+            <a href="#page1" data-transition="slide" onclick="fnOpenDCR()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/calendar.png" class="ui-li-icon ui-li-thumb" />
+                DCR Entry
+            </a>
+        </li>
+        <li data-theme="d" id="menuReports" class="menuhidden">
+            <a href="#page1" data-transition="slide" onclick="fnReport()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Report.png" class="ui-li-icon ui-li-thumb" />
+                Reports
+            </a>
+        </li>
+        <li data-theme="d" style="height: 45px" class="menuhidden" id="menuNotification">
+            <a href="#page1" data-transition="slide" onclick="fnGoToNotification()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Notification.png" class="ui-li-icon ui-li-thumb" />
+                Notification
+            
+            </a>
+                <div>
+                    <span id="spnNotificationHeader" class="ui-li-count ul-li-no" >
+                        <span id="spnNotification" >
+                     
+                        </span>
+                    </span>
+                    </div><div>
+                    <span id="spnPenndingDCRBG" class="ui-li-count ui-li-pos" style="display:none">
+                        <span id="spnPendingDCR">
+                        
+                        </span>
+                    </span>
+                </div>
+        </li>
+        <li data-theme="d" class="menuhidden" id="menuMessage" style="height: 45px">
+            <a href="#page1" data-transition="slide" onclick="fnGoToMessages()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/mail-16.png" class="ui-li-icon ui-li-thumb" />
+                Messages
+                    <span class="ui-li-count">
+                        <span id="spnMessages"></span>
+                    </span>
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden" id="menuAnnouncement" style="height: 45px">
+            <a href="#page1" data-transition="slide" onclick="fnGoToAnnouncements()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/loudspeaker-16.png" class="ui-li-icon ui-li-thumb" />
+                Announcements
+                    <span class="ui-li-count">
+                        <span id="spnAnnouncements"></span>
+                    </span>
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden" id="menuApproval">
+            <a href="#page1" data-transition="slide" onclick="fnGoToDCRApproval()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/approval.png" class="ui-li-icon ui-li-thumb" />
+                Approvals
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden">
+            <a href="#page1" data-transition="slide">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/search.png" class="ui-li-icon ui-li-thumb" />
+                Doctor Search
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden">
+            <a href="#page1" data-transition="slide">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Alert.png" class="ui-li-icon ui-li-thumb" />
+                Alerts
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden" id="menuOTC">
+            <a href="#page1" data-transition="slide" onclick="fnGoToOTC()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Alert.png" class="ui-li-icon ui-li-thumb" />
+                OTC
+            </a>
+        </li>
+        <li data-theme="d" class="menuhidden" id="menuDCRLock">
+            <a href="#page1" data-transition="slide" onclick="fnShowDCRLockRelease()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/UnLock.png" class="ui-li-icon ui-li-thumb" />DCR Lock Release
+            </a>
+        </li>
+    </ul>
+    
+        
+    
+</div>
+<script src="~/Scripts/Mobile/mLogIn.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        var userName=@Html.Raw(Json.Encode(ViewBag.User_Name));
+        loginUserName_g = userName;
+        AjaxGlobalHandler.Initiate();
+        //$("#loginUserName").html(loginUserName_g);
+        // User Name bind
+        $('span.cls_usernamespn').text(loginUserName_g);
+     
+        //fnGetNotification();
+        //fnGetUnreadMessageCount();
+        //fnGetUnreadAnnouncementCount();
+        //  fnShowMessageAndAnnouncement();
+        //Used to show the notification n approval
+        //fnGetChildUsers(); 
+        //Get Menu access for Mobile
+        fnGetMenuAccessforMobile();
+        // whether OTC menu aplicable for the user
+        var showOTC = fnGetPrivilegeValue("OTC_MOBILE_ENTRY_AVAILABILITY", "NO");
+        if (showOTC == "YES") {
+            $('#menuOTC').removeClass('menuhidden');
+        }
+    });
+
+    function fnShowMessageAndAnnouncement() {
+        $.ajax({
+            type: "POST",
+            url: '/HiDoctor_Activity/MobileMenu/GetDCRVersion',
+            data: "a",
+            success: function (result) {
+                if (result != "" && result != null) {
+                    if (parseInt(result) >= 4) {
+                        $('#menuAnnouncement').removeClass('menuhidden');
+                        $('#menuMessage').removeClass('menuhidden');
+                    }
+                }
+            }
+        });
+    }
+</script>

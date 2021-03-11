@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "PrimarySalesValuesExcelUpload";
+    Layout = null;
+}
+<style>
+    #dvRules a {
+        cursor: pointer;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<form action="../HiDoctor_Master/ProductMaster/PrimarySalesValuesExcelUploadResult" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="panel panel-primary">
+        <div class=" panel-heading">
+            <h3 class="panel-title">Primary Sales - Excel Upload</h3>
+        </div>
+
+        <div class="panel-body">
+            <div id="dvRules" class="col-sm-6" style="border-right: 1px solid #ddd;">
+                <table>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">Step 1 : Download</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd;">
+                            <div class="col-lg-12">
+                                <div class="col-xs-3">Select Month</div>
+                                <div class="col-xs-9 form-group">
+                                    <select id="cboMonth">
+                                        <option value="01">Jan</option>
+                                        <option value="02">Feb</option>
+                                        <option value="03">Mar</option>
+                                        <option value="04">Apr</option>
+                                        <option value="05">May</option>
+                                        <option value="06">Jun</option>
+                                        <option value="07">July</option>
+                                        <option value="08">Aug</option>
+                                        <option value="09">Sep</option>
+                                        <option value="10">Oct</option>
+                                        <option value="11">Nov</option>
+                                        <option value="12">Dec</option>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="col-xs-3">Select Year</div>
+                                <div class="col-xs-9">
+                                    <select id="cboYear"></select>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <a onclick="fnGenerateExcelData();">Click here to generate Employee Details</a>
+                                <br />
+                                <a id="aDownloadEmp" style="display: none; text-decoration: underline;">Employee Details Download</a>
+                            </div>
+                        </td>
+                    </tr>
+                    @* 
+                    <tr>
+                        <td>
+                            <a onclick="fnGenerateExcelData();">Click here to generate Employee Details</a>
+                            <br />
+                            <a id="aDownloadEmp" style="display: none; text-decoration: underline;">Employee Details Download</a></td>
+
+                    </tr>
+                    *@
+                    <tr>
+                        <td>1.Update the Primary sales details in the template</td>
+                    </tr>
+                    <tr>
+                        <td>2.Do not alter the excel file structure(i.e.adding or removing the column)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3.Do not rename the excel file name and the sheet name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4.Do not rename the columns
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5.Click the “Choose/Browse file” button to get the file
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6.Click the upload button to upload the data
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7. Below mentioned fields are mandatory <span class="Mandatory">*</span>
+                            <div style="width: 70%; padding-left: 20%;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>1.Mis_Code
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.Region_Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.User_Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.Employee_Name</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8.Please do not modify the Row_No column values
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9.Please do not use WRAPTEXT/ALT+ENTER while enter the values. If you use then system will consider this as a special character.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <div class="col-lg-12">
+                    <div style="font-weight: bold;" class="col-lg-12">
+                        Step 2 : Upload
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+                        <input type="file" id="file" name="file" accept=".xls" />
+                        <br />
+                        <input type="submit" id="btnUp" value="Upload" class="btn small primary" />
+                    </div>
+                    <div id="dvFrame" class="col-lg-12" style="padding-top: 2%; height: 100px;">
+                        <iframe name="ifrmExcel" style="width: 100%;"></iframe>
+                    </div>
+                    <div id="dvRedirect" class="col-lg-12">
+                        <br />
+                        <a href="#" onclick="fnRedirectToBP('PRIMARYSALESVALUES_UPLOAD');">>>Go to Batch processing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Hidden("hdnMonth")
+@Html.Hidden("hdnYear")
+</form>
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnBindYear();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnBindYear() {
+        $('option', $("#cboYear")).remove();
+        var currentYear = curdate.split('.')[2];
+        var year = 2000;
+        for (var i = 2000; i <= currentYear; i++) {
+            
+            $('#cboYear').append("<option value='" + year + "'>" + year + "</option>");
+            year = parseInt(year) + 1;
+        }
+        var currentMonth = curdate.split('.')[1];
+        $('#cboMonth').val(currentMonth);
+        $('#cboYear').val(currentYear);
+    }
+
+    function fnValidateUploadedFile() {
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        $('#hdnMonth').val($('#cboMonth').val());
+        $('#hdnYear').val($('#cboYear').val());
+        var fileName = $('#file').val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xls") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xls file only');
+                return false;
+            }
+        }
+    }
+
+    function fnGenerateExcelData(masterType) {
+        $.ajax({
+            url: '../HiDoctor_Master/ProductMaster/DownloadPSParametersExcelTemplate',
+            type: "POST",
+            data: "A",
+            success: function (result) {
+                if (result == "NO DATA") {
+                    fnMsgAlert('info', 'Info', 'No data found');
+                    return;
+                }
+                if (result) {
+                    $('#aDownloadEmp').attr("href", "../Content/XLTemplates/" + result);
+                    $('#aDownloadEmp').html(result);
+                    $('#aDownloadEmp').css("display", "block");
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

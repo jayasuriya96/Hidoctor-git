@@ -1,0 +1,258 @@
+﻿
+
+    @{
+        string IsResponsive = Convert.ToString(HttpContext.Current.Session["IsResponsive"]);
+        switch (IsResponsive)
+        {
+            case "Yes":
+                Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+                break;
+            default:
+                Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+                break;
+        }
+    }
+
+
+
+<style>
+     .ui-widget.ui-widget-content {
+        height: 260px !important;
+        overflow-y: auto;
+    }
+    
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-dialog {
+        max-width: 850px !important;
+    }
+
+ 
+
+    label {
+        font-weight: 500 !important;
+    }
+
+    .col-form-label {
+        font-size: small !important;
+    }
+
+    table {
+        font-size: 13px !important;
+    }
+
+</style>
+<div class="startcss">
+    <form>
+        <div class="form-row clearfix" id="divregion">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Region Name :</label>
+                <div id="regions"><input class="form-control" type='text' tabindex='1' id='region' /></div>
+            </div>
+        </div>
+    </form>
+    <div>
+        <div class="col-sm-12">
+            <div class="alert alert-primary text-center" role="alert" id="alert" style="display:none;">
+                No Orders .
+            </div>
+        </div>
+        <div class="col-sm-12 p-0">
+
+            <div id="orderList">
+                <div class="card-columns" id="shipmentOrders">
+                </div>
+            </div>
+            <div class="col-sm-12 p-0 mt-3" style="display:none;" id="details">
+            </div>
+            <div class="p-2" id="seconddiv" style="display:none;">
+
+                <p style="font-size: 14px;font-weight: 600;" class="pb-2 border-bottom" id="label"> Product Dispatch </p>
+
+                <div class="row p-2 mt-3">
+                    <div class="col-sm-12 col-md-12 pl-0">
+                        <form>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault01">Invoice Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="invoiceNo" onpaste="return false" placeholder="e.g 123" value="">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault02">Invoice Date</label>
+                                    <input type="text" class="form-control form-control-sm" id="invoiceDate" placeholder="" value="" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault02">Dispatch Date</label>
+                                    <input type="text" class="form-control form-control-sm" id="dispatchDate" placeholder="" value="" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault02">Acknowledge Date</label>
+                                    <input type="text" class="form-control form-control-sm" id="ackDate" placeholder="" value="" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault01">Attachment</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon04">
+                                            <label class="custom-file-label" for="inputGroupFile04" id="filename">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    @*<div class="col-sm-12 col-md-8 pl-0">
+                            <form>
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault01">Invoice Number</label>
+                                        <input type="text" class="form-control form-control-sm" id="invoiceNo" onpaste="return false" placeholder="e.g 123" value="">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault02">Invoice Date</label>
+                                        <input type="text" class="form-control form-control-sm" id="invoiceDate" placeholder="" value="">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault02">Dispatch Date</label>
+                                        <input type="text" class="form-control form-control-sm" id="dispatchDate" placeholder="" value="">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault02">Acknowledge Date</label>
+                                        <input type="text" class="form-control form-control-sm" id="ackDate" placeholder="" value="">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>*@
+                    @*<div class="col-sm-12 col-md-4 pr-0">
+
+                        </div>*@
+                </div>
+
+                <div class="col-sm-12 shadow-sm border border-info p-3 mt-3 mb-3 rounded" id="Produt">
+
+                    <div class="form-row" id="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4 mb-3">
+                            <label for="validationDefault01">Product Name</label>
+                            <div id="Products_0"> <input type="text" class="form-control form-control-sm" id="Product_0" name="autodispatchProd" placeholder="" value=""></div>
+                        </div>
+                        <div class="col-sm-12 col-md-3 col-lg-3 mb-3">
+                            <label for="validationDefault02">Dispatch Qty</label>
+                            <input type="number" class="form-control form-control-sm" id="dispatchQty_0" placeholder="" value=""  min="1" onkeypress="return fnValidateBudget(this,event);">
+                        </div>
+                        <div class="col-sm-12 col-md-3 col-lg-3 mb-3">
+                            <label for="validationDefault02">Rate</label>
+                            <input type="number" class="form-control form-control-sm" id="rate_0" placeholder="" value="" min="1" onkeypress="return fnValidateBudget(this,event);">
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-2 mb-3" id="newProduct">
+                            <div class="d-flex justify-content-end">
+                                <div class="bd-highlight mr-1">
+                                    <button type="button" class="btn btn-sm btn-outline-info" style="position:relative;top:27px;" id="Add" onclick="OrderShipment.fnAdd()"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 p-0">
+                    <button type="button" class="btn btn-sm btn-outline-info" id="btnshipment" onclick="OrderShipment.fnDispatchSave();">Save</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" onclick="OrderShipment.fnCancel();">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="orderId" />
+</div>
+
+<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/OrderShipment.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+
+
+
+
+
+<script>
+
+    var subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    var CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var Company_Id=@Html.Raw(Json.Encode(ViewBag.Company_Id));
+    var IsResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        AjaxGlobalHandler.Initiate();
+        OrderShipment.init();
+    });
+ 
+
+    // Input Number validation .
+    $(document).on('click', "#seconddiv #dispatchQty", function () {
+        debugger;
+        $($(this)).keydown(function () {
+            // Save old value.
+            if (!$(this).val() || (parseInt($(this).val()) >= 1))
+                $(this).data("old", $(this).val());
+        });
+        $($(this)).keyup(function () {
+            // Check correct, else revert back to old value.
+            if (!$(this).val() || (parseInt($(this).val()) >= 1))
+                ;
+            else
+                $(this).val($(this).data("old"));
+        });
+        $($(this)).keypress(function (evt) {
+            if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57) {
+                evt.preventDefault();
+            }
+        });
+    });
+
+    $(document).on('click', "#seconddiv #rate", function () {
+        $($(this)).keydown(function () {
+            // Save old value.
+            if (!$(this).val() || (parseInt($(this).val()) >= 1))
+                $(this).data("old", $(this).val());
+        });
+        $($(this)).keyup(function () {
+            // Check correct, else revert back to old value.
+            if (!$(this).val() || (parseInt($(this).val()) >= 1))
+                ;
+            else
+                $(this).val($(this).data("old"));
+        });
+        $($(this)).keypress(function (evt) {
+            return OrderShipment.isNumber(evt, this);
+            //if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57) {
+            //    evt.preventDefault();
+            //}
+        });
+
+    });
+
+    $(document).on('click',"#invoiceNo",function(){
+        var max = 50;
+        $(this).keypress(function (e) {
+            debugger;
+            if (e.which < 0x20) {
+                return;
+            }
+            if (this.value.length == max) {
+                e.preventDefault();
+            } else if (this.value.length > max) {
+                // Maximum exceeded
+                this.value = this.value.substring(0, max);
+            }
+        });
+    })
+    // Attachment File Change Event
+    $("input:file").change(function (){
+        var fileName = $(this).get(0).files[0].name;
+        $("#filename").html(fileName);
+    });
+</script>

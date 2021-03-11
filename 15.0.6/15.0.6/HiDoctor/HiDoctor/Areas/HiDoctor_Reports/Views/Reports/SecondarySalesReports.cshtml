@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "SecondarySalesReports";
+    Layout = null;
+}
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table cellpadding='0' cellspacing='0' border='0'>
+                <tr>
+                    <td colspan='2' align="left">Products Name
+                        <select id="ddlProductName" multiple="multiple" style="width: 375px;">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>From Month
+                        <input type="text" id="txtFrom" />
+                    </td>
+                    <td>To Month
+                        <input type="text" id="txtTo" />
+                        <input type="hidden" id="hdnRegionCode" />
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnSecondarySalesReport();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="divReport">
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Reports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            fnBindRegionTree("tree");
+            $('#txtFrom').monthpicker();
+            $('#txtTo').monthpicker();
+            $("#dvTree").show();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#divReport").html('');
+        $("#txtFrom").val('');
+        $("#txtTo").val('');
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        $('#ddlProductName').empty();
+        $("#ddlProductName").multiselect('destroy');
+        fnShowProductDetails();
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+
+</script>
+

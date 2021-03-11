@@ -1,0 +1,8 @@
+﻿@if (Request.UserAgent.ToLower().Contains("mobi") || Request.UserAgent.ToLower().Contains("android")	)
+{
+    Layout = "~/Views/Shared/_Layout.Mobile.cshtml";
+}
+else
+{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}

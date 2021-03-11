@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "AuditTrailforNewCustomer";
+    Layout = null;
+}
+
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<div id="dvAuditTrailforNewCustomer">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+            <div style="clear: both"></div>
+            <div id="dvRegionTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('AUDIT_TRAIL_FOR_NEW_CUSTOMER','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-11 form-group">
+                    <div class="col-xs-2">
+                        Log From Date
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" id="txtStartDate" class="form-control datepicker" />
+                    </div>
+                    <div class="col-xs-2">
+                        To Date
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" id="txtEndDate" class="form-control datepicker" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>             
+                <div class="col-lg-11 form-group">
+                    <div class="col-xs-2">
+                        Customer Type
+                    </div>
+                    <div class="col-xs-5">
+                        <select class="selectboxWidth form-control" id="ddlCustomerType">
+                            <option value="DOCTOR">DOCTOR</option>
+                            <option value="CHEMIST">CHEMIST</option>
+                            <option value="STOCKIEST">STOCKIEST</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                    <div style="margin-left: 17%;">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <input type="button" style="margin-left: 17%;" class="btn btn-primary" value="Submit" onclick="fnGetAuditTrail()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="divAudirrptforDoctorsandChemist" style="width: 100%">
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnRegionCode" />
+<input type="hidden" id="hdnUseractivity" />
+
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AuditTrailforNewCustomer.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvAuditTrailforNewCustomer').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnBindRegionTree("dvRegionTree") //To Bind The Region Tree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAuditTrailforNewCustomer").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    // Default function for toggling tree and inputs
+    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        //showButtonPanel: true
+    });
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+    function fnRegionTreePostInit() {
+        $("#dvAuditTrailforNewCustomer").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvRegionTree").slideDown();
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvRegionTree").slideUp();
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    function fnRegionTreeActivate(node) {
+        
+        $('#hdnRegionCode').val(node.data.key);
+        $('#hdnUseractivity').val(node.data.title);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#divAudirrptforDoctorsandChemist').html('');
+    }
+
+
+    function fnRegionTreeSelect(node) {
+    }
+
+</script>
+

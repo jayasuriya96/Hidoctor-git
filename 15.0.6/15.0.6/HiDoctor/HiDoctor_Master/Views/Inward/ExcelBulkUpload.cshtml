@@ -1,0 +1,456 @@
+﻿@{
+    ViewBag.Title = "ExcelBulkUpload";
+    Layout = null;
+}
+
+<style>
+    .InwardLabel {
+        float: left;
+        width: 25%;
+        padding-left: 3px;
+        font-weight: bold;
+    }
+
+    .alignleft {
+        float: left;
+        margin-left: 25%;
+        padding-left: 3px;
+        height: 56px;
+    }
+
+    .rowdiv {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .submitbtn {
+        cursor: pointer;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #ffffff;
+        padding: 5px 10px;
+        background: #0866C6;
+        border: none;
+        height: 29px;
+        margin-left: 5px;
+    }
+
+    .uploadBtn {
+        background-color: #0866C6;
+        color: #ffffff;
+        width: 100px;
+        height: 29px;
+        font-size: 12px;
+        border: none;
+        font-weight: normal !important;
+    }
+
+    .selectboxWidth {
+        width: 43.5%;
+    }
+
+    .inwradbulkuploadheader {
+        height: 30px;
+        background-color: #0866C6;
+        color: white;
+        padding-left: 2px;
+        font-size: 15px;
+    }
+
+    .frmAlign {
+        margin: 0px auto;
+        width: 1000px;
+    }
+
+    .ErrorMSg {
+        background-color: lightpink;
+        border: 1px solid red;
+        color: red;
+        min-height: 10px;
+        margin: 0px auto;
+        width: 60%;
+        padding: 5px;
+    }
+
+    .dvnotification {
+        background-color: #D8E8BA;
+        color: #000;
+        border: 1px solid;
+        height: 25px;
+        width: 90%;
+        margin: 0px auto;
+        text-align: center;
+        padding-top: 2px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+    .ui-multiselect-all, .ui-multiselect-none {
+        display: none;
+    }
+
+    .instruction {
+        margin: 5px;
+    }
+
+    .width30 {
+        width: 30% !important;
+    }
+
+    .floatleft {
+        float: left;
+    }
+
+    .clearboth {
+        clear: both;
+    }
+
+    .width68 {
+        width: 68% !important;
+        padding-left: 14px;
+    }
+
+    .margintop80 {
+        margin-top: 130px;
+    }
+
+    .ui-corner-all {
+        -moz-border-radius-bottomright: 0px !important;
+        /* -webkit-border-bottom-right-radius: 5px; */
+        -khtml-border-bottom-right-radius: 0px !important;
+        /* border-bottom-right-radius: 5px; */
+        width: 387px !important;
+    }
+
+    .stepslabel {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    #screentype {
+        height: 30px;
+        background-color: #0866C6;
+        color: white;
+        padding-left: 2px;
+        font-size: 15px;
+        width: 98%;
+    }
+</style>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Inward.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<div id="screentype">
+    <div style="padding-top: 3px;">
+        <input type="radio" id="rdUserType" value="UserType" checked="checked" name="screenmode" onclick="fnChangeScreenMode()" /><label>User-Type wise</label>
+        <input type="radio" id="rdUser" value="User" name="screenmode" onclick="fnChangeScreenMode()" /><label>User-wise</label>
+    </div>
+</div>
+<form class="frmAlign" method="post" id="frm1"
+    onsubmit="return fnvalidateFile()" enctype="multipart/form-data" action="../HiDoctor_Master/Inward/UploadExcelFile"
+    target="ifameExcel" style="width: 100%; height: 355px;">
+    <div style="float: left; width: 49%; border: 1px solid #0866C6;">
+        <div class="inwradbulkuploadheader">Step1: Download File</div>
+        <div class="rowdiv" id="dvDivsion">
+            <div class="InwardLabel">
+                <label for="ddlDivision">Division</label>
+            </div>
+            <select class="selectboxWidth" id="ddlDivision" onchange="fnGetProducts('USER TYPE')"></select>
+        </div>
+        <div class="rowdiv" id="dvUserType">
+            <div class="InwardLabel">
+                <label for="ddlUserType">User Type</label>
+            </div>
+            <select class="selectboxWidth" id="ddlUserType" onchange="fnGetProductTypeMaster();"></select>
+        </div>
+
+        <div class="rowdiv" id="dvProductTypes">
+            <div class="InwardLabel">
+                <label for="ddlProductType">Product Type</label>
+            </div>
+            <select class="selectboxWidth" id="ddlProductType" onchange="fnGetProducts('USER TYPE')"></select>
+        </div>
+        <div class="rowdiv" id="dvProducts">
+            <div class="InwardLabel">
+                <label for="ddlProducts"></label>
+            </div>
+            <div class="alignleft">
+                You can select maximum <span id="maxProdCount"></span>products.<br />
+                <span id="spnslelectdprd"></span>
+                <br />
+                <span id="spnremainingprod"></span>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div class="rowdiv" id="dvProducts">
+            <div class="InwardLabel">
+                <label for="ddlProducts">Product Selection</label>
+            </div>
+
+            <select id="ddlProducts" multiple="multiple"></select>
+            <div class="InwardLabel">
+                <label for="ddlProducts"></label>
+            </div>
+
+        </div>
+
+        <div>
+            <input type="button" class="submitbtn" value="Prepare Excel File" onclick="fnDownloadExcelData()" />
+            <div id="lnkExcelFile" style="display: none;">
+                <a id="fileLink" href="#">Download</a><br />
+                <a id="EmpfileLink" href="#">Employee Master Excel</a><br />
+                <a id="ProdfileLink" href="#">Product Master Excel</a><br />
+            </div>
+        </div>
+        <span id="spndownload" style="display: none">Writing the excel file...</span>
+        <div id="dvErrMsg" class="ErrorMSg" style="display: none">
+        </div>
+        <div id="instructiondiv" class="instruction">
+            <span style="font-size: 13px; font-weight: bold;">Instructions:</span><br />
+            1) Choose the inputs and click the "Prepare Excel File" button 
+            <br />
+            2) Excel file links will be shown on the screen below the Prepare Excel file button. Click the link to download the file
+            <br />
+            3) Do not alter the excel file structure(i.e. adding or removing the column)
+            <br />
+            4) Do not rename the excel file name and the sheet name
+            <br />
+            5) Do not rename the columns
+            <br />
+            6) Do not edit the master data in the excel sheet
+            <br />
+            7) Please save the file in xls. format only
+            <br />
+            8) Please do not modify the Row_No column values
+            <br />
+            9) Click on the Choose/Browse file button to get the file
+            <br />
+            10) Click on the Upload button to upload the data
+            <br />
+            11) Inactive UserTypes also show in User Type dropdown 
+            <br />
+        </div>
+
+    </div>
+    <div style="float: left; width: 49%; height: 560px; border: 1px solid #0866C6;">
+        <div class="inwradbulkuploadheader">Step2: Upload File</div>
+
+        <div class="rowdiv">
+            <div class="InwardLabel">
+                <lable for="fileUpload">File Upload</lable>
+            </div>
+            <input type="file" id="fileUpload" name="fileUpload" />
+        </div>
+        <div class="rowdiv" id="dvInwrdDate">
+            <div class="InwardLabel">
+                <label for="txtInwrdDate">Inward Date</label>
+            </div>
+            <input class="selectboxWidth" id="txtInwrdDate" type="text" />
+        </div>
+        <div style="margin: 5px;">
+            <input type="submit" id="Inwardupload" class="uploadBtn" value="Upload" />
+        </div>
+        <div id="dvErrMsgFileUpload" class="ErrorMSg" style="display: none">
+        </div>
+        <iframe name="ifameExcel" style="height: 26%; width: 97%;"></iframe>
+        <a href="#" id="lnkBP" name="linkBP" style="display: none; float: left; margin-left: 2px;" onclick="fnRedirectToBatchProcessing()">>> >> Go to Batch processing</a>
+    </div>
+    @Html.Hidden("txtInward");
+    @Html.Hidden("ScreenMode");
+</form>
+</div>
+<div></div>
+
+<form id="form2" onsubmit="return fnvalidateFileUserBased()" enctype="multipart/form-data" action="../HiDoctor_Master/Inward/UploadExcelFile"
+    target="ifameUserExcel" style="width: 100%; height: 800px; display: none" method="post">
+    <div id="divUser">
+        <div id="dvTreeUser" class="width30 floatleft">
+            <div id="dvTreeInput">
+                <div class="InwardLabel">Filter</div>
+                <hr />
+                <div>
+                    <select id="ddlDivisionUserMode" style="width: 100%" onchange="fnGetProducts('USER');fnRemoveCheckedUsers();"></select>
+                </div>
+                <div>
+                    <select id="ddlUserTypeUserMode" multiple="multiple"></select>
+                </div>
+                <div class="clearboth"></div>
+                <div style="float: right; margin-right: 1px; margin-top: 5px; margin-bottom: 4px;">
+                    <input type="button" value="Go >>" class="submitbtn" onclick="fnSelectUserBasedOnFilter()" />
+                </div>
+                <div class="clearboth"></div>
+
+            </div>
+            <div class="clearboth"></div>
+            <span onclick="fnToggleTree()" id="lnkTree" class="shInput" style="margin-right: 3px; text-decoration: underline; cursor: pointer; color: cornflowerblue">Hide Tree</span>
+            <span id="lnkUnCheck" class="shInput" style="margin-left: 5px; float: right; text-decoration: underline; cursor: pointer" onclick="fnRemoveCheckedUsers()">UnCheck All</span>
+
+            <div id="dvTree" class="full">
+                <div class="clearboth"></div>
+                <div id="dvusertree" style="height: 630px;">
+                    <div class="">
+                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                        Loading tree
+                    </div>
+                </div>
+                <input type="hidden" value="" id="hdnUserCode" />
+                <div style="clear: both"></div>
+            </div>
+        </div>
+    </div>
+    <div id="dvdata" class="width68 floatleft margintop80">
+        <div class="stepslabel">Step1</div>
+        <hr />
+        <div class="InwardLabel">Select Product Types</div>
+        <div class="controlwidth">
+            <select id="ddlProductTypesUserMode" style="width: 143px" onchange="fnGetProducts('USER')"></select>
+        </div>
+
+        <div class="rowdiv" id="dvProducts">
+            <div class="InwardLabel">
+                <label for="ddlProductsUserMode">Product Selection</label>
+            </div>
+
+            <div style="clear: both"></div>
+
+            <div class="alignleft" style="height: 90px">
+                <div>
+                    <input type="checkbox" id="chkUnmappedProducts" onclick="GetUnMappedDivisionProducts()" /><label>Show division unmapped products.</label>
+                </div>
+
+                You can select maximum <span id="productCount"></span>products.<br />
+                <span id="spnslelectdprdUserMode"></span>
+                <br />
+                <span id="spnremainingprodUserMode"></span>
+
+            </div>
+            <div style="clear: both"></div>
+            <div class="InwardLabel">&nbsp;</div>
+            <div class="controlwidth">
+                <select id="ddlProductsUserMode" multiple="multiple"></select>
+            </div>
+
+            <div style="clear: both"></div>
+            <div>
+                <input type="button" class="submitbtn" value="Prepare Excel File" onclick="fnGetInwardExcelData()" />
+                <div id="dvErrMsgUser" class="ErrorMSg" style="display: none">
+                </div>
+                <div id="lnkExcelFileUser" style="display: none;">
+                    <a id="fileLinkUser" href="#">Download</a><br />
+                    <a id="EmpfileLinkUser" href="#">Employee Master Excel</a><br />
+                    <a id="ProdfileLinkUser" href="#">Product Master Excel</a><br />
+                </div>
+            </div>
+            <span id="spndownloadUser" style="display: none">Writing the excel file...</span>
+        </div>
+        <div class="stepslabel">Step2</div>
+        <hr />
+        <div>
+
+            <div class="rowdiv">
+                <div class="InwardLabel">
+                    <lable for="fileUpload">File Upload</lable>
+                </div>
+                <input type="file" id="fileUploadUser" name="fileUploadUser" />
+            </div>
+            <div class="rowdiv" id="dvInwrdDate">
+                <div class="InwardLabel">
+                    <label for="txtUserInwrdDate">Inward Date</label>
+                </div>
+                <input class="selectboxWidth" id="txtUserWiseInwardDate" type="text" />
+            </div>
+            <div style="margin: 5px;">
+                <input type="submit" id="InwarduploadUser" class="uploadBtn" value="Upload" />
+            </div>
+            <div id="dvErrMsgFileUploadUserBased" class="ErrorMSg" style="display: none">
+            </div>
+            <iframe name="ifameUserExcel" style="height: 26%; width: 97%;"></iframe>
+            <a href="#" id="lnkBP" name="linkBP" style="display: none; float: left; margin-left: 2px;" onclick="fnRedirectToBatchProcessing()">>> >> Go to Batch processing</a>
+        </div>
+    </div>
+    @Html.Hidden("txtUserInwardDate")
+    @Html.Hidden("ScreenMode")
+</form>
+</div>
+<script>
+    var userModeLoaded = false;
+    var productTypeOption="";
+    $(document).ready(function () {
+        productTypeOption=@Html.Raw(Json.Encode(ViewBag.productTypeValue));
+        AjaxGlobalHandler.Initiate();
+        $('#divPageHeader').html('Inward Bulk Upload');
+        fnGetDivision()
+        // fnGetProductTypeMaster();
+        fnGetProductsMaxCountConfig();
+        fnGetUserTypeMaster();
+        $("#ddlProducts").multiselect().multiselectfilter();
+        $('#txtInwrdDate').datepicker({ dateFormat: 'dd/mm/yy' });
+        $('#dvAjaxLoad').hide();
+        $('#ScreenMode').val("USER TYPE");
+        $('#dvMessage').css("display", "none");
+
+    });
+    function fnChangeScreenMode() {
+        if ($('#rdUserType').attr('checked') == 'checked') {
+            $('#form2').css('display', 'none');
+            $('#frm1').css('display', '');
+            $('#ScreenMode').val("USER TYPE");
+        }
+
+        else if ($('#rdUser').attr('checked') == 'checked') {
+            $('#frm1').css('display', 'none');
+            $('#form2').css('display', '');
+            if (!userModeLoaded) {
+                fnBindUserTreeWithCheckBoxDoubleClick("dvusertree")
+                fnUserModelDivisionLoad();
+                fnUserModeUserTypeLoad();
+                //  fnUserModeProductTypeLoad();
+                $('#txtUserWiseInwardDate').datepicker({ dateFormat: 'dd/mm/yy' });
+                $('#ddlUserTypeUserMode').multiselect().multiselectfilter();
+                $("#ddlProductsUserMode").multiselect().multiselectfilter();
+                $('#ScreenMode').val("USER");
+                userModeLoaded = true;
+            }
+        }
+    }
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('full')) {
+
+            fnCloseTree();
+        }
+        else {
+
+            fnOpenTree();
+        }
+    }
+
+    function fnUserTreePostInit() {
+        $("#dvDocCheMetRpt").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree');
+        $('#dvTree').addClass('full');
+        $("#dvusertree").slideDown();
+    }
+
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvusertree").slideUp();
+        $('#dvTree').removeClass('full');
+    }
+
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+    function fnRemoveCheckedUsers() {
+        $("#dvusertree").dynatree("getRoot").visit(function (node) {
+            node.select(false);
+        });
+    }
+</script>

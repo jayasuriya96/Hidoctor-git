@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "ComplaintForm";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+@*<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/ComplaintForm.js"></script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12" style="margin-top: 14px;">
+            <div class="col-sm-4">
+                <div id="tree" style="height:400px;">
+
+                </div>
+            </div>
+            <div id="comppane" style="display:none;">
+
+                <span id="showtree" hidden><a href="" onclick="fntree(event)">Show Tree  </a></span>
+                <span id="hidetree"><a href="" onclick="fnhidetree(event)">Hide Tree</a></span>
+                <div class="panel panel-primary">
+                    @*<h2>Complaint Form</h2>*@
+
+                    <div class="panel-body">
+                        @*<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                                <li class="active"><a href="#open" data-toggle="tab">Open Complaints</a></li>
+                                <li><a href="#close" data-toggle="tab">Closed Complaints</a></li>
+                            </ul>*@
+                        <div class="dropdown">
+                            <form>
+                                <label>Show:   </label>
+                                <input type="radio" id="openradio" onclick="fnopencomp(1);" checked />Open Complaints
+                                <label>           </label>
+                                <input type="radio" id="closeradio" onclick="fnclosecomp(0);" />Closed Complaints
+                            </form>
+
+
+                            <span id="hdnRegionCode"></span>
+                        </div>
+                        <div id="my-tab-content" class="tab-content">
+                            <div>
+                                <div id="open" class="tablefixhead" style="overflow-y: auto;">
+                                    <table class="table table-bordered" style="overflow-y: auto;overflow-x: hidden;  height: 517px;">
+
+                                        <thead style="position: relative;display: block;">
+                                            <tr>
+                                                <td><input type="checkbox" id="checkAll" /></td>
+                                                <td style="min-width: 114px;">Complaint Id</td>
+                                                <td style="min-width: 113px;">Raised By</td>
+                                                <td style="min-width: 95px;">Complaint Raised Date</td>
+                                                <td style="min-width: 172px;">Raised by Region Name</td>
+                                                <td style="min-width: 183px;">Customer Name</td>
+                                                <td style="min-width: 135px;">Customer Type</td>
+                                                <td style="min-width: 184px;">Customer Region_Name</td>
+                                                <td style="min-width: 96px;">Problem</td>
+                                                <td style="min-width: 213px;">Remarks</td>
+                                                <td style="min-width: 194px;">Resolution</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="opentab" style="position: relative;display: block; height: 480px;overflow: auto;"></tbody>
+                                    </table>
+                                </div>
+                                <input type="button" class="btn btn-primary" id="resolve" onclick="fnsave()" value="Resolve" />
+                            </div>
+                            <div id="close" class="tablefixhead" style="overflow-y: auto;">
+                                <table class="table table-bordered" style="overflow-y: auto;overflow-x: hidden;  height: 517px;">
+                                    <thead style="position: relative;">
+                                        <tr>
+
+                                            <td>Complaint Id</td>
+                                            <td>Raised By</td>
+                                            <td>Complaint Raised Date</td>
+                                            <td>Raised_By Region_Name</td>
+                                            <td>Customer Name</td>
+                                            <td>Customer Type</td>
+                                            <td>Customer Region_Name</td>
+                                            <td>Problem</td>
+                                            <td>Remarks</td>
+                                            <td>Resolved By</td>
+                                            <td>Resolved Date</td>
+                                            <td>Resolution</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="closetab" style="overflow: auto;"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="" id="hdnRegionCode" />
+<input type="hidden" value="" id="hdnRegionName" />
+<input type="hidden" value="" id="hdnUserName" />
+<input type="hidden" value="" id="hdnChildNodeCount" />
+
+
+<script>
+    var Company_Code = "";
+    var Region_Code = "";
+    var User_Code = "";
+    $(document).ready(function () {
+        $("#dvAjaxLoad").hide();
+        fntree(event);
+        //fnBindRegionTree("tree");
+        $("#open").hide();
+        $("#close").hide();
+        $('.tableFixHead').on('scroll', function() {
+            $('thead', this).css('transform', 'translateY('+ this.scrollTop +'px)');
+        });
+        $("#checkAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        Region_Code = @Html.Raw(Json.Encode(ViewBag.RequestRegionCode));
+        User_Code = @Html.Raw(Json.Encode(ViewBag.User_Code));
+
+        $(".tabledata").keyup(
+        function fnchangeupperfrstname() {
+            debugger;
+            this.value = this.value.substr(0, 1).toUpperCase() + this.value.substr(1).toLowerCase();
+        }
+);
+
+
+    });
+    function fnRegionTreePostInit(){
+
+    }
+    function fnRegionTreeNodeClick(node) {
+        debugger;
+        $('#hdnRegionCode').val(node.data.key);
+        Sel_Region_Code = node.data.key;
+        $('#hdnRegionName').val(node.data.title);
+        $('#hdnUserName').val(node.data.title.split('-')[1]);
+        $("#hdnChildNodeCount").val(node.getChildren() == null ? 0 : 1);
+        console.log(node);
+    }
+    function fnRegionTreeActivate(node) {
+        debugger;
+        $('#hdnRegionCode').val(node.data.key);
+        Sel_Region_Code = node.data.key;
+        $("#hdnChildNodeCount").val(node.getChildren() == null ? 0 : 1);
+        $('#divInput').show();
+        $("#leftNav").show();
+        $('#divToggle').show();
+        $('#comppane').show();
+        $('#tree').hide();
+        $("#comppane").removeClass();
+        $("#comppane").addClass("col-sm-12");
+        fnopencomp(1);
+        $("#showtree").show();
+        $("#hidetree").hide();
+        $("#divMain").addClass('col-xs-9');
+    }
+    function fntree(event){
+        debugger;
+        if(event)event.preventDefault();
+        $("#showtree").hide();
+        $("#hidetree").show();
+        $("#comppane").removeClass();
+        $("#comppane").addClass("col-sm-8");
+        fnBindRegionTree("tree");
+    }
+    function fnhidetree(event){
+        debugger;
+        event.preventDefault();
+        $("#hidetree").hide();
+        $("#showtree").show();
+        $("#tree").hide();
+        $("#comppane").removeClass();
+        $("#comppane").addClass("col-sm-12");
+
+    }
+</script>

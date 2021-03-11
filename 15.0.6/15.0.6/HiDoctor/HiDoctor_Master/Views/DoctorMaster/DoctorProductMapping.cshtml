@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "DoctorProductMapping";
+    Layout= null;
+}
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #dvCPMain #dvRegionTree {
+        height: 450px;
+    }
+
+    #dvCPMain #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+    .dvCommon {
+        min-height: 35px !important;
+    }
+
+    #dvSFC {
+        padding-top: 1%;
+    }
+
+    #tblSFC thead {
+        color: #fff;
+        background-color: #428bca;
+        border-color: #428bca;
+        text-align: center;
+    }
+
+    #tblDoctors thead {
+        text-align: center;
+    }
+
+    .docProDelete {
+        background: url('../Content/images/cross.png') no-repeat !important;
+        height: 20px;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+</style>
+<div class="col-lg-12 form-group" id="dvCPMain">
+    <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()">Hide Tree</span></div>
+    <div class="col-lg-12">
+        <div class="col-lg-4 form-group" id="dvLeftPanel">
+            <div id="dvRegionTree"></div>
+        </div>
+        <div class="col-lg-8" id="dvRightPanel">
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Mapping</label>
+                </div>
+                <div class="col-lg-9 form-group">
+                    <input type="radio" name="rdMapping" value="0" checked="checked" onclick="fnGetDoctorProducts();" />
+                    <input type="radio" name="rdMapping" value="1" onclick="fnGetDoctorProducts();" />
+                </div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-3 form-group">
+                    <label>Marketing Campaign</label>
+                </div>
+                <div class="col-lg-9 form-group">
+                    <select id="cboCampaign"></select>
+                </div>
+            </div>
+            <div class="col-lg-12 form-group" id="dvMapping"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/DoctorProductMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvRightPanel").tabs();
+        fnBindRegionTree("dvRegionTree");
+        $("#dvRightPanel").hide();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRegionTreeActivate(node) {
+        fnGetDoctorProducts();
+        $("#dvRightPanel").show();
+        $("#dvLeftPanel").hide();
+        $("#dvRightPanel").removeClass('col-lg-8');
+        $("#dvRightPanel").addClass('col-lg-12');
+        $("#spnTree").html('Show Tree');
+    }
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-lg-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+    }
+</script>

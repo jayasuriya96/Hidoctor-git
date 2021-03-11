@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .lblText {
+        width: 8%;
+    }
+
+    
+</style>
+<div id="dvDayofWeekReport">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 180px; overflow: auto;">
+        <div id="dvTree" class="col-lg-3">
+
+            <div style="clear: both"></div>
+            <div id="dvuserTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <input type="hidden" id="hdnUserCode" value="" />
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div>
+                    <div class="col-lg-1">Month</div>
+                    <div class="col-lg-7">
+                        <input type="text" id="txtMonth" tabindex="1" />
+                    </div>
+                </div>
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('DAY_OF_WEEK_REPORT','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div>
+                    <div class="col-lg-1">
+                       DCR Status  
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="checkbox" id="chkApplied" value="1" tabindex="2" class="clsCheck" onclick="chkAllChecked()" /><label for="chkApplied">Applied</label>
+                        <br />
+                        <input type="checkbox" id="chkApproved" value="2" checked="checked" class="clsCheck" tabindex="3" onclick="chkAllChecked()" /><label for="chkApproved">Approved</label>
+                        <br />
+                        <input type="checkbox" id="chkUnapproved" value="0" tabindex="4" class="clsCheck" onclick="chkAllChecked()" /><label for="chkUnapproved">Unapproved</label>
+                        <br />
+                        <input type="checkbox" id="chkAll" value="0^1^2^" tabindex="5" onclick="checkAll();" /><label for="chkAll">All</label>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div>
+                    <div class="col-lg-1">&nbsp;</div>
+                    <div class="col-lg-7">
+                        <input type="radio" value="1" id="optViewInScreen" tabindex="6" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" tabindex="7" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+
+                </div>
+                <div style="clear: both"></div>
+                <div>
+                    <div class="col-lg-1">&nbsp;</div>
+                    <div class="col-lg-7">
+                        <input type="button" tabindex="8" class="btn btn-primary"  value="View" onclick="fnBindDayofWeekReport()" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="dvGrid" class="col-lg-12" style="margin-top:15px">
+            </div>
+            <div></div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+            <div id="monthCalendar" style="margin: 5px auto; width: 95%; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+            </div>
+
+</div>
+
+<link href="../../Areas/HiDoctor_Reports/Content/calendar.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/fullcalendar.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/DayofWeekReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvDayofWeekReport').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnBindUserTree("dvuserTree") //To Bind The RegionTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvDayofWeekReport").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $("#txtMonth").monthpicker();
+
+    function fnUserTreePostInit() {
+        $("#dvDayofWeekReport").unblock();
+    }
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdnUserCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#dvGrid').html('');
+        $('#monthCalendar').fullCalendar('destroy');
+    }
+
+    function fnUserTreeActivate(node) {
+
+    }
+
+    function checkAll() {
+        if ($('#chkAll').attr('checked') == 'checked') {
+            $('.clsCheck').attr('checked', 'checked')
+        }
+        else {
+            $('.clsCheck').attr('checked', false);
+        }
+
+    }
+    function chkAllChecked() {
+        if ($('.clsCheck:checked').length == 3) {
+            $('#chkAll').attr('checked', 'checked');
+        }
+        else {
+            $('#chkAll').attr('checked', false);
+        }
+    }
+    // Default function for toggling tree and inputs
+</script>

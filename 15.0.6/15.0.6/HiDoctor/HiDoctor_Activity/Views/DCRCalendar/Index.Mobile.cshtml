@@ -1,0 +1,194 @@
+﻿<style>
+    .ui-page {
+        height:100% !important;
+    }
+</style>
+<div class="clearboth"></div>
+<div class="menucontent">
+    <a href="#"  onclick="fnGoToMenu()">Menu
+    </a>
+</div>
+<div style="clear: both"></div>
+<div>
+
+    <br />
+    <div data-role="header" data-mini="true" data-theme="b">
+        <h3>Calendar
+        </h3>
+    </div>
+    <div id="dcrEntryOptions">
+    </div>
+</div>
+<div style="clear: both"></div>
+<div id="dvCalendar">
+    <div style="width: 100%; float: left;">
+        <div style="width: 25%; float: left;">
+            <select id="ddlCalDay" data-inline="true" name="" data-mini="true">
+                <option value="01">01
+                </option>
+                <option value="02">02
+                </option>
+                <option value="03">03
+                </option>
+                <option value="04">04
+                </option>
+                <option value="05">05
+                </option>
+                <option value="06">06
+                </option>
+                <option value="07">07
+                </option>
+                <option value="08">08
+                </option>
+                <option value="09">09
+                </option>
+                <option value="10">10
+                </option>
+                <option value="11">11
+                </option>
+                <option value="12">12
+                </option>
+                <option value="13">13
+                </option>
+                <option value="14">14
+                </option>
+                <option value="15">15
+                </option>
+                <option value="16">16
+                </option>
+                <option value="17">17
+                </option>
+                <option value="18">18
+                </option>
+                <option value="19">19
+                </option>
+                <option value="20">20
+                </option>
+                <option value="21">21
+                </option>
+                <option value="22">22
+                </option>
+                <option value="23">23
+                </option>
+                <option value="24">24
+                </option>
+                <option value="25">25
+                </option>
+                <option value="26">26
+                </option>
+                <option value="27">27
+                </option>
+                <option value="28">28
+                </option>
+                <option value="29">29
+                </option>
+                <option value="30">30
+                </option>
+                <option value="31">31
+                </option>
+            </select>
+        </div>
+        <div style="width: 25%; float: left;">
+            <select id="ddlCalMonth" data-inline="true" name="" data-mini="true">
+                <option value="01">Jan
+                </option>
+                <option value="02">Feb
+                </option>
+                <option value="03">Mar
+                </option>
+                <option value="04">Apr
+                </option>
+                <option value="05">May
+                </option>
+                <option value="06">Jun
+                </option>
+                <option value="07">Jul
+                </option>
+                <option value="08">Aug
+                </option>
+                <option value="09">Sep
+                </option>
+                <option value="10">Oct
+                </option>
+                <option value="11">Nov
+                </option>
+                <option value="12">Dec
+                </option>
+            </select>
+        </div>
+        <div style="width: 25%; float: left;">
+            <select id="ddlCalYear" data-inline="true" name="" data-mini="true">
+            </select>
+        </div>
+        <div style="width: 23%; float: left;">
+            <input type="submit" data-inline="true" data-mini="true" onclick="fnCalendarDateSelection();" value="Go">
+        </div>
+    </div>
+
+    <div style="width: 100%; float: left;margin-top:1%;">
+    <a id="lnkCurrentMonth" href="#">Go To Current Date</a>
+    </div>
+
+    <div style="clear: both"></div>
+
+    <input type="hidden" id="hdnsdate" />
+    <input type="hidden" id="hdnedate" />
+    <ul data-role="listview" data-divider-theme="b" data-inset="true" id="calList">
+    </ul>
+</div>
+</div>
+@Scripts.Render("~/bundles/dcrcalendar")
+<script type='text/javascript'>
+
+    var monthArray = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+    var weekdaydisplay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var dcrJSON_g;
+    var curdate_g;
+    var dcrJSON2_g;
+    var isdcrLock_g = false;
+    var isPayRollIntegrated_g=false;
+    var unApprovedDCRCheck_g = "";
+    var singleActivityperday_g = "";
+    var leaveentrymode_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        //$("#loginUserName1").html(loginUserName_g);
+        // Set Current Date.
+        debugger;
+        curdate_g = @Html.Raw(Json.Encode(ViewBag.CurrentDate));
+        isPayRollIntegrated_g = @Html.Raw(Json.Encode(ViewBag.isPayRollIntegrated));
+        unApprovedDCRCheck_g = @Html.Raw(Json.Encode(ViewBag.unApprovedDCRCheck));
+        singleActivityperday_g = @Html.Raw(Json.Encode(ViewBag.singleActivityPerDay));
+        leaveentrymode_g=@Html.Raw(Json.Encode(ViewBag.LeaveEntryMode));
+        // Get Month and Year from current date.
+        var month = new Date(curdate_g).getMonth();
+        var year = new Date(curdate_g).getFullYear();
+        var tempDate = new Date(curdate_g).getDate();
+        tempDate = (tempDate < 10) ? "0" + tempDate : tempDate;
+        var tempMonth = month + 1;
+        tempMonth = (tempMonth < 10) ? "0" + tempMonth : tempMonth;
+
+        $('#ddlCalYear').append('<option value="' + (year - 1) + '" >' + (year - 1) + '</option>');
+        $('#ddlCalYear').append('<option value="' + year + '" >' + year + '</option>');
+        $('#ddlCalYear').append('<option value="' + (year + 1) + '" >' + (year + 1) + '</option>');        
+        $('span.cls_usernamespn').text(loginUserName_g);
+        // Get Month Name.
+        var monthName = monthArray[month];
+        fnGetDCRDetails(monthName + " " + year.toString(), true);
+        fnSetNavigation();
+        fnSetDCROptions();
+
+        $("#lnkCurrentMonth").click(function () { fnGetDCRDetails(monthName + " " + year.toString(),false,'FROM_LINK'); });
+
+        $("#ddlCalDay").val(tempDate);
+        // $("#ddlCalDay").selectmenu('refresh');
+        $("#ddlCalMonth").val(tempMonth);
+        //$("#ddlCalMonth").selectmenu('refresh');
+        $("#ddlCalYear").val(year);
+        
+        //$("#ddlCalYear").selectmenu('refresh');
+    })  ;
+ </script>
+
+
+

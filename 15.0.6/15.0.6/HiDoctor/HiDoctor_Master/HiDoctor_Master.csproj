@@ -1,0 +1,837 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7F073FF0-CCC6-4557-BEFB-E504C5710843}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HiDoctor_Master</RootNamespace>
+    <AssemblyName>HiDoctor_Master</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\HiDoctor\Areas\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cog.Cache.Lib">
+      <HintPath>..\..\SharedDlls\Cog.Cache.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\..\SharedDlls\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet">
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\..\SharedDlls\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="ElmahWrapper">
+      <HintPath>..\..\SharedDlls\ElmahWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\SharedDlls\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\..\SharedDlls\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="HDQueueService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\HDQueueService.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\SharedDlls\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\SharedDlls\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\SharedDlls\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Password_Policy_Messages1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Password_Policy_Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivityMasterController.cs" />
+    <Compile Include="Controllers\AppMappingController.cs" />
+    <Compile Include="Controllers\ApprovalController.cs" />
+    <Compile Include="Controllers\AutomationMasterDataController.cs" />
+    <Compile Include="Controllers\BeatPlanController.cs" />
+    <Compile Include="Controllers\CMDoctorController.cs" />
+    <Compile Include="Controllers\CMEController.cs" />
+    <Compile Include="Controllers\CycleMasterController.cs" />
+    <Compile Include="Controllers\DcrStatusMasterController.cs" />
+    <Compile Include="Controllers\DistanceFareChartController.cs" />
+    <Compile Include="Controllers\DivisionController.cs" />
+    <Compile Include="Controllers\DivisionUserProductsController.cs" />
+    <Compile Include="Controllers\DoctorCategoryMasterController.cs" />
+    <Compile Include="Controllers\DoctorMasterController.cs" />
+    <Compile Include="Controllers\DoctorsBirthdayController.cs" />
+    <Compile Include="Controllers\DomainMasterController.cs" />
+    <Compile Include="Controllers\ExcelAPIConfiqurationController.cs" />
+    <Compile Include="Controllers\ExpenseController.cs" />
+    <Compile Include="Controllers\ExpenseEntityMasterController.cs" />
+    <Compile Include="Controllers\ExpenseGroupController.cs" />
+    <Compile Include="Controllers\ExpenseMappingController.cs" />
+    <Compile Include="Controllers\FeatureMasterController.cs" />
+    <Compile Include="Controllers\FeedBackController.cs" />
+    <Compile Include="Controllers\FormControlController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\HidoctorStartDateController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InwardController.cs" />
+    <Compile Include="Controllers\LeaveTypeController.cs" />
+    <Compile Include="Controllers\MarketingCampaignController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\MasterDataDownloadController.cs" />
+    <Compile Include="Controllers\MenuMasterController.cs" />
+    <Compile Include="Controllers\MigrationController.cs" />
+    <Compile Include="Controllers\MissedDoctorController.cs" />
+    <Compile Include="Controllers\MyDocumentController.cs" />
+    <Compile Include="Controllers\MyProfileController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\OrganogramController.cs" />
+    <Compile Include="Controllers\PasswordLockReleaseController.cs" />
+    <Compile Include="Controllers\PasswordResetController.cs" />
+    <Compile Include="Controllers\PatientTrackingController.cs" />
+    <Compile Include="Controllers\PaySlipController.cs" />
+    <Compile Include="Controllers\PriceGroupController.cs" />
+    <Compile Include="Controllers\PrivilegeMasterController.cs" />
+    <Compile Include="Controllers\ProductMasterController.cs" />
+    <Compile Include="Controllers\ProductPriceMasterController.cs" />
+    <Compile Include="Controllers\ProjectActivityController.cs" />
+    <Compile Include="Controllers\ProjectMasterController.cs" />
+    <Compile Include="Controllers\PSAndSSController.cs" />
+    <Compile Include="Controllers\PurchaseRequisitionController.cs" />
+    <Compile Include="Controllers\ReconController.cs" />
+    <Compile Include="Controllers\RegionCategoryMasterController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
+    <Compile Include="Controllers\RegionCreationController.cs" />
+    <Compile Include="Controllers\RegionTypeController.cs" />
+    <Compile Include="Controllers\RegionWeekendMappingController.cs" />
+    <Compile Include="Controllers\RequestMasterController.cs" />
+    <Compile Include="Controllers\RequestUserTypeMappingController.cs" />
+    <Compile Include="Controllers\SalestypeMappingController.cs" />
+    <Compile Include="Controllers\SchemeController.cs" />
+    <Compile Include="Controllers\SFCRegionController.cs" />
+    <Compile Include="Controllers\SMS_UserIdCreationController.cs" />
+    <Compile Include="Controllers\SplashScreenController.cs" />
+    <Compile Include="Controllers\SSLockReleaseController.cs" />
+    <Compile Include="Controllers\StatusMasterController.cs" />
+    <Compile Include="Controllers\StockistInheritanceController.cs" />
+    <Compile Include="Controllers\StockistPollAllocationController.cs" />
+    <Compile Include="Controllers\SubRegionMasterController.cs" />
+    <Compile Include="Controllers\TableToolsController.cs" />
+    <Compile Include="Controllers\Target_SettingController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UsercreationWizardController.cs" />
+    <Compile Include="Controllers\UserProductMappingController.cs" />
+    <Compile Include="Controllers\UserProjectMappingController.cs" />
+    <Compile Include="Controllers\UsersDivisionMappingController.cs" />
+    <Compile Include="Controllers\UserTypeActivityMappingController.cs" />
+    <Compile Include="Controllers\UserTypeMasterController.cs" />
+    <Compile Include="Controllers\WeekendGroupController.cs" />
+    <Compile Include="Controllers\WorkCategroyRulesController.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HiDoctor_MasterAreaRegistration.cs" />
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ActivityMasterModel.cs" />
+    <Compile Include="Models\DivisionModel.cs" />
+    <Compile Include="Models\DoctorCategoryModel.cs" />
+    <Compile Include="Models\DoctorMasterModel.cs" />
+    <Compile Include="Models\DownloadExcel.cs" />
+    <Compile Include="Models\DownloadResult.cs" />
+    <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\ExpenseEntityMasterModel.cs" />
+    <Compile Include="Models\ExpenseGroupModel.cs" />
+    <Compile Include="Models\ExpensesMapping.cs" />
+    <Compile Include="Models\ExpenseTypeModel.cs" />
+    <Compile Include="Models\InwardModel.cs" />
+    <Compile Include="Models\LeaveTypeMasterModel.cs" />
+    <Compile Include="Models\MasterModel.cs" />
+    <Compile Include="Models\MigrationModelcs.cs" />
+    <Compile Include="Models\Organogram.cs" />
+    <Compile Include="Models\PasswordReset.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductTypesModal.cs" />
+    <Compile Include="Models\RegionCategoryModel.cs" />
+    <Compile Include="Models\Regiontype.cs" />
+    <Compile Include="Models\SalestypeMapping.cs" />
+    <Compile Include="Models\UserTypeMasterModel.cs" />
+    <Compile Include="Models\UserTypesModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Cog.Cache.Lib.dll" />
+    <Content Include="Content\base.css" />
+    <Content Include="Content\DoctorMaster.css" />
+    <Content Include="Content\doctormasternew.css" />
+    <Content Include="Content\HD_Master.css" />
+    <Content Include="Content\images\Add.png" />
+    <Content Include="Content\images\arrow-down.png" />
+    <Content Include="Content\images\arrow-up.png" />
+    <Content Include="Content\images\autoCorrect.png" />
+    <Content Include="Content\images\btnAddNew.png" />
+    <Content Include="Content\images\btnApproval.png" />
+    <Content Include="Content\images\btnChangeRegion.png" />
+    <Content Include="Content\images\btnCopyRegion.png" />
+    <Content Include="Content\images\btnDocProduct.png" />
+    <Content Include="Content\images\btnGetDoctor.png" />
+    <Content Include="Content\images\btnMore.png" />
+    <Content Include="Content\images\btnRCPA.png" />
+    <Content Include="Content\images\btnSave.png" />
+    <Content Include="Content\images\btnShowProduct.png" />
+    <Content Include="Content\images\cal.png" />
+    <Content Include="Content\images\cancel.png" />
+    <Content Include="Content\images\close.png" />
+    <Content Include="Content\images\cross.png" />
+    <Content Include="Content\images\CustomerMaster1.png" />
+    <Content Include="Content\images\CustomerMaster2.png" />
+    <Content Include="Content\images\detail.png" />
+    <Content Include="Content\images\DoctorMaster.png" />
+    <Content Include="Content\images\downarrow.png" />
+    <Content Include="Content\images\down_arrow.png" />
+    <Content Include="Content\images\errorIcon.png" />
+    <Content Include="Content\images\gr.png" />
+    <Content Include="Content\images\gropu-hierarchy-3.png" />
+    <Content Include="Content\images\group-hierarchy.png" />
+    <Content Include="Content\images\group_screen.png" />
+    <Content Include="Content\images\HD_Master\add.png" />
+    <Content Include="Content\images\help_icon.jpg" />
+    <Content Include="Content\images\Hierarchy.jpg" />
+    <Content Include="Content\images\less.png" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\mba\ajax-loader.gif" />
+    <Content Include="Content\images\mba\guidely-number.png" />
+    <Content Include="Content\images\mba\msgAlert_button_bg.png" />
+    <Content Include="Content\images\mba\msgAlert_close.png" />
+    <Content Include="Content\images\mba\msgAlert_error.png" />
+    <Content Include="Content\images\mba\msgAlert_header.png" />
+    <Content Include="Content\images\mba\msgAlert_info.png" />
+    <Content Include="Content\images\mba\msgAlert_success.png" />
+    <Content Include="Content\images\mba\msgAlert_warning.png" />
+    <Content Include="Content\images\mba\msgBar_error.png" />
+    <Content Include="Content\images\mba\msgBar_header.png" />
+    <Content Include="Content\images\mba\msgBar_info.png" />
+    <Content Include="Content\images\mba\msgBar_success.png" />
+    <Content Include="Content\images\mba\msgBar_warning.png" />
+    <Content Include="Content\images\mba\msgGrowl_close.png" />
+    <Content Include="Content\images\mba\msgGrowl_error.png" />
+    <Content Include="Content\images\mba\msgGrowl_info.png" />
+    <Content Include="Content\images\mba\msgGrowl_success.png" />
+    <Content Include="Content\images\mba\msgGrowl_warning.png" />
+    <Content Include="Content\images\mba\msg_alert.png" />
+    <Content Include="Content\images\mba\msg_bar.png" />
+    <Content Include="Content\images\mba\msg_growl.png" />
+    <Content Include="Content\images\More.png" />
+    <Content Include="Content\images\move-left.png" />
+    <Content Include="Content\images\move-right.png" />
+    <Content Include="Content\images\movedown.png" />
+    <Content Include="Content\images\moveup.png" />
+    <Content Include="Content\images\options.png" />
+    <Content Include="Content\images\process.gif" />
+    <Content Include="Content\images\process.png" />
+    <Content Include="Content\images\refresh.jpg" />
+    <Content Include="Content\images\refresh.png" />
+    <Content Include="Content\images\save.png" />
+    <Content Include="Content\images\search.png" />
+    <Content Include="Content\images\SFCEdit-32.png" />
+    <Content Include="Content\images\SFC_Version_add-32.png" />
+    <Content Include="Content\images\trash1_16x16.gif" />
+    <Content Include="Content\images\Tree.png" />
+    <Content Include="Content\images\Update.png" />
+    <Content Include="Content\images\up_arrow.png" />
+    <Content Include="Content\images\User.jpg" />
+    <Content Include="Content\InChamberEffectiveness.css" />
+    <Content Include="Content\MarketingCampaign.css" />
+    <Content Include="Content\PatientTrackingSystem.css" />
+    <Content Include="Content\PurchaseRequisition.css" />
+    <Content Include="Content\slide\css\slide.css" />
+    <Content Include="Content\slide\css\style.css" />
+    <Content Include="Content\slide\images\bg.jpg" />
+    <Content Include="Content\slide\images\bt_close.png" />
+    <Content Include="Content\slide\images\bt_login.png" />
+    <Content Include="Content\slide\images\bt_open.png" />
+    <Content Include="Content\slide\images\bt_register.png" />
+    <Content Include="Content\slide\images\tab_b.png" />
+    <Content Include="Content\slide\images\tab_l.png" />
+    <Content Include="Content\slide\images\tab_m.png" />
+    <Content Include="Content\slide\images\tab_r.png" />
+    <Content Include="Content\slide\js\jquery-1.3.2.min.js" />
+    <Content Include="Content\slide\js\pngfix\supersleight-min.js" />
+    <Content Include="Content\slide\js\pngfix\x.gif" />
+    <Content Include="Content\slide\js\slide.js" />
+    <Content Include="Content\UsercreationWizard.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\XLTemplates\CHEMIST_MASTER.csv" />
+    <Content Include="Content\XLTemplates\DOCTOR_MASTER.csv" />
+    <Content Include="Content\XLTemplates\STOCKIEST_MASTER.csv" />
+    <Content Include="Scripts\ExpenseActivityMapping.js" />
+    <Content Include="Scripts\HD_Master\AppMenuMaster.js" />
+    <Content Include="Scripts\HD_Master\BeatPlan\BeatPlanApproval.js" />
+    <Content Include="Scripts\HD_Master\BeatPlan\BeatPlanQuickTagging.js" />
+    <Content Include="Scripts\HD_Master\BeatPlan\CreateBeatPlan.js" />
+    <Content Include="Scripts\HD_Master\BirthdayMail.js" />
+    <Content Include="Scripts\HD_Master\CMDoctor.js" />
+    <Content Include="Scripts\HD_Master\CME\CMEDefinition.js" />
+    <Content Include="Scripts\HD_Master\DcrStatusMaster.js" />
+    <Content Include="Scripts\HD_Master\DCRWorkCategorySetting.js" />
+    <Content Include="Scripts\HD_Master\DeleteLeaveDCR.js" />
+    <Content Include="Scripts\HD_Master\DisableRegion.js" />
+    <Content Include="Scripts\HD_Master\DivisionMappingNew.js" />
+    <Content Include="Scripts\HD_Master\DoctorsReason.js" />
+    <Content Include="Scripts\HD_Master\FromControls.js" />
+    <Content Include="Scripts\HD_Master\AppMapping.js" />
+    <Content Include="Scripts\HD_Master\Approval12.7.0.js" />
+    <Content Include="Scripts\HD_Master\DCRFreezeReleaseApproval.js" />
+    <Content Include="Scripts\HD_Master\DivisionEntityMapping.js" />
+    <Content Include="Scripts\HD_Master\DoctorApproval.js" />
+    <Content Include="Scripts\HD_Master\DoctorProductMappingNew.js" />
+    <Content Include="Scripts\HD_Master\DoctorQuickView.js" />
+    <Content Include="Scripts\HD_Master\Employee.js" />
+    <Content Include="Scripts\HD_Master\ActivityMapping.js" />
+    <Content Include="Scripts\HD_Master\ActivityMaster.js" />
+    <Content Include="Scripts\HD_Master\CustomerMaster.js" />
+    <Content Include="Scripts\HD_Master\CycleMaster.js" />
+    <Content Include="Scripts\HD_Master\DistanceFareChart.js" />
+    <Content Include="Scripts\HD_Master\Division.js" />
+    <Content Include="Scripts\HD_Master\DivisionUserProducts.js" />
+    <Content Include="Scripts\HD_Master\DoctorCategoryMaster.js" />
+    <Content Include="Scripts\HD_Master\DoctorProductMapping.js" />
+    <Content Include="Scripts\HD_Master\DomainMaster.js" />
+    <Content Include="Scripts\HD_Master\ExcelAPI.js" />
+    <Content Include="Scripts\HD_Master\ExpenseClaimApproval.js" />
+    <Content Include="Scripts\HD_Master\ExpenseClaimApproval12.7.0.js" />
+    <Content Include="Scripts\HD_Master\ExpenseEntityMaster.js" />
+    <Content Include="Scripts\HD_Master\ExpenseGroup.js" />
+    <Content Include="Scripts\HD_Master\FeatureMaster.js" />
+    <Content Include="Scripts\HD_Master\HD_Master.js" />
+    <Content Include="Scripts\HD_Master\HidoctorStartDate.js" />
+    <Content Include="Scripts\HD_Master\Holiday.js" />
+    <Content Include="Scripts\HD_Master\ICEQuestionMapping.js" />
+    <Content Include="Scripts\HD_Master\ICERatingParameters.js" />
+    <Content Include="Scripts\HD_Master\ICETaskView.js" />
+    <Content Include="Scripts\HD_Master\InChamberEffectivenessForm.js" />
+    <Content Include="Scripts\HD_Master\Inward.js" />
+    <Content Include="Scripts\HD_Master\InwardAcknowledgement.js" />
+    <Content Include="Scripts\HD_Master\LeaveType.js" />
+    <Content Include="Scripts\HD_Master\LockRelease.js" />
+    <Content Include="Scripts\HD_Master\MarketingCampaign.js" />
+    <Content Include="Scripts\HD_Master\MasterDataDownload.js" />
+    <Content Include="Scripts\HD_Master\MasterDataHandler\AutomateMasterData.js" />
+    <Content Include="Scripts\HD_Master\MenuMaster.js" />
+    <Content Include="Scripts\HD_Master\MyDocuments.js" />
+    <Content Include="Scripts\HD_Master\MyProfile.js" />
+    <Content Include="Scripts\HD_Master\OrderAdd.js" />
+    <Content Include="Scripts\HD_Master\OrderList.js" />
+    <Content Include="Scripts\HD_Master\Passwordlock.js" />
+    <Content Include="Scripts\HD_Master\PasswordReset.js" />
+    <Content Include="Scripts\HD_Master\PatientCreationMaster.js" />
+    <Content Include="Scripts\HD_Master\PaySlip.js" />
+    <Content Include="Scripts\HD_Master\PlaceOrderForm.js" />
+    <Content Include="Scripts\HD_Master\PrescriptionTracking.js" />
+    <Content Include="Scripts\HD_Master\PrivilegeMaster.js" />
+    <Content Include="Scripts\HD_Master\ProductPriceMaster.js" />
+    <Content Include="Scripts\HD_Master\ProjectActivityMapping.js" />
+    <Content Include="Scripts\HD_Master\ProjectMaster.js" />
+    <Content Include="Scripts\HD_Master\PSAndSSSalesEntry.js" />
+    <Content Include="Scripts\HD_Master\PSAndSSSalesRelease.js" />
+    <Content Include="Scripts\HD_Master\PurchaseDispatch.js" />
+    <Content Include="Scripts\HD_Master\PurchaseRequisitionForm.js" />
+    <Content Include="Scripts\HD_Master\Recon.js" />
+    <Content Include="Scripts\HD_Master\Recon\ReconApprovalList.js" />
+    <Content Include="Scripts\HD_Master\RegionCategoryMaster.js" />
+    <Content Include="Scripts\HD_Master\RegionCreationWizard.js" />
+    <Content Include="Scripts\HD_Master\RegionHierarchy.js" />
+    <Content Include="Scripts\HD_Master\RegionLockMap.js" />
+    <Content Include="Scripts\HD_Master\RegionType.js" />
+    <Content Include="Scripts\HD_Master\RegionWeekendMapping.js" />
+    <Content Include="Scripts\HD_Master\RequestMapping.js" />
+    <Content Include="Scripts\HD_Master\RequestMaster.js" />
+    <Content Include="Scripts\HD_Master\RequisitionSummary.js" />
+    <Content Include="Scripts\HD_Master\SecondarySalesApproval.js" />
+    <Content Include="Scripts\HD_Master\SecondarySalesDelete.js" />
+    <Content Include="Scripts\HD_Master\SecondarySalesEntry.js" />
+    <Content Include="Scripts\HD_Master\SecondarySalesForCustomer.js" />
+    <Content Include="Scripts\HD_Master\SendSMS.js" />
+    <Content Include="Scripts\HD_Master\SFCRegion.js" />
+    <Content Include="Scripts\HD_Master\SplashScreen.js" />
+    <Content Include="Scripts\HD_Master\StatusCycleMapping.js" />
+    <Content Include="Scripts\HD_Master\StatusMaster.js" />
+    <Content Include="Scripts\HD_Master\StockistInheritance.js" />
+    <Content Include="Scripts\HD_Master\StockistPoolAllocation.js" />
+    <Content Include="Scripts\HD_Master\SubRegionMaster.js" />
+    <Content Include="Scripts\HD_Master\TargetSettings.js" />
+    <Content Include="Scripts\HD_Master\User.js" />
+    <Content Include="Scripts\HD_Master\UsercreationWizard.js" />
+    <Content Include="Scripts\HD_Master\UserLeaveTypeBalance.js" />
+    <Content Include="Scripts\HD_Master\UserProductMapping.js" />
+    <Content Include="Scripts\HD_Master\UserProjectMapping.js" />
+    <Content Include="Scripts\HD_Master\UserType.js" />
+    <Content Include="Scripts\HD_Master\WeekendEdit.js" />
+    <Content Include="Scripts\HD_Master\WeekendGroup.js" />
+    <Content Include="Scripts\HD_Master\Organogram.js" />
+    <Content Include="Scripts\HD_Master\PriceGroup.js" />
+    <Content Include="Scripts\HD_Master\Product.js" />
+    <Content Include="Scripts\HD_Master\saletypemapping.js" />
+    <Content Include="Scripts\HD_Master\Scheme.js" />
+    <Content Include="Scripts\HD_Master\SchemeMapping.js" />
+    <Content Include="Scripts\HD_Master\WeekendGroupReport.js" />
+    <Content Include="Scripts\HD_Master\workcategoryrule.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\BeatPlan\BeatPlanApproval.cshtml" />
+    <Content Include="Views\AutomationMasterData\MasterDataHandler.cshtml" />
+    <Content Include="Views\AutomationMasterData\EmptyPage.cshtml" />
+    <Content Include="Views\Approval\DeleteLeaveDCR.cshtml" />
+    <None Include="Views\BeatPlan\CreateBeatPlan.cshtml" />
+    <None Include="Views\BeatPlan\BeatPlanQuickTagging.cshtml" />   
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\DoctorMaster\BulkAdd.cshtml" />
+    <Content Include="Views\DoctorMaster\BulkCopy.cshtml" />
+    <Content Include="Views\DoctorMaster\DataQuality.cshtml" />
+    <Content Include="Views\DoctorMaster\ExcelUpload.cshtml" />
+    <Content Include="Views\DoctorMaster\SingleAdd.cshtml" />
+    <Content Include="Views\ExpenseGroup\Create.cshtml" />
+    <Content Include="Views\ExpenseMapping\Create.cshtml" />
+    <Content Include="Views\Migration\Migration.cshtml" />
+    <Content Include="Views\Organogram\Create.cshtml" />
+    <Content Include="Views\ProductMaster\Brand.cshtml" />
+    <Content Include="Views\ProductMaster\Category.cshtml" />
+    <Content Include="Views\ProductMaster\Index.cshtml" />
+    <Content Include="Views\ProductMaster\ProductGroup.cshtml" />
+    <Content Include="Views\ProductMaster\ProductType.cshtml" />
+    <Content Include="Views\ProductMaster\Speciality.cshtml" />
+    <Content Include="Views\ProductMaster\UOM.cshtml" />
+    <Content Include="Views\ProductMaster\UOMType.cshtml" />
+    <Content Include="Views\SalestypeMappng\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Expense\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Inward\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DoctorMaster\HDDataQuality.cshtml" />
+    <Content Include="Views\DoctorMaster\HDInsights.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Scheme\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PriceGroup\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataControl\DataControl.csproj">
+      <Project>{ccc44559-d1ac-4246-b469-e03e0dda91e9}</Project>
+      <Name>DataControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVCModels\MVCModels.csproj">
+      <Project>{7f1d03a7-4c34-4368-83ae-039f1795d700}</Project>
+      <Name>MVCModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="web.config" />
+    <Content Include="Views\PriceGroup\PriceGroupExcelUpload.cshtml" />
+    <Content Include="Views\Inward\ExcelBulkUpload.cshtml" />
+    <Content Include="Views\Inward\UploadExcelFile.cshtml" />
+    <Content Include="Views\PriceGroup\RegionPriceMapping.cshtml" />
+    <Content Include="Views\Scheme\RegionSchemeMapping.cshtml" />
+    <Content Include="Views\WeekendGroup\Index.cshtml" />
+    <Content Include="Views\DoctorMaster\CustomerMaster.cshtml" />
+    <Content Include="Views\WeekendGroup\WeekendGroupDefinerReport.cshtml" />
+    <Content Include="Views\RegionWeekendMapping\Index.cshtml" />
+    <Content Include="Views\DoctorMaster\ExcelBulkUploadMultiTerritory.cshtml" />
+    <Content Include="Views\DoctorMaster\UploadExcelFile.cshtml" />
+    <Content Include="Views\TableTools\Index.cshtml" />
+    <Content Include="Views\User\Employee.cshtml" />
+    <Content Include="Views\User\User.cshtml" />
+    <Content Include="Views\StockistPollAllocation\Index.cshtml" />
+    <Content Include="Views\User\DisableUser.cshtml" />
+    <Content Include="Views\User\EmployeeBulkAdd.cshtml" />
+    <Content Include="Views\User\EmployeeExcelBulkAddResult.cshtml" />
+    <Content Include="Views\User\UserBulkAdd.cshtml" />
+    <Content Include="Views\User\UserBulkDisable.cshtml" />
+    <Content Include="Views\User\UserExcelBulkAdd.cshtml" />
+    <Content Include="Views\User\UserExcelUploadResult.cshtml" />
+    <Content Include="Views\User\UserHierarchyChange.cshtml" />
+    <Content Include="Views\User\UserRegionMigration.cshtml" />
+    <Content Include="Views\Organogram\RegionExcelBlukUpload.cshtml" />
+    <Content Include="Views\Organogram\UploadedRegionExcel.cshtml" />
+    <Content Include="Views\Approval\Index.cshtml" />
+    <Content Include="Views\ProductMaster\ProductExcelUpload.cshtml" />
+    <Content Include="Views\ProductMaster\ProductExcelUploadResult.cshtml" />
+    <Content Include="Views\Division\Index.cshtml" />
+    <Content Include="Views\DoctorMaster\DoctorProductMapping.cshtml" />
+    <Content Include="Views\MarketingCampaign\DoctorProductMapping.cshtml" />
+    <Content Include="Views\ActivityMaster\Create.cshtml" />
+    <Content Include="Views\DistanceFareChart\Index.cshtml" />
+    <Content Include="Views\ExpenseEntityMaster\Create.cshtml" />
+    <Content Include="Views\LeaveType\Create.cshtml" />
+    <Content Include="Views\PasswordLockRelease\PasswordLockRelease.cshtml" />
+    <Content Include="Views\PasswordReset\Create.cshtml" />
+    <Content Include="Views\ProjectActivity\ProjectActivityMapping.cshtml" />
+    <Content Include="Views\RegionCategoryMaster\Create.cshtml" />
+    <Content Include="Views\RegionType\RegionType.cshtml" />
+    <Content Include="Views\SFCRegion\SFCRegion.cshtml" />
+    <Content Include="Views\UserTypeActivityMapping\UsertypeActivityMapping.cshtml" />
+    <Content Include="Views\UserTypeMaster\UserType.cshtml" />
+    <Content Include="Views\Approval\CPapproval.cshtml" />
+    <Content Include="Views\StatusMaster\Create.cshtml" />
+    <Content Include="Views\CycleMaster\Create.cshtml" />
+    <Content Include="Views\Approval\DCRLockRelease.cshtml" />
+    <Content Include="Views\Approval\DeleteDCR.cshtml" />
+    <Content Include="Views\Approval\NoticeBoardApproval.cshtml" />
+    <Content Include="Views\Approval\SFCApproval.cshtml" />
+    <Content Include="Views\DivisionUserProducts\DivisionUserProducts.cshtml" />
+    <Content Include="Views\DoctorCategoryMaster\Create.cshtml" />
+    <Content Include="Views\DomainMaster\Create.cshtml" />
+    <Content Include="Views\FeatureMaster\Create.cshtml" />
+    <Content Include="Views\HidoctorStartDate\Create.cshtml" />
+    <Content Include="Views\ProductPriceMaster\Create.cshtml" />
+    <Content Include="Views\RequestMaster\RequestMaster.cshtml" />
+    <Content Include="Views\RequestUserTypeMapping\RequestUserTypeMapping.cshtml" />
+    <Content Include="Views\UserProjectMapping\UserProjectMapping.cshtml" />
+    <Content Include="Views\Approval\MarketingCampaignApproval.cshtml" />
+    <Content Include="Views\LeaveType\UserLeaveTypeMapping.cshtml" />
+    <Content Include="Views\MarketingCampaign\MarketingCampaignDefiner.cshtml" />
+    <Content Include="Views\Organogram\RegionLockMapping.cshtml" />
+    <Content Include="Views\ProjectMaster\Create.cshtml" />
+    <Content Include="Views\SFCRegion\SFCExcelUpload.cshtml" />
+    <Content Include="Views\SFCRegion\SFCExcelUploadResult.cshtml" />
+    <Content Include="Views\StatusMaster\StatusCycleMapping.cshtml" />
+    <Content Include="Views\Approval\ExpenseClaimApproval.cshtml" />
+    <Content Include="Views\Approval\DCRApproval.cshtml" />
+    <Content Include="Views\SMS_UserIdCreation\SMS_UserIdCreation.cshtml" />
+    <Content Include="Views\PaySlip\PayslipDataUpload.cshtml" />
+    <Content Include="Views\PaySlip\PaySlipMaintanance.cshtml" />
+    <Content Include="Views\PaySlip\PayslipColumnDefiner.cshtml" />
+    <Content Include="Views\PaySlip\PayslipColumnDefinerResult.cshtml" />
+    <Content Include="Views\Approval\SecondarySalesApproval.cshtml" />
+    <Content Include="Views\LeaveType\LeaveBalanceUpdate.cshtml" />
+    <Content Include="Views\LeaveType\LeaveBalanceUpdateUploadResult.cshtml" />
+    <Content Include="Views\PaySlip\PayslipDataResult.cshtml" />
+    <Content Include="Views\ProductMaster\PrimarySalesExcelUpload.cshtml" />
+    <Content Include="Views\ProductMaster\PrimarySalesExcelUploadResult.cshtml" />
+    <Content Include="Views\Region\Holiday.cshtml" />
+    <Content Include="Views\SubRegionMaster\SubRegionMaster.cshtml" />
+    <Content Include="Views\Approval\WideAngleUsersApproval.cshtml" />
+    <Content Include="Views\ExcelAPIConfiquration\ExcelAPIConfiquration.cshtml" />
+    <Content Include="Views\MenuMaster\MenuAccess.cshtml" />
+    <Content Include="Views\MenuMaster\MenuMaster.cshtml" />
+    <Content Include="Views\MyProfile\MyProfile.cshtml" />
+    <Content Include="Views\PrivilegeMaster\PrivilegeMapping.cshtml" />
+    <Content Include="Views\PrivilegeMaster\PrivilegeMaster.cshtml" />
+    <Content Include="Views\RequestMaster\DcrRequestScreen.cshtml" />
+    <Content Include="Views\RequestMaster\RequestCategoryMaster.cshtml" />
+    <Content Include="Views\Approval\DCRLeaveApproval.cshtml" />
+    <Content Include="Views\UserProductMapping\UserProductMapping.cshtml" />
+    <Content Include="Views\MenuMaster\ConfigSettings.cshtml" />
+    <Content Include="Views\AppMapping\CompanyAppMapping.cshtml" />
+    <Content Include="Views\AppMapping\AppUserMapping.cshtml" />
+    <Content Include="Views\ProductMaster\PrimarySalesParameters.cshtml" />
+    <Content Include="Views\ProductMaster\PrimarySalesValuesExcelUpload.cshtml" />
+    <Content Include="Views\ProductMaster\PrimarySalesValuesExcelUploadResult.cshtml" />
+    <Content Include="Views\User\UserPayrollMapping.cshtml" />
+    <Content Include="Views\SplashScreen\Create.cshtml" />
+    <Content Include="Views\PrivilegeMaster\PrivilegeMappingSD.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateLeaveDetails.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateNewUser.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateNoticeBoard.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateUserProductMapping.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateUserWizard.cshtml" />
+    <Content Include="Views\UsercreationWizard\DisableUser.cshtml" />
+    <Content Include="Views\UsercreationWizard\Home.cshtml" />
+    <Content Include="Views\UsercreationWizard\DisableUserfromMaster.cshtml" />
+    <Content Include="Views\UsercreationWizard\DisableUserfromMasterData.cshtml" />
+    <Content Include="Views\MyDocument\DownloadmyDocuments.cshtml" />
+    <Content Include="Views\MyDocument\ZipFileUpload.cshtml" />
+    <Content Include="Views\MyDocument\UploadedFileStatus.cshtml" />
+    <Content Include="Views\DoctorMaster\DoctorView.cshtml" />
+    <Content Include="Views\StockistInheritance\Index.cshtml" />
+    <Content Include="Views\Order\OrderAdd.cshtml" />
+    <Content Include="Views\Order\OrderList.cshtml" />
+    <Content Include="Views\FeedBack\ICEQuestionsMapping.cshtml" />
+    <Content Include="Views\FeedBack\ICETasksView.cshtml" />
+    <Content Include="Views\FeedBack\InChamberEffectivenessForm.cshtml" />
+    <Content Include="Views\SFCRegion\SFCCountExtension.cshtml" />
+    <Content Include="Views\MarketingCampaign\DoctorProductMappingNew.cshtml" />
+    <Content Include="Views\PatientTracking\PatientCreationMaster.cshtml" />
+    <Content Include="Views\PatientTracking\PrescriptionTracking.cshtml" />
+    <Content Include="Views\DoctorMaster\DoctorWorkArea.cshtml" />
+    <Content Include="Views\FeedBack\ICERatingParameters.cshtml" />
+    <Content Include="Views\Inward\BulkInwardUpload.cshtml" />
+    <Content Include="Views\Inward\InwardAcknowledgement.cshtml" />
+    <Content Include="Views\Inward\InwardAdjustment.cshtml" />
+    <Content Include="Views\Inward\InwardUploadExcelFile.cshtml" />
+    <Content Include="Views\Division\DivisionEntityMapping.cshtml" />
+    <Content Include="Views\LeaveType\UserLeaveTypeBalance.cshtml" />
+    <Content Include="Views\PurchaseRequisition\PlaceOrderForm.cshtml" />
+    <Content Include="Views\PurchaseRequisition\PurchaseRequisitionForm.cshtml" />
+    <Content Include="Views\FormControl\Index.cshtml" />
+    <Content Include="Views\PurchaseRequisition\PurchaseDispatch.cshtml" />
+    <Content Include="Views\PurchaseRequisition\RequisitionSummary.cshtml" />
+    <Content Include="Views\FormControl\UserForm.cshtml" />
+    <Content Include="Views\DcrStatusMaster\DcrStatusMaster.cshtml" />
+    <Content Include="Views\CMDoctor\Doctormaster.cshtml" />
+    <Content Include="Views\RegionCreation\Disableregion.cshtml" />
+    <Content Include="Views\RegionCreation\RegionCreation.cshtml" />
+    <Content Include="Views\RegionCreation\RegionCreationWizard.cshtml" />
+    <Content Include="Views\RegionCreation\RegionHierarchy.cshtml" />
+    <Content Include="Views\MasterDataDownload\MasterDataDownload.cshtml" />
+    <Content Include="Views\Approval\DCRFreezeReleaseApproval.cshtml" />
+    <Content Include="Views\DistanceFareChart\DFCExcelBulkAddResult.cshtml" />
+    <Content Include="Views\DistanceFareChart\DFCExcelUpload.cshtml" />
+    <Content Include="Views\MenuMaster\AppMenuMaster.cshtml" />
+    <Content Include="Views\MenuMaster\GetAppMenuAccess.cshtml" />
+    <Content Include="Views\Recon\ReconApprovalList.cshtml" />
+    <Content Include="Views\Recon\ReconSummary.cshtml" />
+    <Content Include="Views\SecondarySalesNew\SecondarySalesDelete.cshtml" />
+    <Content Include="Views\SecondarySalesNew\SecondarySalesEntry.cshtml" />
+    <Content Include="Views\SecondarySalesNew\SecondarySalesForCustomer.cshtml" />
+    <Content Include="Views\UsercreationWizard\UserHierarchy.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateUserProductMappinghierarchy.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateUserProductMappingdivision.cshtml" />
+    <Content Include="Views\UsercreationWizard\CreateLeaveDetailsforhierarchychange.cshtml" />
+    <Content Include="Views\MenuMaster\Kennect.cshtml" />
+    <Content Include="Views\CME\CMEDefinition.cshtml" />
+    <Content Include="Views\Target_Setting\TargetSettings.cshtml" />
+    <Content Include="Views\WorkCategroyRules\Index.cshtml" />
+    <Content Include="Views\UsersDivisionMapping\DivisonMappingNew.cshtml" />
+    <Content Include="Views\PSAndSS\PSAndSSSalesEntry.cshtml" />
+    <Content Include="Views\PSAndSS\PSAndSSSalesRelease.cshtml" />
+    <Content Include="Views\MissedDoctor\DoctorsReason.cshtml" />
+    <Content Include="Views\DoctorsBirthday\BirthdayMail.cshtml" />
+    <Content Include="Views\SSLockRelease\LockReleaseDetails.cshtml" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Password_Policy_Messages.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Password_Policy_Messages1.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:50660/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)\Views" "$(TargetDir)\HiDoctor_Master\Views\" /s /i /y
+xcopy "$(ProjectDir)\Content" "$(TargetDir)\HiDoctor_Master\Content\" /s /i /y
+xcopy "$(ProjectDir)\Scripts" "$(TargetDir)\HiDoctor_Master\Scripts\" /s /i /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

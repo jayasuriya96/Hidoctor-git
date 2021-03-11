@@ -1,0 +1,407 @@
+﻿@{
+    ViewBag.Title = "DoctorMasterReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="~/Scripts/tooltip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="~/Scripts/wz_tooltip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<style>
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+
+    #divMain {
+        float: left;
+    }
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #tblDoctoMasterMainReport td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblDoctoMasterMainReport th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .dvTitleHeader {
+        font-weight: bold;
+        font-size: 14px;
+        padding-top: 2%;
+        background-color: #efefef;
+        height: 50px;
+    }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+
+
+<div id="dvMainMasterReport">
+       <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-xs-12" style="min-height: 260px; overflow: auto;">
+        <div class='col-xs-3 leftNav' id='leftNav'>
+            <div id="regiontree" style="float: left; height: auto; width: 100%">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+            <div style="width: 1px;"></div>
+        </div>
+
+        <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+            <div style="display: none;" id="divToggle">
+                <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleInput()">Hide Input</span>
+            </div>
+
+            <div style="clear: both"></div>
+            <div id="divInput" style="display: none; padding: 5px;width: 245% ! important;" class="dvRptInput"   >
+                <div class="col-lg-9">
+                   
+                    <div class="col-lg-3">
+                        <input type="hidden" id="hdnRegionCode" />
+                        <input type="hidden" id="hdnUseractivity" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                    <div>
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                        <input type="button" class="btn btn-primary" value="View" onclick="fnGetDoctorMasterReport();" />
+                    </div>
+  <div style="clear: both"></div>
+            <br />
+
+<div id="dvReportHeader" style=" height: 25px;font-size: large;font-weight: 500;"></div>
+            <div id="dvDoctorMasterReport">
+              </div>
+            <div id="dvTooltip"></div>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+                </div>
+
+            </div>
+                    
+     
+    
+          
+
+
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divdocMasterprint" style="display: none;"></div>
+
+<div class="simple_overlay" id="dvDoctorMasterDatewiseReport">
+    <a class="overlayclose" onclick="$('#dvDoctorMasterDatewiseReport').overlay().close();"></a>
+    <div class="col-lg-12 form-group dvTitleHeader">
+        Doctor Master DateWise Report
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-12 form-group">
+            <div id="tbldoctorDatewiserpt" style="height:500px; overflow: auto; clear: both;"></div>
+            <div style="clear: both;"></div>         
+        </div>
+    </div>
+</div>
+
+<div id="dvDoctorMasterTerrotoryWiseReport">
+
+    <div class="col-lg-12">
+        <div class="col-lg-12 form-group">
+            <div id="tblGetDoctorMaster" style="height: 200px; overflow: auto; clear: both;">
+            </div>
+            <br />
+            <div id="tblGetDoctorMasterDetails" style="height: 200px; overflow: auto; clear: both;">
+            </div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <input type="button" class="btn btn-primary btn-sm" style="display:none;" onclick="fnShowMore();" value="More" id="btnmore" />
+        </div>
+    </div>
+</div>
+
+<div id="dvPopup" style="padding-top: 5px; padding-right: 10px; display: none; width: 400px; height: 350px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <span style="float: right; cursor: pointer;" onclick="HideModalPopup('dvPopup'); return false;">X</span>
+    <div id="divcountdetailstable" style="width: 100%">
+    </div>
+</div>
+
+<div id="dvPopupuser" style="padding-top: 5px; padding-right: 10px; display: none; width: 400px; height: 450px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <span style="float: right; cursor: pointer;" onclick="HideModalPopup('dvPopupuser'); return false;">X</span>
+    <div id="divcustomer" style="width: 100%">
+    </div>
+</div>
+
+        
+
+
+        </div>
+
+
+
+
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MasterReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvMainMasterReport').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code)); 
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {               
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');                
+                $('#dvAjaxLoad').hide()
+            }            
+        }
+        catch (err) {
+            $("#dvMainMasterReport").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+    // Default function for toggling tree and inputs
+
+    // Default function for toggling tree and inputs
+    //$(function () {
+    //    $('#txtFrom').monthpicker();
+    //});
+
+    function fnRegionTreePostInit() {
+        $("#dvMainMasterReport").unblock();
+    }
+    
+    function fnRegionTreeNodeClick(node) {   
+        $("#dvDoctorMasterTerrotoryWiseReport").html(""); 
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnUseractivity').val(node.data.title); 
+        var regionType = $('#hdnUseractivity').val().split('-')[1];
+        $('#divInput').show();
+        $("#leftNav").show();       
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');    
+    }
+
+
+    function fnRegionTreeActivate(node) {       
+        $("#dvDoctorMasterTerrotoryWiseReport").html(""); 
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnUseractivity').val(node.data.title);
+        var regionType = $('#hdnUseractivity').val().split('-')[1];
+        $('#divInput').show();
+        $("#leftNav").show();       
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');
+    }
+
+
+    function fnRegionTreeSelect(node) {
+    }
+
+    
+    function fnToggleTree() {       
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-12');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {       
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    }
+
+</script>
+
+

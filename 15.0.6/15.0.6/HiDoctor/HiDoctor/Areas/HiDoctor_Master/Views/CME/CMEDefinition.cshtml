@@ -1,0 +1,769 @@
+﻿@{
+    ViewBag.Title = "CMEDefinition";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+
+<style>
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    .e-grid .e-gridheader tr:first-child th {
+        background-color: gray;
+    }
+
+    span.e-headertext {
+        color: white;
+    }
+
+    .modal-dialog {
+        max-width: 990px !important;
+    }
+
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-content {
+        border: none !important;
+    }
+
+    .tbheight {
+        max-height: 200px;
+    }
+
+    .fonthead {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .maintable {
+        width: 80% !important;
+        border-collapse: collapse;
+    }
+</style>
+
+<div class="mt-3">
+    <div class="card">
+
+        <div class="card-body" id="dvMainBody" style="overflow-y:auto;height: 1012px">
+            <div class="col-sm-12 col-md-12" id="dvWebBody">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link def active" href="#" onclick="CMEDefinition.fnCMEDefiner();">CME Definer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link sum" href="#" onclick="CMEDefinition.fnCMESummary();">CME Summary</a>
+                    </li>
+                </ul>
+                <div id="CMEDefiner" style="display:none;">
+                    @*<div class="d-flex justify-content-between pb-2" id="regiondropdown">
+                            @*<div class="flex-fill">
+
+                                </div>
+                            <div class="flex-fill">
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <div class="form-group row no-gutters">
+                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm pr-2"><b>Region Name:</b></label>
+                                            <div class="col-sm-3">
+                                                <input type="hidden" id="hdnRegionCode" />
+                                                <input type="text" class="form-control form-control-sm" id="txtRegion" onblur="CMEDefinition.fnValidateRegionAutoFill(this);" placeholder="Enter Region Name..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="CMEDefinition.fnGetDetails();">Go</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="card-body">
+                        <form>
+                            <div class="form">
+
+                                <div class="form-group row col-md-12">
+                                    <label class="col-md-3" for="inputName">
+                                        <span class="fonthead">CME Name</span>
+                                        <label class="fa fa-star" style="color:red;font-size:9px;margin-left:5px;"></label>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="campaignname" placeholder="CME Name" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputName">
+                                        <span class="fonthead">Division Name</span>
+                                        <label class="fa fa-star" style="color:red;font-size:9px;margin-left:5px;"></label>
+                                    </label>
+                                    <div class="col-md-6" id="dvdivision">
+                                        <input type="text" id="division" name="division" />
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputName">
+                                        <span class="fonthead">CME Type</span>
+                                        <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="type">
+                                            <option value="">Select CME Type</option>
+                                            <option value="CME">CME</option>
+                                            <option value="RTM">RTM</option>
+                                            <option value="Conference">Conference</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <span class="fonthead col-md-3" for="inputdescription">CME Description</span>
+                                    <div class="col-md-6">
+                                        <textarea class="form-control" id="Campaigndescription" placeholder="Description" rows="2" style="resize:none;" />
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputstartdate">
+                                        <span class="fonthead">Start Date</span>
+                                        <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="Startdate" placeholder="Start Date" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputEnddate">
+                                        <span class="fonthead">End Date</span>
+                                        <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="EndDate" placeholder="End Date" autocomplete="off">
+                                    </div>
+                                </div>
+                                @*<div class="form-group col-md-6">
+                                        <label for="inputbudget"><b>Budget Of CME</b></label>
+                                        <input type="text" class="form-control" id="Budget" placeholder="Budget of CME">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputfrequency"><b>Frequency of CME</b></label>
+                                        <select id="freqSel" class="form-control MC">
+                                            <option value="0">Please select Frequency</option>
+                                            <option value="1">Monthly</option>
+                                            <option value="2">Quarterly</option>
+                                            <option value="3">Half-yearly</option>
+                                            <option value="4">Yearly</option>
+                                        </select>
+                                    </div>*@
+                                <div class="form-group col-md-3" style="display:none;">
+                                    @*<div class="form-group col-md-12">
+                                        <div class="form-group col-md-6">*@
+                                    <label for="inputselection"><b>Customer Selection</b></label>
+                                </div>
+                                @*</div>*@
+                                @*<div class="form-group col-md-6">*@
+                                <div class="form-group col-md-10" style="display:none;">
+                                    <input class="form-check-input" type="radio" name="SelectionRadios" id="flexi" value="1" checked>
+                                    <label class="form-check-label" for="exampleRadios2">
+                                        Flexi
+                                    </label>
+                                </div>
+                                @*<div class="form-group col-md-2">
+                                        <input class="form-check-input" type="radio" name="SelectionRadios" id="rigid" value="2" checked>
+                                        <label class="form-check-label" for="exampleRadios2">
+                                            Rigid
+                                        </label>
+                                    </div>*@
+                                @*</div>
+                                        </div>
+                                    </div>*@
+                                @*<div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">*@
+                                @*<div class="form-group col-md-2">
+                                        <label for="inputCampaignBased"><b>CME Based On</b></label>
+                                    </div>*@
+                                @*<div class="form-group col-md-6">*@
+                                @*<div class="form-group col-md-2">
+                                        <input class="form-check-input" type="radio" name="CampaignRadios" id="region" value="1" checked>
+                                        <label class="form-check-label" for="exampleRadios1">
+                                            Region
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <input class="form-check-input" type="radio" name="CampaignRadios" id="role" value="2">
+                                        <label class="form-check-label" for="exampleRadios1">
+                                            Role
+                                        </label>
+                                    </div>*@
+                                @*</div>
+                                        </div>
+                                    </div>*@
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputCategory"><span class="fonthead">Customer Category</span></label>
+                                    <div class="col-md-6" id="category">
+                                        <input type="hidden" id="hdnCategory" />
+                                        <input type="text" class="form-control form-control-sm" id="txtCategory" onblur="CMEDefinition.fnValidateCategoryAutoFill(this);">
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputSpeciality"><span class="fonthead">Customer Speciality</span></label>
+                                    <div class="col-md-6" id="speciality">
+                                        <input type="hidden" id="hdnSpeciality" />
+                                        <input type="text" class="form-control form-control-sm" id="txtSpeciality" onblur="CMEDefinition.fnValidateSpecialityAutoFill(this);">
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-6" style="display:none">
+                                    <label class="col-md-3" for="inputCount"><span class="fonthead">Customer Count</span></label>
+                                    @*<i class="fa fa-star" style="color:red;font-size:9px;margin-left:5px;" />*@
+                                    <input type="text" class="form-control" id="Count" placeholder="Customer Count" value="0" onkeypress="return CMEDefinition.fnValidateBudget(this,event);">
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputDriven"><span class="fonthead">CME Driven By</span></label>
+                                    <div class="col-md-6" id="DrivenRegion">
+                                        <input type="hidden" id="hdnDriven" />
+                                        <input type="text" class="form-control form-control-sm" id="txtDriven" onblur="CMEDefinition.fnValidateUnderRegionsAutoFill(this);">
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputCampaignRegion"><span class="fonthead">Regions Participating in CME</span></label>
+                                    @*<i class="fa fa-star" style="color:red;font-size:9px;margin-left:5px;" />*@
+                                    <div class="col-md-6" id="RegionType">
+                                        <a href="#" onclick="fnShowModalRegionPopup();" style="text-decoration:underline;">Select Regions</a>
+                                    </div>
+                                </div>
+                                <div class="form-group row  col-md-12">
+                                    <label class="col-md-3" for="inputTrackfrom">
+                                        <span class="fonthead">No of Months Tracked</span>
+                                        <span class="fa fa-star" style="color:red;font-size:9px;"></span>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control" id="NoofMonth" placeholder="No of Months Tracked" onkeypress="return CMEDefinition.fnValidateBudget(this,event);">
+                                    </div>
+                                </div>
+                                @*<div class="form-group col-md-6">
+                                        <label for="inputTrackfrom"><b>Track From</b></label>
+                                        <input type="text" class="form-control" id="Trackfrom" placeholder="Track From">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputTracktill"><b>Track Till</b></label>
+                                        <input type="text" class="form-control" id="TrackTill" placeholder="Track Till">
+                                    </div>*@
+                            </div>
+                        </form>
+                        <form>
+                            <div class="bindproducts">
+
+                            </div>
+                        </form>
+                        @*<div class="col-md-12">
+                                <span style="font-weight: 500;">Note : </span><span> Customer Category,Customer Speciality,CME Driven By,Regions Participating in CME if you not selected , the system will consider as all value</span>
+                            </div>*@
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <div class="bg-highlight">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="CMEDefinition.fnCancelCMEDefiner();" id="Clear">Clear</button>
+
+                            </div>
+                            <div class="bg-highlight">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="CMEDefinition.fnSaveMarketingCampaignDefiner();" id="save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="CMESummary" style="display:none;">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputName"><b>CME Start Date</b></label>
+                                    <input type="text" class="form-control" id="CMEStartDate">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputName"><b>CME End Date</b></label>
+                                    <input type="text" class="form-control" id="CMEEndDate">
+                                </div>
+                                <div class="form-group col-md-4" style="margin-top:33px;">
+                                    <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="CMEDefinition.fnGetCMESummary();">Go</button>
+                                </div>
+                            </div>
+                        </form>
+                        <form>
+                            <div id="Summary">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="font-size:14px;">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding:0px !important">
+                <h4 class="modal-title">CME Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height:600px;overflow:scroll">
+                <div>
+                    <form>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="staticEmail" class="col-sm-4 col-form-label" style="font-weight: 500;">Name </label>
+                            <label id="MCName"></label>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="inputPassword" class="col-sm-4 col-form-label" style="font-weight: 500;">Description</label>
+                            <label id="MCDescrp"></label>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="exampleFormControlInput1" class="col-sm-4 col-form-label" style="font-weight: 500;">Mapped Customer Category</label>
+                            <div>
+                                <table class="table table-responsive tbheight" style="width: 100% !important;border-collapse: collapse;">
+                                    <thead style="text-align:center">
+                                        <tr>
+                                            <th style="min-width:100px;">S.No</th>
+                                            <th style="min-width:236px">Category Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="MCCatCode" style="text-align:center;"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="exampleFormControlInput1" class="col-sm-4 col-form-label" style="font-weight: 500;">Mapped Customer Speciality</label>
+                            <div>
+                                <table class="table table-responsive tbheight" style="width: 100% !important;border-collapse: collapse;">
+                                    <thead style="text-align:center;">
+                                        <tr>
+                                            <th style="min-width:100px;">S.No</th>
+                                            <th style="min-width:236px">Speciality Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="MCSpecCode" style="text-align:center;"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="exampleFormControlInput1" class="col-sm-4 col-form-label" style="font-weight: 500;">CME Driven By</label>
+                            <div>
+                                <table class="table table-responsive  tbheight" style="width: 100% !important;border-collapse: collapse;">
+                                    <thead style="text-align:center;">
+                                        <tr>
+                                            <th style="min-width:100px;">S.No</th>
+                                            <th style="min-width:236px">Driven By Region Type Name(s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="MCRegType" style="text-align:center;"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 0rem !important">
+                            <label for="exampleFormControlInput1" style="font-weight: 500;" class="col-sm-4 col-form-label">Participating Region(s)</label>
+                            <div>
+                                <table class="table table-responsive tbheight" style="width: 100% !important;border-collapse: collapse;">
+                                    <thead style="text-align:center;">
+                                        <tr>
+                                            <th style="min-width:100px;">S.No</th>
+                                            <th style="min-width:236px">Participating Region Name(s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="MCParReg" style="text-align:center;"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="popUpTitle" style="height: 45px;">
+                    <span style="font-weight: 500;">Activity Product & Sample Products/Activity</span>
+                </div>
+                <div id="divMCProdDetail">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModaltree" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="$('#dvAjaxLoad').hide();">&times;</button>
+                <h4 class="modal-title">Region Tree</h4>
+            </div>
+            <div id="multilinks">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-12" style="text-align:right;">
+                    <a href="#" onclick="fnSelectAll();" style="text-decoration:underline;font-weight:bold;">Select All</a>
+                    <a href="#" onclick="fnUnSelectAll();" style="text-decoration:underline;font-weight:bold;margin-left: 20px;">UnSelect All</a>
+                </div>
+            </div>
+            <div class="modal-body" style="width:100%;height:400px;overflow: auto;">
+
+                <div id="treebody">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#dvAjaxLoad').hide();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+@*<script src="~/Scripts/src/jquery.dynatree.min.js"></script>*@
+
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/CME/CMEDefinition.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var companyCode="";
+    var companyId="";
+    var loguserCode="";
+    var loguserTypeCode="";
+    var currentRegionCode_g = "";
+    var selectedRegionCode_g="";
+    var treeId="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        treeId="treebody";
+        companyCode = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        companyId = @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        loguserCode = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        loguserTypeCode=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+        currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        CMEDefinition.defaults.CompanyCode=companyCode;
+        CMEDefinition.defaults.CompanyId=companyId;
+        CMEDefinition.defaults.RegionCode=currentRegionCode_g;
+        CMEDefinition.defaults.UserCode=loguserCode;
+        CMEDefinition.defaults.UserTypeCode=loguserTypeCode;
+        CMEDefinition.Init();
+
+
+    });
+    $("#Trackfrom").datepicker({
+        dateFormat: 'yy-mm-dd',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date()
+    });
+    $("#TrackTill").datepicker({
+        dateFormat: 'yy-mm-dd',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date()
+    });
+    $("#Startdate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date()
+    });
+    $("#EndDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date()
+    });
+    $("#CMEStartDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+    });
+    $("#CMEEndDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+    });
+    ///// Tree ////////////
+    function fnUnSelectAll(){
+        debugger;
+        $('#treebody').dynatree("getRoot").visit(function (node){
+            debugger;
+            bindFlag=true;
+            node.select(false);
+            node.render(true);
+        });
+    }
+    function fnSelectAll(){
+        debugger;
+        $('#treebody').dynatree("getRoot").visit(function (node){
+            debugger;
+            bindFlag=true;
+            node.select(true);
+            node.render(true);
+        });
+    }
+
+    var bindFlag=false;
+    function fnGetRegionTreeByRegionWithCheckBoxMC(regionCode, treeId, filterId,check) {
+        // debugger;
+
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/RegionTreeGenerationByRegionCode',
+            data: "regionCode=" + regionCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(jsData);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnRegionTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            debugger;
+                            // Close menu on click
+                            //if ($(event.target).hasClass("parent")) {
+                            //    alert("You clicked " + node + ",  url=" + node.url);
+                            //}
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+
+                        },
+                        onCreate: function (node, span) {
+                            bindRegionContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onSelect: function (select, node) {
+                            // Get a list of all selected nodes, and convert to a key array:
+                            fnRegionTreeSelect(select, node);
+                            //if (select) {
+                            //    node.visit(function (node) {
+                            //        node.select(true);
+                            //    });
+                            //}
+                            //else {
+                            //    node.visit(function (node) {
+                            //        node.select(false);
+                            //    });
+                            //}
+                        },
+                        onDblClick: function (node, event) {
+                            debugger;
+                            node.select(true);
+                            try {
+                                inEventHandler = true;
+                                node.visit(function (childNode) {
+                                    childNode.select(true);
+                                });
+                            } finally {
+                                inEventHandler = false;
+                            }
+                            // fnAddNode(node);
+                            fnBindRegionTreeWithCheckBox(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnRegionTreePostInit(node);
+                        }
+                    });
+
+                    // vacant user background-color change
+                    $("#treebody").dynatree("getRoot").visit(function (node) {
+                        //$(node.span.lastChild).addClass("tip");
+                        if (node.data.title.split('-')[1] == "NOT ASSIGNED" || node.data.title.split('-')[1] == "VACANT") {
+                            $(node.span).addClass('tree-node-vacant');
+                        }
+                    });
+
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").unbind("click");
+                    $("span.childIcon").bind("click", function (e) {
+                        //alert("Edit " + $.ui.dynatree.getNode(e.target));
+                        //fnShowChildNodes(e.target);
+                        e.preventDefault();
+                        fnAddRegionNode(e);
+                        return false;
+                    });
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                //$.unblockUI();
+                $("#dvAjaxLoad").hide();
+                $('#' + treeId).unblock();
+                fnGetAllRegionUsers(currentRegionCode_g);
+                //  fnGetMarketingCampaignDetails();
+                $('#treebody').dynatree("getRoot").visit(function (node){
+                    debugger;
+                    bindFlag=true;
+                    node.select(true);
+                    node.render(true);
+                });
+            }
+            //}
+            
+        });
+        $("#dvAjaxLoad").hide();
+
+    }
+
+    function fnShowModalRegionPopup(){
+        debugger;
+       
+        $('#myModaltree').modal('show');
+    }
+
+    var selKeys = new Array();
+    var SelTitleKeys=new Array();
+    var selKeys_ls = new Array();
+    function fnRegionTreeSelect(select, node) {
+        debugger;
+        bindFlag=true;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        SelTitleKeys=$.map(node.tree.getSelectedNodes(),function(node){
+            return node.data.title;
+        });
+
+        selKeys_ls = selKeys;
+    }
+    function fnRegionTreePostInit() {
+
+    }
+    
+    function fnGetAllRegionUsers(regionCode) {
+        debugger;
+        var excludeParentLevel = "";
+        $.ajax({
+            type: "GET",
+            url: "../HiDoctor_Master/MarketingCampaign/GetDocForAllRegionsUndertheSelectedRegion",
+            data: "regionCode=" + regionCode + "&excludeParentLevel=" + excludeParentLevel + "&includeOneLevelParent=NO",
+            //async: false,
+            success: function (resp) {
+                //console.log(resp);
+                //$.unblockUI();
+                DocCountRegions = resp;
+                if (EditStatus == "" || bindFlag == false) {
+                    fnShowChckBoxOnlywithDocCount(resp);
+                    // fnRegionBindTreeAlreadySelected(resp)
+                }
+            },
+            complete: function (e) {
+                //$.unblockUI();
+
+            }
+        });
+    }
+    function fnShowChckBoxOnlywithDocCount(resp) {
+        debugger;
+        //if (EditStatus == "") {
+        $('#treebody').unblock();
+        //}
+
+        $("#treebody").dynatree("getRoot").visit(function (node) {
+          
+            var user = $.grep(resp, function (element, index) {
+                return element.Region_Code == node.data.key;
+
+            });
+            if (user.length > 0 && user != null) {
+
+
+                if (user[0].Doc_Count != 0) {
+                    // node.select(true);
+                    node.data.unselectable = false; //make it unselectable
+                    node.data.hideCheckbox = false; //hide the checkbox (mo
+
+                    node.render(false);
+                }
+                else {
+                    // node.select(true);
+                    node.data.unselectable = true;
+                    node.data.hideCheckbox = true;
+                    //node.Checked = true;
+                    // node.data.title.attr("disabled", true);
+                    //$('.span.dynatree-checkbox').prop('checked', false);
+                    node.render(true);
+                }
+            }
+
+
+        });
+        //if (cmpCode == "") {
+
+        //}
+
+        if (EditStatus != "" && bindFlag == false) {
+            fnRegionBindTreeAlreadySelected();
+        }
+        //$('#treebody').dynatree("getRoot").visit(function (node){
+        //    debugger;
+        //    bindFlag=true;
+        //    node.select(true);
+        //    node.render(true);
+        //});
+    }
+
+    function fnRegionBindTreeAlreadySelected(disjsonRegions) {
+        debugger;
+        $.unblockUI();
+        $("#main").unblock();
+      
+
+        $("#treebody").dynatree("getRoot").visit(function (node) {
+            // debugger;
+            var user = $.grep(disjsonRegions, function (element, index) {
+                return element.Region_Code == node.data.key;
+
+            });
+            if (user != false && user != undefined && user.length > 0) {
+                if (user.length > 0) {
+                    node.select(true);
+                    node.data.unselectable = true; //make it unselectable
+                    //node.data.hideCheckbox = true; //hide the checkbox (mo
+
+                    node.render(true);
+                }
+            }
+
+        });
+        
+
+    }
+</script>

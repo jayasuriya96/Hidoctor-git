@@ -1,0 +1,57 @@
+﻿<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+
+
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnOTCloginUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+    
+<div style="clear:both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+<a data-role="button" href="#page1" data-icon="home" data-iconpos="notext"
+        class="ui-btn-right" onclick="fnGoToMenu()"></a>
+    <h3>OTC Home
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+        <li data-role="list-divider" role="heading">Menu
+        </li>
+        <li data-theme="c">
+            <a href="#page1" data-transition="slide" onclick="fnOpenCustomerList()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/calendar.png" class="ui-li-icon ui-li-thumb" />
+                Customer List
+            </a>
+        </li>
+        <li data-theme="c">
+            <a href="#page1" data-transition="slide" onclick="fnOpenSalesOrder()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Report.png" class="ui-li-icon ui-li-thumb" />
+                Sale Order
+            </a>
+        </li>
+        <li data-theme="c" style="height: 45px">
+            <a href="#page1" data-transition="slide" onclick="fnOpenOrderStatus()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/Notification.png" class="ui-li-icon ui-li-thumb" />
+                Order Status                    
+            </a>
+        </li>
+        <li data-theme="c" class="menuOTChidden" id="menuOTCApproval"> 
+            <a href="#page1" data-transition="slide" onclick="fnOpenApproveOrder()">
+                <img src="~/Areas/HiDoctor_Activity/Content/images/Mobile/approval.png" class="ui-li-icon ui-li-thumb" />
+                Approve Order
+            </a>
+        </li>        
+    </ul>
+</div>
+<script>
+    var childCnt = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnOTCloginUserName').html(loginUserName_g);
+        if (childUsersCount_g.length > 1) {
+            $('#menuOTCApproval').removeClass('menuOTChidden');
+        }
+        $("#loginUserName").html(loginUserName_g);
+    });
+</script>
+

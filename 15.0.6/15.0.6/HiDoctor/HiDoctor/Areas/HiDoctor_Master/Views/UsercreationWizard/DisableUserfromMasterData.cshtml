@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "DisableUserfromMasterData";
+ Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+
+<div class="col-md-10 cls_nomargin_nopadding" id="dvPanel">
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <div class="cls_div_header">SETUP WIZARD - DISABLE USER</div>
+    </div>
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <ul id='ullist' class=" cls_profile_wizard_header_Disable">
+            <li class="cls_up_stpe1 cls_up_inactive__Disable tick_img"><a onclick="fnRedirecttheEmployeePage();">Step - 1/2
+            <br />
+                <span>Disable a Hidoctor User - Step 1/1</span>
+            </a></li>
+            @*<li class="cls_up_step2 cls_up_active_Disable"><a class="cls_cut" onclick="fnRedirecttheLeavePage()">Step - 2/5
+            <br />
+                <span>Disable a Hidoctor User - Step 2/2</span>
+            </a></li>*@
+        </ul>
+        <div class="clearboth">&nbsp;</div>
+    </div>
+</div>
+
+<div id="divMaininputs" class="col-md-8 cls_nomargin_nopadding form-group">
+    <div class="divNew">This User has been Disable From Hidoctor</div>
+    <div style="clear: both;"></div>
+    <div style="padding-left:40px;">Please note that is User Id <span id="spnUserName" style="font-weight:bold;font-style:italic;"></span> will be deactivated.if any future time,this employee joins back,a New User ID will have to be provided</div>
+    <div style="clear: both;"></div>
+<br />
+    <div class="col-md-10 cls_nomargin_nopadding form-group">
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-4">
+                <input type="button" id="back" value="Back" class="btn btn-primary" onclick="fnBackfinishDisable('B');" />
+                <input type="button" id="finish" value="Finish" class="btn btn-success" onclick="fnFinishDisable();" style="float: right;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script>
+    var UserCode_g = "", userName_g = "", disabledate_g = "", EmployeeCode_g = "",regionCode_g="",EmployeeNo_g="",employeeName_g="",regionName_g="",entryMode_g="";
+    ShowModalPopup('dvLoading');
+    $(document).ready(function () {
+        try {           
+            UserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+            userName_g = @Html.Raw(Json.Encode(ViewBag.User_Name));
+            disabledate_g = @Html.Raw(Json.Encode(ViewBag.Acivie_Date));
+            EmployeeCode_g = @Html.Raw(Json.Encode(ViewBag.Employee_Code));                        
+            regionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));   
+            EmployeeNo_g = @Html.Raw(Json.Encode(ViewBag.Employee_Number));
+            regionName_g = @Html.Raw(Json.Encode(ViewBag.Region_Name));  
+            employeeName_g = @Html.Raw(Json.Encode(ViewBag.Employee_Name)); 
+            entryMode_g =  @Html.Raw(Json.Encode(ViewBag.Entry_Mode));  
+            if (userName_g != "null") {
+                $('#spnUserName').html(userName_g);
+            }
+            HideModalPopup('dvLoading');
+        }
+        catch (e) {
+            HideModalPopup('dvLoading');
+            alert("fnSet" + e.message);
+        }
+    });
+</script>
+

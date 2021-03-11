@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "DoctorMasterTerritoryWiseReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    #divMain {
+        width: 78%;
+        float: left;
+    }
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #tblDoctorMasterDetails td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblDoctorMasterDetails th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+</style>
+<div id="dvMainDoctorMasterReport">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+ <input type="button" class="btn btn-primary" value="Back" id="btnback" onclick="btnBack();" />
+    <div class="col-lg-12" style="min-height: 350px; overflow: auto;">      
+        <div id="dvDoctorMaster" style="width: 100%"></div>
+    </div>
+    <br />
+    <div class="col-lg-12" style="min-height: 350px; overflow: auto;">        
+        <div id="dvDoctorMasterDetails" style="width: 100%"></div>
+    </div>
+    <br />
+    <div class="col-lg-12" style="min-height: 350px; overflow: auto;">
+        <input type="hidden" id="hdnRegionCode" />
+<a href="#" onclick="fnShowMore();" style="text-decoration:underline;">More..</a>
+       @* <div id="dvMore" style="width: 100%"></div>*@
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MasterReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var regionCode ="";
+    $(document).ready(function () {
+
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvMainDoctorMasterReport").unblock();
+            $('#dvMainDoctorMasterReport').block({
+                message: 'Retrieving data...',
+                css: { border: '1px solid #ddd' }
+            });      
+            regionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));           
+            $('#hdnRegionCode').val(regionCode);
+            fnGetDoctorMaster(regionCode);
+            fnGetDoctorMasterDetails(regionCode);
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            alert(err.message);
+            $("#dvMainDoctorMasterReport").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });  
+</script>
+
+
+

@@ -1,0 +1,261 @@
+﻿@{
+    ViewBag.Title = "ExcelAPIConfiquration";
+    Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    #dvSubRegionMaster {
+        height: 450px;
+        overflow: scroll;
+    }
+
+        #dvSubRegionMaster a {
+            color: blue;
+        }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+
+
+<div class="col-lg-12 form-group" id="dvTabs">
+    <ul class="nav nav-pills">
+        <li><a href="#dvCategoryMaster">Category Master Screen</a></li>
+        <li><a href="#dvExcelAPISeviceDefiScreen" onclick="fnGetAPICategory()">Excel API Service Definition Screen</a></li>
+        <li><a href="#dvExcelAPISDefiInputScreen" onclick="fnGetAPIServiceID()">Excel API Service Definition Input Screen</a></li>
+        <li><a href="#dvExcelAPICompanyAccess" onclick="fnGetAPICompanyServiceID()">Excel API Comapany Access Screen</a></li>
+    </ul>
+    <div id="dvCategoryMaster">
+        <div id="dataDiv" class="col-lg-9 form-group" style="display: none;">
+            <div class="col-lg-9  form-group">
+                <div class="col-lg-3  form-group">
+                    <label>Category Name:</label>
+                </div>
+                <div class="col-lg-4  form-group">
+                    <input type="text" id="txtCategoryName" maxlength="30" class="form-control" />
+                    <input type="hidden" id="hdnCategoryCode" />
+                </div>
+            </div>
+            <div class="col-lg-9  form-group" style="clear: both;">
+                <div class="col-lg-3  form-group">
+                    <label>Description</label>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <textarea style="padding-right: 5px;" id="txtDescription" name="Description" class='input-large' rows="5" cols="39" maxlength="200"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-9  form-group" style="clear: both;">
+                <div class="col-lg-3  form-group">
+                    <label>Status</label>
+                </div>
+                <div class="col-lg-4 form-group dropdown">
+                    <input type="radio" value="1" id="Enable" name="rptCat" checked="checked" />
+                    <label for="EnableData">Enable</label>
+                    <input type="radio" value="0" id="Disable" name="rptCat" />
+                    <label for="DisableData">Disable</label>
+                </div>
+            </div>
+            <div class="col-lg-9 form-group">
+                <button type="button" id="btnSave" onclick="fnSaveCategoryMaster();" value="Save" class="btn btn-primary">Save</button>
+                <button type="button" style="display: none" id="btnUpdate" onclick="fnUpdateCategoryMaster();" value="Update" class="btn btn-primary">Update</button>
+                <input type="hidden" id="hdnMode" value="I" />
+                <button type="button" id="btnCancel" onclick="fnCancelCategoryMaster();" value="Cancel" class="btn btn-primary">Cancel</button>
+                <button type="button" id="btnShowinlist" onclick="fnShowinlist();" value="Show" class="btn btn-primary">Show in list</button>
+            </div>
+            <div style="clear: both"></div>
+            <div id="dvTable" class="col-lg-12"></div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+    <div id="dvExcelAPISeviceDefiScreen" class="col-lg-9 form-group">
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>API Category Name:</label>
+            </div>
+            <div class="col-lg-4 form-group dropdown">
+                <select class="selectboxWidth form-control" id="ddlAPICategoryName"></select>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Service ID:</label>
+            </div>
+            <div class="col-lg-4  form-group">
+                <input type="text" id="txtAPIServiceId" class="form-control" />
+                <span>(Please Enter unique Service id)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group" style="clear: both;">
+            <div class="col-lg-3  form-group">
+                <label>Service Description</label>
+            </div>
+            <div class="col-lg-4 form-group">
+                <textarea style="padding-right: 5px;" id="txtAPIDescription" name="Description" class='input-large' rows="5" cols="39" maxlength="200"></textarea>
+                <span>(Eg:To Get the product division details)</span>
+            </div>
+
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Service Type:</label>
+            </div>
+            <div class="col-lg-4  form-group">
+                <input type="text" id="txtAPIServiceType" maxlength="2" class="form-control" />
+                <span>(Eg:Please Enter 'SP')</span>
+            </div>
+
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Service Param Nos:</label>
+            </div>
+            <div class="col-lg-4  form-group">
+                <input type="text" id="txtAPIServiceParamNos" class="form-control" />
+                <span>(Eg:1)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Service Params</label>
+            </div>
+            <div class="col-lg-9  form-group">
+                <input type="text" id="txtAPIServiceParams" maxlength="500" class="form-control" />
+                <span>(Eg:Company_Code,Region_Code)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Excel OutPut Headers</label>
+            </div>
+            <div class="col-lg-9  form-group">
+                <input type="text" id="txtAPIExcelOutputHeaders" class="form-control" />
+                <span>(Eg:RegionName,UserName)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>Service Internal SPName</label>
+            </div>
+            <div class="col-lg-4  form-group">
+                <input type="text" id="txtAPIServiceInternalName" class="form-control" />
+                <span>(Eg:SP Name)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group" style="clear: both;">
+            <div class="col-lg-3  form-group">
+                <label>Service Type Mapping Class Name</label>
+            </div>
+            <div class="col-lg-4 form-group">
+                <input type="text" id="txtAPIServiceTypeMappingClassName" class="form-control" />
+                <span>(Eg:Dynamic)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group" style="clear: both;">
+            <div class="col-lg-3  form-group">
+                <label>Service Name</label>
+            </div>
+            <div class="col-lg-4 form-group">
+                <textarea style="padding-right: 5px;" id="txtAPIServiceName" name="Description" maxlength="100" class='input-large' rows="5" cols="39" maxlength="200"></textarea>
+                <span>(Eg:To Get the product division details)</span>
+            </div>
+        </div>
+        <div class="col-lg-9  form-group" style="clear: both;">
+            <div class="col-lg-3  form-group">
+                <label>Is_Visible to all company</label>
+            </div>
+            <div class="col-lg-4 form-group dropdown">
+                <input type="radio" value="1" id="Enable" name="rptOptions" checked="checked" />
+                <label for="EnableData">Yes</label>
+                <input type="radio" value="0" id="Disable" name="rptOptions" />
+                <label for="DisableData">No</label>
+            </div>
+        </div>
+
+        <div class="col-lg-9 form-group">
+            <button type="button" id="btnServiceSave" onclick="fnSaveService();" value="Save" class="btn btn-primary">Save</button>
+            <button type="button" style="display: none" id="btnserviceUpdate" onclick="fnUpdateService();" value="Update" class="btn btn-primary">Update</button>
+            <input type="hidden" id="hdnMode" value="I" />
+            <button type="button" id="btnCancel" onclick="fnCancelservice();" value="Cancel" class="btn btn-primary">Cancel</button>
+            <button type="button" id="btnShowinlist" onclick="fnShowAPIservicelist();" value="Show" class="btn btn-primary">Show in list</button>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvAPIServiceTable" class="col-lg-12"></div>
+        <div style="clear: both"></div>
+    </div>
+    <div id="dvExcelAPISDefiInputScreen" class="col-lg-9 form-group">
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>API ServiceID:</label>
+            </div>
+            <div class="col-lg-4 form-group dropdown">
+                <select class="selectboxWidth form-control" id="ddlAPIServiceID"></select>
+                <button id="btngo" style="margin-top: 1%" type="button" class="btn btn-primary" onclick="fngo()">Go</button>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvAPIServiceDefiTable" class="col-lg-12"></div>
+        <div style="clear: both"></div>
+
+        <div class="col-lg-9 form-group">
+            <button type="button" style="display:none" id="btnDefserviceServiceSave" onclick="fnMapService();" value="Save" class="btn btn-primary">Save</button>
+            @*
+            <button type="button" style="display: none" id="btnserviceUpdate" onclick="fnUpdateService();" value="Update" class="btn btn-primary">Update</button>
+            <input type="hidden" id="hdnMode" value="I" />*@
+           @*
+            <button type="button" id="btnCancel" onclick="fnCancelUI();" value="Cancel" class="btn btn-primary">Cancel</button>*@
+           @*
+            <button type="button" id="btnShowinlist" onclick="fnShowAPIservicelist();" value="Show" class="btn btn-primary">Show in list</button>*@
+        </div>
+
+    </div>
+    <div id="dvExcelAPICompanyAccess" class="col-lg-9 form-group">
+        <div class="col-lg-9  form-group">
+            <div class="col-lg-3  form-group">
+                <label>API ServiceID:</label>
+            </div>
+            <div class="col-lg-4 form-group dropdown">
+                <select class="selectboxWidth form-control" id="ddlAPICompanyServiceID"></select>
+                <button id="btngo" style="margin-top: 1%" type="button" class="btn btn-primary" onclick="fnComapanygo()">Go</button>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvAPIAccessTable" class="col-lg-12"></div>
+        <div style="clear: both"></div>
+
+        <div class="col-lg-9 form-group">
+            <button type="button" id="btnServiceSave" onclick="fnMapCompanyService();" value="Save" class="btn btn-primary">Save</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ExcelAPI.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            $("#dvTabs").tabs();
+            $('#dataDiv').show();
+            $("#dvAjaxLoad").hide();
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

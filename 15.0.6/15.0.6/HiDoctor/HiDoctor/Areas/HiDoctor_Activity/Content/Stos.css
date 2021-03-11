@@ -1,0 +1,272 @@
+﻿.stos_box {
+    margin: 15px 0px;
+}
+ .simple_overlayCus
+    {
+        width: 41%;
+    }
+
+    .usertreeCus
+    {
+        min-height: 250px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        height: 500px;
+    }
+
+
+.CreateBtn {
+    text-align: right;
+}
+
+.MyTeam {
+    background: none;
+    border: 1px solid #cccccc;
+    line-height: 1;
+    margin: 5px;
+    padding: 5px;
+    text-decoration: none;
+    cursor: pointer !important;
+}
+
+.MyTeam:hover {
+    text-decoration: none;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.MyTeam:active {
+    text-decoration: none;
+}
+
+.Request_table {
+    margin-top: 20px;
+}
+
+.Applied {
+    color: blue;
+}
+
+.Apporve {
+    color: green;
+}
+
+.Unapprove {
+    color: red;
+}
+
+.Request_table thead {
+    background: #1a1f25;
+    color: #fff;
+}
+
+.Edit_Btn,
+.View_Btn {
+    margin: 0px 5px;
+}
+
+.Add_product_btn {
+    text-align: center;
+}
+
+.close_btn {
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+}
+
+.Add_Product_Table thead {
+    background: #1a1f25;
+    color: #fff;
+}
+.addRow {
+    position: relative;
+    top: 5px;
+    left: 4px;
+    cursor: pointer;
+}
+.TableBg {
+    background: #f9f9f9;
+}
+#ViewAddProductDR {
+    overflow: auto;
+}
+.PopupHeaderBox {
+    padding: 0px !important;
+}
+@media only screen and (max-width: 767px) {
+    #AddProductDR #AddNewRowTable tr {
+        margin-bottom:15px;
+    }
+    .stos_box {
+        font-size: 14px;
+    }
+    .MyTeam {
+        background: none;
+        border: 2px solid;
+        line-height: 1;
+        margin: 5px;
+        padding: 5px 3px;
+        text-decoration: none;
+    }
+
+    .CreateBtn {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+
+
+    .Request_table table,
+    .Request_table thead,
+    .Request_table tbody,
+    .Request_table th,
+    .Request_table td,
+    .Request_table tr {
+        display: block;
+        /*border-top: 1px solid #ccc !important;*/
+        font-weight: bold;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+
+    .Request_table table {
+        background: none;
+    }
+
+    .Request_table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .Request_table tr {
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+
+    .Request_table td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50% !important;
+        white-space: normal;
+        text-align: left;
+    }
+
+        .Request_table td:before {
+            /* Now like a table header */
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+        /*
+Label the data
+*/
+        .Request_table td:before {
+            content: attr(data-title);
+            background: #1a1f25;
+            padding: 10px;
+            color: #fff;
+        }
+
+
+
+
+    .Add_Product_Table table,
+    .Add_Product_Table thead,
+    .Add_Product_Table tbody,
+    .Add_Product_Table th,
+    .Add_Product_Table td,
+    .Add_Product_Table tr {
+        display: block;
+        /*border-top: 1px solid #ccc !important;*/
+        font-weight: bold;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+
+    .Add_Product_Table table {
+        background: none;
+    }
+
+    .Add_Product_Table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .Add_Product_Table tr {
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+
+    .Add_Product_Table td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50% !important;
+        white-space: normal;
+        text-align: left;
+    }
+
+        .Add_Product_Table td:before {
+            /* Now like a table header */
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+        /*
+Label the data
+*/
+        .Add_Product_Table td:before {
+            content: attr(data-title);
+            background: #1a1f25;
+            padding: 10px;
+            color: #fff;
+        }
+
+    .close_btn {
+        font-size: 16px;
+        color: red;
+        cursor: pointer;
+    }
+     .MyTeam {
+        background: none;
+        border: 2px solid;
+        line-height: 1;
+        margin: 5px 5px 15px;
+        padding: 7px 45px;
+        display: block;
+    }
+
+    .CreateBtn {
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (max-width: 475px) {
+    .MyTeam {
+        background: none;
+        border: 2px solid;
+        line-height: 1;
+        margin: 10px 5px;
+        padding: 7px 45px;
+        display: block;
+    }
+
+    .CreateBtn {
+        margin-top: 0px;
+    }
+}

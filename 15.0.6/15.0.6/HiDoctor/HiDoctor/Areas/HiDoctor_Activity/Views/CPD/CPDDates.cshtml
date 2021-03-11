@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/MTO.css" rel="stylesheet" />
+<style>
+    .rcorners {
+        border: 2px solid mediumslateblue;
+        padding: 3px;
+        margin-top: 2px;
+    }
+</style>
+
+<div class="form-row" id="dvdatehtml">
+    <div class="col-xs-12" style="padding: 0px;" id="dvback">
+        <span id="spnback" onclick="CPDReports.fnBack('Dates',usrcount,'');"><i style="font-size: 26px !important;" class="fa fa-arrow-circle-left"></i></span>
+    </div>
+    @*<div class="form-group col-xs-12" style="padding: 5px;" id="dvname">*@
+    <div class="col-xs-12" id="dvname" style="border-bottom:1px solid #ddd;padding: 0px;">
+        <div class="col-xs-12" id="dvuser">
+            <div class="col-xs-5">
+                <h6 style="font-weight: bold;">User Name :</h6>
+            </div>
+            <div class="col-xs-7" style="font-size: 12px;margin-top: 8px;font-weight: bold;word-break: break-word;padding:0px;">
+                <div id="dvUserName"></div>
+            </div>
+        </div>
+    </div>
+    @*</div>*@
+
+    <div class="col-xs-12 control-section" style="margin-top:5px">
+        <div class="form-group col-xs-3">
+            <label for="txtfrom">From</label>
+        </div>
+        <div class="form-group col-xs-8">
+            <div id="wrapper">
+                <input type="text" class="form-control" id="datepicker-5" onchange="CPDReports.fnchildcountcheck(subDomainName, LoggedUserCode, UserName, usrcount);">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 control-section">
+        <div class="form-group col-xs-3">
+            <label for="txtto">To</label>
+        </div>
+        <div class="form-group col-xs-8">
+            <div id="wrapper">
+                <input type="text" class="form-control" id="datepicker-6" onchange="CPDReports.fnchildcountcheck(subDomainName, LoggedUserCode, UserName, usrcount);">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12" style="padding: 0px;">
+        <div id="userCPDdates">
+        </div>
+    </div>
+</div>
+@*<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>*@
+
+@*<script src="~/Scripts/jquery-ui-1.8.12.custom.min.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/CPDReports.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var SelUserCode = '';
+    var LoggedUserCode='';
+    var subDomainName = '';
+    var LID='';
+    var UserName='';
+    var usrcount='';
+    var FDate='';
+    var TDate='';
+    $(document).ready(function () {
+        debugger;
+        $( "#datepicker-5" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate:0,
+        });
+        $( "#datepicker-6" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate:0,
+        });
+        var today = new Date();
+        var prior = new Date(new Date().setDate(today.getDate() - 30));
+        var datefrom=("0" + prior.getDate()).slice(-2) + '/' +("0" + (prior.getMonth() + 1)).slice(-2) + '/' + prior.getFullYear();
+        var dateto=("0" + today.getDate()).slice(-2) + '/' +("0" + (today.getMonth() + 1)).slice(-2) + '/' + today.getFullYear();
+        $('#datepicker-5').val(datefrom);
+        $('#datepicker-6').val(dateto);
+
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        SelUserCode=@Html.Raw(Json.Encode(ViewBag.User_Code));
+        LoggedUserCode=@Html.Raw(Json.Encode(ViewBag.LoggedUser_Code));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        UserName=@Html.Raw(Json.Encode(ViewBag.UserName));
+        usrcount=@Html.Raw(Json.Encode(ViewBag.usercount));
+        CPDReports.fnchildcountcheck(subDomainName, LoggedUserCode, UserName, usrcount);
+    })
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoggedUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+</script>

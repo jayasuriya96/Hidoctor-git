@@ -1,0 +1,1482 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = null;
+    string CompayMess = ViewBag.CompanyMessage;
+}
+<style>
+    #bro_Error_msg {
+        border: 1px solid green;
+        padding: 3px 5px;
+        font-weight: bold;
+        background: green;
+        color: #fff;
+        border-radius: 2px;
+        font-size: 14px;
+        width: 63%;
+        margin-top: 10px;
+        height: 42px;
+    }
+
+    #lbltext {
+        position: relative;
+        top: 475px;
+        left: 50%;
+        color: #000;
+        font-size: 34px !important;
+        cursor: pointer;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.6784313725490196);
+    }
+
+    #slideshow {
+        margin: 0 auto;
+        position: relative;
+        width: 100%;
+        padding: 1% 1% 56.25% 1%; /*56.25 is for 16x9 resolution*/
+        border-radius: 20px;
+        background: rgba(0,0,0,0.2);
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        box-sizing: border-box;
+    }
+
+        #slideshow > div {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+        }
+
+            #slideshow > div > img {
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+            }
+
+        #slideshow:hover i, #slideshow:hover .slider-dots {
+            opacity: 1;
+        }
+
+    .slidebtn {
+        z-index: 99;
+        background: transparent;
+        outline: none;
+        border: none;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+        padding: 0 10px 0 10px;
+    }
+
+        .slidebtn:active,
+        .slidedtn:focus {
+            outline: none;
+        }
+
+        .slidebtn i {
+            color: #FFF;
+            font-size: 72px;
+            opacity: 0.2;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+
+    .prev {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        bottom: 10px;
+    }
+
+    .next {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
+    }
+
+
+    .slider-dots {
+        opacity: 0.2;
+        list-style: none;
+        display: inline-block;
+        padding-left: 0;
+        margin-bottom: 0;
+        position: absolute;
+        left: 50%;
+        bottom: 3%;
+        transform: translate(-50%, 0);
+        z-index: 99;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+        .slider-dots li {
+            color: #000;
+            display: inline;
+            font-size: 48px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+            .slider-dots li.active-dot {
+                color: #fff;
+            }
+
+    .test {
+        width: 100% !important;
+    }
+
+    #CCOverlay {
+        top: 23.2px;
+    }
+</style>
+<div class="container">
+    <div id="dvLogin">
+        <div style="width: 100%;">
+            <div style="width: 100%; border-bottom: 1px solid #f2f2f2; height: 80px;">
+
+                <div style="width: 50%; float: left;">
+                    <img src="~/Images/Hidoctor.png" />
+                </div>
+                <div style="width: 50%; float: right; height: 80px;">
+                    <img src="~/Images/Logo_Client.jpg" onerror="imgError(this)" id="imgClientLogo" style="float: right;" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%; clear: both;">
+
+                @if (@CompayMess == "" || @CompayMess == null)
+                {
+
+                }
+
+                else
+                {
+                    <marquee style="background-color: royalblue; Font-weight: bold; height: 25px; color: white;">
+
+                        @ViewBag.CompanyMessage
+                    </marquee>
+                }
+                <div style="width: 50%; float: left;">
+                    <div style="width: 100%; margin-left: 15%;">
+                        <img src="~/Images/mobile.jpg" />
+                    </div>
+                    <div style="width: 100%; margin-left: 20%; margin-bottom: 10%;">
+                        <span style="color: #505050; font-size: 22px;">
+                            For details, contact support<br />
+                        </span>
+                        <span style="font-size: 18px">&#9742;</span>
+                        <b>+91 90254-07475</b> &nbsp;<span style="font-size: 18px">&#9993;</span>
+                        <a href="mailto:support@swaas.net"><b>support@swaas.net</b></a>
+                    </div>
+                    <div style="width: 30%; float: left; color: #5f7aff;">
+                    </div>
+                </div>
+                <div style="width: 50%; float: left; margin-top: 8%;">
+                    <table>
+
+                        <td colspan="2">
+                            <span style="font-size: 18px; font-weight: bold;">Sign in</span>
+                            <br />
+                            <input type="text" placeholder="User Name" id="txtUserName" style="width: 300px !important" />
+                        </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="password" placeholder="Password" style="width: 300px !important" id="txtPassWord" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;">
+                                <input type="checkbox" id="chkRememberme" /><span>Remember me</span>
+                            </td>
+                            <td>
+                                <div style="float: right;">
+                                    <input type="button" class="btn primary" value="Sign in" style="float: right;" id="btnLogin" onclick="fnSubmit();" /><img src="~/Images/load.gif" style="display: none; float: right;" id="imgloginLoad" /><br />
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span style="color: #C63828; float: right;display: flex;width: 310px;position: relative;" id="spnError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                @*  <span style="color: #338ED1">Forgot your password?</span>*@
+                                @*// <a href='#' onclick="fnLoadBody('HiDoctor_Activity/ForgotPassword/Forgotpassword',this,'')">Forgot your password?</a>*@
+
+                                <a href='#' onclick="fnforgotpassword()">Forgot password?</a>
+
+                            </td>
+                        </tr>
+                        <tr style="display: none;">
+                            <td colspan="2">
+                                <div style="font-weight: bold; margin-top: 23%">
+                                    Important instructions
+                                    <br />
+
+                                    To ensure HiDoctor works properly, the following steps need to be performed before login to HiDoctor
+
+                                    <a href="#" onclick="fnOpenInstruction()">Click Here</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="bro_Error_msg" style="display: none;">
+                        <p>Site best viewed in Chrome at 1024x768 pixels resolution.</p>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width: 100%; clear: both; border-top: 1px solid #f2f2f2; margin-top: 1%;">
+                <div style="width: 9%; float: left;">
+                    <img src="~/Images/Logo_SwaaS.gif" />
+                </div>
+                <div style="width: 50%; float: left; color: #828181;">
+                    &copy; 2019 SwaaS. All rights reserved. @HiDoctor.LatestBuildVersion.LatestVersion
+                    <br />
+                    Site best viewed in Chrome at 1024x768 pixels resolution.
+                </div>
+                <div style="width: 30%; float: right; color: #5f7aff;">
+                    <span style="font-size: 18px">&#9742;</span>
+                    <b>+91 90254-07475</b> &nbsp;<span style="font-size: 18px">&#9993;</span>
+                    <a href="mailto:support@swaas.net"><b>support@swaas.net</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @*<div class="modal-header" style="padding: 5px 15px;">
+        <div class="modal-body" style="height: 552px; font-size: 11px; overflow: auto">
+    *@
+
+
+</div>
+<script language="javascript">
+    var userName1 = "";
+    var password1 = "";
+    var remMe = '0';
+    var latitude_g = "NOT_FOUND";
+    var longitude_g = "NOT_FOUND";
+    var loginUserName_g = "";
+    var curdate_g = "";
+    var isMenuShow_g = "";
+    var result_g = "";
+    var slider="";
+    var dashboard_g="";
+    var Task_count=0;
+    var ModalforTP='';
+    var NewDB = '';
+    var DcrEntry='';
+    var Splashtype = '';
+    var Description='';
+    var File_Path='';
+    var Alert = "" ;
+    var flag = true;
+    var proceedflag = true;
+    var PassNotify="";
+    var CCEnabled="NO";
+    var CCtitle = "";
+    var AckOption ="";
+    var FileId = "";
+    var UserCode = "";
+    var DisplayFlag=true;
+    var CompanyMessage=@Html.Raw(Json.Encode(ViewBag.CompanyMessage));
+    $(document).unbind();
+    $(document).bind('keypress',function(e) {
+        e.stopPropagation();
+        if (e.keyCode == 13 || e.which == 13) {
+            if(!$("#dvForgotPassword").is(":visible"))
+            {
+                $("#btnLogin").click();
+            }
+            e.cancelBubble = true;
+            //e = null;
+        }
+    });
+    $(document).ready(function () {
+        debugger;
+        //var width=screen.width;
+        //if(width <768)
+        //{
+        //    debugger;
+        //    fnredirect();
+        //}
+        fnCheckBrowserType();
+        $("#footer").hide()
+        $("#txtUserName").focus();
+        $("#hdnNeedGeo").val(@Html.Raw(Json.Encode(ViewBag.IsGeoNeed)));
+
+        var userName = @Html.Raw(Json.Encode(ViewBag.USERNAME));
+        var password = @Html.Raw(Json.Encode(ViewBag.PASSWORD));
+        var isMenuShow = @Html.Raw(Json.Encode(ViewBag.IsMenuShow));
+        var curPage = @Html.Raw(Json.Encode(ViewBag.CurPage));
+        var returnValue = @Html.Raw(Json.Encode(ViewBag.returnValue));
+        curdate_g = @Html.Raw(Json.Encode(ViewBag.CurDate));
+        dashboard_g=@Html.Raw(Json.Encode(ViewBag.DashboardV2));
+        navigator.geolocation.getCurrentPosition(GetLocation);
+        $("#PassNotifyModal").overlay().load();
+        $("#CCOverlay").overlay().load();
+        //if(PassNotify !="")
+        //{
+        //    $('#dvNotify').html(Alert);
+        //    //setTimeout(function() {
+        //        $('#PassNotifyModal').modal('show');
+        //        //ShowModalPopup('PassNotifyModal');
+        //    //}, 1600);
+        //}
+
+        // FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        if($('#spnUser').html() !="")
+        {
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&disable[custom_field][user_name_13621]=true&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] +  $('#spnUserdate').html().split('(')[1]+ "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "https://support.swaas.net" });
+        }
+        else{
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] +  $('#spnUserdate').html().split('(')[1]+ "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "https://support.swaas.net" });
+        }
+        var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+        $("#imgClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+
+        if($.trim(userName) != "")
+        {
+            $("#txtUserName").val(userName);
+        }
+        if($.trim(password) != "")
+        {
+            $("#txtPassWord").val(password);
+        }
+        if($.trim(userName) != "" && $.trim(password) != "")
+        {
+            $("#chkRememberme").attr("checked",true);
+        }
+    });
+
+    function fnLogo(curUserCode_g){
+        debugger;
+        var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+        var divisionCode = "";
+        $.ajax({
+            type:"GET",
+            url:"../Home/GetLogo",
+            data: "userCode=" + curUserCode_g,
+            success: function(result){
+                debugger;
+                if(result.length>0 && result.length<2){
+                    divisionCode = result[0].Division_Code;
+                    $("#imgIndexClientLogo").attr('src','Images/Company_Logo/'+subDomain+ "_" + divisionCode +'.jpg' );
+                    $("#imgClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                }
+                else
+                {
+                    $("#imgClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                    $("#imgIndexClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                }
+            }
+        });
+    }
+
+    function imgError(image)
+    {
+        debugger;
+        var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+        image.onerror = "";
+        image.src = 'Images/Company_Logo/'+subDomain+'.jpg';
+        return true;
+    }
+
+    function fnSubmit() {
+        if( $.trim($("#txtUserName").val()).length == 0 && $.trim($("#txtPassWord").val()) == 0)
+        {
+            $("#spnError").html("Please enter Username and Password.")
+            return false;
+        }
+        $("#spnError").html("");
+        $("#imgloginLoad").show()
+        remMe = '0';
+        if ($("#chkRememberme").is(":checked")) {
+            remMe = '1'
+        }
+        userName1 = $("#txtUserName").val();
+        password1 = $("#txtPassWord").val();
+        $.ajax({
+            type: 'POST',
+            url: "../Home/GetLogin/",
+            data: "userName=" + $("#txtUserName").val() + "&password=" + $("#txtPassWord").val() + "&latitude=" + latitude_g + "&longitude=" + longitude_g + "&sourceOfEntry=WEB&RememberMe=" + remMe + "&UA="+escape(navigator.userAgent),
+            success: function (result) {
+                result_g = result;
+                Alert = result.split('?')[0];
+
+                debugger;
+                var response= result.split('^')[0];
+                var HDNGGlobalVar = result.split('^')[2];
+
+                if(response != "Invalid username or password" && response != "Invalid User name or password"&& response.split(':')[0] == "SUCCESS")
+                {
+                    if(result.split('~')[1].split("^")[0] == "CHANGEPASSWORD/CHANGEPASSWORD/RO" )
+                    {
+                        curUserCode_g = result.split('^')[1].split('*')[0];
+                        $("#spnUser").html(response.split(':')[1].split("~")[0])
+                        $("#spnUserdate").html(curdate_g);
+                        $("#wrapperbody").css('display', '');
+                        $("#sub-page-header").css('display', '');
+                        $("#footer").show()
+                        $("#main").html('');
+                        fnLogo(curUserCode_g);
+                        fnGetAllPrivileges();
+                        fnCheckSalesDrive();
+                        fnGetMenuContent();
+                        $("#imgloginLoad").hide();
+                        fnGetLiveTaskCounts();
+                        fnCheckIsEDAvailable();
+                        fnIsOneLibAvailable();
+                        fnCheckEdetailing_Access();
+                        var titleObj=$("<div></div>");
+                        titleObj.html("Change Password");
+                        fnLoadBody('ChangePassword/Changepassword/PASSWORDEXPIRED',titleObj,'ChangePassword/Changepassword');
+                    }
+
+                    if(flag==true)
+                    {
+                        if(result.split('*')[1].split('^')[0].toUpperCase() == "SUCCESS")
+                        {
+                            $.blockUI();
+                            $('#dvNotify').html(Alert);
+                            $("#PassNotifyModal").overlay().load();
+                            // setTimeout(function() {
+                            //$('#PassNotifyModal').modal('show');
+                            //ShowModalPopup('PassNotifyModal');
+                            // }, 2000);
+                        }
+
+                    }
+
+                    var resultlogin=response.split(':')[0];
+                    if(result.split('~')[1].split("^")[0] != "CHANGEPASSWORD/CHANGEPASSWORD/RO" && result.split('~')[1].split("^")[0] !="CHANGEPASSWORD/CHANGEPASSWORD/R" && resultlogin.toUpperCase() == "SUCCESS" ||  flag == false )
+                    {
+                        debugger;
+                        fnGetAllPrivileges();
+                        fnShowCodeofConduct();
+
+                    }
+
+                    if(CCEnabled=="NO")
+                    {
+                        if(resultlogin.toUpperCase() == "SUCCESS" && result.split('~')[1].split("^")[0] != "CHANGEPASSWORD/CHANGEPASSWORD/RO") {
+
+                            debugger;
+
+                            // fnLoadBody("Home/Index", "");
+                            curUserCode_g = result.split('^')[1].split('*')[0];
+                            $("#spnUser").html(response.split(':')[1].split("~")[0]);
+                            $("#spnUserdate").html(curdate_g);
+                            $("#wrapperbody").css('display', '');
+                            $("#sub-page-header").css('display', '');
+                            $("#footer").show()
+                            $("#main").html('');
+                            fnShowSplashScreen();
+                            fnGetAllPrivileges();
+                            fnCheckSalesDrive();
+                            fnGetMenuContent();
+                            fnLogo(curUserCode_g);
+                            $("#imgloginLoad").hide();
+                            fnGetLiveTaskCounts();
+                            fnCheckIsEDAvailable();
+                            fnIsOneLibAvailable();
+                            fnCheckEdetailing_Access();
+                            //fnGetDoctos();
+                            //fnGetAllPrivileges(source);
+                            dashboard_g=fnGetPrivilegeValue("DASHBOARDV2_AS_HOMEPAGE","NO");
+                            //Assign Global Values for HDNEXTGEN
+                            if(result.split('~')[1].split('^')[0]=="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX")
+                            {
+                                //$('#modalSplash').css("left", "27% !important");
+                                ModalforTP ="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX";
+                                Empmodal=ModalforTP;
+                            }
+                            if(response.split('~')[1] == "DashboardLandingPage/Index")
+                            {
+                                NewDB = "DashboardLandingPage/Index";
+                                NewDashB=NewDB
+                                if(HDNGGlobalVar.length > 1){
+                                    HDNG_gSubdomain = HDNGGlobalVar.split('$')[0];
+                                    HDNG_gCompanyId = HDNGGlobalVar.split('$')[1];
+                                    HDNG_gUserId = HDNGGlobalVar.split('$')[2];
+                                    HDNG_gEmpName =HDNGGlobalVar.split('$')[3];
+                                    HDNG_gRegionCode = HDNGGlobalVar.split('$')[4];
+                                    HDNG_userCategory = HDNGGlobalVar.split('$')[5];
+                                }
+
+                                if(result.split('~')[1].split('^')[0]=="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX")
+                                {
+                                    ModalforTP="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX";
+                                    Empmodal=ModalforTP;
+                                }
+
+                                if(Task_count>0){
+                                    //$('#main').load("HiDoctor_Master/FeedBack/ICETasksView");
+                                    Taskcount=Task_count;
+                                    fnLoadBody('HiDoctor_Master/FeedBack/ICETasksView',this,'Home');
+                                }
+                                else
+                                {
+                                    //fnLoadBody('Home/OnBoardingPage',this,'Home');
+                                    if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                                    {
+                                        fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                                    }
+                                    else{
+                                        fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                                    }
+                                }
+
+                                $("#lnkUserDash").unbind('click').bind('click',function(){
+                                    if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                                    {
+                                        fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                                    }
+                                    else{
+                                        fnLoadBody('DashboardLandingPage/Index',this,'Home');
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                if(HDNGGlobalVar.length > 1){
+                                    debugger;
+                                    HDNG_gSubdomain = HDNGGlobalVar.split('$')[0];
+                                    HDNG_gCompanyId = HDNGGlobalVar.split('$')[1];
+                                    HDNG_gUserId = HDNGGlobalVar.split('$')[2];
+                                    HDNG_gEmpName =HDNGGlobalVar.split('$')[3];
+                                    HDNG_gRegionCode = HDNGGlobalVar.split('$')[4];
+                                    HDNG_userCategory = HDNGGlobalVar.split('$')[5];
+
+
+
+                                    $("#lnkUserDash").unbind('click').bind('click',function(){
+                                        if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                                        {
+                                            fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                                        }
+                                        else{
+                                            fnLoadBody('DashboardLandingPage/Index',this,'Home');
+                                        }
+                                    });
+                                    //var urls=[];
+                                    //urls.push("WallacePharma.hidoctor.me");
+                                    //urls.push("Wallacerivela.hidoctor.me");
+                                    //urls.push("Wallacelifestyle.hidoctor.me");
+                                    //urls.push("Wallacelifestyledc.hidoctor.me");
+                                    //urls.push("Endura.hidoctor.me");
+                                    //urls.push("Ventura.hidoctor.me");
+                                    //urls.push("Egi.hidoctor.me");
+                                    ////urls.push("irl1.hidoctor.me");
+                                    //urls.push("Awd.hidoctor.me");
+                                    //urls.push("Ortho.hidoctor.me");
+                                    ////urls.push("hdtestqa1.hidoctor.me");
+                                    ////urls.push("hdtest-pv1.hidoctor.me");
+                                    ////urls.push("hdtest-pv2.hidoctor.me");
+                                    ////urls.push("hdtest-pv3.hidoctor.me");
+                                    ////urls.push("hdtest-pv4.hidoctor.me");
+                                    //urls.push("localhost:49760");
+
+                                    //var isUrl=false;
+                                    //var loggedInUrl=window.location.host;
+                                    //for(var i=0;i<urls.length;i++)
+                                    //{
+                                    //    if(urls[i].toLowerCase()==loggedInUrl.toLowerCase())
+                                    //    {
+                                    //        isUrl=true;
+                                    //    }
+                                    //}
+                                    //isUrl=true;
+                                    //if(HDNG_userCategory=="FIELD_USER")
+                                    //{
+                                    //    $("#lnkUserDash").unbind('click').bind('click',function(){
+
+                                    //        if(isUrl)
+                                    //        {
+                                    //            fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                                    //           // fnLoadBody('Home/OnBoardingPage',this,'Home');
+                                    //        }
+
+                                    //        else{
+                                    //            if(dashboard_g == "YES") {
+
+
+                                    //                fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+
+
+                                    //                //fnLoadBody('DashBoardV2/DashBoardV2',this,'Home');
+                                    //            }
+                                    //            else {
+                                    //                fnLoadBody('Dashboard/UserDashboard',this,'Home');
+                                    //            }
+                                    //        }
+                                    //    })
+                                    //    //fnLoadBody('Home/Home',this,'Home');})
+                                    //}
+                                    //else
+                                    //{
+                                    //    $("#lnkUserDash").unbind('click').bind('click',function(){
+                                    //        if(isUrl)
+                                    //        {
+                                    //            fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                                    //            //fnLoadBody('Home/OnBoardingPage',this,'Home');
+                                    //        }
+                                    //        else{
+                                    //            if(dashboard_g == "YES") {
+                                    //                fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                                    //                //  fnLoadBody('DashBoardV2/DashBoardV2',this,'Home');
+                                    //            }
+                                    //            else{
+                                    //                fnLoadBody('Dashboard/AdminDashboard',this,'Home');
+                                    //            }
+                                    //        }
+                                    //        // fnLoadBody('DashBoardV2/DashBoardV2',this,'Home');
+                                    //        //fnLoadBody('Home/Home',this,'Home');
+                                    //    })
+                                    //}
+                                    // HDNG_gProPhoto = HDNGGlobalVar.split('$')[5];
+
+                                    if(Task_count>0 ){
+                                        //$('#main').load("HiDoctor_Master/FeedBack/ICETasksView");
+                                        Taskcount=Task_count;
+                                        fnShowSplashScreen();
+                                        fnLoadBody('HiDoctor_Master/FeedBack/ICETasksView',this,'Home');
+                                    }
+                                    else{
+
+                                        if(response.split(':')[1].split("~")[1] != "")
+                                        {
+                                            //if(response.split(':')[1].split("~")[1].split('?')[0].toUpperCase() == "CHANGEPASSWORD.ASPX")
+                                            //{
+                                            //    fnLoadBody("CHANGEPASSWORD.ASPX","","CHANGEPASSWORD.ASPX");
+                                            //    if(response.split(':')[1].split("~")[1].split('?')[1].toUpperCase() == "RO")
+                                            //    {
+                                            //        $("#wrapperbody").css('display', 'none');
+                                            //    }
+                                            //}
+
+                                            //if(response.split(':')[1].split("~")[1]=="CHANGEPASSWORD/CHANGEPASSWORD/R")
+                                            //{
+                                            //    fnShowSplashScreen();
+                                            //    var titleObj=$("<div></div>");
+                                            //    titleObj.html("Change Password");
+                                            //    var mode="FirstpassChange";
+                                            //    fnLoadBody('ChangePassword/Changepassword?id=0&mode='+mode+'',titleObj);
+
+                                            //}
+                                            if(response.split(':')[1].split("~")[1]=="CHANGEPASSWORD/CHANGEPASSWORD/RO")
+                                            {
+                                                var titleObj=$("<div></div>");
+                                                titleObj.html("Change Password");
+                                                fnLoadBody('ChangePassword/Changepassword/PASSWORDEXPIRED',titleObj,'ChangePassword/Changepassword');
+
+                                            }
+                                            else if(response.split(':')[1].split("~")[1].split('?')[0].toUpperCase() == "MYPROFILE.ASPX")
+                                            {
+                                                fnLoadBody("MYPROFILE.ASPX","","MYPROFILE.ASPX");
+                                                if(response.split(':')[1].split("~")[1].split('?')[1].toUpperCase() == "RO")
+                                                {
+                                                    $("#wrapperbody").css('display', 'none');
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if(response.split(':')[1].split("~")[1]=="HIDOCTOR_ACTIVITY/DCRCALENDAR/INDEX")
+                                                {
+                                                    DcrEntry = "HIDOCTOR_ACTIVITY/DCRCALENDAR/INDEX";
+                                                }
+                                                var titleObj=$("<div></div>");
+                                                if(response.split(':')[1].split("~")[1]=="HiDoctor_Activity/DCRCalendar/Index")
+                                                {
+                                                    titleObj.html("DCR Entry Screen");
+                                                }
+                                                var menuText="";
+                                                if(menuContent_g!='')
+                                                {
+                                                    for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+                                                        if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                                                            var menuUrl = menuContent_g.Tables[0].Rows[i].Menu_URL;
+                                                            if (menuUrl.toUpperCase() == response.split(':')[1].split("~")[1].toUpperCase()) {
+                                                                menuText = menuContent_g.Tables[0].Rows[i].Menu_Text;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    titleObj.html(menuText);
+                                                    fnLoadBody(response.split(':')[1].split("~")[1],titleObj,response.split(':')[1].split("~")[1]);
+                                                }
+                                                else
+                                                {
+                                                    $.ajax({
+                                                        url: '/Home/GetMenuContent/',
+                                                        type: "POST",
+                                                        data: "A",
+                                                        success: function (jsMenu) {
+                                                            jsMenu = eval('(' + jsMenu + ')');
+                                                            menuContent_g = jsMenu;
+                                                            for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+                                                                if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                                                                    var menuUrl = menuContent_g.Tables[0].Rows[i].Menu_URL;
+                                                                    if (menuUrl.toUpperCase() == response.split(':')[1].split("~")[1].toUpperCase()) {
+                                                                        menuText = menuContent_g.Tables[0].Rows[i].Menu_Text;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                            titleObj.html(menuText);
+                                                            fnLoadBody(response.split(':')[1].split("~")[1],titleObj,response.split(':')[1].split("~")[1]);
+                                                        },
+                                                        error: function () {
+                                                        }
+                                                    });
+                                                }
+                                                //$("#page-header").show();
+                                                //$("#divPageHeader").html('DCR Entry Screen');
+                                                //$("#main").load('/HiDoctor_Activity/DCRCalendar/Index');
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                    //if(CCEnabled=="YES")
+                    //{
+                    //    debugger
+                    //    $.blockUI();
+                    //    $("#CCOverlay").overlay().load();
+                    //}
+                }
+                else {
+                    debugger;
+                    $("#imgloginLoad").hide()
+                    if (response.split('^')[0] != "$"){
+                        fnMsgAlert('error','Error',response);
+                    }
+                    else {
+                        $("#spnError").html(response.split(':')[0])
+                    }
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error', 'Error', 'UserAuthentication Failed.');
+                //$.msgbox("User Authendication Failed.", { type: "error" })
+
+            }
+        });
+    }
+
+    function fnHidePopup(){
+        debugger;
+        $("#PassNotifyModal").hide();
+        $.unblockUI();
+        //$('#PassNotifyModal').modal('hide');
+        //HideModalPopup('PassNotifyModal');
+        HideModalPopup('dvloading');
+        flag=false;
+        Alert = result_g.split('?')[0];
+
+        debugger;
+        var response= result_g.split('^')[0];
+        var HDNGGlobalVar = result_g.split('^')[2];
+        debugger;
+        if(DisplayFlag == true)
+        {
+            fnGetAllPrivileges();
+            fnShowCodeofConduct();
+        }
+        if(DisplayFlag == false)
+        {
+            debugger;
+            curUserCode_g = result_g.split('^')[1].split('*')[0];
+            $("#spnUser").html(response.split(':')[1].split("~")[0]);
+            $("#spnUserdate").html(curdate_g);
+            $("#wrapperbody").css('display', '');
+            $("#sub-page-header").css('display', '');
+            $("#footer").show()
+            $("#main").html('');
+            fnShowSplashScreen();
+            fnGetAllPrivileges();
+            fnCheckSalesDrive();
+            fnGetMenuContent();
+            $("#imgloginLoad").hide();
+            fnGetLiveTaskCounts();
+            fnCheckIsEDAvailable();
+            fnIsOneLibAvailable();
+            fnCheckEdetailing_Access();
+
+            dashboard_g=fnGetPrivilegeValue("DASHBOARDV2_AS_HOMEPAGE","NO");
+            if(result_g.split('~')[1].split('^')[0]=="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX")
+            {
+                ModalforTP ="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX";
+                Empmodal=ModalforTP;
+            }
+            if(response.split('~')[1] == "DashboardLandingPage/Index")
+            {
+                NewDB = "DashboardLandingPage/Index";
+                NewDashB=NewDB
+                if(HDNGGlobalVar.length > 1){
+                    HDNG_gSubdomain = HDNGGlobalVar.split('$')[0];
+                    HDNG_gCompanyId = HDNGGlobalVar.split('$')[1];
+                    HDNG_gUserId = HDNGGlobalVar.split('$')[2];
+                    HDNG_gEmpName =HDNGGlobalVar.split('$')[3];
+                    HDNG_gRegionCode = HDNGGlobalVar.split('$')[4];
+                    HDNG_userCategory = HDNGGlobalVar.split('$')[5];
+                }
+
+                if(result_g.split('~')[1].split('^')[0]=="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX")
+                {
+                    ModalforTP="HIDOCTOR_ACTIVITY/TOURPLANNER/INDEX";
+                    Empmodal=ModalforTP;
+                }
+
+                if(Task_count>0){
+                    Taskcount=Task_count;
+                    fnLoadBody('HiDoctor_Master/FeedBack/ICETasksView',this,'Home');
+                }
+                else
+                {
+                    if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                    {
+                        fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                    }
+                    else{
+                        fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                    }
+                }
+
+                $("#lnkUserDash").unbind('click').bind('click',function(){
+                    if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                    {
+                        fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                    }
+                    else{
+                        fnLoadBody('DashboardLandingPage/Index',this,'Home');
+                    }
+                });
+            }
+            else
+            {
+                if(HDNGGlobalVar.length > 1){
+                    debugger;
+                    HDNG_gSubdomain = HDNGGlobalVar.split('$')[0];
+                    HDNG_gCompanyId = HDNGGlobalVar.split('$')[1];
+                    HDNG_gUserId = HDNGGlobalVar.split('$')[2];
+                    HDNG_gEmpName =HDNGGlobalVar.split('$')[3];
+                    HDNG_gRegionCode = HDNGGlobalVar.split('$')[4];
+                    HDNG_userCategory = HDNGGlobalVar.split('$')[5];
+
+
+
+                    $("#lnkUserDash").unbind('click').bind('click',function(){
+                        if(dashboard_g != null && dashboard_g.toUpperCase() =="YES")
+                        {
+                            fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+                        }
+                        else{
+                            fnLoadBody('DashboardLandingPage/Index',this,'Home');
+                        }
+                    });
+
+                    if(Task_count>0 ){
+                        Taskcount=Task_count;
+                        fnShowSplashScreen();
+                        fnLoadBody('HiDoctor_Master/FeedBack/ICETasksView',this,'Home');
+                    }
+                    else{
+
+                        if(response.split(':')[1].split("~")[1] != "")
+                        {
+
+                            if(response.split(':')[1].split("~")[1]=="CHANGEPASSWORD/CHANGEPASSWORD/RO")
+                            {
+                                var titleObj=$("<div></div>");
+                                titleObj.html("Change Password");
+                                fnLoadBody('ChangePassword/Changepassword/PASSWORDEXPIRED',titleObj,'ChangePassword/Changepassword');
+
+                            }
+                            else if(response.split(':')[1].split("~")[1].split('?')[0].toUpperCase() == "MYPROFILE.ASPX")
+                            {
+                                fnLoadBody("MYPROFILE.ASPX","","MYPROFILE.ASPX");
+                                if(response.split(':')[1].split("~")[1].split('?')[1].toUpperCase() == "RO")
+                                {
+                                    $("#wrapperbody").css('display', 'none');
+                                }
+                            }
+                            else
+                            {
+                                if(response.split(':')[1].split("~")[1]=="HIDOCTOR_ACTIVITY/DCRCALENDAR/INDEX")
+                                {
+                                    DcrEntry = "HIDOCTOR_ACTIVITY/DCRCALENDAR/INDEX";
+                                }
+                                var titleObj=$("<div></div>");
+                                if(response.split(':')[1].split("~")[1]=="HiDoctor_Activity/DCRCalendar/Index")
+                                {
+                                    titleObj.html("DCR Entry Screen");
+                                }
+                                var menuText="";
+                                if(menuContent_g!='')
+                                {
+                                    for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+                                        if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                                            var menuUrl = menuContent_g.Tables[0].Rows[i].Menu_URL;
+                                            if (menuUrl.toUpperCase() == response.split(':')[1].split("~")[1].toUpperCase()) {
+                                                menuText = menuContent_g.Tables[0].Rows[i].Menu_Text;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    titleObj.html(menuText);
+                                    fnLoadBody(response.split(':')[1].split("~")[1],titleObj,response.split(':')[1].split("~")[1]);
+                                }
+                                else
+                                {
+                                    $.ajax({
+                                        url: '/Home/GetMenuContent/',
+                                        type: "POST",
+                                        data: "A",
+                                        success: function (jsMenu) {
+                                            jsMenu = eval('(' + jsMenu + ')');
+                                            menuContent_g = jsMenu;
+                                            for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+                                                if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                                                    var menuUrl = menuContent_g.Tables[0].Rows[i].Menu_URL;
+                                                    if (menuUrl.toUpperCase() == response.split(':')[1].split("~")[1].toUpperCase()) {
+                                                        menuText = menuContent_g.Tables[0].Rows[i].Menu_Text;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            titleObj.html(menuText);
+                                            fnLoadBody(response.split(':')[1].split("~")[1],titleObj,response.split(':')[1].split("~")[1]);
+                                        },
+                                        error: function () {
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // This method is called when the page is loaded
+    function fninit() {
+        if ($("#hdnNeedGeo").val().toUpperCase() == "YES") {
+            // Check if the device supports HTML5 geolocation
+            if (!(navigator && navigator.geolocation)) {
+                //GEO object not supported
+            }
+            else {
+                //GEO object supported
+                //  navigator.geolocation.getCurrentPosition(setMap, positionError);
+                //navigator.geolocation.getCurrentPosition(GetLocation);
+
+            }
+        }
+    }
+
+
+    // navigator.geolocation.getCurrentPosition(GetLocation);
+    function GetLocation(location) {
+
+        latitude_g = location.coords.latitude;
+        longitude_g = location.coords.longitude;
+    }
+
+    // GEO Suceess callback
+    //function setMap(position) {
+
+    //    var latitude = position.coords.latitude;
+    //    var longitude = position.coords.longitude;
+
+    //    latitude_g = latitude;
+    //    longitude_g = longitude;
+    //}
+
+    // GEO failure callback
+    function positionError(error) {
+        //
+    }
+    function fnCheckSalesDrive() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/Home/CheckSalesDrive/',
+            type: "POST",
+            data: "A",
+            async: false,
+            success: function (isSD) {
+                if(isSD != "" && isSD != "NO" && isSD !="YES"){
+                    $("#imgSalesDrive").show();
+                    $("#aSalesDrive").show();
+                    window.location.href = isSD;
+                }
+                else if(isSD == "YES")
+                {
+                    $("#aSalesDrive").show();
+                    $("#imgSalesDrive").show();
+                }
+                else
+                {
+                    $("#aSalesDrive").hide();
+                    $("#imgSalesDrive").hide();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnforgotpassword() {
+        $.modal({ ajax: 'HiDoctor_Activity/ForgotPassword/Forgotpassword', title: 'Forgot Password', overlayClose: false });
+        return;
+    }
+    function fnOpenInstruction(pageId, ControlId) {
+        var w = 600;
+        var h = 500;
+        window.open('Home/Instruction', 'Popup', 'toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' + w + ',height=' + h + ',top=150,left=250');
+    }
+
+    function fnChangePassword(){
+        //fnShowSplashScreen();
+        $.unblockUI();
+        $('#PassNotifyModal').hide();
+        $('#page-header').show();
+        $('#divPageHeader').html('')
+        $('#divPageHeader').html('Change Password');
+        //HideModalPopup('PassNotifyModal');
+        HideModalPopup('dvloading');
+        curUserCode_g = result_g.split('^')[1].split('*')[0];
+        $("#spnUser").html(result_g.split(':')[1].split("~")[0]);
+        $("#spnUserdate").html(curdate_g);
+        $("#wrapperbody").css('display', '');
+        $("#sub-page-header").css('display', '');
+        $("#footer").show()
+        $("#main").html('');
+        fnGetAllPrivileges();
+        fnCheckSalesDrive();
+        fnGetMenuContent();
+        $("#imgloginLoad").hide();
+        fnCheckIsEDAvailable();
+        $("#main").load("ChangePassword/ChangePassword/");
+    }
+    function fnIsOneLibAvailable() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/OneLib/IsOneLibAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (isWLAvailable) {
+                if (isWLAvailable == "1") {
+                    $("#aOneLib").show();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnShowSplashScreen() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '../Home/GetSplashScreen/',
+            type: "POST",
+            data: "A",
+            success: function (jsonResult) {
+                debugger;
+                $("#divSplash").html('');
+                if (jsonResult != null && jsonResult !='' && jsonResult != false) {
+                    var content="";
+                    content += '<div class="bxslider">';
+                    for (var i = 0; i < jsonResult.length; i++) {
+                        if(jsonResult[i].Title =='')
+                        {
+                            jsonResult[i].Title ='';
+                        }
+
+                        if (jsonResult[i].File_Path !='' && jsonResult[i].File_Path !=null && jsonResult[i].File_Path !=undefined && jsonResult[i].Description =='')
+                        {
+                            content+='<div class="test" style="width: 100% !important;">';
+                            content+='<div class="col-lg-12" style="padding:0px !important;"><p class="splashTitle" id="splashTitletxtimg">' + jsonResult[i].Title + '</p>';
+                            content+='<div class="splashImg" id="splimg" style="width:100%;">';
+                            content+='<img class="img-responsive" style="max-width: 100%;width: 100%;position: relative;top: 0px;height: 485px;" id="imgSplash" src="'+ jsonResult[i].File_Path +'" />';
+                            content+='</div></div>';
+                            content+='</div>';
+                            $("#lbltext").hide();
+                            $("#spltxt").hide();
+                            $("#splimg").show();
+                            $("#splashShowHideBtn").hide();
+                            $(".hideContent").hide();
+
+                        }
+                        if (jsonResult[i].Description !='' && jsonResult[i].Description !=null && jsonResult[i].Description !=undefined && jsonResult[i].File_Path =='')
+                        {
+                            content+='<div class="test" style="width: 100% !important;">';
+                            content+='<div class="col-lg-12"><p class="splashTitle" id="splashTitletxtimg">' + jsonResult[i].Title + '</p>';
+                            content+='<div class="splashContent" id="spltxt" style="margin-top: 25px;white-space:normal;word-wrap:break-word;word-break:break-word;">' + jsonResult[i].Description_HTML + '</div>';
+                            content+='</div>';
+                            content+='</div>';
+                            $("#splimg").hide();
+                            $("#splashShowHideBtn").hide();
+                            $("#lbltext").show();
+                            $("#spltxt").show();
+                        }
+                        if (jsonResult[i].File_Path !='' && jsonResult[i].File_Path !=null && jsonResult[i].File_Path !=undefined && jsonResult[i].Description !='' && jsonResult[i].Description !=null && jsonResult[i].Description !=undefined)
+                        {
+                            content+='<div class="test" style="width: 100% !important;">';
+                            content+='<div class="col-lg-12"><p class="splashTitle" id="splashTitletxtimg">' + jsonResult[i].Title + '</p>';
+                            content+='<div><i class="fa fa-angle-double-down" id="splashShowHideBtn" style="display:none;font-size:36px"></i></div>';
+                            content+='<div><i class="fa fa-angle-double-up" style="font-size:36px;color: #000000;" id="lbltext"></i></div>';
+                            content+='<div class="splashImg" id="splimg" style="width: 100%!important;">';
+                            content+='<img class="img-responsive" style="max-width: 100%;position: relative;top:0px;height: 485px;" id="imgSplash" src=' + jsonResult[i].File_Path + ' />';
+                            content+='</div>';
+                            content+='<div class="splashContent" id="spltxt" style="display:none;margin-top:0px;white-space:normal;word-wrap:break-word;word-break:break-word;">' + jsonResult[i].Description_HTML + '</div></div>';
+                            content+='</div>';
+                            $("#lbltext").show();
+                            $("#splimg").show();
+                            $("#splashShowHideBtn").show();
+
+                        }
+                    }
+                    content +='</div>';
+                    $("#myCarousel").html(content);
+                    slider = $('.bxslider').bxSlider({
+                        mode: 'fade',
+                        captions: true,
+                        auto: true,
+                        pause: 4000,
+                        speed: 500,
+                        hideControlOnEnd: true,
+                        stopAuto: true,
+                        autoHover: true,
+                        autoControls: true,
+                        startSlide: 0,
+                        touchEnabled: false
+
+                    });
+                    $(".bx-pager-link").unbind('click').bind('click',function () {
+                        //console.log('bla');
+                        slider.stopAuto();
+                    });
+                    $(".bx-pager-link").unbind('click').bind('click',function () {
+                       // console.log('bla');
+                        slider.startAuto();
+                    });
+                    $("#lbltext").click(function () {
+                        debugger
+                        slider.stopAuto();
+                        $('.splashImg').slideUp("normal").promise().done(function () {
+                            $('.splashContent').show();
+                            $('#splashShowHideBtn').show();
+                            $("#spltxt").show();
+                        });
+                    });
+                    $("#splashShowHideBtn").click(function () {
+                        slider.startAuto();
+                        $('.splashImg').slideDown();
+                        $('.spltxt').hide();
+                        $('#splashShowHideBtn').hide();
+
+                    });
+                    if( ModalforTP !='')
+                    {
+                        debugger;
+                        $("#modalSplash").removeClass("SplashExcTP");
+                        $("#modalSplash").addClass("HomemodalSplash");
+                        Empmodal=ModalforTP;
+                    }
+                    if( DcrEntry !='')
+                    {
+                        debugger;
+                        $("#modalSplash").removeClass("SplashExcTP");
+                        $("#modalSplash").addClass("HomemodalSplash");
+                        Empmodal=DcrEntry;
+                    }
+                    setTimeout(function() {
+                        ShowModalPopup('modalSplash');
+                    }, 1600);
+                    return false;
+                }
+                else{
+                    debugger;
+                    HideModalPopup('modalSplash');
+                    //fnShowMyProfileScreen();
+                    fnNoticeBoardMandatoryRead();
+                }
+
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            },
+
+        });
+        $("#dvAjaxLoad").hide();
+    }
+
+    function fnshowhide()
+    {
+        debugger;
+        if ($('.splashContent').is(':visible') == true) {
+            $(".splashContent").hide();
+            $(".msgContent").hide();
+            $(this).css('width','100%');
+            $(".splashImg").show();
+            $(".hideContent").show();
+            $(".hideimage").hide();
+            $(".ShowIMG").hide();
+        }
+        else{
+            $(".hideContent").hide();
+            $(".hideimage").show();
+            $(".splashContent").show();
+            $(".msgContent").show();
+            $(".splashImg").hide();
+            $(".ShowIMG").show();
+            $(this).css('width','100%');
+        }
+
+    }
+
+    function fnsplashNoticepopup(){
+        HideModalPopup('modalSplash');
+        fnNoticeBoardMandatoryRead();
+    }
+
+    //function fnsplashEmppopup()
+    //{
+    //    debugger;
+    //    fnShowMyProfileScreen();
+
+    //}
+
+    function fnShowMyProfileScreen(){
+        debugger;
+        var Myprofile=fnGetPrivilegeValue("POPUP_EMPLOYEE_PROFILE","NO");
+        var MyprofileView=fnGetPrivilegeValue("POPUP_PROFILE_COUNT","30");
+        if(Myprofile=='YES'&& MyprofileView !='')
+        {
+            fnShowMyProfileScreenPriv();
+        }
+        else{
+            HideModalPopup("modalEmployee");
+        }
+    }
+
+    function fnShowMyProfileScreenPriv()
+    {
+        var MyprofileView=fnGetPrivilegeValue("POPUP_PROFILE_COUNT","30");
+        var days=MyprofileView;
+        debugger;
+        var NumOfDays = days;
+        $.ajax({
+            url: '../Home/GetprofilePopupAccess/',
+            type: "GET",
+            data: "NumOfDays="+ NumOfDays,
+            success: function (Result) {
+                debugger;
+                if(Result[0].Result == '0'){
+                    fnShowEmployeeDetail();
+                    $(".modal-dialog").css('padding','0px');
+                    if( ModalforTP !='')
+                    {
+                        $("#modalEmployee").removeClass("EmpExcTP");
+                        $("#modalEmployee").addClass("HomemodalEmp");
+                    }
+
+                    if( NewDB !='')
+                    {
+                        debugger;
+                        $("#modalEmployee").removeClass("EmpExcTP");
+                        $("#modalEmployee").addClass("NewDash");
+                        NewDashB=NewDB;
+                    }
+                    if(Taskcount>0)
+                    {
+                        $("#modalEmployee").removeClass("NewDash");
+                        $("#modalEmployee").addClass("Task");
+                    }
+                }
+                else{
+                    HideModalPopup("modalEmployee");
+                }
+            }
+        });
+    }
+
+
+    function fnCheckBrowserType() {
+        try
+        {
+            var isChrome=(!!window.chrome && !!window.chrome.webstore);
+            if(!isChrome)
+                $("#bro_Error_msg").show();
+        }
+        catch(err) {
+        }
+    }
+
+    function fnCheckEdetailing_Access()
+    {
+        debugger;
+        var CheckAccess=fnGetPrivilegeValue("IS_EDETAILING_UPLOAD_ACCESS_ENABLED","NO");
+        if(CheckAccess.toUpperCase()=="YES")
+        {
+            $("#aEDetailing").show();
+        }
+    }
+    function fnGetLiveTaskCounts(){
+        debugger;
+        $.ajax({
+            type:"GET",
+            url:"../HiDoctor_Master/FeedBack/GetTaskLiveCount",
+            data:"",
+            async:false,
+            success:function(resp){
+                console.log(resp);
+                Task_count=resp[0].Task_Count;
+            }
+        });
+    }
+
+    function fnShowCodeofConduct()
+    {
+        debugger
+        CCEnabled=fnGetPrivilegeValue("CODE_OF_CONDUCT","NO");
+        if(CCEnabled.toUpperCase()=="YES")
+        {
+            CCEnabled="YES"
+            fnGetCodeofConductAccess();
+        }
+        else{
+            CCEnabled="NO"
+        }
+        //CCEnabled=CCAvailable;
+    }
+
+    function fnGetCodeofConductAccess()
+    {
+        $.ajax({
+            type: 'GET',
+            url: '../Home/GetCodeofConduct/',
+            async: false,
+            success: function (resp) {
+                debugger
+                if(resp == "1"){
+                    fnDisplayCC();
+                }
+                else{
+                    $.blockUI();
+                    $('#CCOverlay').hide();
+                    DisplayFlag = false;
+                    CCEnabled="NO"
+                    //fnHidePopup();
+                    $.unblockUI();
+                }
+            }
+        });
+
+    }
+
+    function fnDisplayCC()
+    {
+        debugger;
+        $.blockUI();
+        $("#wrapperbody").css('display', '');
+        $("#sub-page-header").css('display', '');
+        $("#footer").show()
+        $("#main").html('');
+        $("#imgloginLoad").hide();
+        $.ajax({
+            url: '../Home/GetCCForm/',
+            type: "GET",
+            data: "A",
+            async:'false',
+            success: function (Result) {
+                debugger
+                if (Result != null && Result !='' && Result != false)
+                {
+                    debugger
+                    $.blockUI();
+                    var curFile ="";
+                    var ComCode =Result[0].Company_Code;
+                    CCtitle = Result[0].File_Title;
+                    AckOption = Result[0].Ack_Option;
+                    FileId = Result[0].File_Id;
+                    CCFileId= FileId;
+                    $('#CCTitle').append(CCtitle);
+                    $('#spnAckoption').append(AckOption);
+
+                    var http = new XMLHttpRequest();
+
+                    //   $("#dvCCcontent").attr("src", "http://localhost:49762/Content/CodeofContent/"+ ComCode.toLowerCase() + "/" + Result[0].File_Name + "");
+
+                    $.ajax({
+                        url:"Content/CodeofContent/"+ ComCode.toLowerCase() + "/" + Result[0].File_Name + "",
+                        type:'get',
+                        error: function()
+                        {
+                            debugger;
+                            $("#dvCCcontent").attr("src", "Content/CodeofContent/404-error-page.jpg");
+                            $('img').attr({ width: '571px', height: '438px' });
+                            $("#CCOverlay").overlay().load();
+                            $('#chkAgree').hide();
+                            $('#spnAckoption').hide();
+                            $('#btnaccept').hide();
+                            $('#btnlogout').hide();
+                            //  return false;
+                        },
+                        success: function()
+                        {
+                            $("#dvCCcontent").attr("src", "Content/CodeofContent/"+ ComCode.toLowerCase() + "/" + Result[0].File_Name + "");
+                            $("#CCOverlay").overlay().load();
+                        }
+                    });
+
+                    //$.ajax({
+                    //    statusCode: {
+                    //        404: function() {
+                    //            $("#dvCCcontent").attr("alt", "http://localhost:49762/Content/CodeofContent/404-error-page.jpg");
+                    //            $("#CCOverlay").overlay().load();
+                    //            $('#chkAgree').hide();
+                    //            $('#spnAckoption').hide();
+                    //            $('#btnaccept').hide();
+                    //            $('#btnlogout').hide();
+                    //            return false;
+                    //        },
+                    //        200: function() {
+                    //            $("#dvCCcontent").attr("src", "http://localhost:49762/Content/CodeofContent/"+ ComCode.toLowerCase() + "/" + Result[0].File_Name + "");
+                    //                $("#CCOverlay").overlay().load();
+                    //            }
+                    //    }
+                    //});
+                }
+                else{
+                    $('#CCOverlay').hide();
+                    $.unblockUI();
+                }
+            },
+            error: function () {
+                $.unblockUI();
+            },
+        });
+    }
+
+    function fnredirect()
+    {
+        window.location.href="../Home/RedirectTOMobile";
+    }
+</script>

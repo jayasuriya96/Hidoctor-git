@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "PaySlipMaintanance";
+    Layout=null;
+}
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #dvPaySlipMain #dvUserTypeTree {
+        height: 450px;
+    }
+
+    #dvPaySlipMain #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .dvTitleHeader {
+        height: 56px;
+        border-bottom: 1px solid gray;
+        text-align: left;
+        font-weight: bold;
+        font-size: 18px;
+        padding-top: 2%;
+    }
+
+    #spnTree {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+    }
+
+    #dvPaySlip a {
+        color: blue;
+    }
+</style>
+<div class="col-lg-12 form-group" id="dvPaySlipMain">
+    <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()">Hide Tree</span></div>
+    <div class="col-lg-12">
+        <div class="col-sm-4" id="dvLeftPanel" style="border: 1px solid #efefef;">
+            <div id="dvUserTypeTree"></div>
+        </div>
+        <div class="col-lg-8" id="dvRightPanel">
+            <ul class="nav nav-tabs">
+                <li><a href="#dvInsertData">Payslip Maintenance</a></li>
+                <li><a href="#dvCopy">Copy from other UserType</a></li>
+            </ul>
+
+            <div id="dvInsertData" style="overflow: auto;">
+                <div id="dvPaySlip" class="table-responsive">
+                </div>
+                <div class="form-group" id="dvSubmitButton">
+                    <button type="button" onclick="fnSubmit();" class="btn btn-primary btn-xs">Submit</button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvCopy" class="col-lg-12">
+                <div class="col-lg-12 form-group">
+                    <div>
+                        <div class="col-lg-3">Source User Type</div>
+                        <div class="col-lg-3  form-group">
+                            <select id="cboSourceUserType" style="width: 225px;"></select>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div>
+                        <div class="col-lg-3 form-group">Destination User Type</div>
+                        <div class="col-lg-3 form-group" id="dvUType">
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <div class="col-lg-12 form-group">
+                        <input type="button" class="btn btn-primary btn-xs" onclick="fnCopyPaySlipData();" value="Copy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/PaySlip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvRightPanel").tabs();
+        $("#dvRightPanel").hide();
+        fnBindUserTypeTree("dvUserTypeTree");
+        GetActiveUserTypes();
+        GetPaySlipMappedUserTypes();
+        $("#dvCopyData").overlay().load();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnUserTypeTreeNodeClick(node) {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-lg-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+        fnGetPaySlipMetaData();
+    }
+
+    function fnUserTypeTreePostInit() {
+    }
+
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-lg-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+    }
+
+
+</script>

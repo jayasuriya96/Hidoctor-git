@@ -1,0 +1,645 @@
+﻿@{
+    ViewBag.Title = "InwardAdjustment";
+}
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="~/Content/simplePagination.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/jquery.simplePagination.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 5px;
+    }
+</style>
+<div class='col-xs-12'>
+
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="dvTree" style="width: 100%; float: left">
+            <div id="tree" style="float: left; height: auto; width: 100%">
+            </div>
+        </div>
+        <span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>
+
+    <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+        <div>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <h2 id="DCUser"></h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-4" id="Release-Pagination">
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="col-sm-12" id="tblDeliveryChallan">
+
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" id="tblreport">
+
+                        </div>
+                    </div>
+                    <div style="display:none;" class="col-sm-12" id="saveData">
+                        <div class="col-sm-6">
+                            <span>Adjustment Date<mark style="color:red;background-color:white">*</mark></span>
+                            <input type="text" id="AdjDate" class="datepicker" readonly />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" id="saveAdj" class="btn btn-primary" onclick="fnValidate()">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="InwardRemarksHistory" class="modal fade" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px; margin:0px;margin-left:130px;">
+        <div class="modal-content" style="width:1055px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Inward History</h4>
+            </div>
+            <div class="modal-body" id="InwardrmrksBody" style="width:100%;height:450px;overflow: auto;">
+                <div id="staticbodyInward">
+                    <div class="col-xs-12 clearfix">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <p><span style="font-weight:bold;">Product Name</span></p>
+                                </div>
+                                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                                <div class="col-xs-6"><p><span id="prdtnam"></span></p></div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <p><span style="font-weight:bold;">Total Sent Quantity</span></p>
+                                </div>
+                                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                                <div class="col-xs-6"><p><span style="white-space: normal;word-wrap: break-word;" id="totlqnty"></span></p></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <p><span style="font-weight:bold;">Created On</span></p>
+                                </div>
+                                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                                <div class="col-xs-6"><p><span id="cretdon"></span></p></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <p><span style="font-weight:bold;">Created For</span></p>
+                                </div>
+                                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                                <div class="col-xs-6"><p><span id="upldfr"></span></p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 clearfix">
+                    <div id="DetHstry">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2,
+            maxDate:0
+
+            //showButtonPanel: true
+        });
+    });
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    var UserTypeName_g="";
+    var InwardAcknowledgementNeeded_g="";
+    var UserCode="";
+    var UserName="";
+    var DCSelect="";
+    var ChallanNo;
+
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        try {
+            UserTypeName_g=@Html.Raw(Json.Encode(ViewBag.UserTypeName));
+            InwardAcknowledgementNeeded_g=@Html.Raw(Json.Encode(ViewBag.InwardAcknowledgementNeeded));
+            //if(UserTypeName_g.toUpperCase()!="ADMIN"||InwardAcknowledgementNeeded_g.toUpperCase()!="YES")
+            //{
+            //    $("#dvAjaxLoad").hide();
+            //    $(".col-xs-12").html("<div style='top: 50%; left: 40%; position: absolute;'><div class='alert alert-info'><strong><h2 style='text-align:center'><b>Access Denied!</b></h2></strong><h3>You do not have permission to access the page</h3></div>");
+            //    return false;
+            //}
+            $("#leftNav").show();
+            var leftNav = $("#tree");
+            fnTreePosiition("tree");
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.Cur_UserCode));
+            fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchUsers();
+                    return false;
+                }
+            });
+
+            $("#dvTree").show();
+            //   var dvTree = $("#tree");
+            //   fnBindUserTree("tree");
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnUserTreeNodeClick(node) {
+
+        $('#hdnUserCode').val(node.data.key);
+        // selKeys = [];
+        //selKeys.push(node.data.key);
+        $('#userCode').val(node.data.key);
+        fnGetUserDeliveryChallan();
+        $('#dvTablePrint').hide();
+        $('#spnPeriodDetail').html("");
+        $("#leftNav").show();
+    }
+
+    function fnUserTreePostInit() {
+
+    }
+
+    var Page_No="1";
+    var Total="";
+    function fnGetUserDeliveryChallan()
+    {
+        if(Page_No.split('_')[1]=='sortDC')
+        {
+            Page_No=Page_No.split('_')[0];
+        }
+        else{
+            Page_No="1";
+        }
+        debugger;
+        var Page_Size=10;
+        $("#dvAjaxLoad").show();
+        var treeobj=$("#dvUserTree").dynatree("getTree");
+        if(treeobj.activeNode.data.key!=null)
+        {
+            UserCode=treeobj.activeNode.data.key;
+            UserName=treeobj.activeNode.data.title;
+            $.ajax({
+                url:'../HiDoctor_Master/Inward/GetUserDeliveryChallan',
+                type:"POST",
+                data:"UserCode="+UserCode+"&Page_Number="+Page_No+"&Page_Size="+Page_Size+"",
+                success:function(result)
+                {
+                    $("#saveData").hide();
+                    $("#Release-Pagination").hide();
+                    debugger;
+                    Total=result.PageCount;
+                    var selectdata="";
+                    $("#tblDeliveryChallan").html("");
+                    $("#tblreport").html("");
+                    $("#DCUser").html(UserName);
+                    selectdata+="<table class='table table-striped Challantbl'><thead><tr><th>S.No</th><th>Delivery Challan No</th><th>Uploaded Date</th><th>Uploaded User</th></tr></thead><tbody>";
+                    if(result.lstDC.length>0)
+                    {
+                        for(var i=0;i<result.lstDC.length;i++)
+                        {
+                            selectdata+="<tr><td>"+ result.lstDC[i].Row_No +"</td><td style=font-size:15px;> <button type='button' class='btn btn-link' onclick=fnGetInwardAdj('"+result.lstDC[i].Delivery_Challan_Number+","+result.lstDC[i].Uploaded_Date+"')>"+result.lstDC[i].Delivery_Challan_Number+"</button></td><td style=font-size:15px;>"+result.lstDC[i].Uploaded_Date+"</td><td style=font-size:15px;>"+result.lstDC[i].Uploaded_User+"</td></tr>";
+                        }
+                    }
+                    else{
+                        selectdata+="<tr><td valign='top' align='middle' colspan='4'>No Records Found</td></tr>";
+                    }
+                    selectdata+="</tbody></table>";
+                    $("#tblDeliveryChallan").html(selectdata);
+                },
+                error:function()
+                {
+                    $("#dvAjaxLoad").hide();
+                },
+                complete:function(result)
+                {
+                    debugger;
+                    if (Total > 0 && $('.Challantbl tbody tr').length>0 ) {
+                        if (Page_No == 1) {
+                            var jData = JSON.parse(result.responseText)
+                            $("#Release-Pagination").pagination({
+                                items: jData.PageCount,
+                                itemsOnPage: 10,
+                                hrefTextPrefix: 'javascript:getDetailForRelease(',
+                                hrefTextSuffix: ');',
+                                cssStyle: 'light-theme'
+                            });
+                        }
+                        $("#Release-Pagination").show();
+                        Total ='';
+                    }
+                    else {
+                        $("#Release-Pagination").hide();
+                    }
+                    Total = '';
+                    $("#dvAjaxLoad").hide();
+                }
+            });
+        }
+    }
+
+    function getDetailForRelease(page_No) {
+        debugger;
+        Page_No = page_No+'_sortDC';
+        fnGetUserDeliveryChallan();
+    }
+
+    function fnTreeResize(obj) {
+
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'dvTree');
+    }
+
+    function fnGetInwardAdj(DCSelect)
+    {
+        debugger;
+        $("#dvAjaxLoad").show();
+        if(typeof(DCSelect)==="undefined"||DCSelect=="")
+        {
+            fnMsgAlert('info','Information','Please select an user with delivery challan');
+            $("#dvAjaxLoad").hide();
+            return false;
+        }
+        ChallanNo = DCSelect.split(',')[0];
+        $.ajax({
+            url:'../HiDoctor_Master/Inward/GetDeliveryChallanInfo',
+            type:"POST",
+            data:"DCSelect="+DCSelect.split(',')[0]+"&UserCode="+UserCode+"",
+            success:function(result){
+                debugger;
+                var ProductInfo = result.ProductInfo;
+                var BatchInfo = result.BatchInfo;
+                result = ProductInfo;
+                $("#AdjDate").val("");
+                $("#tblreport").html("");
+                var content="";
+                content+="<h3>Delivery Challan:"+DCSelect.split(',')[0]+"</h3><input type=hidden id=DCDate value='"+DCSelect.split(',')[1]+"'/>";
+                content += "<table class='table table-striped ChallanInfotbl'>";
+                content += "<thead>";
+                content += "<tr>";
+                content += "<th>Product Type</th>";
+                content += "<th>Product Name</th>";
+                content += "<th>Batch Number</th>";
+                content += "<th>Pending Quantity</th>";
+                content += "<th>Adjusting Quantity</th>";
+                content += "<th>Remarks<label class='Mandatory'>*</label></th>";
+                content += "<th>Inward History</th>";
+                content += "</tr>";
+                content += "</thead>";
+                content += "<tbody>";
+                if(result.length>0){
+                    for(var i=0;i<result.length;i++)
+                    {
+                        var productBatch = $.grep(BatchInfo, function (ele) {
+                            return ( ele.Product_Type == result[i].Product_Type &&  ele.Product_Code == result[i].Product_Code);
+                        });
+
+                        content += "<tr id="+parseInt(i)+">";
+                        content += "<td id=ProductType_"+parseInt(i)+">"+result[i].Product_Type+"<input type='hidden' id=detail_"+parseInt(i)+" value='"+result[i].Details_id+"'/>";
+                        content += "<input type='hidden' id='hdnProductCode_"+parseInt(i)+"' value='"+result[i].Product_Code+"'/> </td>";
+                        content += "<td id=ProductName_"+parseInt(i)+">"+result[i].Product_Name+"</td>";
+                        if (productBatch.length > 0) {
+                            var htmlBatchName = "";
+                            var htmlPendingQty = "";
+                            var htmlAdjQty = "";
+                            for (var j = 0; j< productBatch.length; j++) {
+                                htmlBatchName += htmlBatchName == "" ? "" : "<br/>";
+                                htmlBatchName += "<div row_index='" + j.toString() + "'>" + productBatch[j].Batch_Number + "</div>";
+
+                                htmlPendingQty += htmlPendingQty == "" ? "" : "<br/>";
+                                htmlPendingQty += "<div row_index='" + j.toString() + "'>" + productBatch[j].Pending + "</div>";
+
+                                htmlAdjQty += htmlAdjQty == "" ? "" : "<br/>";
+                                htmlAdjQty += "<div row_index='" + j.toString() + "'><input type='TextBox' name='AdjustingQuantity' /></div>";
+
+                            }
+                            content += "<td id=BatchNumber_"+parseInt(i)+">";
+                            content += htmlBatchName;
+                            content += "</td>";
+                            content += "<td id=Pending_"+parseInt(i)+">";
+                            content += htmlPendingQty;
+                            content += "</td>";
+                            content += "<td id=tdAdjQty_"+parseInt(i)+">";
+                            content += htmlAdjQty;
+                            content += "</td>";
+
+                        }
+                        else {
+                            content += "<td id=BatchNumber_"+parseInt(i)+"><div style='display:none;' row_index='0'>NIL</div></td>";
+                            content += "<td id=Pending_"+parseInt(i)+"><div row_index='0'>" + result[i].Pending + "</div></td>";
+                            content += "<td  id=tdAdjQty_"+parseInt(i)+"><div row_index='0'><input type='TextBox' name='AdjustingQuantity' /></div></td>";
+                        }
+                        content += "<td><textarea style='resize:none; width:100%;' maxLength='500' id='Remarks_"+parseInt(i)+"'></textarea></td>";
+                        content += "<td style='cursor: pointer;text-decoration: underline;color: blue; text-align:center' Onclick='fnViewRemarksHistory(\"" + result[i].Details_id + "\");'>View Remarks History</td>";
+                        content += "</tr>";
+                    }
+                    content+="</tbody></table>";
+                    $("#tblreport").html(content);
+                    $("#saveData").show();
+                }
+                else{
+                    content+="<tr><td valign='top' align='middle' colspan='5'>No Records Found</td></tr>"
+                    $("#tblreport").html(content);
+                }
+            },
+            error:function(){
+                $("#dvAjaxLoad").hide();
+            },
+            complete:function(){
+                var WH = $(window).height();
+                var SH = $('body').prop("scrollHeight");
+                $('html, body').stop().animate({scrollTop: SH-WH}, 1000);
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnValidate()
+    {
+        $("#saveAdj").prop("disabled",true);
+        debugger;
+        var UploadDate="";
+        var adjDate="";
+        UploadDate=$("#DCDate").val().split('/');
+        UploadDate=UploadDate[1]+'/'+UploadDate[0]+'/'+UploadDate[2];
+        adjDate=$("#AdjDate").val().split('/');
+        adjDate=adjDate[1]+'/'+adjDate[0]+'/'+adjDate[2];
+        $("#dvAjaxLoad").show();
+        var chk=0;
+        var trLength= $("[name='AdjustingQuantity']").length;
+        var jsonData=[];
+        for(var i=0;i<trLength;i++)
+        {
+            var td = $($("[name='AdjustingQuantity']")[i]).closest("td");
+            var tr = $($("[name='AdjustingQuantity']")[i]).closest("tr");
+            var index = $(tr).attr("id");
+            var row_index = $($("[name='AdjustingQuantity']")[i]).closest("div").attr("row_index");
+            var adjQnty=$($("[name='AdjustingQuantity']").eq(i)).val();
+            var pndQnty = $(tr).find("#Pending_" + index).find("div[row_index='"+row_index+"']").html();
+            var productCode = $("#hdnProductCode_" + index).val();
+            var BatchNumber = $(tr).find("#BatchNumber_"+index).find("div[row_index='" + row_index + "']").html();
+            var DetailId = $("#detail_" + index).val();
+
+            if(adjQnty=="")
+            {
+                chk++;
+                if(parseInt(chk)==parseInt(trLength))
+                {
+                    fnMsgAlert("info","Information","Please enter the Adjustment quantity and then click save");
+                    $("#dvAjaxLoad").hide();
+                    $("#saveAdj").prop("disabled",false);
+                    return false;
+                }
+            }
+            else if(isNaN(parseInt(adjQnty)))
+            {
+                fnMsgAlert("info","Information","Please enter numeric values in Adjustment Qty.");
+                $("#dvAjaxLoad").hide();
+                $("#saveAdj").prop("disabled",false);
+                return false;
+            }
+            else if(parseInt(adjQnty)<=0)
+            {
+                fnMsgAlert("info","Information","Please enter value greater than Zero");
+                $("#dvAjaxLoad").hide();
+                $("#saveAdj").prop("disabled",false);
+                return false;
+            }
+            else if(parseInt(adjQnty) > parseInt(pndQnty))
+            {
+                fnMsgAlert("info","Information","Please enter value less than or equal to Pending Qty");
+                $("#dvAjaxLoad").hide();
+                $("#saveAdj").prop("disabled",false);
+                return false;
+            }
+
+            var remrks=$('#Remarks_'+index).val();
+            if(remrks==''){
+                fnMsgAlert('info','Inward Adjustment','Please enter Remarks');
+                $("#dvAjaxLoad").hide();
+                $("#saveAdj").prop("disabled",false);
+                return false;
+            }
+            else if(remrks!=''){
+                var result=fnValidateRemarks(remrks);
+                if(result==false){
+                    fnMsgAlert('info','Inward Adjustment',"Special character(s) (A-Za-z0-9.;,?!(){}'/\-_) are only allowed in Remarks");
+                    $("#dvAjaxLoad").hide();
+                    $("#saveAdj").prop("disabled",false);
+                    return false;
+                }
+            }
+
+
+
+            var rowData={
+                Details_Id :DetailId ,
+                Delivery_Challan:ChallanNo,
+                Product_Code : productCode,
+                Batch_Number :BatchNumber,
+                AdjustingQty:parseInt(adjQnty),
+                Quantity_Type:'ADJ',
+                InwardActualDate:$("#AdjDate").val(),
+                Remarks:remrks
+            };
+            jsonData.push(rowData);
+        }
+        if($("#AdjDate").val()=='')
+        {
+            fnMsgAlert("info","Information","Please select a date");
+            $("#dvAjaxLoad").hide();
+            $("#saveAdj").prop("disabled",false);
+            return false;
+        }
+        if( Date.parse(UploadDate) > Date.parse(adjDate))
+        {
+            debugger;
+            fnMsgAlert("info","Information","Please enter a Adjustment date same as Inward date or greater than it");
+            $("#dvAjaxLoad").hide();
+            $("#saveAdj").prop("disabled",false);
+            return false;
+        }
+
+
+
+        fnSubmit(jsonData);
+    }
+    function fnSubmit(jsonData)
+    {
+        debugger;
+
+        //$('.ChallanInfotbl tbody tr').each(function()
+        //{
+        //    var RowId=this.id;
+        //    if($("#AdjustingQuantity_"+RowId+"").val()!='')
+        //    {
+        //        var rowData={ Details_Id:$("#detail_"+RowId+"").val(),
+        //            AdjustingQty:$("#AdjustingQuantity_"+RowId+"").val(),
+        //            Quantity_Type:'ADJ',
+        //            InwardActualDate:$("#AdjDate").val(),
+        //            Remarks:$("#Remarks_"+RowId+"").val()
+        //        };
+        //        jsonData.push(rowData);
+        //    }
+        //});
+        if(jsonData.length>0){
+            jsonData = JSON.stringify({ 'lstInwardAdj': jsonData });
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                dataType: 'json',
+                data: jsonData,
+                url: "Inward/InsertAdjustment",
+                success:function(response){
+                    debugger;
+                    if(response=="")
+                    {
+                        $('#AdjDate').val('');
+                        fnGetUserDeliveryChallan();
+                        fnMsgAlert("success","Inward Adjustment","Inward Adjustment Done successfully");
+                    }
+                    else{
+                        $('#AdjDate').val('');
+                        fnGetUserDeliveryChallan();
+                        fnMsgAlert("error","Inward Adjustment","Inward Adjustment Failed");
+                    }
+                },
+                error:function(){
+                    $("#dvAjaxLoad").hide();
+                    $("#saveAdj").prop("disabled",false);
+                },
+                complete:function(){
+                    $("#dvAjaxLoad").hide();
+                    $("#saveAdj").prop("disabled",false);
+                }
+            });
+        }
+        else{
+            fnMsgAlert("info","Information","Please enter the Adjustment Quantity and then click Save");
+            $("#dvAjaxLoad").hide();
+            $("#saveAdj").prop("disabled",false);
+            return false;
+        }
+    }
+    function isValidNumeric(numCheck)
+    {
+        debugger;
+        var Restrict=/^[0-9]*$/;
+        return Restrict.test(numCheck);
+    }
+    function fnValidateRemarks (rmrks) {
+        debugger;
+        var specialCharregex = new RegExp(/^[ A-Za-z0-9.;,?!(){}'/\-_ ]*$/);
+        if (specialCharregex.test(rmrks) == false) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function fnViewRemarksHistory(HdrId){
+        debugger;
+        if(HdrId!='' ||  HdrId!=undefined){
+            $.ajax({
+                type:"GET",
+                url:"../HiDoctor_Master/Inward/GetRemarksHistory",
+                data:"Header_Id="+HdrId,
+                success:function(resp){
+                    console.log(resp);
+                    fnBindRemarksHistory(resp);
+                }
+            });
+        }
+    }
+    function fnBindRemarksHistory(resp){
+        var content = '';
+        var sno = 0;
+        var lstBatch = resp.lstBatchLedger;
+        if(resp.lstLedger != '' ||resp.lstLedger.length!=0){
+            $('#prdtnam').html(resp.lstHeader[0].Product_Name);
+            $('#totlqnty').html(resp.lstHeader[0].Uploaded_Qty);
+            $('#cretdon').html(resp.lstHeader[0].Created_For_Date);
+            $('#upldfr').html(resp.lstHeader[0].User_Name);
+            content += '<table class="table table-hover" style="text-align:center;">';
+            content += '<thead style="text-align:center;">';
+            content += '<tr>';
+            content += '<th>S.No</th>';
+            content += '<th>Modified Inward Actual Date</th>';
+            content += '<th>Modified On</th>';
+            content += '<th>Batch Number</th>';
+            content += '<th>Quantity</th>';
+            content += '<th>Acknowledgement/Adjustment Type</th>'
+            content += '<th style="width:40%;">Remarks</th>';
+            content += '</thead><tbody>';
+            var list = lstBatch.length > 0 ? lstBatch : resp.lstLedger;
+
+            if (list.length >= 1) {
+                //var remarks = resp.lstLedger[0].Remarks;
+                for (var i = 0; i < list.length; i++) {
+                    sno++;
+                    content += '<tr>';
+                    content += '<td>' + sno + '</td>';
+                    content += '<td>' + list[i].Inward_Actual_Date + '</td>';
+                    content += '<td>' + list[i].Inward_Entered_Date + '</td>';
+                    if (lstBatch.length > 0) {
+                        content += '<td>' + lstBatch[i].Batch_Number+ '</td>';
+                        content += '<td>' + lstBatch[i].Quantity + '</td>';
+                    }
+                    else {
+                        content += '<td></td>';
+                        content += '<td>' + list[i].Quantity + '</td>';
+                    }
+
+                    content += '<td>' + list[i].Quantity_Type + '</td>';
+                    if (list[i].Remarks == null) {
+                        content += '<td></td>';
+                    } else {
+                        content += '<td style="word-wrap:break-word;white-space:normal;text-align:justify;word-break:break-word;">' + list[i].Remarks + '</td>';
+                    }
+                    content += '</tr>';
+                }
+            }
+            content += '</tbody></table>';
+            $('#DetHstry').html(content);
+            $('#InwardRemarksHistory').modal('show');
+        }
+        else{
+            fnMsgAlert('info','Inward Adjustment','No Remarks History available for this Challan');
+            return false;
+        }
+    }
+</script>

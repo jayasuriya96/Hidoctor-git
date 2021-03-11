@@ -1,0 +1,129 @@
+﻿@model MVCModels.HiDoctor_Reports.ActivityFrequenceSummary
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+<div>
+    <div>
+        <div onclick="fnToggleTree()" class="shInput" style="margin-left: 30px">Show / Hide Tree</div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+        <div id="dvTree" class="col-lg-3">
+
+            <div style="clear: both"></div>
+            <div id="dvusertree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <input type="hidden" value="" id="hdnUserCode" />
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div onclick="fnToggleInputs()" class="col-lg-12 shInput" style="margin-left: -15px">Show / Hide Input</div>
+            <div style="clear: both"></div>
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div>
+                    <label>Start Date</label><input type="text" id="txtStartDate" class="datepicker" /></div>
+                <div>
+                    <label>End Date</label><input type="text" id="txtEndDate" class="datepicker" /></div>
+                <div class="col-lg-12">
+                    <div style="margin-left: 4.9%">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <input type="button" class="btn btn-primary" value="View" style="margin-left: 5%" onclick="GetActivityFrequencySummaryRept()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <div id="divActivityfrequencySummary"></div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/UserTree.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            fnBindUserTreeWithCheckBoxDoubleClick("dvUserTree") //To Bind The UserTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            //showButtonPanel: true
+        });
+    });
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-lg-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnOpenTree() {
+        $("#dvUserTree").slideDown();
+        $('#dvTree').addClass('col-lg-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+    function fnCloseTree() {
+        $("#dvUserTree").slideUp();
+        $('#dvTree').removeClass('col-lg-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+    function fnUserTreeNodeClick(node) {
+        fnCloseTree();
+        $("#dvdata").show();
+
+    }
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnUserCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreePostInit() {
+    }
+</script>
+
+
+

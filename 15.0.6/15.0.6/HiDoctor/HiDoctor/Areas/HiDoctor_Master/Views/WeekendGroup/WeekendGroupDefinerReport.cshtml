@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "WeekendGroupDefinerReport";
+    Layout = null;
+}
+<div class="col-xs-12 col-sm-12  form-group clearfix">
+    <div class="col-xs-12 col-sm-12  form-group clearfix">
+        <div style="width: 95%; float: left; background-color: #efefef; padding: 2%; margin-bottom: 10px;">
+
+            <div style="float: left; font-size: 19px; margin-left: 18%; margin-top: 5px;">
+                Weekend Off Group Name
+            </div>
+            <div style="float: left; margin-left: 2%;">
+                <input type="text" id="txtWeekendOffDefinerName" class="autoWeekEndReport" style="width: 275px; height: 25px;" />
+                <input type="hidden" id="hdnWeekendOffDefinerName" />
+            </div>
+            <div style="float: left; margin-left: 1%; margin-top: 5px;">
+                <input type="button" class="btn small primary" value="Submit" onclick="fnBindWeekendGroupDefinerReport();" />
+            </div>
+
+        </div>
+    </div>
+        <div id="dvWeekendGroupDefinerReport" style="width: 50%; margin-top: 1%;">
+        </div>
+    </div>
+    <script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/WeekendGroupReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            AjaxGlobalHandler.Initiate();
+            try {
+                fnGetWeekendGroups();
+                $("#dvAjaxLoad").hide();
+            }
+            catch (err) {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    </script>
+

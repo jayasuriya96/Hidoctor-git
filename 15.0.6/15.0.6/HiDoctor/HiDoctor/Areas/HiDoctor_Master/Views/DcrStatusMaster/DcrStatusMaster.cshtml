@@ -1,0 +1,416 @@
+﻿@{
+    ViewBag.Title = "DcrStatusMaster";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+
+<style>
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    .errTxtBox {
+        border: 1px solid #f23f4e !important;
+        outline-color: #f23f4e !important;
+    }
+
+    button.close {
+        display: none;
+    }
+
+    .modal-dialog {
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .dynatree-selected a {
+        background-color: lightgreen;
+        pointer-events: none;
+    }
+
+    ul.dynatree-container a:hover {
+    }
+
+    .dynatree-selected span.dynatree-checkbox:disabled {
+    }
+
+    table.scroll {
+        width: 100%;
+        border-spacing: 0;
+        /*border: 2px solid black;*/
+    }
+
+        table.scroll tbody,
+        table.scroll thead {
+            display: block;
+        }
+
+    thead tr th {
+        height: 30px;
+        line-height: 30px;
+    }
+
+    table.scroll tbody {
+        height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+   #tblRegRecords thead{
+position: relative;display: block;width: 700px;overflow: visible;
+    }
+    #tblRegRecords tbody{
+       position: relative;display: block;height: 356px;overflow-x: scroll;overflow-y:scroll;
+    }
+    #tblHospRecords thead{
+position: relative;display: block;width: 700px;overflow: visible;
+    }
+    #tblHospRecords tbody{
+       position: relative;display: block;height: 356px;overflow-x: scroll;overflow-y:scroll;
+    }
+     #tblHospRecordsField thead{
+position: relative;display: block;width: 700px;overflow: visible;
+    }
+    #tblHospRecordsField tbody{
+       position: relative;display: block;height: 356px;overflow-x: scroll;overflow-y:scroll;
+    }
+    
+.tree-node-vacant a {
+    background-color: #FCA4AE;
+    color: #fff !important;
+}
+
+    .tree-node-vacant a:hover {
+        color: #000 !important;
+    }
+    a[title="VACANT"] {
+  background-color: pink;
+}
+            a[title="NOT ASSIGNED"] {
+  background-color: pink ;
+}
+
+    @@media screen and (max-width: 1280px) and (min-width: 768px) {
+    #date{
+    padding-left:37px !important;
+    }
+    #inactive{
+    padding-left:107px !important;
+    }
+    #divisionname{
+    padding-left:142px !important;
+    }
+    #usertypename{
+    padding-left:177px !important;
+    }
+    #entitytype{
+    padding-left:142px !important;
+    }
+    #name{
+    padding-left:120px !important;
+    }
+    #status{
+    padding-left:110px !important;
+    }
+}
+</style>
+
+<div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top create" id="dcrAddstmaster">
+            <a href="#AddStatus" data-toggle="tab"><b>Add Status</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="dcrstmaster">
+            <a href="#Dcrstatus" data-toggle="tab"><b>Manage</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="dcrchemmaster">
+            <a href="#Cpmscreen" data-toggle="tab"><b>Chemist Visit Mapping</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="dcrhospmaster">
+            <a href="#Hospcreen" data-toggle="tab"  onclick="fnGetDcrHospitalDetails();"><b>Hospital Visit Mapping Attendance</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="dcrhospfieldmaster">
+            <a href="#HospcreenField" data-toggle="tab" onclick="fnGetDcrHospitalFileldDetails();"><b>Hospital Visit Mapping Field</b></a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="AddStatus">
+
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-2">
+                    <label>Division</label>
+                </div>
+                <div class="col-xs-3">
+                    <select id="BindAddDivision" onchange="fnClearAddSel();" class="form-control">
+                        <option value="">-Select Division-</option>
+                    </select>
+                </div>
+            </div>
+
+            </br>
+            <div style="clear: both;"></div>
+            <div id="dvADDStatus" class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-2">
+                    <label>Type</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-4">
+                        <input type="radio" value="Business Status" id="optAddBsStatus" name="stsAddOptions" onclick="fnGetAddCatagory(1);" />
+                        <label for="optAddBsStatus">Business Status</label>
+                        <input type="radio" value="Call Objective" id="optAddCaStatus" name="stsAddOptions" onclick="fnGetAddCatagory(2);" />
+                        <label for="optAddCaStatus">Call Objective</label>
+                        <input type="radio" value="Call Activity" id="optAddCallActivity" name="stsAddOptions" onclick="fnGetAddCatagory(3);" />
+                        <label for="optAddCallActivity">Call Activity</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" id="dvADDcatagory">
+                <div class="col-xs-2">
+                    <label>Category</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-4">
+                        <input type="radio" value="Doctor" id="optAddDocCat" name="catAddOpt" onclick="fnclrdesgnstatus()" />
+                        <label id="optAddDocCat">Doctor</label>
+                        <input type="radio" value="Chemist" id="optAddChemCat" name="catAddOpt" onclick="fnclrdesgnstatus()" />
+                        <label for="optAddChemCat">Chemist</label>
+                        <input type="radio" value="Stockiest" id="optAddStokCat" name="catAddOpt" onclick="fnclrdesgnstatus()" />
+                        <label for="optAddStokCat">Stockist</label>
+                        <input type="radio" value="Product" id="optAddProdCat" name="catAddOpt" style="display:none;" onclick="fnclrdesgnstatus()" />
+                        <label for="optAddProdCat" id="lblAddProdCat" style="display:none;">Product</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" id="dvADDdesgn">
+                <div class="col-xs-2">
+                    <label>Designation</label>
+                </div>
+                <div class="col-xs-3">
+                    <select id="BindAddDesg" onchange="fnclrstatus()" class="form-control">
+                        <option value="">-Select User Type-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-2">
+                    <label>Enter New Status</label>
+                </div>
+                <div class="col-xs-3">
+                    @*<input type="text" class="form-control" id="txtnewstatus" maxlength="50">*@
+                    <input type="text" class="form-control" id="txtnewstatus" maxlength="50" onkeypress="return IsAlphaNumeric(event);" ondrop="return false;"
+                           onpaste="return false;" />
+                    <span id="error" style="color: Red; display: none">* Special Characters are not allowed</span>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <input type="button" class="btn btn-primary" value="Add" id="btnAdd" onclick="fnAddNewStatus();" />
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane active" id="Dcrstatus">
+
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-2">
+                    <label>Division</label>
+                </div>
+                <div class="col-xs-3">
+                    <select id="BindDivision" onchange="fnClearSel();" class="form-control">
+                        <option value="">-Select Division-</option>
+                    </select>
+                </div>
+            </div>
+
+            </br>
+            <div style="clear: both;"></div>
+            <div id="dvStatus" class="row col-lg-12 form-group clearfix" style="display:none">
+                <div class="col-xs-2">
+                    <label>Type</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-4">
+                        <input type="radio" value="Business Status" id="optBsStatus" name="stsOptions" onclick="fnGetCatagory(1);" />
+                        <label for="optBsStatus">Business Status</label>
+                        <input type="radio" value="Call Objective" id="optCaStatus" name="stsOptions" onclick="fnGetCatagory(2);" />
+                        <label for="optCaStatus">Call Objective</label>
+                        <input type="radio" value="Call Activity" id="optCallActivity" name="stsOptions" onclick="fnGetCatagory(3);" />
+                        <label for="optCallActivity">Call Activity</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" id="dvcatagory" style="display:none">
+                <div class="col-xs-2">
+                    <label>Category</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-xs-4">
+                        <input type="radio" value="Doctor" id="optDocCat" name="catOpt" onclick="fncleardsgn()" />
+                        <label id="optDocCat">Doctor</label>
+                        <input type="radio" value="Chemist" id="optChemCat" name="catOpt" onclick="fncleardsgn()" />
+                        <label for="optChemCat">Chemist</label>
+                        <input type="radio" value="Stockiest" id="optStokCat" name="catOpt" onclick="fncleardsgn()" />
+                        <label for="optStokCat">Stockist</label>
+                        <input type="radio" value="Product" id="optProdCat" name="catOpt" style="display:none;" onclick="fncleardsgn()" />
+                        <label for="optProdCat" id="lblProdCat" style="display:none;">Product</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" id="dvdesg" style="display:none">
+                <div class="col-xs-2">
+                    <label>Designation</label>
+                </div>
+                <div class="col-xs-3">
+                    <select id="BindDesg" onchange="" class="form-control">
+                        <option value="">-Select User Type-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row col-lg-12 form-group clearfix" id="dvgo" style="display:none">
+                <div class="col-xs-6">
+                    <input type="button" class="btn btn-primary" value="Go" id="btnGo" onclick="fnGetDcrStatusDetails();" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="row col-lg-12 form-group clearfix" id="dvstatustable" style="display:none">
+                <div id="tblstsRecords"></div>
+            </div>
+        </div>
+
+        <div class="tab-pane active" id="Cpmscreen">
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <div id="dvregtree" style="height: 450px;">
+                        <div class="dv-controls-load">
+                            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                            Loading tree
+                        </div>
+                    </div>
+                    <input type="hidden" value="" id="hdnRegionCode" />
+                </div>
+
+                <div class="col-xs-6">
+                    <input type="button" class="btn btn-primary" value="Map" id="btnmap" onclick="fnMapRegion();" />
+                    </br></br>
+
+                    <div style="clear: both;"></div>
+                    <div class="form-group clearfix" id="dvRegtable">
+                        <div id="tblRegRecords" style="height:400px"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane active" id="Hospcreen">
+
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <div id="dvtree" style="height: 450px;">
+                        <div class="dv-controls-load">
+                            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                            Loading tree
+                        </div>
+                    </div>
+                    <input type="hidden" value="" id="hdRegioncode" />
+                </div>
+                <div class="col-xs-6">
+                    <input type="button" class="btn btn-primary" value="Map" id="bUttontMap" onclick="fnmapRegions();" />
+                    </br></br>
+
+                    <div style="clear: both;"></div>
+                    <div class="form-group clearfix" id="dvtable">
+                        <div id="tblHospRecords" style="height:400px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane active" id="HospcreenField">
+            <div class="row col-lg-12 form-group clearfix">
+                <div class="col-xs-4">
+                    <div id="dvtreeField" style="height: 450px;">
+                        <div class="dv-controls-load">
+                            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                            Loading tree
+                        </div>
+                    </div>
+                    <input type="hidden" value="" id="hdRegioncode" />
+                </div>
+                <div class="col-xs-6">
+                    <input type="button" class="btn btn-primary" value="Map" id="bUttontMap" onclick="fnmapRegionsField();" />
+                    <br /><br />
+
+                    <div style="clear: both;"></div>
+                    <div class="form-group clearfix" id="dvtable">
+                        <div id="tblHospRecordsField" style="height:400px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/DcrStatusMaster.js"></script>
+<script>
+    var selKeys = "";
+    var entityDetails_g = "";
+
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        $('#dvTab').tabs();
+        $('#dvTab').block();
+        
+        debugger
+        fnBindRegionTreeWithCheckBox('dvregtree');
+        fnBindRegionTreeWithCheckBox('dvtree');
+        fnBindRegionTreeWithCheckBox('dvtreeField');
+        $('.dynatree-selected span.dynatree-checkbox').attr('disabled', 'disabled');
+        fnGetDivisions();
+        fnGetUnderUsertype();
+        fnGetMappedRegion();
+        selKeys = [];
+        selKeys = "";
+        $('#dvTab').unblock();
+        $.unblockUI();
+        fnGetDcrHospitalDetails();
+        fnGetDcrHospitalFileldDetails();
+        
+    });
+    
+
+    function fnRegionTreePostInit() {
+    }
+
+    var selKeys = new Array();
+    var selKeys_ls = new Array();
+    function fnRegionTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selKeys_ls = selKeys;
+    }
+
+    //function fnRegionTreeActivate(node)
+    //{
+    //    node.data.unselectable = true; //make it unselectable
+    //    node.data.hideCheckbox = true;
+    //}
+
+</script>

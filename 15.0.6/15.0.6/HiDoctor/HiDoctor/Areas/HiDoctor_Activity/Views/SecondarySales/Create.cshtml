@@ -1,0 +1,289 @@
+﻿@model HiDoctor_Activity.Models.SecondarySalesModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<style type="text/css">
+    .txtReadonly {
+        border: 1px solid white !important;
+    }
+
+    .legendpopup {
+        padding: 10px;
+        font-weight: bold;
+        font-style: italic;
+        border: 1px solid grey;
+        margin-left: 4px;
+        border-radius: 12px;
+        background-color: lightgrey;
+        font-size: 100%;
+        margin-right: 4px;
+    }
+
+    .simple_overlay .overlayclose {
+        background-image: url(../Images/close.png);
+        position: absolute;
+        right: -25px;
+        top: -25px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+        z-index: 999999;
+    }
+
+    .simple_overlay {
+        display: none;
+        z-index: 10000;
+        background-color: #fff;
+        width: 700px;
+        min-height: 500px;
+        border: 1px solid #666;
+        -moz-box-shadow: 0 0 90px 5px #000;
+        -webkit-box-shadow: 0 0 90px #000;
+    }
+
+    #dvLoading {
+        border-top: 1px solid #7f9db9 !important;
+        border: none;
+    }
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="~/Scripts/jquery.blockUI.js"></script>
+<div style="height: auto; font-size: 11px">
+    <div class="col-sm-3" id="divTree" style="font-size: 11px;">
+        <div id="tree" style='height: 500px;'>
+        </div>
+    </div>
+    <div class="col-sm-9" style="display: none;" id="divMain">
+        <div>
+            <div>
+                <span id="spnTreeToggle" style='color: #039; cursor: pointer; text-decoration: underline'
+                      onclick="fnToggleTree()">Hide Tree</span>
+            </div>
+            <div id="divInputHeader" style="display: none;">
+                <div style='background: #efefef; padding: 1%'>
+                    <h2 id="ssregionName"></h2>
+                </div>
+                <table style='font-size: 12px; border: none'>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Secondary Sales Month & Year
+                        </td>
+                        <td>
+                            <select id='drpMonth'></select>
+                            <select id='drpYear'></select>
+                        </td>
+                    </tr>
+
+                    <tr id="trStockiest" style="display: none;">
+                        <td>
+                            Stockiest Name
+                        </td>
+                        <td>
+                            <input type='text' id='txtStockiestName' class='autoStockiest' />
+                            <input type='hidden' id='hdnStockiestCode' />
+                            <input type='hidden' id='hdnStatus' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Sales Statement Date
+                        </td>
+                        <td>
+                            <input type='text' id='txtStatmentDate' class='datepicker' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="button" value="Check for Products" id="btnGo" onclick="fnReadSecondarySalesPrice();"
+                                   class="btn small primary" />&nbsp;
+                            <input type="button" value="Reset" id="btnGo" onclick="fnSecondarySalesReset();"
+                                   class="btn small primary" />
+                        </td>
+                    </tr>
+                </table>
+                <div id="dvLoading" style="display: none">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+                </div>
+            </div>
+        </div>
+        <br />
+        @*<div><span style="font-weight: bold; color: red" id="unapprovedRemarks"></span></div>*@
+        <div id="dvMainHeader" style="display: none;">
+            <div id="productopoupLink" style="display: block;padding: 1rem 0px;">
+                <div style="display: flex;padding: 1rem 0px;justify-content: space-between;">
+                    <button type="button" class="btn small primary" onclick="fnGetsecproductPopUp();">Show All Product</button>
+                    <p style="font-weight: 600; font-style: italic">
+                        (View a popup list of all products and their respective closing stocks balances and select as needed)
+                    </p>
+                </div>
+                <div><span style="font-weight: bold; color: red" id="unapprovedRemarks">UNAPPROVAL REMARKS: </span></div>
+            </div>
+            @*<div id="productopoupLink" style="display: none;">
+                <button type="button" class="btn small primary" style="margin-left: 497px;" onclick="fnGetsecproductPopUp();">Show All Product</button>
+                <p style="margin-left: 573px; float: right; margin: 0px; font-weight: bold; font-style: italic">
+                    (View a popup list of all products and their respective closing stocks balances and select as needed)
+                </p>
+            </div>*@
+            <div id="SecondarySalesDetails" style="width: 100%">
+            </div>
+            <div style="width: 100%; margin-top: 1%" id="divInput">
+
+                <button type="button" class="btn btn-primary input-sm" id="btnSubmit" onclick="fnSubmitValidate(3);">Draft</button>
+                <button type="button" class="btn btn-primary input-sm" id="btnSubmit" onclick="fnSubmitValidate(1);">Submit</button>
+
+                <input type="button" value="Add Customer" id="imgAdd" onclick="CreateNewCustomerRow();"
+                       class="btn small primary" style='float: right;' />
+            </div>
+            <br />
+
+            <div id="divReport">
+            </div>
+        </div>
+        <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 600px; height: 400px;">
+            <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+            <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+            <div id="divModel" style="height: 90%; overflow: auto">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="dvAllProduct" class="simple_overlay" style="width: 665px !important; min-height: 500px !important; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <a class="overlayclose" onclick="$('#dvAllProduct').overlay().close();"></a>
+        <div>
+            <div class="popUpTitle" style="height: 45px;">
+                <span style="font-weight:bold">Products</span>
+            </div>
+            <br />
+            <div style="height: 325px;" class="col-lg-12">
+                <div id="dvAllPro" class="col-lg-12">
+                </div>
+                <div class="col-lg-12" style="clear: both;">
+                    <button type="button" onclick="fnGetSelectedProduct();" class="btn small primary">Show in Grid</button>
+                    <button type="button" onclick="fnresetAll();" class="btn small primary">Cancel </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+<div id="dvLoading" style="text-align: center;display:none">
+    <img src="../../Content/themes/base/images/hd/loader.gif" />
+</div>
+
+<div id="dvalert" class="simple_overlay" style="width: 665px !important; min-height: 350px !important; height: 350px !important; -webkit-box-shadow: 0 0 21px black !important;">
+    <a class="overlayclose" style="margin: 10px;" onclick="fnClose();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;border-bottom: 1px solid #000000;">
+            <span style="font-weight: bold">Secondary Sales</span>
+        </div>
+        <div style="height: 350px;padding: 0px;" class="col-lg-12">
+            <div id="dvDetails" class="col-lg-12" style="overflow: scroll;height: 302px !important;font-size: 14px;">
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/SecondarySales12.7.1.js?v=@HiDoctor.BuildNo.Build_No" type="text/javascript" language="javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        $("#dvAllProduct").overlay().load();
+        myFunction();
+    });
+    $("#dvalert").overlay().load();
+    function fnToggleTree() {
+
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $("#divTree").hide();
+            $("#spnTreeToggle").html('Show Tree');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $("#divTree").show();
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+    $(function () {
+        var currentYear = (new Date).getFullYear();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2,
+            maxDate: "+4m"
+            //showButtonPanel: true
+            //    maxDate: new Date(currentDate),
+            //yearRange: (parseInt(currentDate.split('-')[0]) - 150) + ':' + (parseInt(currentDate.split('-')[0]) + 0)
+        });
+    });
+
+    $(document).ready(function () {
+        try {
+            fnBindRegionTree("tree");
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnRegionTreeActivate(node) {
+        $('#drpMonth').attr('disabled', false);
+        $('#drpYear').attr('disabled', false);
+        $('#txtStatmentDate').attr('disabled', false);
+        $('#txtStockiestName').attr('disabled', false);
+        $("#txtStockiestName").val('');
+        $('#drpMonth').attr('disabled', false);
+        $('#drpYear').attr('disabled', false);
+        $('#txtStatmentDate').removeAttr('readonly');
+        $('#txtStatmentDate').val('');
+        $('#SecondarySalesDetails').hide();
+        $("#divReport").html('');
+        $("#divInput").hide();
+        $('#productopoupLink').hide();
+        $('#unapprovedRemarks').html('');
+        if (ssEntryMode.toUpperCase() == "STOCKIEST") {
+
+            $("#txtStockiestName").removeAttr('readonly');
+        }
+
+        $("#dvMainHeader").show();
+        fnCreateSecondarySalesTable(node);
+        $("#divTree").hide();
+        $("#main").css('width', '100%');
+        $("#spnTreeToggle").html('Show Tree');
+        $("#ssregionName").html(node.data.title)
+    }
+
+    function fnRegionTreePostInit() {
+        //Tree Post Init
+    }
+    function myFunction() {
+        setInterval(function () { fnGetSession(); }, 3000000);
+    }
+    function fnGetSession() {
+        $.ajax({
+            type: 'POST',
+            url: '../../Home/GetHomeSession/',
+            data: 'A',
+            success: function (response) {
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+</script>

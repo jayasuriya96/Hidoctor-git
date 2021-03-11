@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "SFCReport";
+    Layout = null;
+}
+ <link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<div id="dvsfc">
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+
+            <div style="clear: both"></div>
+            <div id="dvregionTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="dvdata" class="col-sm-9" style="display: none">
+            <input type="hidden" id="hdnRegionCode" value="" />
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-10">
+                    <div class="col-lg-2">
+                        <label>Status</label>
+                    </div>
+                    <div class="col-lg-9" style="">
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkApplied" value="2" onclick="chkAllChecked();" /><label for="chkApplied">Applied</label>
+
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkApproved" value="1" checked="checked" onclick="chkAllChecked();" /><label for="chkApproved">Approved</label>
+
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkUnapproved" value="0" onclick="chkAllChecked();" /><label for="chkUnapproved">Unapproved</label>
+
+                        <input type="checkbox" name="chkstatus" id="chkAll" value="1,2,0" onclick="checkAll();" /><label for="chkAll">All</label>
+                    </div>
+                </div>
+                  <div class="col-lg-10" style="">
+                    <div class="col-lg-2">
+                        <label>Travel Mode</label>
+                    </div>
+                    <div class="col-lg-9">
+
+                        <div id="divTravelMode" style="font-weight: 700"></div>
+                    </div>
+                </div>
+                <div class="col-lg-10" style="display: none;">
+                    <div class="col-lg-2">
+                        <label>SFC Validity</label>
+                    </div>
+                    <div class="col-lg-9" style="margin-left: -22.5%;">
+                        <div id="divValid">
+                            <input type="checkbox" name="chkValidity" class="clsValidCheck" id="chkCurrent" value="Current" checked="checked" onclick="AllChecked();" /><label for="chkCurrent">Current</label>
+
+                            <input type="checkbox" name="chkValidity" class="clsValidCheck" id="chkExpired" value="Expired" onclick="AllChecked();" /><label for="chkExpired">Expired</label>
+
+                            <input type="checkbox" name="chkValidity" class="clsValidCheck" id="chkFuture" value="Future" onclick="AllChecked();" /><label for="chkFuture">Future</label>
+
+                            <input type="checkbox" name="chkValidity" id="chkValidAll" value="All" onclick="ValidAll();" /><label for="chkValidAll">All</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12" style="margin-left: 2%;">
+                    <div>
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optViewInScreen">Export To Excel</label>
+                    </div>
+                    <div>
+                        <input type="button" class="btn btn-primary" value="View" onclick="fnGetsfcReportclick()" />
+                        <input type="button" class="btn btn-primary" value="View All" onclick="fnGetsfcReportforAllView()" style="display: none;" />
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="divsfcReport">
+            </div>
+
+
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SfcReportCurrent.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvsfc').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnTreeWithChkBoxChildSelction("dvregionTree") //To Bind The Region Tree
+            $("#dvTree").show();
+            $("#dvdata").show();
+            $('#divsfcReport').html('');
+            $("#dvAjaxLoad").hide();
+            fnGetTravelModes();
+        }
+        catch (err) {
+            $("#dvsfc").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    // Default function for toggling tree and inputs
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+    function fnRegionTreePostInit() {
+        $("#dvsfc").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvregionTree").slideDown();
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-sm-12')
+        $('#dvdata').addClass('col-sm-9')
+    }
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvregionTree").slideUp();
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-sm-12')
+        $('#dvdata').removeClass('col-sm-9')
+    }
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+    function fnRegionTreeActivate(node) {
+        $('#hdnRegionCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#divsfcReport').html('');
+    }
+
+    var selKeys = "";
+    function fnRegionTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+    // Default function for toggling tree and inputs
+</script>

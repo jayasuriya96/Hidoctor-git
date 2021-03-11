@@ -1,0 +1,274 @@
+﻿@model HiDoctor_Master.Models.ExpenseTypeModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    select, input[type=text] {
+        font-family: "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans",Arial, "sans-serif" !important;
+        width: 17%;
+    }
+
+    input[type=text] {
+        width: 20% !important;
+    }
+</style>
+
+@using (Html.BeginForm())
+{   
+    <fieldset>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpenseTypeName)<font color="red">*</font>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExpenseTypeName,new { style = "width: 100px;" })
+           
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpenseMode)<font color="red">*</font>
+
+        </div>
+        <div class="editor-field">
+            <select id="ddlExpenseModes" onchange="onSelectedIndexChanged()">
+                <option value="">SelectMode</option>
+                <option value="Daily">Daily</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Yearly">Yearly</option>
+            </select>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DisplayOrder)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DisplayOrder,new { style = "width: 100px;" })
+           
+        </div>
+
+
+        <div>
+            <label>
+                <font color="red">* Mandatory field</font>
+            </label>
+        </div>
+
+        @Html.Hidden("ExpenseTypeCode")
+        @Html.Hidden("RowStatus")
+        @Html.Hidden("Type")
+        <p>
+            <input id="btnSave" type="button" onclick="fnCreate()" />
+            <input id="hdnExpenseType" type="hidden" name="hdnExpenseType" value="0" />
+        </p>
+    </fieldset>
+}
+
+<div id="dvTable">
+    <table id="tblDataTable" class='data display datatable'>
+    </table>
+</div>
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            GetAllExpense();
+            $("#btnSave").val("Save");
+            $("#Period").hide();
+            $("#Type").val("S");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+
+
+    function GetAllExpense() {
+        $.ajax({
+            url: '../HiDoctor_Master/Expense/GetAllExpense',
+            type: "POST",
+            data: "",
+            success: function (data) {
+                jsData = eval('(' + data + ')');
+                var aaData = [];
+                for (var i = 0; i < jsData.Tables[0].Rows.length; i++) {
+                    aaData.push([
+                                    jsData.Tables[0].Rows[i].Expense_Type_Code,
+                                    jsData.Tables[0].Rows[i].Expense_Type_Name,
+                                    jsData.Tables[0].Rows[i].Expense_Mode,
+                                    jsData.Tables[0].Rows[i].Expense_Type_Status,
+                                    jsData.Tables[0].Rows[i].Display_Order,
+                                    jsData.Tables[0].Rows[i].Expense_Type_Status_Name,
+
+                    ]);
+                }
+                $('#tblDataTable').dataTable({
+                    "bDestroy": true,
+                    "sPaginationType": "full_numbers",
+                    "aaData": aaData,
+                    "aoColumns": [
+
+                                    {
+                                        "sWidth": "100px",
+                                        "sTitle": "Edit",
+                                        "bUseRendered": false,
+                                        "fnRender": function (obj) {
+                                            var ExpensetypeCode = obj.aData[0];
+                                            var edit = "<a href='#' onclick ='fnEdit(\"" + ExpensetypeCode + "\");'>Edit</a>";
+                                            return edit;
+                                        }
+                                    },
+                                    {
+                                        "sWidth": "100px",
+                                        "sTitle": "Change Status",
+                                        "bUseRendered": false,
+                                        "fnRender": function (obj) {
+                                            var ExpensetypeCode = obj.aData[0];
+                                            var ExpenseTypestatus = obj.aData[3];
+                                            var edit = "<a href='#' onclick ='fnStatusChange(\"" + ExpensetypeCode + "\",\"" + ExpenseTypestatus + "\");'>Change Status</a>";
+                                            return edit;
+                                        }
+                                    },
+                                    {
+                                        "sWidth": "130px",
+                                        "sTitle": "Expense Type Name",
+                                        "mDataProp": "1"
+                                    },
+                                    {
+                                        "sWidth": "100px",
+                                        "sTitle": "Expense Mode",
+                                        "mDataProp": "2"
+                                    },
+                                    {
+                                        "sWidth": "100px",
+                                        "sTitle": "Display Order",
+                                        "mDataProp": "4"
+                                    },
+                                    {
+                                        "sWidth": "100px",
+                                        "sTitle": "Status",
+                                        "mDataProp": "5"
+                                    }
+
+                    ]
+                });
+
+                $("#dvDataTable").show();
+            },
+            error: function () {
+                alert("Error Found");
+
+            }
+        });
+        $("#dvDataTable").show();
+    }
+
+    function fnEdit(expensetypeCode) {
+
+        $("#Type").val("E");
+        $("#btnSave").val("Update");
+        $("#ExpenseTypeCode").val(expensetypeCode);
+        $.ajax({
+            type: "POST",
+            url: "../HiDoctor_Master/Expense/ExpensetypeDetails/",
+            data: "ExpensetypeCode=" + expensetypeCode,
+            success: function (result) {
+                $("#ExpenseTypeName").val(result[0].ExpenseTypeName);
+                $("#ddlExpenseModes").val(result[0].ExpenseMode);
+                $("#DisplayOrder").val(result[0].DisplayOrder);
+            },
+            error: function () {
+            }
+        });
+
+    }
+
+    function fnStatusChange(ExpensetypeCode, ExpenseStatus) {
+
+        $("#Type").val("C");
+        $.ajax({
+            type: "POST",
+            url: "../HiDoctor_Master/Expense/StatusChange",
+            data: "ExpensetypeCode=" + ExpensetypeCode + "&Type=C" + " &ExpenseStatus=" + ExpenseStatus,
+            success: function (result) {
+                GetAllExpense();
+                alert("Status Changed Successfully");
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+
+    function fnCreate() {
+        
+        if (fnValidateExpenseTypeMaster()) {
+            var ExpenseMode = $("#ddlExpenseModes option:selected").val();
+
+            $.ajax({
+                url: '../HiDoctor_Master/Expense/Insert',
+                type: "POST",
+                data: "ExpenseTypeName=" + $('#ExpenseTypeName').val() + "&ExpenseMode=" + ExpenseMode + "&Period=" + $("#lbl_PeroidType").text() + "&CanSpilitAmount=" + $('input[name=CanSpilitAmount]:radio:checked').val() + "&EligibilityAmount=" + $('#EligibilityAmount').val() + "&Type=" + $('#Type').val()
+                        + "&ExpenseTypeCode=" + $('#ExpenseTypeCode').val() + "&DisplayOrder=" + $('#DisplayOrder').val(),
+                success: function (Data) {
+
+                    if (Data == "Already Exists") {
+                        alert("Already Exists" + " " + $("#ExpenseTypeName").val());
+                    }
+                    else if (Data == "Saved Successfully" || Data == "Updated Successfully") {
+                        $('#ExpenseTypeName').val(""); alert(Data);
+                    }
+
+                    $("#btnSave").val("Save");
+                    $("#Type").val("S");
+                    Cancel();
+                    GetAllExpense();
+                },
+                error: function (Data) {
+                    alert("Check")
+                },
+                complete: function () {
+
+                }
+            });
+        }
+    }
+
+    function fnValidateExpenseTypeMaster() {
+        if ($('#ExpenseTypeName').val() == "") {
+            fnMsgAlert('info', 'Expense Type Master', 'Please Enter Expense Type Name.');
+            return false;
+        }
+        if ($('#ddlExpenseModes option:selected').val() == "") {
+            fnMsgAlert('info', 'Expense Type Master', 'Please select Expense Mode.');
+            return false;
+        }
+
+        if (!(fnCheckRemarksSpecialChar("#ExpenseTypeName"))) {           
+            return false;
+        }
+
+        if (!(fnCheckInt($("#DisplayOrder")))) {
+            return false;
+        }
+
+        if (parseInt($("#DisplayOrder").val()) < 0) {
+            fnMsgAlert('info', 'Expense Type Master', 'Negative numbers are not allowed for Display Order.');           
+            return false;
+        }
+        return true;
+    }
+
+
+    function Cancel() {
+        $('#ExpenseTypeName').val("");
+        $('#ddlExpenseModes').val("1");
+        $('#DisplayOrder').val("");
+    }
+
+</script>

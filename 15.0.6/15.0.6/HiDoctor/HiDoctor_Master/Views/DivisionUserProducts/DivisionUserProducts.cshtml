@@ -1,0 +1,290 @@
+﻿@{
+    ViewBag.Title = "DivisionUserProducts";
+    Layout = null;
+}
+<style>
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: rgb(150, 150, 246) !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+
+    .pgcont {
+        float: right;
+    }
+
+    #spnnxt {
+        background-image: url('../content/images/next.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+
+    #spnprev {
+        background-image: url('../content/images/prev.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+
+    html{
+        overflow-x:hidden;
+    }
+</style>
+
+<div>
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+             onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+             style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div id="dvTree" class="col-lg-4 table-responsive" class="treebg">
+        <div id="Input" class="col-lg-12">
+            <table style="background-color: #95989B" id="tblDivUserProduct" class="table table-bordered">
+                <tr>
+                    <td>
+                        <span style="float: right">Division Name</span>
+                    </td>
+                    <td>
+                        <select id="ddlDivisionName" class="input-medium form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right">Product Selection Mode</span>
+                    </td>
+                    <td>
+                        <select id="ddlproductselection">
+                            <option value="0">-Select Mode-</option>
+                            <option value="1">ONLY_FROM_MY_DIVISION</option>
+                            @*<option value="2">FROM_MY_DIVISION_AND_NON_MAPPED_ITEMS</option>*@
+                            <option value="3">FROM_ALL_DIVISION</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right">User Type</span>
+                    </td>
+                    <td>
+                        <select id="ddlUserType" class="input-medium form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="float: right">Action Type</span>
+                    </td>
+                    <td>
+                        <select id="ddlMode" class="input-medium form-control">
+                            <option value="SAVE"> SAVE </option>
+                            <option value="EDIT"> EDIT </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="go">
+            <button id="btngo" style="margin-right: 3%;float:right;" type="button" class="btn btn-primary" onclick="fngo()">Go</button>
+            <button id="btnUncheck" style="margin-right: 3%;float:right;" type="button" class="btn btn-primary" onclick="fnUncheck()">Uncheck All</button>
+        </div>
+        <div style="clear: both"></div>
+        <div id="tree" style="height: 530px; margin-top: 1%" class="col-lg-12">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+
+    <div id="dvdata" class="col-lg-8 table-responsive">
+        <div id="lbllable" class="col-lg-12" style="display: block;">
+            <div class="col-sm-6">
+                <lable id="lblmessage" style="font-size: 15px; text-align: center; display: inline;">
+                    <span style="font-weight:bold;">User Name :</span><span id="username" style="font-size:17px;font-weight:bold;margin-left: 8px;"></span>
+                </lable>
+            </div>
+        </div>
+        <div id="dvTable" style="overflow: auto; max-height: 600px;" class="col-lg-12">
+        </div>
+        <div style="clear: both"></div>
+        <div id="button" style="margin-left: 50%" class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                        <button id="btnSave" style="display: none" type="button" class="btn btn-primary" onclick="fnSave()">Save</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/DivisionUserProducts.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript">
+    var ActionType = "SAVE";
+    var SelUserCode = "";
+    var UserName = '';
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#lbllable').hide();
+            fnGetDivision();
+            fnGetUserTypeName();
+            fnBindUserTreeWithCheckBox("tree");
+            $.unblockUI();
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $('#ddlMode').change(function () {
+                if($('#ddlMode').val()=="EDIT")
+                {
+                    $('#btnUncheck').hide();
+                }
+                else {
+                    $('#btnUncheck').show();
+}
+            });
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeSelect(select, node) {
+        selectedUserCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreeNodeClick(node) {
+        debugger;
+        SelUserCode = node.data.key;
+        var name = node.data.title;
+        UserName = name.split(',')[0]
+        if (ActionType.toUpperCase() == "EDIT")
+            fnFillGrid();
+        
+    }
+
+    
+
+    function fnUncheck() {
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            node.select(false);
+            node.data.unselectable = false;
+            node.data.hideCheckbox = false;
+        });
+    }
+
+    function fngo() {
+        $("#btnSave").hide();
+    //    $("#btnUncheck").show();
+       
+        SelUserCode = "";
+        ActionType = $("#ddlMode option:selected").val(); // Mode is used as global and value change only go clicked. because avoid conflict when user change mode anytime,
+        if (ActionType.toUpperCase() == "EDIT") {
+            $("#btnSave").hide();
+        }
+        else {
+            $("#btnSave").show();
+        }
+
+        if ($("#ddlDivisionName").val() == "0") {
+            fnMsgAlert('info', 'Division UserProduct Mapping Screen', 'Please Select Division Name.');
+            return false;
+        }
+        if ($("#ddlUserType").val() == "0") {
+            fnMsgAlert('info', 'Division UserProduct Mapping Screen', 'Please Select User Type Name.');
+            return false;
+        }
+
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            node.select(false);
+            node.deactivate();
+            node.data.unselectable = false;
+            node.data.hideCheckbox = false;
+        });
+        var userTypeCode = $("#ddlUserType option:selected").val();
+
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Master/DivisionUserProducts/GetUsers',
+            data: "userTypeCode=" + userTypeCode + "&divisionCode=" + $("#ddlDivisionName").val(),
+            success: function (result) {
+
+                var data = eval('(' + result + ')');
+                $("#tree").dynatree("getRoot").visit(function (node) {
+                    if (ActionType.toUpperCase() == "EDIT") {
+                        node.data.hideCheckbox = true;
+                        node.render(true);
+                    }
+                    else {
+                        var user = jsonPath(data, "$.[?(@@.User_Code=='" + node.data.key + "')]");
+                        if (user.length > 0) {
+                            node.select(true);
+                        }
+                        else {
+                            //node.activate = false;
+                            //var selectedNode = treeobj.getNodeByKey(regionCode);
+                            node.data.unselectable = true;
+                            node.data.hideCheckbox = true;
+                            node.render(true);
+                            node.select(false);
+                        }
+                    }
+                });
+                fnGetUserTypeprivillage();
+            }
+
+        });
+    }
+
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-8')
+        $("#Input").show();
+        $("#go").show();
+
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-8')
+        $("#Input").hide()
+        $("#go").hide();
+
+    }
+
+    var selKeys = "", selText = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+    function fnUserTreePostInit() { }
+</script>

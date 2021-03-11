@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "SectionAttempts";    
+}
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css" rel="stylesheet" />
+<link href="../..Areas/HDNextGen/Content/AdCourse/HeaderLayoutCommon.css" rel="stylesheet" />
+<style>
+    #dvCourseDetails {
+        height: auto !important;
+    }
+    .sub-wrapper {
+        display: none;
+    }
+    #dvCourseSections div {
+        font-size:16px!important;
+    }    
+    #dvViewCourse div,#dvViewCourse span{
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+        font-size:14px;
+    }    
+    #dvCourseDetails tr td, #dvCourseDetails tr td label{
+        font-family: 'tahoma', 'fantasy', 'arial', 'times new roman' !important;
+        font-size:16px;
+    }
+</style>
+<div class="wrapper">
+    <div id="dvViewCourse" class="col-md-12">
+        <div id="dvCourseName" class="dvCourseName"></div>
+        <div class="dvCourseSections">
+            Section Attempt Details
+        </div>
+        <div class="dvCourseSectionTable">
+            <div id="dvCourseDetails" class="table-responsive">
+            </div>
+        </div>
+        <div style="text-align: right; padding: 10px; margin: 10px;">
+            <a href="#" id="go-back" onclick="sectionAttempts.LoadSectionAttemptPage();" class="a-btn">Back</a>
+            <a href="#" id="course-home" class="a-btn">Done</a>
+        </div>
+    </div>
+</div>
+
+<link href="../../Areas/HDNextGen/Content/AssetUpload/fonts/fonts.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/UserAdCourseDetails.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdvancedCourse.css" rel="stylesheet" />
+
+<script src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>
+<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/AdCourse/AdCourseServices.js"></script>
+<script type="text/javascript" src="../../Areas/HDNextGen/Scripts/AdCourse/SectionPage.js"></script>
+
+<script type="text/javascript">    
+    var courseId = @Html.Raw(Json.Encode(ViewBag.courseId));
+    var sectionId = @Html.Raw(Json.Encode(ViewBag.sectionId));        
+    var publishId = @Html.Raw(Json.Encode(ViewBag.publishId));        
+    var userId = @Html.Raw(Json.Encode(ViewBag.userId));
+    $(document).ready(function () { 
+        //sectionAttempts.defaults.courseId = courseId;
+        //sectionAttempts.defaults.publishId = publishId;
+        //sectionAttempts.defaults.userId = userId;
+        //sectionAttempts.defaults.sectionId = sectionId;
+        var defaults = { courseId: courseId, publishId: publishId, userId: userId, sectionId: sectionId };
+        $.extend(sectionAttempts.defaults, defaults);
+        sectionAttempts.init();
+        //$('#go-back').bind('click', function(e) {
+        //    var secDetails = courseId + "$" + publishId
+        //    $("#main").load("/HDNextGen/AdCourse/CourseSections/"+ secDetails);            
+        //});
+        
+        $('#course-home').bind('click', function(e) {
+            var secDetails = courseId + "^" + publishId
+            $("#main").load("HDNextGen/AdCourse/UserAdCourseDetails");            
+        });        
+    });
+
+</script>

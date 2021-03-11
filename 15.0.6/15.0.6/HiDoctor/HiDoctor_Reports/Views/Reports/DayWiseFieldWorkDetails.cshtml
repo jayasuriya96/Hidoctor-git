@@ -1,0 +1,280 @@
+﻿@{
+    ViewBag.Title = "DayWiseFieldWorkDetails";
+    Layout = null;
+}
+
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style>
+    .ui-timepicker-table td {
+        width: auto;
+    }
+
+        .ui-timepicker-table td a {
+            display: block;
+            padding: 0.2em 0.3em 0.2em 0.5em;
+            width: 1.2em;
+            cursor: pointer;
+            text-align: right;
+            text-decoration: none;
+            width: 100%;
+        }
+
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        background: #dfeffc url("../content/themes/base/images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50%;
+        border: 1px solid #c5dbec;
+        color: #2e6e9e;
+        font-weight: bold;
+        width: 100%;
+    }
+</style>
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="regiontree" style="float: left; height: auto; width: 100%">
+        </div>
+        <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>
+    <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr>
+                    <td>Start Date & End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                        <input type="text" id="txtToDate" class='datepicker' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="hidden" id="hdnRegionCode" /><br>
+                        <input type="checkbox" name="DCRStatus" value="'1'" onclick="fnChangeRadioDCR();">Applied<br>
+                        <input type="checkbox" name="DCRStatus" value="'2'" checked="checked" onclick="fnChangeRadioDCR();">Approved<br>
+                        <input type="checkbox" name="DCRStatus" value="'0'" onclick="fnChangeRadioDCR();">Unapproved<br>
+                        <input type="checkbox" name="DCRStatusAll" value="'1','2','0'" onclick="fnCheckAll();">ALL<br>
+                    </td>
+                </tr>
+                <tr id="trVisitMode">
+                    <td>Visit Mode
+                    </td>
+                    <td>
+                        <input id="txtStartTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnDayWiseFieldReport();" />
+                    </td>
+                </tr>
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div>
+            <div id="dvLegend"></div>
+            <br />
+            <div id="divReportHeader">
+            </div>
+
+            <div id="divReport" style="margin-top: 5%">
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div id="divSummary" style="margin-top: 5%">
+            </div>
+
+            <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 800px; height: 400px; overflow: auto">
+                <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+                <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+                <div id="divModel" style="height: 100px;">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Reports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var c_g;
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+
+        /// Time picker
+        $('#txtStartTime').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+        $("#txtStartTime").addClass("time");
+        $("#txtStartTime").keypress(function () { return false; });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {               
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $('#txtFrom').monthpicker();
+                $('#txtTo').monthpicker();
+                $('#dvAjaxLoad').hide()
+            } 
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+
+    function fnRegionTreeNodeClick(node){     
+        $("#divReport").html(""); 
+        $("#divSummary").html("");
+        $("#divReportHeader").html(""); 
+        $('#dvLegend').html('');     
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#leftNav").show();
+        // $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');
+        var regioncodepri= $('#hdnRegionCode').val();
+        fnValidatePrivilege(regioncodepri);
+    }
+
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html(""); 
+        $("#divReportHeader").html(""); 
+        $('#dvLegend').html('');         
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#leftNav").show();
+        // $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');
+    }
+    function fnRegionTreePostInit() {
+
+    }
+
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+
+    function fnCheckAll() {
+        if ($(":checkbox[name=DCRStatusAll]:checked").length > 0) {
+            $('input:checkbox[name=DCRStatus]').each(function () {
+                this.checked = true;
+            });
+        }
+    }
+
+    function fnChangeRadioDCR() {
+        //uncheck all without draft
+        $("input:checkbox[name=DCRStatusAll]").removeAttr('checked');
+
+        if ($(":checkbox[name=DCRStatus]:checked").length > 0) {
+            var dcrStatus = "";
+            $('input:checkbox[name=DCRStatus]').each(function () {
+                if ($(this).is(':checked')) { dcrStatus += $(this).val(); }
+            });
+            if (dcrStatus == "'1','2','0'") {
+                // check All without draft
+                $("input:checkbox[name=DCRStatusAll]").attr('checked', 'checked');
+            }
+        }
+    }
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    }
+
+</script>
+

@@ -1,0 +1,107 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnOrderHistoryDetailView"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div data-theme="b" data-role="header">
+    <a data-role="button" href="#" data-icon="arrow-l" data-iconpos="notext"
+        class="ui-btn-right" id="OHDRedirect"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Sale Order-View
+        </h5>
+    </div>
+</div>
+<div data-theme="c" data-role="header" id="OHDCustName">
+    <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h5>
+</div>
+
+<div data-theme="c" data-role="header">
+    <a data-role="button" data-theme="b" href="#" data-icon="arrow-r"
+        data-iconpos="notext" class="ui-btn-right" onclick="fnShowNextOrder();"></a>
+    <a data-role="button" data-theme="b" href="#" data-icon="arrow-l"
+        data-iconpos="notext" class="ui-btn-left" onclick="fnShowPreviousOrder();"></a>
+    <h3 id="OHDOrderID" style="text-align: center !important;"></h3>
+</div>
+
+<div style="border-bottom: 1px solid #d3d3d3;">
+    <h5 id="OHDRefNumb"></h5>
+    <h5 id="OHDOrderDate"></h5>
+    <h5 id="OHDDueDate"></h5>
+</div>
+
+<div>
+    <h4 style="border-bottom: 1px solid #d3d3d3;">Order Details</h4>
+    <div id="OHDDetail">
+    </div>
+</div>
+
+
+<div data-role="content">
+    <div id="OHDOrderSummary" data-role="collapsible-set" data-theme="b" data-content-theme="a">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>Order Summary
+            </h3>
+            <div class="OHDOrderSummaryL">No of Products Ordered :</div>
+            <div class="OHDOrderSummaryR" id="OHDProductOrd"></div>
+            <div class="OHDOrderSummaryL">No of Quantity Ordered :</div>
+            <div class="OHDOrderSummaryR" id="OHDQtyOrd"></div>
+            <div class="OHDOrderSummaryL">No of Offer Products :</div>
+            <div class="OHDOrderSummaryR" id="OHDOffProductOrd"></div>
+            <div class="OHDOrderSummaryL">No of Offer Products Qty :</div>
+            <div class="OHDOrderSummaryR" id="OHDOffQtyOrd"></div>
+            <div class="OHDOrderSummaryL">Order Value :</div>
+            <div class="OHDOrderSummaryR" id="OHDOrderValue"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+    </div>
+</div>
+
+
+<div data-role="content">
+    <div id="OHDSchemeSummary" data-role="collapsible-set" data-theme="b" data-content-theme="a">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>Scheme / Offer Products
+            </h3>
+            <div id="OHDSchemeDetails"></div>
+        </div>
+    </div>
+</div>
+
+<div data-role="content">
+    <div id="OHDOldRemarks" style="margin-bottom: 10px;">
+    </div>
+    <div id="OHDApprovalOldRemarks" style="margin-bottom: 10px;">
+    </div>
+</div>
+
+
+<div data-role="content">
+    <a id="OHDClose" data-role="button" data-theme="b" href="#" >Close
+    </a>
+</div>
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        var redirectFrom= @Html.Raw(Json.Encode(ViewBag.from));
+        var orderID=@Html.Raw(Json.Encode(ViewBag.orderID));
+
+        $('#spnOrderHistoryDetailView').html(loginUserName_g);
+        $("#OHDOrderID").html(orderID);
+
+        if (redirectFrom == "STATUS") {
+            $("#OHDRedirect").click(function () { fnOpenOrderStatus(); });
+            $("#OHDClose").click(function () { fnOpenOrderStatus(); });
+        }
+        else {
+            $("#OHDRedirect").click(function () { fnOpenOrderHistory(); });
+            $("#OHDClose").click(function () { fnOpenOrderHistory(); });
+        }
+
+        fnBindOrderHistoryDetailView(orderID);
+    });
+</script>
+

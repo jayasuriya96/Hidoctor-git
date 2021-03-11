@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "PendingApprovalScreen";
+}
+<div style="border: 1px solid; width: 80%">
+    <div id="divPendingApproval" style="display: none; background-color: dimgray; padding: 2%">
+        <span id="PendingApproval" style="color: white; font-size: initial"></span>
+    </div>
+    <div id="ApprovalScreen" style="display: none; margin-left: 1%; padding: 2%">
+        <button id="dcrApprovalScreenRedirect" type="button" class="btn btn-primary" onclick="fnDcrApproval()">Go to DCR Approval</button>
+
+    </div>
+    <div id="divTPPendingApproval" style="display: none; background-color: dimgray; padding: 2%">
+        <span id="TPPendingApproval" style="color: white; font-size: initial"></span>
+    </div>
+
+    <div id="TPApprovalScreen" style="display: none; margin-left: 1%; padding: 2%">
+        <button id="TPApprovalScreenRedirect" type="button" class="btn btn-primary" onclick="fnGotoTPApproval()">Go to TP Approval</button>
+    </div>
+  <div id="divSSPendingApproval" style="display: none; background-color: dimgray; padding: 2%">
+        <span id="SSPendingApproval" style="color: white; font-size: initial"></span>
+    </div>
+
+<div id="SSApprovalScreen" style="display: none;margin-left: 1%; padding: 2%">
+        <button id="SSApprovalScreenRedirect" type="button" class="btn btn-primary" onclick="fnGotoSSApproval()">Go to SS Approval</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var Region_Code="";
+    var TPPendingApprovalUserCount="";
+    var SSPendingApprovalUserCount="";
+
+    $(document).ready(function () {
+        
+        AjaxGlobalHandler.Initiate();
+        try {
+            debugger;
+            $("#dvAjaxLoad").hide();
+            TPPendingApprovalUserCount = @Html.Raw(Json.Encode(ViewBag.TPPendingApprovalUserCount)); 
+            SSPendingApprovalUserCount = @Html.Raw(Json.Encode(ViewBag.SSPendingApprovalUserCount)); 
+            Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+
+            fnTPApprovalPendingMsg(TPPendingApprovalUserCount);
+            fnSSApprovalPendingMsg(SSPendingApprovalUserCount);
+            
+            fnmanagerApprovalPrivilage()
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+    function fnTPApprovalPendingMsg(tpPendingApprovalUserCount)
+    {
+        //$("#PendingApproval").html("You have <b>3</b> DCRs to be approved. At any point in time, you can have only a maximum of <b>1</b> DCRs.<br> <br> Please approve them to be able to enter your DCR.")
+        //$("#divPendingApproval").show();
+        //$("#ApprovalScreen").show();
+        if(tpPendingApprovalUserCount >0)
+        {
+            $("#divTPPendingApproval").show();
+            $("#TPPendingApproval").html("You have <b>" + tpPendingApprovalUserCount + "</b> user(s) TP entries to be approved.");
+            $("#TPApprovalScreen").show();
+        }
+    }
+
+    function fnSSApprovalPendingMsg(ssPendingApprovalUserCount)
+    {
+        debugger;
+        //$("#PendingApproval").html("You have <b>3</b> DCRs to be approved. At any point in time, you can have only a maximum of <b>1</b> DCRs.<br> <br> Please approve them to be able to enter your DCR.")
+        //$("#divPendingApproval").show();
+        //$("#ApprovalScreen").show();
+        if(ssPendingApprovalUserCount >0)
+        {
+            $("#divSSPendingApproval").show();
+            $("#SSPendingApproval").html("You have <b>" + ssPendingApprovalUserCount + "</b> user(s) Secondary Sales entries to be approved.");
+            $("#SSApprovalScreen").show();
+        }
+    }
+
+    function fnmanagerApprovalPrivilage() {
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/GetpendingDCR',
+            type: "GET",
+            success: function (result) {
+               
+                var value = result.split('_')[0];
+                var count = result.split('_')[1];
+                var privilageCount = result.split('_')[2];
+                if (value == 'YES') {
+                    $("#divPendingApproval").show();
+                    $("#DCRApprovalScreen").show();
+                    $("#ApprovalScreen").show();
+                    $("#PendingApproval").html("You have <b>" + count + "</b> DCRs to be approved. At any point in time, you can have only a maximum of <b>" + privilageCount + "</b> DCRs.<br> <br> Please approve them to be able to enter your DCR.")
+                    $("#DCRApprovalScreen").html("Go To DCR Approval Screen")
+                    $('#DCRApprovalScreen').attr("href", "HiDoctor_Master/Approval/DCRApproval");
+                    $('#dcrapproval').html()
+                }
+
+            }
+        });
+
+    }
+
+    function fnDcrApproval() {
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/dcrapprovalscreen',
+            type: "GET",
+            success: function (result) {
+                $("#main").load(result)
+            }
+        });
+    }
+    function fnGotoTPApproval()
+    {   
+        var tpApprovalURL = "HiDoctor_Activity/TourPlanner/TPApproval";
+        $("#main").load(tpApprovalURL);
+        $('#divPageHeader').html("TP Approval");
+
+    }
+
+    function fnGotoSSApproval()
+    {   
+        var ssApprovalURL="HiDoctor_Master/Approval/SecondarySalesApproval";
+        debugger;
+        $("#main").load(ssApprovalURL);
+        $('#divPageHeader').html("SS Approval");
+
+    }
+    
+
+</script>

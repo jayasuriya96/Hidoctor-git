@@ -1,0 +1,735 @@
+﻿@{
+    ViewBag.Title = "ExpenseClaimApproval";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+   .clsApplied {
+    background-color: #00A2E8 !important;
+}
+
+    #dvLeftPanel {
+        background-color: #efefef;
+        border: 1px solid #ddd;
+    }
+
+    #dvRightPanel {
+        border: 1px solid #ddd;
+    }
+
+    #dvPendingClaimTitle {
+        height: 50px;
+        padding: 1rem;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    #dvPendingClaim {
+        /*background-color: #efefef;*/
+    }
+
+        #dvPendingClaim table {
+            width: 100% !important;
+            cursor: pointer;
+        }
+
+        #dvPendingClaim #tblPendingRequest table:first-child {
+            border-top: 1px solid white;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr td {
+            vertical-align: middle !important;
+            border-bottom: 1px solid white;
+        }
+
+        #dvPendingClaim #tblPendingRequest thead {
+            font-weight: bold;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr:hover {
+            background-color: #ddd;
+        }
+
+        #dvPendingClaim #tblPendingRequest tr td div {
+            vertical-align: middle !important;
+            float: left;
+        }
+
+        #dvPendingClaim .user {
+            height: 32px;
+            background: url(../Content/images/Entity.png) no-repeat 50% 50%;
+            float: left;
+            border: 1px solid #ddd;
+        }
+
+        #dvPendingClaim .calender {
+            height: 25px;
+            background: url(../Content/images/cal.png) no-repeat 0 50%;
+            float: left;
+        }
+
+        #dvPendingClaim .remarks {
+            height: 25px;
+            background: url(../Content/images/chat.png) no-repeat 0 50%;
+            float: left;
+        }
+
+
+    #tblExpDetails {
+        width: 100%;
+    }
+
+        #tblExpDetails thead {
+            background-color: #428bca !important;
+            color: white;
+            height: 30px;
+            padding-top: 3px;
+        }
+
+        #tblExpDetails table tr {
+            height: 25px;
+        }
+
+    #tblDoctorCRM {
+        width: 100%;
+    }
+
+        #tblDoctorCRM thead {
+            background-color: #428bca !important;
+            color: white;
+            height: 30px;
+            padding-top: 3px;
+        }
+
+        #tblDoctorCRM table tr {
+            height: 25px;
+        }
+
+
+    .dvClaimCode {
+        font-size: 16px;
+        font-weight: bold;
+        padding-top: 5px;
+        float: left;
+    }
+
+    .table td {
+        border-top: 1px solid white !important;
+    }
+
+    #tblRemarks {
+        width: 100%;
+    }
+
+        #tblRemarks .user {
+            height: 32px;
+            background: url(../Content/images/Entity.png) no-repeat 50% 50%;
+            float: left;
+            width: 35px;
+            /*border: 1px solid #ddd;*/
+            margin-right: 1%;
+            margin-top: 1%;
+        }
+
+    .tdAlignRight {
+        text-align: right;
+        padding-right: 2%;
+    }
+
+    .btnStatus {
+        /*height: 25px;*/
+        width: 100px;
+        float: left;
+        padding-left: 1%;
+        min-height: 10px;
+        /*border: 1px solid green;*/
+        margin-left: 5px;
+        /*background-color: #D6EFDE;*/
+        cursor: pointer;
+        text-align: center;
+        cursor: pointer;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #ffffff;
+        padding: 5px 10px;
+        background: #357AE8;
+        border-radius: 3px;
+        border: none;
+    }
+
+
+    .dvEnteredRemarks {
+        border: 1px solid #ddd;
+        background-color: #F5F5F5;
+        width: 80%;
+        margin-left: 5%;
+        min-height: 35px;
+    }
+
+    #dvAction {
+        padding-top: 1%;
+    }
+
+    #txtAdminRemarks {
+        width: 82%;
+    }
+
+    #dvBottomStatus {
+        overflow: auto;
+        margin-bottom: 3%;
+        padding-left: 10%;
+    }
+
+    #tblExpDetails a {
+        cursor: pointer;
+    }
+
+    #spnClaim {
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+    #dvSName {
+        background-color: gray;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+    }
+
+    #txtOtherDeductionAmount {
+        width: 30% !important;
+        float: right;
+    }
+
+    .clsdeduction {
+        background-color: #F4B084 !important;
+    }
+
+    .panel-default > .panel-heading {
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .simple_overlay .close {
+        background-image: url(/Areas/HiDoctor_Reports/Content/images/close.png);
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+        z-index: 99;
+    }
+
+    .holidaytablewidth {
+        width: 500px !important;
+    }
+
+    .border_top td {
+        border-top: 10px solid #FFF !important;
+    }
+
+    .border_top {
+        background-color: #efefef;
+    }
+
+    #tblExpDetails {
+        background-color: #efefef !important;
+    }
+
+
+    .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+        background-color: #efefef !important;
+    }
+
+    .divHeader {
+        text-align: center;
+        background: #5E87B0 !important;
+        color: #fff;
+        margin-top: 40px;
+        height: 26px;
+        width: 90%;
+        margin-left: 5%;
+    }
+
+        .divHeader p {
+            padding-top: 3px;
+        }
+
+    .tblpopup {
+        margin-top: 15px;
+        margin-left: 45px;
+        width: 80%;
+    }
+
+    .tblpopuptr {
+        text-align: center;
+        display: block;
+    }
+
+    .tblpopuptd {
+        width: 195px;
+        border-top: none !important;
+    }
+
+    .tblpopuptbody {
+        display: block;
+        width: 406px;
+        height: 400px;
+        overflow: auto;
+    }
+
+    .accHeaderTable {
+        width: 99%;
+        margin-bottom: 5px;
+    }
+
+    .gridHeader {
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+        .gridHeader h3 {
+            border: 1px solid #6082AD;
+            background: url(/Areas/HiDoctor_Activity/content/images/Web/hd/titlebg.png) repeat-x scroll left top #688AB5;
+            height: 20px;
+            color: #fff !important;
+            -webkit-border-top-left-radius: 4px;
+            -webkit-border-top-right-radius: 4px;
+        }
+
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/TPApproval12.6.11.js">
+</script>
+<div class="col-lg-12">
+    <div class="col-lg-12">
+        <span onclick="fnShowDetails()" id="spnClaim">Hide Summary</span>
+    </div>
+    <div class="col-lg-12">
+        <div id="dvLeftPanel">
+            <div class="col-sm-12" id="dvPendingClaimTitle">
+                <div style="display:flex;justify-content:space-between">
+                    <div>Pending Claim Request Details</div>
+                    <div>
+                        <input type="text" id="txtClaimSearch" maxlength="100" />
+                        <input type="button" value="Go" style="cursor: pointer;" onclick="fnGetPendingClaimRequest()" />
+                    </div>
+                </div>                
+            </div>
+            <div style="text-align: right;border-bottom: 1px solid;padding: 10px;font-weight: 600;">
+                Search keys : Region Name / User Name / Expense Claim Code / User Type (Designation) / Division
+            </div>
+            <div>
+                <div id="dvPendingClaim" class="table-responsive"></div>
+                <div id="dvMultiplePayment" style="display: none;">
+                    <div class="col-lg-2">
+                        <label style="margin-left: 35%; margin-bottom: 16px; margin-top: 15px;">Mode Of Payment</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" style="margin-bottom: 16px; margin-top: 15px;" class="form-control txtModeOfPayment ac_input" id="txtModeOfPayment" autocomplete="off">
+                    </div>
+                    <div class="col-lg-8" id="divMultipleClose">
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvRightPanel" class="col-lg-12" style="display: none;">
+            <div>
+                <div style="overflow: auto;">
+                    <div class="col-lg-6">
+                        <div class="dvClaimCode">
+                            Expense Claim Request :
+                        </div>
+                        <div id="dvClaimCode" class="dvClaimCode" style="float: left;"></div>
+                    </div>
+                    <div class="col-lg-6" id="dvAction">
+                    </div>
+                </div>
+                <div id="dvClaimStatus"></div>
+                <div style="clear: both;"></div>
+                <input type="hidden" id="hdnStatusCode" />
+                <input type="hidden" id="hdnCycleCode" />
+                <input type="hidden" id="hdnMoveOrder" />
+                <input type="hidden" id="hdnFavouringUsercode" />
+                <input type="hidden" id="hdnExpenseclaimcode" />
+                <input type="hidden" id="hdnClaimDate" />
+                <input type="hidden" id="hdnScreenMode" />
+
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvEmpDetails">Employee Details</div>
+                <div class="col-lg-12 panel-body table-responsive">
+                    <table style="width: 80%;" class="table">
+                        <tr>
+                            <td>Employee No</td>
+                            <td><span id="spnEmployeeNo"></span></td>
+                            <td>Reporting Manager Name</td>
+                            <td><span id="spnReportingUserName"></span></td>
+                        </tr>
+                        <tr>
+                            <td>User Name</td>
+                            <td><span id="spnClaimUserName"></span></td>
+                            <td>Reporting Region Name</td>
+                            <td><span id="spnReportingRegionName"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Employee Name</td>
+                            <td><span id="spnEmployeeName"></span></td>
+                            <td>Employee Bank Account No</td>
+                            <td><span id="spnEmpAccountNo"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Region Name</td>
+                            <td><span id="spnRegionName"></span></td>
+                            <td>Mobile No</td>
+                            <td><span id="spnMobileNo"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Designation</td>
+                            <td><span id="spnDesigantion"></span></td>
+                            <td>Date Of Joining</td>
+                            <td><span id="spnDOJ"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Division</td>
+                            <td><span id="spnDivision"></span></td>
+                            <td></td>
+                            <td><span ></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="panel panel-default" id="dvClaimHeaderPanel">
+                <div class="panel-heading" id="dvClaimHeder">Claim Details</div>
+                <div class="panel-body  table-responsive">
+                    <table style="width: 80%;" class="table">
+                        <tr>
+                            <td id="tdDcrDateTitle">DCR Date : </td>
+                            <td id="tdDcrDate"><span id="spnDcrDate"></span></td>
+                            <td>Claim Date : </td>
+                            <td><span id="spnClaimDate"></span></td>
+                            <td>Claim Amount (Rs.): </td>
+                            <td><span id="spnClaimAmount"></span></td>
+                            <td id="tdTotalDeductionTitle">Total Deduction (Rs.): </td>
+                            <td id="tdTotalDeduction"><span id="spnTotalDeduction"></span></td>
+                            <td>Approved Amount (Rs.): </td>
+                            <td><span id="spnApprovedAmount"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvExpDetails" style="display: flex;justify-content: space-between;">
+                    <div>
+                        <label>
+                            Expense item details
+                        </label>
+                        <a id="aExpDetails" onclick="fnExpandItemwiseDetails();">Show</a>
+                    </div>
+                    <div>
+                        <a class="td-a" id="Expensereport" onclick="fnBindUserData();">Print Report</a>
+                    </div>
+                </div>
+                @*<div class="panel-heading" id="dvExpDetails">Expense item details <a id="aExpDetails" onclick="fnExpandItemwiseDetails();">Hide</a></div>*@
+                <div class="panel-body">
+                    <div id="dvClaimDetails" class="table-responsive" style="width: 100%; overflow-x: scroll; overflow-y: hidden;">
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="dvAddlExpDetails">
+                <div class="panel-heading" id="dvAddlExpenseTypeAmount">Additional Expense Item Details</div>
+                <div class="panel-body">
+                    <div id="dvAddlExpenseTypeAmountDetail" class="table-responsive" style="width: 100%; overflow-x: scroll; overflow-y: hidden;">
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="dvExpClaimMonthlyDetails" style="display: none">
+                <div class="panel-heading" id="dvExpDetailsDCRDetails">SFC Visit Details & Monthly Allowance Eligibility <a id="aDCRExpDetails" onclick="fnExpandSFCDetails();">Hide</a></div>
+                <div class="panel-body">
+                    <div id="dvExpDCRDetails" class="table-responsive" style="width: 100%; overflow-x: scroll; overflow-y: hidden;">
+                    </div>
+                </div>
+            </div>
+            <div id="superscript"><span style="color: red; font-weight: bold; font-style: oblique; margin-left: 2%;">A superscript beside the Approved Amount indicates the number of iterations it has been through. An iteration indicates the action at any user level, whether applying a claim/ deductions / reversal of earlier deductions/approvals/unapprovals.</span></div>
+            <div class="panel panel-default" id="dvExpDetails">
+                <div class="panel-heading" id="dvExpenseTypeAmount">Expense Type Wise Amount</div>
+                <div class="panel-body" id="dvExpenseTypeAmountDetail">
+                </div>
+            </div>
+
+            <div class="panel panel-default" id="dvDeductionPanel">
+                <div class="panel-heading" id="dvOtherDeduction">Other deduction</div>
+                <div class="pane-body table-responsive form-group">
+                    <table style="width: 50%;" class="table">
+                        <tr>
+                            <td id="ItemWiseDeduction">Item Wise Deduction </td>
+
+                            <td class="tdAlignRight"><span id="spnItemwiseDeduction"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Deduction</td>
+                            <td>
+                                <input type="number" class="form-control numbersOnly" id="txtOtherDeductionAmount" value="0.0" min="1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Total Claimed Amount</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalClaimAmount"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Total Deduction</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalDeductionAmount"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+
+                            <td class="tdAlignRight"><span id="spnTotalApprovedAmount"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel panel-default dvpayment" id="dvPaymentDetails">
+                <div class="panel-heading" id="dvPayment">Payment Details</div>
+                <div class="pane-body table-responsive form-group">
+                    <table style="width: 50%;" class="table">
+                        <tr>
+                            <td class="tdAlignRight"><span id="spnPayment"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Mode Of Payment</td>
+                            <td>
+                                <input type="text" class="form-control txtModeOfPayment" id="txtModeOfPayment" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Remarks(Cheque or dd num. etc.)</td>
+
+                            <td>
+                                <input type="text" class="form-control" id="txtPaymentRemarks" maxlength="500">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default" id="dvDocPannel" style="margin-bottom: 30px;">
+                <div class="panel-heading" id="dvDocHeader">Attached Referral Document</div>
+                <div class="panel-body">
+                    <div id="dvDoc" style="margin-bottom: 40PX;">
+                    </div>
+                    <div>
+                        <input type="button" name="name" value="Download All" onclick="fnDownloadAllImg()" class="btnStatus" s />
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvRemarks">Remarks</div>
+                <div class="panel-body" id="dvConRemarks">
+                </div>
+            </div>
+            <div id="divDowenloadLink" style="display: none;"></div>
+            <div class="col-lg-12">
+                <div id="dvBottomStatus"></div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<div id="dvSFCPopUp" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvSFCPopUp').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span id="spnPopUpTitle">DCR SFC Details</span>
+    </div>
+    <div id="dvSFC"></div>
+</div>
+
+<div id="dvHistoryPopUp" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvHistoryPopUp').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span id="spnPopUpTitle">Expense Claim Status History</span>
+    </div>
+    <div id="dvClaimHistoryPopUp"></div>
+</div>
+<input type="hidden" id="hdnExpType" />
+
+<div class="simple_overlay" id="dvOverLay">
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Expense Claim Deduction Details</span>
+    </div>
+
+    <div id="divclaimDeductionDetail" style="max-height: 500px; overflow: auto;">
+    </div>
+</div>
+
+<div class="simple_overlay" style="width: 70%; top: 66.7px; left: 219px; position: fixed; overflow: scroll;" id="dvDoctorDetails">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#dvDoctorDetails').overlay().close();" style="padding-bottom: 40px; padding-right: 44px; margin-top: 10px;"></a>
+    <div class="col-lg-12">
+        <div class="popUpTitle" style="height: 45px;">
+            <span>Doctor Details</span>
+        </div>
+        <div class="col-lg-5">
+            <div><span style="font-size: medium;">Doctor Quick View Details(past 6 months)</span></div>
+            <div id="dvDoctorQuickView" style="height: 45px; width: 30px">
+            </div>
+        </div>
+        <div style="width: 40px"></div>
+        <div class="col-lg-6">
+            <div><span style="font-size: medium;">Product Details(past 6 months)</span></div>
+            <div id="dvProductDetails" style="height: 45px; width: 30px">
+            </div>
+        </div>
+    </div>
+</div>
+@*TP Details*@
+<div class="simple_overlay" id="dvTpDetails">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#dvTpDetails').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>TP Details</span>
+    </div>
+    <div id="divTpDetails" style="max-height: 500px; overflow: auto;">
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvTpReport">
+    <!-- image details -->
+    <div class="details">
+        <div style="font-size: 20px">
+            TP Details
+        </div>
+        <hr />
+        <div id="dvTp" style="width: 98%; height :400px; overflow-y:auto;">
+        </div>
+
+    </div>
+</div>
+
+@*Remarks details*@
+<div class="simple_overlay" id="dvClaimRemarks">
+    <!-- image details -->
+    <div class="details">
+        <div style="font-size: 20px">
+            Remarks Details
+        </div>
+        <hr />
+        <div id="dvExpenseRemarksData" style="width: 98%; height :400px; overflow-y:auto;">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th align="center">Expense Remarks</th>
+                        <th align="center">Remarks By User</th>
+                        <th align="center">Reference Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="spnExpRem"></span></td>
+                        <td><span id="spnRemByUser"></span></td>
+                        <td><span id="spnBillNum"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<iframe id="ifrmPrintPopUp" style="height: 0px; width: 0px;"></iframe>
+<div id="dvPrintPopupContent" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ExpenseClaimApproval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/ExpenseClaimReport.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var details = "";
+    var curRegionName = "";
+    var expensePrivilege_g = "";
+    var Company_Code = "";
+    var Region_Code ="";
+    var User_Name = "";
+    var User_Code = "";
+    var User_Type_Code = "";
+    var User_Type_Name = "";
+    $(document).ready(function () {
+        //AjaxGlobalHandler.Initiate();
+        try {
+            debugger;
+            curRegionName = @Html.Raw(Json.Encode(ViewBag.RegionName));
+            Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+            Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            User_Name = @Html.Raw(Json.Encode(ViewBag.User_Name));
+            User_Code = @Html.Raw(Json.Encode(ViewBag.User_Code));
+            User_Type_Code = @Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+            User_Type_Name = @Html.Raw(Json.Encode(ViewBag.User_Type_Name));
+            $("#dvSFCPopUp").overlay().load();
+            //$("#dvClaimRemarks").overlay().load();
+            $("#dvHistoryPopUp").overlay().load();
+            $('#dvDoctorDetails').overlay().load();
+            var defaultOptions = "NO";
+            var ExpensedetectionOptions = fnGetPrivilegeValue("SHOW_CLAIM_DEDUCTION_DETAILS", defaultOptions);
+            if (ExpensedetectionOptions == "NO") {
+                $("#txtOtherDeductionAmount").attr("readonly", true);
+            }
+            else {
+                $("#txtOtherDeductionAmount").attr("readonly", false);
+            }
+            //  $("#txtOtherDeductionAmount").keypress(function () { return fnIsNumeric(event) });
+            $("#txtOtherDeductionAmount").blur(function () { fnCalcTotal(this) });
+            fnGetPendingClaimRequest();
+            $("#dvAjaxLoad").hide();
+            $("#dvPaymentDetails").hide();
+
+            var PaymentAutoFill = [];
+            var Payment = {};
+            Payment.label = "Cheque Or DD";
+            Payment.value = "Cheque";
+            PaymentAutoFill.push(Payment);
+            Payment = {};
+            Payment.label = "Cash";
+            Payment.value = "Cash";
+            PaymentAutoFill.push(Payment);
+            Payment = {};
+            Payment.label = "Others";
+            Payment.value = "Others";
+            PaymentAutoFill.push(Payment);
+
+            //autoComplete(d_g, "txtDCust", "hdnDCust", 'autoCustEdit');
+
+            autoComplete(PaymentAutoFill, "txtModeOfPayment", "txtModeOfPayment", 'txtModeOfPayment');
+
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        //$(".numbersOnly").keypress(function (e) {
+        //    //if the letter is not digit then display error and don't type anything
+        //    if (e.which != 8 && e.which != 0 && e.key != "." && (e.which < 48 || e.which > 57)) {
+        //        return false;
+        //    }
+        //});
+    });
+    $("#dvOverLay").overlay().load();
+
+
+
+
+</script>

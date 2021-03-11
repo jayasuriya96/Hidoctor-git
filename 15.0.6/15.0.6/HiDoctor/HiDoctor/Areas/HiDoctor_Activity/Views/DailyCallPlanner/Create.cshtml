@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Create";
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class="mainDiv2">
+    <input type="hidden" id="hdnDCRDateCreate" />
+    <input type="hidden" id="hdnYTDCreate" />
+    <div style="float: left; width: 100%;" id="divDailyCallHeaderCreate">
+    </div>
+    <div id="dvShowDocDetailCreate" class="dvTab" style="display: none;">
+        <div style="float: left; width: 60%; font-weight:bold;">
+            <input type="radio" name="financeyearCreate" checked="checked" value="APRIL" />
+            <span style="margin: 5px;">Financial Year (From April to till Date)</span>
+            <input type="radio" name="financeyearCreate" value="MARCH" />
+            <span style="margin: 5px;">Calendar Year (From Jan to till Date)</span>
+        </div>
+        <div class="dvTabdetail" style="float: left;" id="divDailyCallDetailCreate">
+        </div>
+    </div>
+    <div id="dvDailyPopupCreate" class="dailyPopUp" style="display: none;">
+        <div class="dvAccPopUpClose">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif" style="float: right;
+                cursor: pointer; margin-right: 0px;" onclick="HideModalPopup('dvDailyPopupCreate');" />
+        </div>
+        <div id="dvSubDailyPopupCreate">
+        </div>
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DailyCallPlanner.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">    
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#hdnDCRDateCreate").val(@Html.Raw(Json.Encode(ViewBag.dcrDate)));
+        var type = @Html.Raw(Json.Encode(ViewBag.type));
+        
+        if (type == 'DCR') {       
+            fnGetDailyCallPlannerCreate();
+            $("input:radio[name=financeyearCreate]").click(function () {
+                fnGetDailyCallPlannerDoctorDetailsCreate($(this).val());
+            });
+            fnGetDailyCallPlannerDoctorDetailsCreate("APRIL");            
+        }
+        else if (type == 'ATTEN') {
+            fnLoadAttendanceCreate();
+        }
+        else if (type == 'LEAVE') {
+            fnLoadLeaveDeatilsCreate();
+        }
+
+        else if (type == 'HOLIDAY') {
+            fnLoadHolidayDetailCreate();
+        }
+    }); 
+</script>

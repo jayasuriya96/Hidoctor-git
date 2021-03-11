@@ -1,0 +1,59 @@
+﻿<style>
+    .SuccessMessage {
+        height:inherit;
+        width:95%;
+        background-color:limegreen;
+        color:white;
+        font-size:16px;
+        margin:5px;
+        padding:5px;
+        margin-left:10px;
+    }
+    .ErrorMessage {
+        height:41px;
+        width:95%;
+        background-color:red;
+        color:white;
+        font-size:16px;
+        margin:5px;
+        padding:5px;
+    }
+</style>
+<div id="dvSuccessMessage" class="SuccessMessage" style="display:none;">Your excel file is successfully uploaded. System is currently processing your file. To know the status of the upload,  please visit the batch processing screen using the link provided below.
+</div>
+<div id="dvErrorMessage" class="ErrorMessage" style="display:none;"></div>
+
+<script>
+    $(document).ready(function () {
+        
+        var ErrCode;
+        ErrCode = @Html.Raw(Json.Encode(ViewBag.ErrorCode));
+        switch(ErrCode)
+        {
+            case "-1":
+                $('#dvSuccessMessage').css("display",'');
+                parent.document.getElementById('lnkBP').style.display='';
+                break;
+            case "0":
+                $('#dvErrorMessage').html("Invalid file name. please choose correct file.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "1":
+                $('#dvErrorMessage').html("Invalid excel format. Column headers are invalid.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "2":
+                $('#dvErrorMessage').html("Invalid excel file. please choose the original file.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            case "5":
+                $('#dvErrorMessage').html("Unexpected Error.Please verify the excel sheet.")
+                $('#dvErrorMessage').css('display','');
+                break;
+            default:
+                $('#dvErrorMessage').html(ErrCode)
+                $('#dvErrorMessage').css('display','');
+        }
+        
+    });
+</script>

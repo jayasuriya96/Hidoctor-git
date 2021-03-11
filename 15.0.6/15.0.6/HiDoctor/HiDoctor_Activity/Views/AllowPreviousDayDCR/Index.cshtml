@@ -1,0 +1,666 @@
+﻿@{
+    ViewBag.Title = "Allow PreviousDay DCR";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<style>
+    .className {
+        border: none !important;
+    }
+</style>
+
+<div id="dvAllowPreviousDayDCR">
+    <div class="col-lg-12" style="min-height: 500px; overflow: auto;">
+        <div class='col-xs-4 leftNav' id='leftNav' style="margin-top:12px;">
+            <div id="usertree" style="float: left; height: 500px; width: 100%">
+            </div>
+            <div style="width: 1px;"></div>
+        </div>
+        <div id="dvdata" class="col-sm-8" min-height:500px;overflow:auto;">
+            <div>
+                <span onclick="fnToggleTree()" id="lnkTree" class="shInput" style="margin-right: 3px">Hide Tree</span>
+            </div>
+            <div style="clear: both"></div>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <div id="dvtabs" class="form-group">
+                <ul class="nav nav-pills ui-tabs-nav">
+                    <li class="ui-state-default create" id="dcrActive">
+                        <a href="#ActiveDCR" data-toggle="tab" onclick="fnGetPreviousDayReleasedDCR()"><b>Released DCR</b></a>
+                    </li>
+                    <li class="ui-state-active create" id="dcrInActive">
+                        <a href="#InActiveDCR" data-toggle="tab" onclick="fnGetPreviousDayLockedDCR()"><b>Locked DCR</b></a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="ActiveDCR">
+                        <br />
+                        <form class="form-horizontal" enctype="multipart/form-data" method="post" role="form">
+                            <div id="dvPreDayDCREntryForm" class="col-sm-10 form-group">
+                                <div class="col-sm-8 form-group formtextboxfocus" style="height: 31px;">
+                                    <div class="col-sm-4 form-group">DCR Date</div>
+                                    <div class="col-sm-6 form-group">
+                                        <input type="text" id="txtDCRDate" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 form-group formtextboxfocus" style="height: 31px;">
+                                    <div class="col-sm-4 form-group">Remarks</div>
+                                    <div class="col-sm-6 form-group">
+                                        <input type="text" id="txtRemarks" class="form-control" maxlength="150" />
+                                    </div>
+                                </div>
+                                <div style="clear: both"></div>
+                                <input type="button" id="btnSave" class="btn btn-primary" value="Submit" onclick="fnSave()" />
+                            </div>
+                            <div style="clear: both"></div>
+
+                            <br />
+                            @*<div style="float:right;"><label>Search:</label><input type="text" class="global_filter" id="SearchA" placeholder="Search" onblur="fnSearch(id)"></div>*@
+                            <div class="table-responsive" id="dvActiveDCRTable" style="width: 100%; margin-left: 5px; overflow:auto;">
+
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                    <div class="tab-pane in active" id="InActiveDCR">
+                        <br />
+                        <div class="table-responsive" id="dvLockedDCRTable" style="width: 100%; margin-left: 5px; overflow:auto;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    debugger;
+    var currentUserCode_g = '';
+    var userCodes = "";
+    var selKeys = "";
+    var active = '';
+    $(document).ready(function () {
+        debugger;
+        //AjaxGlobalHandler.Initiate();
+
+        //Getting user code from ViewBag
+        currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        try {
+            $('#dvAllowPreviousDayDCR').block({
+                message: 'Loading and Bind the tree...',
+                css: { border: '1px solid #ddd' }
+            });
+
+            $("#leftNav").show();
+            fnTreePositionForMasterDataMD("usertree");
+            fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchUsersNewMD();
+                    return false;
+                }
+            });
+            $("#dvAjaxLoad").hide();
+            $("#txtDCRDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+
+            $('#dvAllowPreviousDayDCR').unblock();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+            $("#dvAllowPreviousDayDCR").unblock();
+        }
+    });
+
+
+    function fnUserTreePostInit() {
+    }
+
+    function fnTreePositionForMasterDataMD(id) {
+        debugger;
+        var tblContent = "";
+        tblContent += "<div id='treeNav'>";
+        tblContent += "<div id='dvNodeSearch'>";
+        tblContent += "<div class='input-group col-xs-8'>";
+        tblContent += "<input type='text' id='txtSearchNode' placeholder='Search' class='form-control'/>";
+        tblContent += "<span class='input-group-addon' onclick='fnSearchUsersNewMD();'><i class='fa fa-search'></i></span></div>";
+        tblContent += "<span onclick='fnShowFullTreeClickMD();' id='dvFullTree' class='pull-right' style='margin-right: 4%;cursor:pointer;' title='Click here to show all users'><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<span onclick='fnLoadInitialTreeMD();' id='dvLoadTree' class='pull-right' style='display: none; margin-right: 4%;cursor:pointer;' title='Click here to show all users' ><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<div class='clearfix'></div></div>";
+        tblContent += "<div id='dvFilteredNode' class='dvFilteredNode' style='display: none;'></div>";
+        tblContent += "<div id='dvMainTree'>";
+        tblContent += "<div id='dvUserTree' class='dvNewUserTree' style='height:450px'><img src='../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif'/>Loading tree</div>";
+        tblContent += "<div class='clearfix' style='height: 676px' ></div>";
+        tblContent += "</div></div>";
+        $('#' + id).html(tblContent);
+    }
+
+    function fnShowFullTreeClickMD() {
+        debugger;
+        $('#dvPreviousNode').hide();
+        $('#dvFullTree').hide();
+        $('#dvLoadTree').show();
+        $('#dvLoadTree').attr("title", "Click here to show users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode", "NO");
+    }
+
+    function fnLoadInitialTreeMD() {
+        debugger;
+        $('#dvFullTree').show();
+        $('#dvLoadTree').hide();
+        $('#dvFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+    }
+
+    function fnBindUsersWithOneLevelParentNewMD() {
+        debugger;
+        var userCode = $("#dvUserTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        fnGetUserTreeByUserWithOnelevelParentNew(userCode, "dvUserTree", "dvFilteredNode");
+    }
+
+    function fnSearchUsersNewMD() {
+        debugger;
+        if ($.trim($('#txtSearchNode').val()) == '') {
+            if(selKeys.length==0){
+                fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }else{
+                fnGetUserTreeByUserwithcheckboxMD(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            }
+        }
+        else {
+            fnGetUsersByUserNameEmployeeNameMD($('#txtSearchNode').val(), "dvUserTree", "dvFilteredNode");
+        }
+    }
+
+
+    function fnGetUserTreeByUserWithCheckBox(userCode, treeId, filterId) {
+        debugger;
+        if (userCode == "") {
+            userCode = currentUserCode_g;
+        }
+        $('span').removeClass('childIcon');
+
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode',
+            data: "userCode=" + userCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                debugger;
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(jsData);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onSelect: function (select, node) {
+                            // Get a list of all selected nodes, and convert to a key array:
+                            fnUserTreeSelect(select, node);
+                            //
+                        },
+                        onDblClick: function (node, event) {
+                            var select = node.bSelected;
+                            node.select(!select);
+                            node.visit(function (node) {
+                                node.select(!select);
+                            });
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").removeClass('childIcon');
+
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+
+    function fnBindTreeWithSelectedUserChecked(userCode,treeId,filterId){
+        debugger;
+        if(userCode!=""){
+            fnGetUserTreeByUserwithcheckboxMD(userCode, treeId,filterId);
+        }
+    }
+
+    function fnGetUsersByUserNameEmployeeNameMD(userName, treeId, filterId) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: 'HiDoctor_Activity/AllowPreviousDayDCR/GetUsersByUserNameEmployeeNameMD',
+            data: "userName=" + userName + "&treeId=" + treeId + "&filterId=" + filterId + "",
+            success: function (result) {
+                debugger;
+                if (result != "") {
+                    $('#' + filterId).html(result);
+                    $('#' + treeId).hide();
+                    $('#' + filterId).show();
+
+                }
+                else {
+                    debugger;
+                    fnGenerateUserTree("dvUserTree");
+                    $('#' + treeId).show();
+                    $('#' + filterId).hide();
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+            }
+        });
+    }
+
+
+    function fnGetUserTreeByUserwithcheckboxMD(userCode, treeId, filterId) {
+        debugger;
+        if (userCode == "") {
+            userCode = currentUserCode_g;
+        }
+
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode',
+            data: "userCode=" + userCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: true,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onSelect: function (select, node) {
+                            //// Get a list of all selected nodes, and convert to a key array:
+                            fnUserTreeSelect(select, node);
+                        },
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onDblClick: function (node, event) {
+                            fnUserTreeNodeDblClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+
+
+                    $("#dvAjaxLoad").hide();
+                    $("span.childIcon").unbind("click");
+                    $("span.childIcon").live("click", function (e) {
+                        fnShowChildNodes(e.target);
+                    });
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                var testKey=selKeys;
+                for (var i = 0; i < testKey.length; i++) {
+                    $("#"+treeId).dynatree("getRoot").visit(function (node) {
+                        if(testKey[i]==node.data.key){
+                            node.select(true);
+                        }
+                    });
+                }
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+
+    function fnToggleTree() {
+        debugger;
+        if ($("#lnkTree").text() == "Hide Tree") {
+            $('#usertree').hide();
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $('#dvdata').removeClass('col-sm-8');
+            $('#dvdata').addClass('col-xs-11');
+
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');
+            $("#lnkTree").text('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+
+        }
+        else if ($("#lnkTree").text() == "Show Tree") {
+            $('#usertree').show();
+            $('#leftNav').addClass('col-xs-3');
+            $('#dvdata').removeClass('col-xs-11');
+            $('#dvdata').addClass('col-sm-8');
+
+            $('#divMain').removeClass('col-xs-7');
+            $('#divMain').removeClass('col-xs-8');
+            $('#divMain').removeClass('col-xs-9');
+            $("#divMain").addClass('col-xs-9');
+            $("#lnkTree").text('Hide Tree');
+        }
+    }
+
+
+    //Used To Resize the Tree
+    function fnUserTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'usertree');
+    }
+
+    function fnUserTreeSelect(select, node) {
+        debugger;
+        bindFlag = true;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        SelTitleKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.title;
+        });
+        fnGetPreviousDayReleasedDCR();
+    }
+
+    function fnSave()
+    {
+        if (fnValidate()) {
+            try {
+                var users = ''
+
+                // set the user codes.
+                for (var i = 0; i < selKeys.length; i++) {
+                    users += selKeys[i] + "^";
+                }
+
+                // change the date format.
+                var remks = $('#txtRemarks').val();
+                var DCRDate = $('#txtDCRDate').val().split('/');
+                DCRDate = DCRDate[1] + '/' + DCRDate[0] + '/' + DCRDate[2];
+                // call controller.
+                $.ajax({
+                    type: "post",
+                    url: 'HiDoctor_Activity/AllowPreviousDayDCR/InsertPreviousDayDCR',
+                    data: "UCodes=" + users + "&DCRDt=" + DCRDate + "&Remarks=" + remks,
+                    success: function (response) {
+                        HideModalPopup("dvloading");
+                        debugger;
+                        if (response == "true" || response == "True") {
+                            fnMsgAlert('success', 'Previous Day DCR', 'Lock released successfully.');
+                            $('#txtDCRDate').val('');
+                            $('#txtRemarks').val('');
+                            fnTreePositionForMasterDataMD("usertree");
+                            fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                            selKeys = [];
+                        }
+                        else {
+                            fnMsgAlert('error', 'Previous Day DCR', 'Already lock released.');
+                            $('#txtDCRDate').val('');
+                            $('#txtRemarks').val('');
+                            fnTreePositionForMasterDataMD("usertree");
+                            fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                            selKeys = [];
+                        }
+                    },
+                    error: function (e) {
+                        fnMsgAlert("error", "Previous Day DCR", e.responseText);
+                        HideModalPopup("dvloading");
+                        return false;
+                    },
+                });
+                fnGetPreviousDayReleasedDCR();
+                fnGetPreviousDayLockedDCR();
+            }
+            catch (e) {
+                HideModalPopup("dvloading");
+            }
+        }
+    }
+
+
+
+
+    function fnValidate() {
+        debugger;
+        var errMsg = "";
+
+        // user mandatory.
+        if (selKeys.length == 0) {
+            errMsg = "Please select atlease one user.<br />";
+        }
+
+        if ($.trim($('#txtDCRDate').val()).length == 0) {
+            errMsg += "Please choose the DCR date. <br />";
+
+        }
+
+        // show errors.
+        if (errMsg.length > 0) {
+            fnMsgAlert("info", "Allow PreviousDay DCR", errMsg);
+            return false;
+        }
+        return true;
+    }
+
+
+    function fnGetPreviousDayReleasedDCR(){
+        var Selected_Users = '';
+        if (selKeys.length == 0){
+            $('#dvActiveDCRTable').empty();
+            return false;
+        }
+        else {
+            // set the user codes.
+            for (var i = 0; i < selKeys.length; i++) {
+                Selected_Users += selKeys[i] + "^";
+            }
+        }
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: 'HiDoctor_Activity/AllowPreviousDayDCR/GetPreviousDayReleasedDCR',
+            data: "Usr_Code=" + Selected_Users,
+            success: function (response) {
+                debugger;
+                $('#dvActiveDCRTable').empty();
+                $('#dvActiveDCRTable').show();
+                if (response.length > 0) {
+                    var grid = new ej.grids.Grid({
+                        dataSource: response,
+                        showColumnChooser: false,
+                        allowPaging: true,
+                        allowGrouping: false,
+                        allowSorting: true,
+                        allowFiltering: true,
+                        allowResizing: true,
+                        allowCellMerging: true,
+                        allowScrolling: true,
+                        allowTextWrap: true,
+                        pageSettings: { pageSize: 10, pageSizes: [5, 10, 20, 40, 60, 80, 100], pageCount: 10 },
+                        filterSettings: { type: 'CheckBox' },
+                        //toolbar: ['Search', 'ColumnChooser'],
+                        toolbar: ['Search'],
+                        aggregates: [],
+                        height:'auto',
+                        columns: [
+                                { field: 'Region_Name', headerText: 'Region Name', width: 150, textAlign: 'left' },
+                                { field: 'User_Name', headerText: 'User Name', width: 200, textAlign: 'left' },
+                                { field: 'Employee_Name', headerText: 'Employee Name', width: 200, textAlign: 'left' },
+                                { field: 'User_Type_Name', headerText: 'Designation', width: 200, textAlign: 'left' },
+                                { field: 'Dcr_Date', headerText: 'DCR Date', width: 200, textAlign: 'left' },
+                                { field: 'Remarks', headerText: 'Remarks', width: 200, textAlign: 'left' },
+                        ],
+                    });
+                    grid.appendTo('#dvActiveDCRTable');
+                    
+                }
+                else {
+                    $('#dvActiveDCRTable').html("No records found.");
+                    $('#dvActiveDCRTable').addClass('className');
+                }
+            },
+            error: function (e) {
+                fnMsgAlert("error", "Previous Day DCR", e.responseText);
+                return false;
+            }
+        });
+    }
+
+
+    function fnGetPreviousDayLockedDCR(){
+        var Selected_Users = '';
+        if (selKeys.length == 0){
+            $('#dvLockedDCRTable').empty();
+            return false;
+        }
+        else {
+            // set the user codes.
+            for (var i = 0; i < selKeys.length; i++) {
+                Selected_Users += selKeys[i] + "^";
+            }
+        }
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: 'HiDoctor_Activity/AllowPreviousDayDCR/GetPreviousDayLockedDCR',
+            data: "Usr_Code=" + Selected_Users,
+            success: function (response) {
+                debugger;
+                $('#dvLockedDCRTable').empty();
+                $('#dvLockedDCRTable').show();
+                if (response.length > 0) {
+                    var grid = new ej.grids.Grid({
+                        dataSource: response,
+                        showColumnChooser: false,
+                        allowPaging: true,
+                        allowGrouping: false,
+                        allowSorting: true,
+                        allowFiltering: true,
+                        allowResizing: true,
+                        allowCellMerging: true,
+                        allowScrolling: true,
+                        allowTextWrap: true,
+                        pageSettings: { pageSize: 10, pageSizes: [5, 10, 20, 40, 60, 80, 100], pageCount: 10 },
+                        filterSettings: { type: 'CheckBox' },
+                        //toolbar: ['Search', 'ColumnChooser'],
+                        toolbar: ['Search'],
+                        aggregates: [],
+                        height:'auto',
+                        columns: [
+                                { field: 'Region_Name', headerText: 'Region Name', width: 150, textAlign: 'left' },
+                                { field: 'User_Name', headerText: 'User Name', width: 200, textAlign: 'left' },
+                                { field: 'Employee_Name', headerText: 'Employee Name', width: 200, textAlign: 'left' },
+                                { field: 'User_Type_Name', headerText: 'Designation', width: 200, textAlign: 'left' },
+                                { field: 'Dcr_Date', headerText: 'DCR Date', width: 200, textAlign: 'left' },
+                                { field: 'Remarks', headerText: 'Remarks', width: 200, textAlign: 'left' },
+                                { field: 'CreatedBy', headerText: 'Created By', width: 200, textAlign: 'left' },
+                                { field: 'CreatedDate', headerText: 'Created Date', width: 200, textAlign: 'left' },
+                                { field: 'UpdatedBy', headerText: 'Updated By', width: 200, textAlign: 'left' },
+                                { field: 'UpdatedDate', headerText: 'Updated Date', width: 200, textAlign: 'left' },
+                                { field: 'Uploaded_Date', headerText: 'Uploaded Date', width: 200, textAlign: 'left' },
+                        ],
+                    });
+                    grid.appendTo('#dvLockedDCRTable');
+                }
+                else {
+                    $('#dvLockedDCRTable').html("No records found.");
+                    $('#dvLockedDCRTable').addClass('className');
+                }
+            },
+            error: function (e) {
+                fnMsgAlert("error", "Previous Day DCR", e.responseText);
+                return false;
+            }
+        });
+    }
+</script>
+
+

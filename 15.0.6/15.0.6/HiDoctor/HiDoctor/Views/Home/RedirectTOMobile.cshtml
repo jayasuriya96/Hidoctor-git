@@ -1,0 +1,127 @@
+﻿<script type="text/javascript">
+    $('#dvheaderCont').css('display', 'none');
+    var denysites = new Array();
+    debugger;
+    denysites.push("endura.hidoctor.me");
+    denysites.push("ventura.hidoctor.me");
+    denysites.push("awd.hidoctor.me");
+    denysites.push("egi.hidoctor.me");
+    denysites.push("ortho.hidoctor.me");
+    denysites.push("hdtest-pv2.hidoctor.me");
+    denysites.push("hdtest-pv1.hidoctor.me");
+    denysites.push("localhost:49760");
+
+
+
+
+   // if ($.inArray(window.location.host, denysites) > -1) {
+        if(true){
+        $(".clsinst").css("display", '');
+        $("#login").css("display", 'none');
+        $("#lnklogout").css("display", "none");
+        isdenied = 1;
+    }
+    else {
+        $(".clsinst").css("display", 'none');
+        $("#lnklogout").css("display", "");
+    }
+</script>
+
+
+
+
+<div id="login">
+    <div data-role="header" data-theme="b" data-mini="true">
+        <h3 data-mini="true">
+            Login
+        </h3>
+    </div>
+    <div data-role="content" data-theme="d">
+        <span style="color: #C63828" id="spnError"></span>
+        <div class="ui-controlgroup-controls">
+            <label for="txtUserName" class="ui-input-text">
+                User Name
+            </label>
+            <input name="" data-mini="true" id="txtUserName" placeholder="User Name" value="" type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+        </div>
+        <div class="ui-controlgroup-controls">
+            <label for="txtPassword" class="ui-input-text">
+                Password
+            </label>
+            <input name="" data-mini="true" id="txtPassword" placeholder="Password" value="" type="password" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+        </div>
+        <div>
+            <input type="button" value="Login" id="btnLogin" onclick="fnUserAuthentication()" data-theme="b" />
+            @*<a data-role="button" id="btnLogin" href="#page1" class="ui-btn-left" onclick="fnUserAuthentication()" data-theme="A">Login
+                </a>*@
+        </div>
+        @*<div>
+                <a id="lnkForgotPass" href="" data-transition="fade" class="ui-link" onclick="fnOpenPassword()">Forgot Password?
+                </a>
+            </div>*@
+        <input type="hidden" id="hdnNeedGeo" />
+    </div>
+</div>
+<div class="clsinst" style="text-align:center;margin-top:50px;">
+    <div style="font-size:14px;font-weight:600">Hi !</div>
+    <div style="font-size:14px;font-weight:600">Mobile browser version is outdated. Kindly download the APP version and enjoy reporting....</div>
+    <br />
+    <a class="clsinst" href="https://play.google.com/store/apps/details?id=com.swaas.hidoctor"> <img src="../Content/images/playstore.png" /></a>
+    <a class="clsinst" href="https://itunes.apple.com/in/app/hidoctor-sfa/id1219172659?mt=8"><img src="../Content/images/appstoreicon.png" /></a>
+
+</div>
+<div style="width: 100%; float: left;">
+    <span style="font-size: 19px">&#9742;</span>
+    +91 90254-07475 &nbsp;
+</div>
+<div style="width: 100%; float: left;">
+    <span style="font-size: 19px">&#9993;</span>
+    <a href="mailto:support@swaas.net">support@swaas.net</a>
+</div>
+
+<script src="~/Scripts/Mobile/mLogIn.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    var latitude_g = "NOT_FOUND";
+    var longitude_g = "NOT_FOUND";
+    $(document).ready(function () {
+        $('#login').html('');
+       $("#hdnNeedGeo").val(@Html.Raw(Json.Encode(ViewBag.IsGeoNeed)));
+        // fninit();
+        // $.mobile.loading('show')
+        $("#spnUserName").css('display', 'none');
+        getLocation();
+    });
+
+    $(document).keypress(function (e) {
+        if (e.keyCode == 13) {
+            $("#btnLogin").click();
+        }
+    });
+
+
+    function showLocation(position) {
+
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        latitude_g = latitude;
+        longitude_g = longitude;
+
+    }
+
+    function errorHandler(err) {
+        if (err.code == 1) {
+            alert("Error: Access is denied!");
+        } else if (err.code == 2) {
+            alert("Error: Position is unavailable!");
+        }
+    }
+    function getLocation() {
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showLocation, errorHandler);
+
+        } else {
+            alert("Sorry, browser does not support geolocation!");
+        }
+    }
+</script>

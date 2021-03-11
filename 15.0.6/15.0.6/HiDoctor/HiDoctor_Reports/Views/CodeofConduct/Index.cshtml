@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style>
+
+    table {
+    width: 100%; 
+    border-spacing: 0;
+    /*border: 2px solid black;*/
+}
+
+table tbody,
+table thead
+{ display: block; }
+
+thead tr th { 
+    height: 30px;
+    line-height: 30px;
+}
+
+table tbody {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+</style>
+
+<div>
+    <div class="row">
+        <div class="panel panel-default">
+
+            <div class="col-lg-12 form-group">
+                <div>
+                    <div id="dvCCGrid" class="col-sm-6 table-responsive tableFix" style="overflow-y:auto;overflow-x:hidden;">
+                    </div>
+                    <p id="ackcontent" style="font-size: 16px;display:none">You have acknowledged this form on <b><span id="spndate"></span></b></p>
+                    <iframe class='col-sm-6' src="" alt="" name="dvCCForm" id="dvCCForm" style="overflow-y:auto;overflow-x:hidden;height: 400px;"></iframe>
+                    @*<div class='col-sm-6' id="dvCCForm"></div>*@
+                    <div style='clear:both'></div>
+                </div>
+            </div>
+
+       </div>
+  </div>
+</div>
+
+<script src="~/Areas/HiDoctor_Reports/Scripts/HD/Codeofconduct.js"></script>
+<script>
+    var ComCode = "";
+    var Fileid = "";
+    var Filename = "";
+    var ackdate = "";
+    $(document).ready(function () {
+        GetAckRecords();
+        $('#dvAjaxLoad').hide();
+        $('.tableFix').on('scroll', function () {
+            $('thead', this).css('transform', 'translateY(' + this.scrollTop + 'px)');
+        });
+
+    })
+   
+</script>

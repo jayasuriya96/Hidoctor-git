@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class="mainDiv2">
+    <input type="hidden" id="hdnDCRDate" />
+    <input type="hidden" id="hdnYTD" />
+    <div style="float: left; width: 100%;" id="divDailyCallHeader">
+    </div>
+    <div id="dvShowDocDetail" class="dvTab" style="display: none;">
+        <div style="float: left; width: 60%; font-weight:bold;">
+           <input type="radio" name="financeyear" checked="checked" value="APRIL" />
+            <span style="margin: 5px;">Financial Year (From April to till Date)</span>
+            <input type="radio" name="financeyear" value="MARCH" />
+            <span style="margin: 5px;">Calendar Year (From Jan to till Date)</span>           
+        </div>
+        <div class="dvTabdetail" style="float: left;" id="divDailyCallDetail">
+        </div>
+    </div>
+    <div id="dvDailyPopup" class="dailyPopUp" style="display: none;">
+        <div class="dvAccPopUpClose">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif" style="float: right;
+                cursor: pointer; margin-right: 0px;" onclick="HideModalPopup('dvDailyPopup');" />
+        </div>
+        <div id="dvSubDailyPopup">
+        </div>
+    </div>
+
+    <div style="clear: both">
+</div>
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/InstantReport.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+   
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#hdnDCRDate").val(@Html.Raw(Json.Encode(ViewBag.dcrDate)));
+        var type = @Html.Raw(Json.Encode(ViewBag.type));
+        
+        if (type == 'DCR') {       
+            fnGetDailyCallPlanner();
+            $("input:radio[name=financeyear]").click(function () {
+                fnGetDailyCallPlannerDoctorDetails($(this).val());
+            });   
+            fnGetDailyCallPlannerDoctorDetails("APRIL");                   
+        }
+        else if (type == 'LEAVE') {
+            fnLoadLeaveDeatils();
+        }
+         else if (type == 'ATTEN') {
+            fnLoadAttendance();
+        }
+        else if (type == 'HOLIDAY') {
+            fnLoadHolidayDetail();
+        }
+    }); 
+</script>

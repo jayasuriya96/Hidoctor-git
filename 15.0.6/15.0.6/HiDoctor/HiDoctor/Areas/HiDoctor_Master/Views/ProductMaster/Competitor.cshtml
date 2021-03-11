@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Competitor";
+    Layout = null;
+}
+
+<div id="message">
+
+</div>
+<div class="col-xs-12 clearfix">
+    <div class="col-xs-3">
+        <label> Competitor Name</label>
+    </div>
+    <div class="col-xs-3">
+        <input type="text" class="form-control" id="txtCompName" />
+        <input type="hidden" id="hdnCompCode" />
+        <input type="hidden" id="hdnMode" value="S" />
+        <input type="hidden" id="hdnCompRowIndex" />
+    </div>
+</div>
+<div class="col-xs-12 clearfix" style="margin-top: 10px;
+    margin-bottom: 10px;
+    left: 14%;">
+    <input type="button" value="Save" class="btn btn-success"  onclick="fnInsertComp()" />
+    <input type="button" value="Reset" class="btn  primary" onclick="fnClearAll()" />
+</div>
+<div class="separator">
+</div>
+<div id="divComp" style="overflow:auto">
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#hdnCompRowIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+        fnGetAllCompetitor();
+    });
+    var complst_g = '';
+    function fnGetAllCompetitor() {
+        $.ajax({
+            type: "POST",
+            url: "ProductMaster/GetAllCompetitor",
+            data: "A",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                complst_g = result;
+                //var content = "";
+                //content += "<table class='data display' id='tblComp'>";
+                //content += "<thead><tr><td>Competitor Name</td><td>Status</td><td>Action</td></tr></thead>";
+                //content += "<tbody>";
+                //for (var i = 0; i < result.Tables[0].Rows.length; i++) {
+                //    content += "<tr>";
+                //    content += "<td id='tdComp_" + i + "'>" + result.Tables[0].Rows[i].Competitor_Name + "</td>";
+                //    content += "<td>" + result.Tables[0].Rows[i].Status + "<input type='hidden' id='hdnComp_" + i + "' value='" + result.Tables[0].Rows[i].Competitor_Code + "' /></td>";
+                //    content += "<td><span style='cursor:pointer;text-decoration:underline' onclick='fnEditComp(" + i + ")'>Edit</span> | <span style='cursor:pointer;text-decoration:underline'  onclick='fnCompChangeStatus(" + i + ")'>Change status</span></td>";
+                //    content += "</tr>";
+                //}
+                //content += "<tbody>";
+                //content += "</tbody>";
+                //content += "</table>";
+                $("#divComp").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: result.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: true,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'Competitor_Name', headerText: 'Competitor Name', width: 200, textAlign: 'center' },
+                            { field: 'Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                            { headerText: 'Edit', width: 200, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#divComp');
+             
+              //  if ($.fn.dataTable) { $('#tblComp').dataTable({ "sPaginationType": "full_numbers", "bDestroy": true }); };
+            }
+        });
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnEditComp(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnEditComp(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnCompChangeStatus(" + args + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+
+                fnCompChangeStatus(args);
+            })
+        }
+    }
+    function fnEditComp(rowIndex) {
+        $("#hdnMode").val("E");
+        //var CompCode = $("#hdnComp_" + rowIndex).val();
+        //var CompName = $("#tdComp_" + rowIndex).html();
+        var CompCode = rowIndex.data.Competitor_Code;
+        var CompName = rowIndex.data.Competitor_Name;
+        $("#hdnCompCode").val(CompCode);
+        $("#txtCompName").val(CompName);
+    }
+    function fnCompClearAll() {
+        debugger;
+        $("#hdnCompCode").val('');
+        $("#txtCompName").val('');
+        $("#hdnMode").val('S');
+    }
+    function fnClearAll() {
+        debugger;
+        $('#txtCompName').val('');
+        $("#message").hide();
+    }
+    $('#modal_close').click(function () {
+        fnEdit($('#hdnCompRowIndex').val());
+    });
+
+</script>

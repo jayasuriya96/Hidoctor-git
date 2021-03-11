@@ -1,0 +1,304 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/MTO.css" rel="stylesheet" />
+<style>
+ hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top: black;
+        border: 0;
+}
+</style>
+
+<div class="form-row" id="dvdetails">
+    <div class="col-xs-12" style="padding: 0px;">
+        <span onclick="MTOReports.fnBack('Details');"><i style="font-size: 26px !important;" class="fa fa-arrow-circle-left"></i></span>
+    </div>
+
+    <div class="form-group col-xs-12" id="dvField" style="padding: 5px;display:none;">
+
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12"><div class="col-xs-1">
+                    <i class="fa fa-user" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">User Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="dvUserDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-shopping-cart" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Store Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="StoreDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-file" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Attachment Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="border-radius: 10px;border: 1px solid mediumslateblue;padding: 12px 10px;">
+                <input id="MTOid" type="hidden" value="" />
+                <a style="display:none;word-break: break-word;" onclick="MTOReports.fnopenattachment($('#spnfilename').val());" id="spnfilename"></a>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-group" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Accompanist Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnAccDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-shopping-bag" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Sales Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin-bottom: 18px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnSalesDetails"></div>
+            </div>
+        </div>
+        </br>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-shopping-bag" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Samples Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin-bottom: 18px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnSampleDetails"></div>
+            </div>
+        </div>
+        </br>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-user" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Customer Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnCustDetails"></div>
+                <div id="spnCustprodDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-pencil" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">General Remarks</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnRemarks"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group col-xs-12" id="dvAttend" style="padding: 5px;display:none;">
+
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-user" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">User Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="dvAttUserDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" >
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-file" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Attachment Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="border-radius: 10px;border: 1px solid mediumslateblue;padding: 12px 10px;">
+                <input id="MTOid" type="hidden" value="" />
+                <a style="display:none;word-break: break-word;" id="spnAttfilename"></a>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-edit" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Attendance Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnAttendance"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-pencil" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">General Remarks</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnAttRemarks"></div>
+            </div>
+        </div>
+        @*<div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-1"><i class="fa fa-user" style="font-size: 20px;margin-top: 5px;"></i></div>
+            <div class="col-xs-10" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <h5 style="font-weight: bold;">User Details</h5>
+                <span id="dvAttUserDetails"></span>
+            </div>
+        </div>*@
+
+        @*<div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-1"><i class="fa fa-edit" style="font-size: 20px;margin-top: 5px;"></i></div>
+            <div class="col-xs-10" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <h5 style="font-weight: bold;">Attendance Details</h5>
+                <span id="spnAttendance"></span>
+            </div>
+        </div>*@
+
+        @*<div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-1"><i class="fa fa-pencil" style="font-size: 20px;margin-top: 5px;"></i></div>
+            <div class="col-xs-10" style="font-size:12px;margin: 0px;">
+                <h5 style="font-weight: bold;">General Remarks</h5>
+                <span id="spnAttRemarks"></span>
+            </div>
+        </div>*@
+
+    </div>
+
+    <div class="form-group col-xs-12" id="dvLeave" style="padding: 5px;display:none;">
+
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-user" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">User Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="dvLvUserDetails"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-bottom:1px solid #ddd;padding: 0px;">
+            <div class="col-xs-12">
+                <div class="col-xs-1">
+                    <i class="fa fa-calendar-times-o" style="font-size: 20px;margin-top: 5px;"></i>
+                </div>
+                <div class="col-xs-8">
+                    <h5 style="font-weight: bold;">Leave Details</h5>
+                </div>
+            </div>
+            <div class="col-xs-12" style="font-size:12px;margin: 0px;">
+                <input id="MTOid" type="hidden" value="" />
+                <div id="spnLeave"></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/MTOReports.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var SelUserCode = '';
+    var subDomainName = '';
+    var MTODate='';
+    var MTO_Id='';
+    var LID='';
+    var UserName='';
+    var LoginUserCode='';
+    $(document).ready(function () {
+        debugger;
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        MTO_Id=@Html.Raw(Json.Encode(ViewBag.MTO_Id));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        LoginUserCode = @Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        SelUserCode=@Html.Raw(Json.Encode(ViewBag.SelUserCode));
+        UserName=@Html.Raw(Json.Encode(ViewBag.SelUserName));
+        MTOReports.GetUserMTODetails(subDomainName, MTO_Id);
+    })
+     function fnuserstatus()
+    {
+        if (navigator.onLine == true){
+            var result='';
+            $.ajax({
+                type: 'POST',
+                data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+                url: '../../HiDoctor_Activity/MTO/GetUserStatus',
+                async:false,
+                success: function (res) {
+                    debugger;
+                    if(res == 1)
+                        result = true;
+                    else 
+                        result = false;
+                }
+            })
+            return result;
+        }
+        else
+        {
+            swal("", "Please connect to the internet.", "");
+            return false;
+        }
+    }
+ </script>

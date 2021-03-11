@@ -1,0 +1,172 @@
+﻿@{  
+Layout = null;
+}
+
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style type="text/css">
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+</style>
+
+<form action="../AsynLastsubmittedRept/ExcuteAsynReport" onsubmit="return fnValidate()" method="post" enctype="multipart/form-data" target="ifameExcel">
+    <div>
+        <div id="dvTree" style="width: 20%; float: left">
+            <div id="tree" style="float: left; height: 530px; width: 100%">
+            </div>
+        </div>
+        <div style="width: 80%; float: left" id="divMain">
+            <div id="divToggle">
+                <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleInput()">Hide Input</span>
+                <div class="helpIconright">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('LASTSUBMITTED','PAGE')" />
+                </div>
+            </div>
+            <div id="divInput" style="padding: 5px">
+                <table>
+                    <tr>
+                        <td>Start Date 
+                        </td>
+                        <td>@Html.TextBox("txtFromDate",null, new { id = "txtFromDate", @class = "datepicker" })                     
+                        </td>
+                        <td>End Date 
+                        </td>
+                        <td>@Html.TextBox("txtToDate",null,new {id = "txtToDate",@class = "datepicker" })
+@Html.Hidden("hdnUserCode")
+@Html.Hidden("hdnDownload")
+                        </td>
+                    </tr>
+                   <tr>
+                        <td>Unlisted Doctors
+                        </td>
+                        <td>
+                            <input type="radio" id="rdInClude" name="Unlisted" value="INCLUDE" />
+                            Include
+                        </td>
+                        <td colspan="2">
+                            <input type="radio" id="rdExclude" name="Unlisted" value="EXCLUDE" checked="checked" />
+                            Exclude
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Include Missed Doctors ?
+                        </td>
+
+                        <td colspan="3">
+                            <input type="checkbox" name="missed" value="MISSED" />
+                        </td>
+                    </tr>
+
+                    <tr style="display: none">
+                        <td>DCR Date
+                        </td>
+                        <td>
+                            <input type="radio" id="rdActual" name="UnDCRDate" value="ACTUAL" checked="checked" />
+                            Actual Date
+                        </td>
+                        <td colspan="2">
+                            <input type="radio" id="rdEntered" name="UnDCRDate" value="ENTERED" />
+                            Entered Date
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" align="right">
+                            <input type="submit" class="btn btn-primary" value="Process" id="btnShow" />                           
+                        </td>
+                    </tr>
+                </table>
+                <div id="dvloading" style="display: none">
+                    <img src="../../Content/images/loader1.gif" />
+                </div>
+                <hr />
+            </div>          
+            <div id="dvAsyn">
+                <div>
+                    <input type="button" class="btn btn-primary" value="Refresh" onclick="fnRefresh();" />
+                </div>
+                <div>
+                    <div id="dvReprotURL"></div>
+                </div>
+                <br />
+                <div id="dvAsynReport"></div>
+            </div>
+    <div id="DcrDisclaimer" style="display: none">
+            *Disclaimer regarding Missed Doctor Count column</br>
+1. This column will display the correct count only if the selected period for the report is exactly a calendar month. For e.g. Mar-1-2015 to Mar-31-2015 Or Sept-1- 2015 to Sept-30-2015.</br>
+2. In case the selected period for the report is of 30 or 31 days but not exactly a calendar month, for e.g. Aug-5-2015 to Sept-5-2015, then the column may show an incorrect count.</br>
+3. In case the Doctor List changes anytime during the selected period for the report, then too the column may show an incorrect count.</br>
+It is recommended that in cases 2 or 3, user does not refer to the Missed Doctors Count Column for an exact value.</br>
+        </div>
+        </div>
+        @Html.Hidden("reportType");
+        <iframe name="ifameExcel" style="height: 26%; width: 97%; display: none;"></iframe>
+    </div>
+</form>
+
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsynLastsubmitted.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 2
+                //showButtonPanel: true
+            });
+            $("#dvTree").show();
+            fnBindUserTreeWithCheckBoxDoubleClick("tree");
+            fnGetAsynReportstatus();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClick(node) {
+        debugger;
+        $("#divReport").html("");
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $('#txtFromDate').val('');
+        $('#txtToDate').val('');
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    function fnUserTreePostInit() {
+    }
+    var selKeys = new Array();
+    var selKeys_ls = new Array();
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selKeys_ls = selKeys;
+    }
+</script>

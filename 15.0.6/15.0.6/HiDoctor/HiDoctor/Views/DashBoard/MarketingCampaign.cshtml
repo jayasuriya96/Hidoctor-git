@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Markeing Campaign";
+    Layout = null;
+}
+<style>
+    #title,#titleReg,#titleDoc {
+            font-size: 20px;
+            }
+        .cls-back-dash {
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        font-size: 14px;
+        color: blue;
+        margin-bottom: 5px;
+    }
+    #tblMarketingCampaigninfo {
+    min-height:10px !important;
+    }
+    .dataTables_wrapper {
+        min-height: auto !important;
+    }
+</style>
+<div class="col-lg-12" >
+     <span style="" class="cls-back-dash">Back to Dashboard</span>
+<h2>Marketing Campaign Details</h2>
+<div  id="tblMarketingCamp"></div>
+    <div id="title"></div>
+    <div id="tblMarketingCampDetail"></div>
+    <div id="titleReg"></div>
+    <div id="tblMarketingCampRegionDetail"></div>
+    <div id="titleDoc"></div>
+    <div id="tblMarketingCampDoctorDetail" style="margin-top:10px"></div>
+    </div>
+<script src="~/Scripts/HD/AdminDashboard.js"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script>
+    var IsBack = @Html.Raw(Json.Encode(ViewBag.IsBacks));
+    var dashboard=@Html.Raw(Json.Encode(ViewBag.dashboard));
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        debugger;
+        AdminDashboard.getMarketingCampaignCountPopUp();
+        $('.cls-back-dash').unbind('click').bind('click', function () {
+            if (IsBack == "NO" ) {
+                if(dashboard=='admin')
+                {
+                    $('#main').load('Dashboard/AdminDashBoard');
+                }
+                else{
+                    $('#main').load('Dashboard/UserDashboard');
+                }
+            }
+            else
+                fnLoadBody('DashBoardV2/MenuBar', this, 'Home');
+            //   $('#main').load('Dashboard/AdminDashBoard?IsBack=YES');
+        });
+    });
+</script>

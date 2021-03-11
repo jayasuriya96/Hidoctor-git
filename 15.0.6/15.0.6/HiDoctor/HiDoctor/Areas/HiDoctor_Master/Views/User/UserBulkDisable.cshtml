@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "UserBulkDisable";
+    Layout = null;
+}
+<style type="text/css">
+    #dvBulkDisMain .dvHeader {
+        width: 99.6%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<div class="container" id="dvBulkDisMain">
+    <div class="dvHeader">
+        Permanent Removal of User
+    </div>
+    <div style="width: 100%;">
+        <div id="dvUserTree" style="height: 350px;"></div>
+        <div style="width: 100%; padding-top: 2%; padding-left: 47%;">
+            @*<input type="button" value="Modify User Hierarchy" onclick="fnRedirectToChangeHierarchy();" class="btn small primary" />*@
+            <input type="button" value="Disable User" onclick="fnBulkUserDisable();" class="btn small primary" />
+            <input type="button" value="Uncheck" onclick="fnUncheck();" class="btn small primary" />
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <span><b>NOTE :</b></span>
+    <br/>
+    <span>1.Please select users that are not at manager level.</span>
+    <br/>
+    <span>2.Manager level users can be selected only when they don't have any users under them.</span>
+    <div style="clear: both;"></div>
+</div>
+<div class="simple_overlay" id="dvBulkUserDisable" style="min-height: 300px !important;">
+    <div id="dvBulkDisUsers">
+    </div>
+</div>
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    debugger;
+    var selKeys = "";
+    var selUsers = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+
+        $(document).ajaxStop($.unblockUI);
+
+        fnBindUserTreeWithCheckBox("dvUserTree");
+        //$('#txtSearchNode').bind("keypress", function (e) {
+        //    if (e.keyCode == 13) {
+        //        fnSearchUsersNew();
+        //        return false;
+        //    }
+        //});
+        $("#dvBulkUserDisable").overlay({
+            onBeforeLoad: function () {
+                $("#dvAjaxLoad").show();
+                if (selKeys.length > 0) {
+                    $("#dvBulkDisUsers").load('../HiDoctor_Master/User/DisableUser/?id=BULK_USER|');
+                }
+                //else {
+                //    $("#dvBulkDisUsers").load('../HiDoctor_Master/User/DisableUser/');
+                //}
+            },
+            onLoad: function () {
+                $("#dvAjaxLoad").show();
+            }
+        });
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnUserTreeSelect(select, node) {
+        if (node.hasChildren()) {
+            // alert('Sorry you can not select this user. Because this user has some reporting users udner him');
+            node.select(false);
+            return;
+        }
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selUsers = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.title;
+        });
+    }
+
+    function fnUserTreePostInit(node) {
+    }
+
+    function fnUncheck() {
+        $("#dvUserTree").dynatree("getRoot").visit(function (node) {
+            node.select(false);
+        });
+    }
+
+</script>

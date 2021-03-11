@@ -1,0 +1,779 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Asset_Action_Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Asset remove text</comment>
+  </data>
+  <data name="Asset_Action_Text" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Asset edit text</comment>
+  </data>
+  <data name="Asset_Course_Mapping_Failure" xml:space="preserve">
+    <value>Error occured while mapping the asset to the course</value>
+    <comment>Course asset mapping failure message</comment>
+  </data>
+  <data name="Asset_Course_Mapping_Success" xml:space="preserve">
+    <value>Selected course successfully mapped </value>
+    <comment>Course asset mapping success message</comment>
+  </data>
+  <data name="Asset_Header_Action" xml:space="preserve">
+    <value>Action</value>
+    <comment>Action</comment>
+  </data>
+  <data name="Asset_Header_AssetName" xml:space="preserve">
+    <value>Asset Name</value>
+    <comment>Asset header asset name</comment>
+  </data>
+  <data name="Asset_Header_AssetType" xml:space="preserve">
+    <value>Asset Type</value>
+    <comment>Asset header asset type</comment>
+  </data>
+  <data name="Asset_Header_Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Remove</comment>
+  </data>
+  <data name="Asset_Header_SNo" xml:space="preserve">
+    <value>S.No</value>
+    <comment>Asset table header s.no</comment>
+  </data>
+  <data name="Asset_Map_Date_Of_Post" xml:space="preserve">
+    <value>Date of Post</value>
+    <comment>Date of the asset post text</comment>
+  </data>
+  <data name="Asset_Map_DOP_From" xml:space="preserve">
+    <value>From</value>
+    <comment>Date of post from</comment>
+  </data>
+  <data name="Asset_Map_DOP_To" xml:space="preserve">
+    <value>To</value>
+    <comment>Date of post to</comment>
+  </data>
+  <data name="Asset_Map_Submit" xml:space="preserve">
+    <value>Submit</value>
+    <comment>New Asset Mapping submit mapping</comment>
+  </data>
+  <data name="Asset_Map_Type_Text" xml:space="preserve">
+    <value>Asset Type</value>
+    <comment>Asset Type text</comment>
+  </data>
+  <data name="Asset_Table_Asset_Name" xml:space="preserve">
+    <value>Asset Name</value>
+    <comment>Asset Name for new asset mapping</comment>
+  </data>
+  <data name="Asset_Table_Date_of_Post" xml:space="preserve">
+    <value>Date of Post</value>
+    <comment>Asset date of post</comment>
+  </data>
+  <data name="Asset_Table_Select" xml:space="preserve">
+    <value>Select</value>
+    <comment>select</comment>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CompHome_NoCourse" xml:space="preserve">
+    <value>Currently there is no course available for you</value>
+  </data>
+  <data name="CourseCertificateContent" xml:space="preserve">
+    <value>&lt;div class="certificate-container"&gt;&lt;div class="stamp stamp-pass"&gt;&lt;img src="/Images/Certified.png" style="width: 160px;"&gt;&lt;/div&gt;
+        &lt;div class="certificate-company-logo"&gt;
+            &lt;img src="#Img_Source" /&gt;
+        &lt;/div&gt;
+        &lt;div class="certificate-company-title"&gt;
+Certificate of Completion
+&lt;/div&gt;
+&lt;div class="certificate-italic certificate-start"&gt;
+This is to certify that &lt;b&gt;#Name_of_the_employee&lt;/b&gt; has completed &lt;b&gt;#Course_Name&lt;/b&gt; on &lt;b&gt;#Date_of_Assessment&lt;/b&gt;
+&lt;/div&gt;
+&lt;div class="certificate-end"&gt;
+Congratulations!
+&lt;/div&gt;
+&lt;div class="certificate-company-name"&gt;
+#Company_Name
+&lt;/div&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Course_Answered_Text" xml:space="preserve">
+    <value>Question Answerd</value>
+  </data>
+  <data name="Course_Ans_SPL_Err_Msg" xml:space="preserve">
+    <value>Please remove the special characters from the Answers. The following characters are not accepted  ~!@$^</value>
+    <comment>Answer special character validation message</comment>
+  </data>
+  <data name="Course_Asset_Delete_Failure" xml:space="preserve">
+    <value>Error occured while delete this course</value>
+  </data>
+  <data name="Course_Asset_Delete_Success" xml:space="preserve">
+    <value>Selected asset is successfully removed from this course</value>
+  </data>
+  <data name="Course_Asset_Map_AssetType_Valid" xml:space="preserve">
+    <value>Please select asset type</value>
+    <comment>Asset type validation message</comment>
+  </data>
+  <data name="Course_Asset_Map_Ass_Type" xml:space="preserve">
+    <value>Association Type</value>
+    <comment>Course Association type</comment>
+  </data>
+  <data name="Course_Asset_Map_Course_Name" xml:space="preserve">
+    <value>Course Name</value>
+    <comment>Course Name for asset mapping</comment>
+  </data>
+  <data name="Course_Asset_Map_Header" xml:space="preserve">
+    <value>Asset Mapping</value>
+  </data>
+  <data name="Course_Asset_Map_SurName_Valid" xml:space="preserve">
+    <value>Please select course name</value>
+    <comment>Course name validation in asset mapping screen</comment>
+  </data>
+  <data name="Course_Asset_Remove_Confirm" xml:space="preserve">
+    <value>Do you want to remove this asset mapping?</value>
+  </data>
+  <data name="Course_Asset_Select_Valid" xml:space="preserve">
+    <value>Please select atleast any one asset</value>
+    <comment>Without select anyone asset validation message</comment>
+  </data>
+  <data name="Course_Associ_Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Course_Associ_Entity" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="Course_Choices" xml:space="preserve">
+    <value>Choices&lt;br/&gt;(Restricted chars: ~!@$^ ,&lt;br/&gt; Max len:500)</value>
+    <comment>Choices</comment>
+  </data>
+  <data name="Course_Completed" xml:space="preserve">
+    <value>Thanks, you have already attended the course. There are no more courses found</value>
+  </data>
+  <data name="Course_Completed_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Course_CreateCourseHeader" xml:space="preserve">
+    <value>Course</value>
+    <comment>Course creation</comment>
+  </data>
+  <data name="Course_Delete_Confirm" xml:space="preserve">
+    <value>Do you want to delete this course?</value>
+    <comment>Course delete confirmation</comment>
+  </data>
+  <data name="Course_Delete_Confirm_Msg" xml:space="preserve">
+    <value>Do you want to delete this course?</value>
+  </data>
+  <data name="Course_Delete_Failure" xml:space="preserve">
+    <value>Error occured while delete the course</value>
+    <comment>Course delete failure message</comment>
+  </data>
+  <data name="Course_Delete_Success" xml:space="preserve">
+    <value>Course deleted successfully</value>
+    <comment>Course delete success message</comment>
+  </data>
+  <data name="Course_Description" xml:space="preserve">
+    <value>Course Description</value>
+    <comment>Course Description</comment>
+  </data>
+  <data name="Course_Edit_Header" xml:space="preserve">
+    <value>Edit Course</value>
+    <comment>Course Edit</comment>
+  </data>
+  <data name="Course_Edit_No_Search_Result" xml:space="preserve">
+    <value>No records found based on the search result</value>
+    <comment>Message to display for course edit table</comment>
+  </data>
+  <data name="Course_Edit_Single_Question_Alert" xml:space="preserve">
+    <value>You have already edited one question. Please save that question and then edit another question</value>
+  </data>
+  <data name="Course_Edit_Valid_Message" xml:space="preserve">
+    <value>Some users have already answered this course so you can not edit this course</value>
+    <comment>Course edit validation message</comment>
+  </data>
+  <data name="Course_EFilter" xml:space="preserve">
+    <value>Filter</value>
+    <comment>Course Edit Filter</comment>
+  </data>
+  <data name="Course_EFilter_Course_Created_Date" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="Course_EFilter_Course_Effc_From" xml:space="preserve">
+    <value>Effective From</value>
+    <comment>Course Edit Filter Effective From</comment>
+  </data>
+  <data name="Course_EFilter_Course_Effc_To" xml:space="preserve">
+    <value>Effective To</value>
+    <comment>Course Edit Filter Effective To</comment>
+  </data>
+  <data name="Course_EFilter_Course_Name" xml:space="preserve">
+    <value>Course Name</value>
+    <comment>Course Edit Filter Course Name</comment>
+  </data>
+  <data name="Course_EFilter_Course_Submit" xml:space="preserve">
+    <value>Submit</value>
+    <comment>Course Edit Filter Submit Button</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_Action" xml:space="preserve">
+    <value>Action</value>
+    <comment>Course Edit table header Action</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Course Edit table header Delete</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_Desc" xml:space="preserve">
+    <value>Course desc</value>
+    <comment>Course Description text</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_Name" xml:space="preserve">
+    <value>Course Name</value>
+    <comment>Course Edit table header Course Name</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_No_Of_Asset" xml:space="preserve">
+    <value>No Of Assets Attached</value>
+    <comment>Course Edit table header No Of Assets Attached</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_No_Of_Ques" xml:space="preserve">
+    <value>No Of Questions</value>
+    <comment>Course Edit table header No Of Questions</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_Course_Preview" xml:space="preserve">
+    <value>Preview</value>
+    <comment>Course Edit table header Preview</comment>
+  </data>
+  <data name="Course_EHeader_Tbl_SNo" xml:space="preserve">
+    <value>S.No</value>
+    <comment>Course Edit table header s No</comment>
+  </data>
+  <data name="Course_E_Header_Tbl_Course_Desc" xml:space="preserve">
+    <value>Course Description</value>
+    <comment>Course Edit table header Course Desc</comment>
+  </data>
+  <data name="Course_Free" xml:space="preserve">
+    <value>Free Course</value>
+    <comment>Free Course Type</comment>
+  </data>
+  <data name="Course_Image" xml:space="preserve">
+    <value>Image</value>
+    <comment>Course Image</comment>
+  </data>
+  <data name="Course_Image_Select_text" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="Course_Image_Valid_Text" xml:space="preserve">
+    <value>Please upload JPG or PNG files alone.</value>
+  </data>
+  <data name="Course_Img_Upload_Error_Text" xml:space="preserve">
+    <value>Error while upload the course image</value>
+  </data>
+  <data name="Course_Img_Upload_Success_Text" xml:space="preserve">
+    <value>Course Image uploaded successfully</value>
+  </data>
+  <data name="Course_Img_Upload_Text" xml:space="preserve">
+    <value>Uploading Course Image. Please wait...</value>
+  </data>
+  <data name="Course_Insert_Failure" xml:space="preserve">
+    <value>Sorry... Some error occured while add the course. Please try again</value>
+    <comment>Error message while adding the course</comment>
+  </data>
+  <data name="Course_Insert_Success" xml:space="preserve">
+    <value>Course added Sucessfully</value>
+    <comment>Success message while adding the course</comment>
+  </data>
+  <data name="Course_Instructions" xml:space="preserve">
+    <value>Course Instructions</value>
+    <comment>Course Instructions</comment>
+  </data>
+  <data name="Course_Map_Asset_Associ" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="Course_Map_Asset_Submit_Text" xml:space="preserve">
+    <value>Attach Asset</value>
+  </data>
+  <data name="Course_Map_Company_Associ" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Course_Map_Company_Submit_Text" xml:space="preserve">
+    <value>Attach Course</value>
+  </data>
+  <data name="Course_Map_Submit_Button" xml:space="preserve">
+    <value>Attach Asset</value>
+    <comment>Asset Mapping button text</comment>
+  </data>
+  <data name="Course_Name" xml:space="preserve">
+    <value>Course Name</value>
+    <comment>Course name</comment>
+  </data>
+  <data name="Course_NewQuestion" xml:space="preserve">
+    <value>Add Question</value>
+    <comment>Add new Question</comment>
+  </data>
+  <data name="Course_NextButton" xml:space="preserve">
+    <value>Next</value>
+    <comment>Submit Course</comment>
+  </data>
+  <data name="Course_Paid" xml:space="preserve">
+    <value>Paid Course</value>
+    <comment>Paid Course</comment>
+  </data>
+  <data name="Course_Points" xml:space="preserve">
+    <value>Course Points</value>
+    <comment>Course Points</comment>
+  </data>
+  <data name="Course_Point_Valid" xml:space="preserve">
+    <value>Please enter valid course points</value>
+  </data>
+  <data name="Course_Properties_Step" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="Course_Properties_Text" xml:space="preserve">
+    <value>Course Properties</value>
+  </data>
+  <data name="Course_Publish" xml:space="preserve">
+    <value>Publish</value>
+    <comment>Publish the course</comment>
+  </data>
+  <data name="Course_Publish_Failure" xml:space="preserve">
+    <value>Error occured while publish the course</value>
+    <comment>Course publish error message</comment>
+  </data>
+  <data name="Course_Publish_Success" xml:space="preserve">
+    <value>Course published successfully</value>
+    <comment>Course publish success message</comment>
+  </data>
+  <data name="Course_Pub_EffecFrom_Empty" xml:space="preserve">
+    <value>Please select effective from date</value>
+    <comment>Course publish effective from date</comment>
+  </data>
+  <data name="Course_Pub_EffecTo_Empty" xml:space="preserve">
+    <value>Please select effective to date</value>
+    <comment>Course publish effective to date</comment>
+  </data>
+  <data name="Course_Pub_Effe_From" xml:space="preserve">
+    <value>Effective From</value>
+    <comment>Effective from for course publish</comment>
+  </data>
+  <data name="Course_Pub_Effe_To" xml:space="preserve">
+    <value>Effective To</value>
+    <comment>Effective To for course publish</comment>
+  </data>
+  <data name="Course_Pub_Inst" xml:space="preserve">
+    <value>Please enter effective dates to publish this course</value>
+  </data>
+  <data name="Course_Pub_Preview" xml:space="preserve">
+    <value>Preview</value>
+    <comment>Course Preview</comment>
+  </data>
+  <data name="Course_Pub_Publish_button" xml:space="preserve">
+    <value>Publish</value>
+    <comment>Course Publish</comment>
+  </data>
+  <data name="Course_Pub_Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Save for course publish</comment>
+  </data>
+  <data name="Course_Question" xml:space="preserve">
+    <value>Question</value>
+    <comment>Question</comment>
+  </data>
+  <data name="Course_QuestionCancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Cancel</comment>
+  </data>
+  <data name="Course_QuestionDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Question Description</comment>
+  </data>
+  <data name="Course_QuestionImage" xml:space="preserve">
+    <value>Thumbnail</value>
+    <comment>Question Image</comment>
+  </data>
+  <data name="Course_QuestionRequired_No" xml:space="preserve">
+    <value>No</value>
+    <comment>Question Required</comment>
+  </data>
+  <data name="Course_QuestionRequired_Yes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Question Required</comment>
+  </data>
+  <data name="Course_QuestionsHeader" xml:space="preserve">
+    <value>Questions</value>
+    <comment>Add or Edit Question Header</comment>
+  </data>
+  <data name="Course_QuestionSubmit" xml:space="preserve">
+    <value>Save</value>
+    <comment>Question Submit</comment>
+  </data>
+  <data name="Course_QuestionType" xml:space="preserve">
+    <value>Question Type</value>
+    <comment>Question Type</comment>
+  </data>
+  <data name="Course_QuestionType_MultiChoice" xml:space="preserve">
+    <value>Multi Choice</value>
+    <comment>Question Type</comment>
+  </data>
+  <data name="Course_QuestionType_SingleChoice" xml:space="preserve">
+    <value>Single Choice</value>
+    <comment>Question Type</comment>
+  </data>
+  <data name="Course_QuestionType_SingleText" xml:space="preserve">
+    <value>Short Text</value>
+    <comment>Question Type</comment>
+  </data>
+  <data name="Course_Question_Img_Upload_Error" xml:space="preserve">
+    <value>Course question image upload failed.</value>
+  </data>
+  <data name="Course_Question_Img_Upload_Progress" xml:space="preserve">
+    <value>Course question image uploading.Please wait...</value>
+  </data>
+  <data name="Course_Question_Img_Upload_Success" xml:space="preserve">
+    <value>Course question image uploaded successfully</value>
+  </data>
+  <data name="Course_Question_Mandatory" xml:space="preserve">
+    <value>Please save atleast one question</value>
+  </data>
+  <data name="Course_Question_Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Question to Publish</comment>
+  </data>
+  <data name="Course_Question_Required" xml:space="preserve">
+    <value>Required</value>
+    <comment>Question Required</comment>
+  </data>
+  <data name="Course_Question_Submit_Failure" xml:space="preserve">
+    <value>Error occured while adding the question. Please try again</value>
+    <comment>Course Question Submit Failure</comment>
+  </data>
+  <data name="Course_Question_Submit_Loading_Msg" xml:space="preserve">
+    <value>Adding the question... Please wait...</value>
+    <comment>Course question submit message</comment>
+  </data>
+  <data name="Course_Question_Submit_Loading_Validate" xml:space="preserve">
+    <value>Validating the question... Please wait ...</value>
+    <comment>Validate message</comment>
+  </data>
+  <data name="Course_Question_Submit_Success" xml:space="preserve">
+    <value>Questions added successfully</value>
+    <comment>Course Question Submit</comment>
+  </data>
+  <data name="Course_Question_Text" xml:space="preserve">
+    <value>No of Questions</value>
+  </data>
+  <data name="Course_Quest_Action_Copy" xml:space="preserve">
+    <value>Copy</value>
+    <comment>Copy</comment>
+  </data>
+  <data name="Course_Quest_Action_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Delete</comment>
+  </data>
+  <data name="Course_Quest_Action_Edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Question Action Edit</comment>
+  </data>
+  <data name="Course_Quest_Action_Move_Down" xml:space="preserve">
+    <value>Move Down</value>
+    <comment>Move Down</comment>
+  </data>
+  <data name="Course_Quest_Action_Move_Up" xml:space="preserve">
+    <value>Move Up</value>
+    <comment>Move Up</comment>
+  </data>
+  <data name="Course_Quest_Back_But_Text" xml:space="preserve">
+    <value>Back</value>
+    <comment>Button text for back</comment>
+  </data>
+  <data name="Course_Quest_Delete_Failure" xml:space="preserve">
+    <value>Error occured while delete the course question</value>
+    <comment>Course question delete failure message</comment>
+  </data>
+  <data name="Course_Quest_Delete_Success" xml:space="preserve">
+    <value>Course question deleted successfully</value>
+    <comment>Course question delete success message</comment>
+  </data>
+  <data name="Course_Quest_Desc_Valid_Err_Msg" xml:space="preserve">
+    <value>Please remove the special characters from the question description. The following characters are not accepted ~!@$</value>
+    <comment>Question desc special character validation message</comment>
+  </data>
+  <data name="Course_Quest_Next_Edit_Valid" xml:space="preserve">
+    <value>A question may be partially filled or unsaved. Click on cancel before moving to preview step</value>
+  </data>
+  <data name="Course_Quest_Text_SPL_Err_Msg" xml:space="preserve">
+    <value>Please remove the special characters from the question text. The following characters are not accepted ~!@$^&amp;|&lt;&gt;[]</value>
+    <comment>Question text special character validation message</comment>
+  </data>
+  <data name="Course_Quest_Text_Valid_Err_Msg" xml:space="preserve">
+    <value>Please enter Question text</value>
+    <comment>Question text validation</comment>
+  </data>
+  <data name="Course_Response_Failure" xml:space="preserve">
+    <value>Error occured while submit the course</value>
+    <comment>Course submit failure message</comment>
+  </data>
+  <data name="Course_Response_Mand_Ques_Text" xml:space="preserve">
+    <value>* Mandatory Course Question(s)</value>
+    <comment>Message</comment>
+  </data>
+  <data name="Course_Response_Mand_Valid" xml:space="preserve">
+    <value>Questions that are  marked * need to be answered. Please answer those questions and then try submitting again</value>
+    <comment>Mandatory validation</comment>
+  </data>
+  <data name="Course_Response_Success" xml:space="preserve">
+    <value>Your course has been partially submitted.</value>
+    <comment>Course submit success message</comment>
+  </data>
+  <data name="Course_Response_Thank_Msg" xml:space="preserve">
+    <value>Thank you for your patience.You have successfully submited the course</value>
+  </data>
+  <data name="Course_Resp_Quest_Speci_Msg" xml:space="preserve">
+    <value>Please remove the special characters from the answer text </value>
+  </data>
+  <data name="Course_Res_Save_Next" xml:space="preserve">
+    <value>Save &amp; Next</value>
+  </data>
+  <data name="Course_Submit_Loading_Msg" xml:space="preserve">
+    <value>Creating the Course...</value>
+    <comment>Course submit loading message</comment>
+  </data>
+  <data name="Course_Submit_Text" xml:space="preserve">
+    <value>Save &amp; Next</value>
+  </data>
+  <data name="Course_Submit_Validate_Text" xml:space="preserve">
+    <value>Course details validating...</value>
+  </data>
+  <data name="Course_Submit_Valid_Success" xml:space="preserve">
+    <value>Course details validated successfully...</value>
+  </data>
+  <data name="Course_Type" xml:space="preserve">
+    <value>Type of Course</value>
+    <comment>Course Type</comment>
+  </data>
+  <data name="Course_Validate_Course_Desc_SPL" xml:space="preserve">
+    <value>Please remove the following special characters ~!@$ from the description</value>
+    <comment>Course description validation</comment>
+  </data>
+  <data name="Course_Validate_Course_Inst_SPL" xml:space="preserve">
+    <value>Please remove the following special characters  ~@^&amp;!$ from the instruction</value>
+    <comment>Course instruction validation</comment>
+  </data>
+  <data name="Course_Validate_Course_Name" xml:space="preserve">
+    <value>Please enter course name</value>
+    <comment>Course name validation</comment>
+  </data>
+  <data name="Course_Validate_Course_Name_SPL" xml:space="preserve">
+    <value>Please remove the following special characters ~!@$^&amp;|&lt;&gt;[]  from the course name</value>
+    <comment>Course name special characters</comment>
+  </data>
+  <data name="Course_Validate_Course_Points" xml:space="preserve">
+    <value>Please enter numbers alone for Course points</value>
+    <comment>Course point validation</comment>
+  </data>
+  <data name="Course_View_Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Course Next view  button</comment>
+  </data>
+  <data name="Course_View_Page_No" xml:space="preserve">
+    <value>Page</value>
+    <comment>Course view page no</comment>
+  </data>
+  <data name="Course_View_Prev" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Course Previous view button</comment>
+  </data>
+  <data name="Course_View_Publish" xml:space="preserve">
+    <value>Publish</value>
+    <comment>Publish button text</comment>
+  </data>
+  <data name="Course_View_Quest_Answered" xml:space="preserve">
+    <value>Total No of Questions Answered</value>
+    <comment>Total no of questions answered in course view</comment>
+  </data>
+  <data name="Course_View_Submit" xml:space="preserve">
+    <value>Submit</value>
+    <comment>Course view submit button</comment>
+  </data>
+  <data name="Course_View_Total_No_Of_Quest" xml:space="preserve">
+    <value>Total No of Questions</value>
+    <comment>Total No of questions in Course view</comment>
+  </data>
+  <data name="Exam_AchievedPercent" xml:space="preserve">
+    <value>Achieved Percent</value>
+  </data>
+  <data name="Exam_AttemptCount" xml:space="preserve">
+    <value>Attempt Passed</value>
+  </data>
+  <data name="Exam_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Exam_EndTime" xml:space="preserve">
+    <value>EndTime</value>
+  </data>
+  <data name="Exam_StartTime" xml:space="preserve">
+    <value>StartTime</value>
+  </data>
+  <data name="Exam_UserName" xml:space="preserve">
+    <value>UserName</value>
+  </data>
+  <data name="Publish_Assets_Mapped" xml:space="preserve">
+    <value>Mapped Assets</value>
+  </data>
+  <data name="Publish_Course" xml:space="preserve">
+    <value>Publish Course</value>
+  </data>
+  <data name="Publish_Date" xml:space="preserve">
+    <value>Publish Date</value>
+  </data>
+  <data name="Publish_Info" xml:space="preserve">
+    <value>Publish Details</value>
+  </data>
+  <data name="Publish_Name" xml:space="preserve">
+    <value>Exam Name</value>
+  </data>
+  <data name="Publish_Name_Validation" xml:space="preserve">
+    <value>Please enter Publish Name</value>
+  </data>
+  <data name="Publish_No_of_Attempts" xml:space="preserve">
+    <value>No of Attempts</value>
+  </data>
+  <data name="Publish_Pass_Percentage" xml:space="preserve">
+    <value>Pass Percentage</value>
+  </data>
+  <data name="Publish_Questions_Mapped" xml:space="preserve">
+    <value>Questions Mapped</value>
+  </data>
+  <data name="Publish_Submit_Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Publish_Submit_Validation_Text" xml:space="preserve">
+    <value>Validating Publish details</value>
+  </data>
+  <data name="Publish_User_List" xml:space="preserve">
+    <value>User List</value>
+  </data>
+  <data name="Publish_User_Role" xml:space="preserve">
+    <value>Designation</value>
+  </data>
+  <data name="Publish_Validate_Name_SPL" xml:space="preserve">
+    <value>Please remove the following special characters ~!@$^&amp;|&lt;&gt;[]  from the publish name</value>
+    <comment>Publish name special characters</comment>
+  </data>
+  <data name="Publish_Valid_From" xml:space="preserve">
+    <value>Valid From</value>
+  </data>
+  <data name="Publish_Valid_Till" xml:space="preserve">
+    <value>Valid Till</value>
+  </data>
+</root>

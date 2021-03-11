@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "EmployeeBulkAdd";
+    Layout = null;
+}
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style>
+    .dvHeader {
+        width: 99.2%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 1%;
+        padding-top: 4px;
+    }
+
+    #dvRedirect {
+        font-size: 14px;
+        width: 90%;
+        padding-left: 10%;
+    }
+
+    #dvRules a {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #dvEmpMain {
+        border-bottom: 1px solid #0072c6;
+        border-right: 1px solid #0072c6;
+        border-left: 1px solid #0072c6;
+        min-height: 450px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #dvRules {
+        width: 48%;
+        float: left;
+        border-right: 1px solid #efefef;
+        padding-left: 1%;
+    }
+
+    #ifrmExcel {
+        width: 100%;
+        padding: 2%;
+    }
+
+    #dvFrame {
+        width: 97%;
+        height: 75px;
+        padding-top: 5%;
+        padding-left: 3%;
+    }
+</style>
+
+<form action="../HiDoctor_Master/User/EmployeeExcelBulkAddResult" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="container" id="dvEmpMain">
+        <div class="dvHeader">
+            Employee - Excel Upload
+        </div>
+        <div style="width: 100%; padding: 5px;">
+            <div style="width: 37%; float: left; padding-left: 13%;">
+                <label>Step 1 : Download</label>
+            </div>
+            <div style="width: 50%; float: left;">
+                <label>Step 2 : Upload</label>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%; padding: 5px;">
+            <div id="dvRules">
+                <table>
+                    <tr>
+                        <td>1.Please @Html.ActionLink("Download", "DownloadEmployeeExcelTemplate", new { }) the employee master bulk excel upload template</td>
+                    </tr>
+                    <tr>
+                        <td>2.Update the employee details in the template</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            3.Do not alter the excel file structure(i.e.adding or removing the column)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            4.Do not rename the excel file name and the sheet name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            5.Do not rename the columns
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            6.Click the “Choose/Browse file” button to get the file
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            7.Click the upload button to upload the data
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            8. Below mentioned fields are mandatory <span class="Mandatory">*</span>
+                            <div style="width: 70%; padding-left: 20%;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>
+                                            1.Employee_Name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.Employee_Number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.Gender</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.Email_Id</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            5.Date_of_Joining
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            6.Mobile
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                            <td>6.Employee_Entity_Type
+                                            </td>
+                                        </tr>*@
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            9.Please enter the date format as yyyy-MM-dd
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            10.Please do not modify the Row_No column values
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            11.Please @Html.ActionLink("Download", "DownloadSubList", new { }) the State, City, Pincode and Department List for reference
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="width: 49%; float: left;">
+                <div style="width: 90%; padding-left: 10%;">
+                    <input type="file" id="file" name="file" accept=".xlsx" />
+                    <br /><br />
+                    <input type="submit" id="btnUp" value="Upload" class="btn small primary" />
+                </div>
+                <div id="dvFrame">
+                    <iframe name="ifrmExcel" style="width: 100%;"></iframe>
+                </div>
+                <br />
+                <div id="dvRedirect">
+                    <br />
+                    <a href="#" onclick="fnRedirectToBP('EMPLOYEE_UPLOAD');">>> Go to Batch processing</a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+</form>
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnValidateUploadedFile() {
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        var fileName = $('#file').val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xlsx") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xlsx file only');
+                return false;
+            }
+        }
+    }
+</script>

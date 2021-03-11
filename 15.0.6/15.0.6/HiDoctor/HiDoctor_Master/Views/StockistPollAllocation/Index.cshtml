@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style type="text/css">
+    .SCommon {
+        float: left;
+        width: 100%;
+    }
+
+    .SLeft {
+        float: left;
+        width: 25%;
+    }
+
+    .SRight {
+        float: left;
+        width: 73%;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    .SCommonHeader {
+        background-color: #efefef;
+        border: 1px solid #d3d3d3;
+        padding: 0.5em;
+        font-weight: bold;
+        width: 99%;
+    }
+
+    .S1 {
+        float: left;
+        width: 35%;
+        margin: 2px 0px;
+    }
+
+    .S2 {
+        float: left;
+        width: 35%;
+        margin: 2px 0px;
+    }
+
+    .S3 {
+        float: left;
+        width: 20%;
+        margin: 2px 0px;
+    }
+
+    .S4 {
+        float: left;
+        width: 7%;
+        font-size: 15px;
+        color: coral;
+        margin: 2px 0px;
+        font-weight: bold;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+
+    .SsubHeader {
+        line-height: 2.5em;
+        font-weight: bold;
+        border-bottom: 1px solid #909090;
+    }
+
+    #dvSharingRatio input[type=text] {
+        width: 92%;
+    }
+</style>
+
+<div>
+    <div class="SCommon">
+        <span style="text-decoration: underline; cursor: pointer; padding: 5px" onclick="fnToggleTree(this);" id="spnTreeToggle">Hide Tree</span>|
+        <span style="text-decoration: underline; cursor: pointer; padding: 5px" onclick="fnToggleInput(this);">Hide Input</span>
+    </div>
+    <input type="hidden" id="hdnRegionCode" />
+    <input type="hidden" id="hdnRegionCode1" />
+    <input type="hidden" id="hdnStockID" />
+
+    <div id="tree" style="width: 17.8%; height: 500px; float: left">
+    </div>
+    <div id="dvMain" style="width: 80%; float: left; margin: 1%; display: none;">
+
+        <div id="dvInput" class="SCommon">
+
+            <div style="width: 50%; margin-bottom: 20px;">
+                <div class="SCommon" style="margin: 3px 0px;">
+                    <div class="SLeft">Stockist Name</div>
+                    <div class="SRight">
+                        <input type="text" id="txtStockistName" class="stockist_token_input" style="width: 300px;" />
+                    </div>
+                </div>
+                <div class="SCommon" style="margin: 3px 0px;">
+                    <div class="SLeft">Product Name</div>
+                    <div class="SRight">
+                        <input type="text" id="txtProductName" class="product_token_input" style="width: 300px;" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="SCommon" style="margin-bottom: 20px;">
+                <div class="SCommon SCommonHeader">Sharing Ratios</div>
+                <div class="SCommon" id="dvSharingRatio" style="width: 85%;">
+                </div>
+            </div>
+
+
+            <div class="SCommon" style="margin-bottom: 20px;">
+                <div class="SCommon SCommonHeader">Status</div>
+                <div class="SCommon" id="dvStatus" style="width: 60%;">
+                    <div class="SCommon" style="margin: 2px 0px;">
+                        <div class="SLeft">Effective From</div>
+                        <div class="SRight">
+                            <input type="text" id="txtEffectiveFrom" />
+                        </div>
+                    </div>
+                    <div class="SCommon" style="margin: 2px 0px;">
+                        <div class="SLeft">Effective To</div>
+                        <div class="SRight">
+                            <input type="text" id="txtEffectiveTo" />
+                        </div>
+                    </div>
+                    <div class="SCommon" style="margin: 2px 0px;">
+                        <div class="SLeft">Status</div>
+                        <div class="SRight">
+                            <input type="radio" id="rdEnable" value="1" checked="checked" name="rdStatus" />
+                            <label for="1">
+                                Enable</label>
+                            <input type="radio" id="rdDisable" value="0" name="rdStatus" />
+                            <label for="0">
+                                Disable</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="SCommon">
+                <div class="SCommon" style="width: 60%;">
+                    <div class="SLeft">&nbsp;</div>
+                    <div class="SRight">
+                        <input type="button" class="btn primary small" value="Save" onclick="fnValidateStockistAllocation();" />
+                        <input type="button" class="btn primary small" value="Reset" onclick="fnResetStockistAllocation();" style="margin-left: 20px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dvSummary" class="SCommon">
+        </div>
+
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/StockistPoolAllocation.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#txtEffectiveFrom').monthpicker();
+        $('#txtEffectiveTo').monthpicker();
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            fnBindRegionTree("tree");
+            fnInitialiseTokenInput();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnRegionTreeActivate(node) {
+        $("#dvAjaxLoad").show();
+        $("#tree").hide();
+        $("#dvSummary").html("");
+        $('#hdnRegionCode').val("");
+        $('#hdnRegionCode1').val("");
+        fnResetStockistAllocation();
+        
+        $('#hdnRegionCode').val(node.data.key);
+        $('#hdnRegionCode1').val(node.data.key);       
+        $("#spnTreeToggle").html('Show Tree');
+        $("#dvMain").css('width', '100%');
+        $("#dvMain").css('display', '');
+        fnBindStockist();       
+        fnBindProduct();
+        fnBindStockistSharingRatio();
+        fnBindStockistAllocationSummary();
+    }
+
+    function fnToggleTree(id) {
+        if ($(id).html() == "Hide Tree") {
+            $(id).html("Show Tree");
+            $("#tree").hide();
+            $("#dvMain").css('width', '100%');
+        }
+        else {
+            $(id).html("Hide Tree");
+            $("#tree").show();
+            $("#dvMain").css('width', '80%');
+        }
+    }
+    function fnToggleInput(id) {
+
+        if ($(id).html() == "Hide Input") {
+            $("#dvMain").hide();
+            $(id).html("Show Input");
+        }
+        else {
+            $("#dvMain").show();
+            $(id).html("Hide Input");
+        }
+    }
+    function fnRegionTreePostInit() {
+
+    }
+
+</script>

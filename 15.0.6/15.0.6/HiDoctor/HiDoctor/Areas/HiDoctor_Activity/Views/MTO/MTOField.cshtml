@@ -1,0 +1,410 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/mdtimepicker.css" rel="stylesheet" />
+<style>
+    .ui-widget.ui-widget-content {
+        height: 200px !important;
+        overflow-y: auto;
+    }
+
+    .panel-default > .panel-heading {
+        color: white;
+        background-color: #26c526;
+        border-radius: 6px 5px;
+        padding: 12px;
+    }
+
+    .panel-default > .panel-headingsample {
+        color: white;
+        background-color: darkorange;
+        border-radius: 6px 5px;
+        padding: 12px;
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid black;
+    }
+
+    .container {
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 15px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 22px;
+        width: 22px;
+        background-color: #eee;
+        border-radius: 4px;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+        border-radius: 4px;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .Cuspanel {
+        margin-bottom: 7px;
+        background-color: #fff;
+        /* border: 1px solid transparent; */
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        /* box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+</style>
+<div>   
+
+    <form>
+        <div class="form-row" style="margin-top:10px">
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" id="first">
+                <label>Store Name</label>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Activitytype">
+                    <input class="form-control" type="text" name="Name" id="StoreName" maxlength="300">
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;" id="punchdiv">
+                <button type="button" class="btn btn-info" id="Punch">
+                    Punch Start Time
+                </button>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="display:none" id="stime">
+                <label>Start Time</label>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <span style="word-break: break-word;" id="spnstrttime"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" id="attch">
+                <label>Attachment</label>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Attfile">
+                    <div class="panel panel-default" id="Attfile_0">
+                        <div class="panel-body">
+                            <input type="file" class="form-control-file" id="mapfile">
+                            </br>
+                            <span><a style="display:none;word-break: break-word;" id="spnfilename"></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <label>Accompanist Details</label>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="ADDAccompanist">
+                    <div class="panel panel-default" id="Acc_0">
+                        <div class="panel-body">
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <input class="form-control" name="accompanist" type="text" id="Accomp_0" placeholder="Accompanist">
+                                <input class="form-control" name="accompanist" type="hidden" id="AccompCode_0">
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <div class="col-lg-6 col-md-6 col-xs-6 clearfix">
+                                    <input class="form-control" type="text" id="Starttime_0" placeholder="Start Time">
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xs-6 clearfix">
+                                    <input class="form-control" type="text" id="Endtime_0" placeholder="End Time">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 clearfix Add" id="Add_0" style="text-align:center">
+                                <button type="button" class="btn btn-info" id="AddAcc_0" onclick="MTO.fnAddAccompanist();">ADD</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <label>Customer Information</label>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="CustomerDetails">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="CustomerD_0" style="padding:0px;">
+                    <div class="panel panel-default Customer">
+                        <div class="panel-body clearfix">
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <input class="form-control" type="text" id="cusname" placeholder="Customer Name">
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <input class="form-control" type="number" id="MobileNum" placeholder="Mobile Number">
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;" id="cusSalesPro">
+                                <label>Sales</label>
+                                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;" id="cusSalesPro_0_0">
+                                    <div class="col-lg-6 col-md-6 col-xs-6 clearfix" style="padding:0px;">
+                                        <input class="form-control" type="text" id="productSales" name="ProdSales" placeholder="Sales Name">
+                                        <input class="form-control" type="hidden" id="SalesCode">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-xs-4 clearfix">
+                                        <input class="form-control" type="number" id="salesquality" placeholder="Quantity">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-2 clearfix" style="">
+                                        <span class="Salespluse" id="SAdd_0_0"><i class="fa fa-plus AddSample" onclick="MTO.fnAddSales(0);"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;" id="cusSamplePro">
+                                <label>Sample</label>
+                                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;" id="cusSamplePro_0_0">
+                                    <div class="col-lg-6 col-md-6 col-xs-6 clearfix" style="padding:0px;">
+                                        <input class="form-control" type="text" id="productSample" name="ProdSample" placeholder="Sample Name">
+                                        <input class="form-control" type="hidden" id="SampleCode">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-xs-4 clearfix">
+                                        <input class="form-control" type="number" id="samplequality" placeholder="Quantity">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-2 clearfix" style="">
+                                        <span class="Samplepluse" id="SPAdd_0_0"><i class="fa fa-plus AddSample" onclick="MTO.fnAddSamples(0);"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                                <label>Remarks</label>
+                                <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                                    <textarea class="form-control" cols="25" rows="3" id="remark" maxlength="300"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="AddC_0" style="text-align:center">
+                                <button type="button" class="btn btn-info" id="AddCus_0" onclick="MTO.fnAddCustomerDetails();">ADD</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="ADDProduct" style="padding:0px;">
+                <div class="Prod">
+                    <div class="panel-body clearfix" style="padding-top:0px">
+
+                        <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="proddiv"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <label>General Remarks</label>
+                <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                    <textarea class="form-control" cols="25" rows="3" id="Gremark" maxlength="300"></textarea>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;">
+                <button type="button" class="btn btn-primary" id="Back">Back</button>
+                <button type="button" id="Draft" class="btn btn-primary buttonSave">Draft</button>
+                <button type="button" id="Save" class="btn btn-primary buttonSave">Save</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+<!--<p id="demo"></p>-->
+<div class="modal" id="myModal">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#myModal').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="punchintime" placeholder="Start Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="punchtime" class="btn btn-primary">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="PunchEndTime">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#PunchEndTime').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="PunchEnd" placeholder="End Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="Endpunch" class="btn btn-primary">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/mdtimepicker.js"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/MTO.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var MTO_Date='';
+    var Activity='';
+    var MTO_ID=0;
+    var Lid='';
+    var fileData = new FormData();
+    var fileUpload = '';
+    var files = '';
+    var CusProductDeatils = [];
+    var Lat ='';
+    var Long ='';
+    var isValid=true;
+    $(document).ready(function () {
+        debugger;
+        Lid=@Html.Raw(Json.Encode(ViewBag.LID));
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        MTO_Date=@Html.Raw(Json.Encode(ViewBag.MTO_Date));
+        MTO_ID=@Html.Raw(Json.Encode(ViewBag.MTO_ID));
+        $('#Starttime_0').mdtimepicker();
+        $('#Endtime_0').mdtimepicker();
+        MTO.initialize();
+        if(MTO_ID==0)
+        {
+            $('#mapfile').show();
+            $('#spnfilename').show();
+        }
+        else{
+            $('#mapfile').hide();
+            $('#spnfilename').show();
+        }
+        getLocation();
+    });
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/MTO/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    //var x = document.getElementById("demo");
+
+    function getLocation() {
+        debugger
+        // navigator.geolocation.getCurrentPosition(showPosition,showError);
+        navigator.geolocation.getCurrentPosition(function(position){
+            Lat='';
+            Long='';
+            Lat= position.coords.latitude;
+            Long= position.coords.longitude;
+            console.log(position);
+        });
+
+        //if (navigator.geolocation) {
+        //    navigator.geolocation.getCurrentPosition(showPosition,showError);
+        //    isValid=true;
+        //} else {
+        //    swal("", "Geolocation is not supported by this browser.", "");
+        //    isValid=false;
+        //}
+        //return isValid;
+    }
+
+    function showPosition(position) {
+        Lat='';
+        Long='';
+        Lat= position.coords.latitude;
+        Long= position.coords.longitude;
+    }
+    function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                swal("", "User denied the request for Geolocation.", "");
+                isValid=false;
+                break;
+            case error.POSITION_UNAVAILABLE:
+                swal("", "Location information is unavailable.", "");
+                isValid=false;
+                break;
+            case error.TIMEOUT:
+                swal("", "The request to get user location timed out.", "");
+                isValid=false;
+                break;
+            case error.UNKNOWN_ERROR:
+                swal("", "An unknown error occurred.", "");
+                isValid=false;
+                break;
+        }
+    }
+</script>

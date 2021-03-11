@@ -1,0 +1,255 @@
+﻿@{
+    ViewBag.Title = "AdCoursePublish";
+}
+<link href="../../Areas/HDNextGen/Content/AdminMaster.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdCreateCourse.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/ELearning.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ADCourseServices.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/AdCoursePublish.js"></script>
+
+<script src="../../Areas/HDNextGen/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>
+<style>
+    a {
+        text-decoration: underline;
+    }
+    input[type=text] {
+        border-radius: 4px!important;
+    }
+</style>
+<div class="panel panel-default clsOverflowAuto" id="dvSurResponseView">
+    <div class="col-md-12 clearfix" style="">
+        <a style="cursor: pointer; float: right;" onclick="fnToggleCourseDetails();">Show/Hide Course</a>
+    </div>
+    <div id="dvCoursePublish" class="clsWidget">
+        <div id="dvCourseDetails">
+            <div class="col-lg-12 clsWidget">
+                <div class="clsDvHeader">
+                    <h4 class="heading">@Resources.AdCourse.Publish_Course</h4>
+                </div>
+                <div class="clsSeparator"></div>
+                <div class="col-lg-12 clsPaddingNone clearfix" id="dvCourseHead">
+                </div>
+            </div>
+            <div class="col-lg-12 clsPaddingNone clearfix">
+            </div>
+            <div class="col-lg-12 clsWidget">
+                <div class="clsDvHeader">
+                    <h4 class="heading">@Resources.AdCourse.Publish_Assets_Mapped </h4>
+                </div>
+                <div class="clsSeparator"></div>
+                <div class="col-lg-12 table-responsive" id="dvMappedAsset"></div>
+            </div>
+            <div class="col-lg-12 clsWidget">
+                <div class="clsDvHeader">
+                    <h4 class="heading">@Resources.AdCourse.Publish_Assign_Users </h4>
+                </div>
+                <div class="clsSeparator"></div>
+                <div class="col-lg-12 table-responsive" id="dvMappedQuestion"></div>
+            </div>
+            <div class="col-lg-12 clsWidget">
+                <div class="col-sm-3">
+                    @Resources.AdCourse.Publish_User_Role<span class="spnMandat">*</span>
+                    <div id="dvUserType" class="col-sm-12  dv-input">
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    @Resources.AdCourse.Publish_User_List <span class="spnMandat">*</span>
+                    <div id="cboUserDetails" class="col-sm-12  dv-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dvPublishInfo" class="col-lg-12 clsWidget">
+            <div class="clsDvHeader">
+                <h4 class="heading">@Resources.AdCourse.Publish_Info </h4>
+            </div>
+            <div class="clsSeparator"></div>
+            <div class="col-lg-12 clearfix">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_Name <span class="spnMandat">*</span>
+                </div>
+                <div id="dvPubName" class="col-sm-4">
+                    <input type="text" id="txtPubName" class="form-control" maxlength="200" style="width: 225px!important; " />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3"><span id="spnPublishNameErr" class="spnError"></span></div>
+            </div>
+            <div class="col-sm-12 clearfix" style="display: none;">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_Date <span class="spnMandat">*</span>
+                </div>
+                <div id="dvPubDate" class="col-sm-4">
+                    <input type="text" id="txtPubDate" class="datepicker form-control" maxlength="10" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4"><span id="spnPubDateErr" class="spnError"></span></div>
+            </div>
+            <div class="col-sm-12 clearfix">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_Valid_From <span class="spnMandat">*</span>
+                </div>
+                <div id="dvValidFrom" class="col-sm-4">
+                    <input type="text" id="txtValidFrom" class="form-control" maxlength="10" style="width: 100px!important;" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4">
+                    <span id="spnValidFromErr" class="spnError"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 clearfix">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_Valid_Till <span class="spnMandat">*</span>
+                </div>
+                <div id="dvValidTill" class="col-sm-4">
+                    <input type="text" id="txtValidTill" class="form-control" maxlength="10" style="width: 100px!important;" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4">
+                    <span id="spnValidTillErr" class="spnError"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 clearfix" style="display: none;">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_Pass_Percentage <span class="spnMandat">*</span>
+                </div>
+                <div id="dvPassPercent" class="col-sm-4">
+                    <input type="text" id="txtPassPercent" class="form-control" maxlength="3" style="width: 100px!important;" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4">
+                    <span id="spnPassPercentErr" class="spnError"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 clearfix" style="display: none;">
+                <div class="dvPubLabel col-sm-3">
+                    @Resources.AdCourse.Publish_No_of_Attempts <span class="spnMandat">*</span>
+                </div>
+                <div id="dvAttempt" class="col-sm-4">
+                    <input type="text" id="txtAttempt" class="form-control" maxlength="2" style="width: 100px!important;" />
+                </div>
+            </div>
+            <div class="col-lg-12 clearfix">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-4">
+                    <span id="spnAttemptErr" class="spnError"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 clearfix" style="display: none;">
+                <div class="dvPubLabel col-sm-3">
+                    Type <span class="spnMandat">*</span>
+                </div>
+                <div id="dvType" class="col-sm-4">
+                    <input type="radio" style="width: 15px" name="optionMandatory" value="1">Mandatory
+                    <input type="radio" style="width: 15px" name="optionMandatory" value="0">Optional
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-12 clsWidget">
+            <div class="clsDvHeader">
+                <h4 class="heading">@Resources.AdCourse.Publish_Section_Assessment </h4>
+            </div>
+            <div class="clsSeparator"></div>
+            <div class="col-sm-12">
+                <div class="col-sm-12 table-responsive" id="dvPublishSectionAssement"></div>
+                @*  <div class="col-sm-6">*@
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-sm-12" id="dvCrPublish">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-4" style="padding-top: 10px; padding-bottom: 10px;">
+                <a class="btn btn-primary" id="btnCrPublish">@Resources.AdCourse.Publish_Submit_Text</a>
+            </div>
+        </div>
+        <div id="dvPublishCourseInfo"></div>
+    </div>
+</div>
+
+<div id="dvAssetsPopup" class="popup_overlay" style="display: none;">
+    <div class="popup-wrapper">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvAssetsPopup');">
+        <span aria-hidden="true">×</span></button>
+        <div class="title" id="dvAssetsTitle"><h3>Loading Title...</h3></div>
+        <div id="dvAssets"></div>
+    </div>
+</div>
+
+<div id="dvQuestionsPopup" class="popup_overlay" style="display: none;">
+    <div class="popup-wrapper">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvQuestionsPopup');">
+        <span aria-hidden="true">×</span></button>
+        <div class="title" id="dvQuestionsTitle"><h3>Loading Title...</h3></div>
+        <div id="dvQuestions"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        //COURSE.initPopups();
+    });
+    var currrentDate_g="";
+    var courseId_g = @Html.Raw(Json.Encode(ViewBag.Course_ID));
+    COURSE.fnLoadCourseSummary(courseId_g);
+
+    $("#btnCrPublish").click(function(){        
+        COURSE.fnPublishCourse(courseId_g);
+    });
+    
+    $("#dvPageHeader").html('Course Publish');
+    currrentDate_g= @Html.Raw(Json.Encode(ViewBag.CurrrentDate)); 
+    var DATE_FORMAT = "dd/mm/yy";
+    $('#txtPubDate').datepicker({
+        autoclose: true,
+        dateFormat: 'dd/mm/yy',      
+        startDate: currrentDate_g         
+    });
+    $('#txtValidFrom').datepicker({
+        autoclose: true,
+        dateFormat: DATE_FORMAT,
+        minDate:new Date(currrentDate_g.split('/')[2]+"-"+ currrentDate_g.split('/')[1]+"-"+currrentDate_g.split('/')[0]) ,
+    });
+    $('#txtValidTill').datepicker({
+        autoclose: true,
+        dateFormat: DATE_FORMAT,
+        minDate:new Date(currrentDate_g.split('/')[2]+"-"+ currrentDate_g.split('/')[1]+"-"+currrentDate_g.split('/')[0]) ,
+    });   
+    $('.dropdown-toggle').dropdown(); 
+    var publishSubmitValidate = "@Resources.AdCourse.Publish_Submit_Validation_Text";
+    var publishNameValidation = "@Resources.AdCourse.Publish_Name_Validation";
+    var publishNameSPlCharValid = "@Resources.AdCourse.Publish_Validate_Name_SPL";
+    var publishDateValidation = "Please select publish date";
+    var publishDateComparison = "Publish Date should be greater than Current date";    
+
+    var publishValidFrom = "Please select Valid From date";
+    var publishValidFromComparison = "Valid From should be greater than Current date";
+    var PublidhFromDateError="@Resources.AdCourse.Publish_Valid_FromDate_Error";
+    var PublishToDateError="@Resources.AdCourse.Publish_Valid_ToDate_Error";
+
+    var publishValidTill = "Please select Valid Till date";
+    var publishValidTillComparison = "Valid Till should be greater than or equal to Valid From date";
+    function fnToggleCourseDetails(){
+        $("#dvCourseDetails").toggle();
+    }
+  
+</script>

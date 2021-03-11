@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+ 
+    
+}
+
+<style>
+      .cls-dashboard-content {
+        background-color: #EEEEEE;
+        min-height: 300px;
+        padding: 7px;
+    }
+        .cls-common-head .panel-heading {
+        background-color: #7986CB !important;
+        color: white;
+    }
+         .ddlPS select {
+        float: right;
+        padding: 1px!important;
+    }
+   .input-group-addon {
+        padding: 8px 12px;
+        position: absolute;
+     top: -14px;
+    right: -236px;
+    bottom: -17px;
+    }
+
+   .table-striped {
+    background-color: gainsboro;
+}
+    .joinAttrition {
+        color:blue;
+       width: 21%;
+      float: right;
+      position: absolute;
+      left: 368px;
+      top: 7px;
+      padding: 6px 1px 5px 19px;
+    }
+         .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    right: 1px;
+    top: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.27);
+    border-radius: 3px;
+}
+    #dvCategoryCoverage .table > thead > tr > th, #dvCategoryCoverage .table > tbody > tr > th, #dvCategoryCoverage .table > tfoot > tr > th, #dvCategoryCoverage .table > thead > tr > td, #dvCategoryCoverage .table > tbody > tr > td, #dvCategoryCoverage .table > tfoot > tr > td {
+        padding: 3px !important;
+    }
+    #dvCategoryCoverage .table {
+        margin-bottom: 1px !important;
+    }
+
+    #dvCategoryCoverage {
+            right: 0px;
+    position: absolute;
+    padding: 0px 0px 23px 0px;
+    zoom: 1;
+    height:333px;
+    }
+
+    .btn-active {
+    background-color: cornflowerblue;
+    color: white !important;
+    }
+      .cls-positive .btn-switch .btn-inactive {
+            background-color: #65C0B7 !important;
+        }
+
+    #tillMonth {
+    color: black;
+    /*background-color: #7986CB !important;*/
+    width: 50px;
+    height: 19px;
+    padding: 4px 19px 21px 11px;
+    position: absolute;
+    top: 191px;
+    }
+
+    #previousMonth {
+    color: black;
+    /*background-color: #7986CB !important;*/
+    width: 50px;
+    height: 9px;
+    padding: 4px 19px 20px 13px;
+    position: absolute;
+    /* right: -223px; */
+    top: 111px;
+    left: -14px;
+    }
+
+    #currentMonth {
+        color: black;
+        /*background-color: #7986CB !important;*/
+        width: 50px;
+    /* height: 16px; */
+       padding: 4px 18px 6px 14px;
+       position: absolute;
+       top: 44px;
+    }
+
+    #dvJoinAttrion .panel {
+        height: 416px;
+    }
+    #excludeSS .hover {
+        background-color: skyblue;
+    }
+    #AtriJoinMonth {
+    }
+    /*#dvCategoryCoverage {
+        background-color:darkslategray;
+    }*/
+</style>
+<link href="~/Content/SideMenuBar.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+
+
+<div class="cls-dashboard-content" style="width:1024px;margin: 0px auto;">
+    <div class="row"> 
+           <div class="col-sm-12 clearfix" style="margin-bottom: 10px;">  
+               <div class="col-sm-6 clearfix">
+                   @Html.Partial("StockistsSale")
+               </div>
+               <div class="col-sm-6 clearfix"> 
+     @Html.Partial("SpecialityDashBoard")
+               </div>
+               </div>
+         <div class="col-sm-12 clearfix" style="margin-bottom: 10px;"> 
+             <div class="col-sm-6 clearfix">
+                  @Html.Partial("CRMDashboard")
+             </div>
+  <div class="col-sm-6 clearfix" style="background-color:white; height:348px;">
+
+  </div>
+   
+    </div></div></div>
+  
+<script src="~/Scripts/HD/OzoneDashboard.js"></script>
+<script type="text/javascript">
+    
+
+    $(document).ready(function () {
+        OzoneDashboard.Intailize();
+    
+    });
+</script>

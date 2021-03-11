@@ -1,0 +1,342 @@
+﻿@model HiDoctor_Activity.Models.DCRCalendarModel
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRCalendar.js?v=@HiDoctor.BuildNumber.BuildNo")" type="text/javascript"></script>
+<link href="../Areas/HiDoctor_Activity/Content/calendar.css" rel="stylesheet" />
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script type='text/javascript'>
+    ShowModalPopup('dvLoading');
+    var monthArray = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+    var weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    var dcrJSON_g;
+    var curdate_g;
+    var dcrJSON2_g;
+    var isPayRollIntegrated_g=false;
+    var isdcrLock_g = false;
+    var unApprovedDCRCheck_g = "";
+    var singleActivityperday_g = "";
+    var leaveentrymode_g="";
+    var DCRactdate="";
+    var Company_Code="";
+    var recon_Status=1;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+            // Set Current Date.
+            curdate_g = @Html.Raw(Json.Encode(ViewBag.CurrentDate));
+            isPayRollIntegrated_g = @Html.Raw(Json.Encode(ViewBag.isPayRollIntegrated));
+            unApprovedDCRCheck_g = @Html.Raw(Json.Encode(ViewBag.unApprovedDCRCheck));
+            singleActivityperday_g = @Html.Raw(Json.Encode(ViewBag.singleActivityPerDay));
+            leaveentrymode_g=@Html.Raw(Json.Encode(ViewBag.LeaveEntryMode));
+            Company_Code=@Html.Raw(Json.Encode(ViewBag.Company_Code));
+            // Get Month and Year from current date.
+            var month = new Date(curdate_g).getMonth();
+            var year = new Date(curdate_g).getFullYear();
+
+            // Get Month Name.
+            var monthName = monthArray[month];
+
+            fnGetDCRDetails(monthName + " " + year.toString(), true);
+
+        }
+        catch(e)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+        $("#dvAjaxLoad").hide();
+    });
+
+
+    function fnGetDCRDetails(my, isFirstTime) {
+        // Intize the start date and end date.
+        var startDate;
+        var endDate;
+        // if fisrtTime callinf we retrieves the las two months data.
+        // this data help for Sequntial DCR = Month_Check.
+        // if not fistatime we retrieves the one month details.
+        var month = new Date(curdate_g).getMonth();
+        var monthName = monthArray[month];
+        var calndarMonthName = my.split(' ')[0];
+
+        if (monthName.toUpperCase() == calndarMonthName.toUpperCase()) {
+            var monthName = my.split(' ')[0];
+            var year = my.split(' ')[1];
+            stratYear = monthName.toUpperCase() == "JANUARY" ? year - 1 : year;
+            startMonthName = fnGetPreviousMonth(monthName);
+            var mon = fngetMonthNumber(startMonthName);
+            startDate = mon + "/" + "01" + "/" + stratYear;
+
+            // Retrives the last day of month.
+            var lastDay = fnDaysInMonth(mon + 1, year);
+            var endMonth = fngetMonthNumber(monthName);
+            endDate = endMonth + "/" + lastDay + "/" + year;
+        }
+        else {
+            my_g = my;
+            var month = my.split(' ');
+            var mon = fngetMonthNumber(month[0]);
+            var startDate = mon + "/01/" + month[1]
+            var endDate;
+            var lastDay = fnDaysInMonth(mon, month[1]);
+            endDate = mon + "/" + lastDay + "/" + month[1]
+        }
+
+        $.ajax({
+            type: 'POST',
+            data: "startDate=" + startDate + "&endDate=" + endDate,
+            url: '/DCRCalendar/GetCalendarDetails',
+            success: function (response) {
+                var result = response;
+                debugger;
+                fnCheckRecon(endDate.split('/')[0],endDate.split('/')[2]);
+                if (result.length == 0) {
+
+                    fnBuildCalendar('', '', '{}', isFirstTime);
+                    dcrJSON2_g = JSON.stringify('{}');
+                    $("#btnnext").click(function () { fnGetDCRDetails($('#my').html()) });
+                    $("#btnprev").click(function () { fnGetDCRDetails($('#my').html()) });
+                    $("#btntoday").click(function () { fnGetDCRDetails($('#my').html()) });
+                }
+                else {
+                    dcrJSON2_g = JSON.stringify(result);
+                    fnBuildCalendar(startDate, endDate, result, isFirstTime);
+                    $("#btnnext").click(function () { fnGetDCRDetails($('#my').html()) });
+                    $("#btnprev").click(function () { fnGetDCRDetails($('#my').html()) });
+                    $("#btntoday").click(function () { fnGetDCRDetails($('#my').html()) });
+                }
+            },
+            error: function (e) {
+                $.msgbox('Retrieve the calendar details failed.', { type: "error" });
+                return false;
+            }
+        });
+        return true;
+    }
+
+    function fnBuildCalendar(startDate, endDate, dcrJSON, isFirstTime) {
+
+        dcrJSON_g = dcrJSON;
+
+        if (isFirstTime) {
+            fnDCRLockAutomation(endDate);
+        }
+
+        var date = new Date(endDate);
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        var start = startDate;
+        var end = endDate;
+        if ($('#calendar')) {
+            $('#calendar').dcrCalendar('destroy');
+        }
+
+        $('#calendar').dcrCalendar({
+            header: {
+                left: 'prev,next today title',
+                center: '',
+                right: 'views'
+            },
+            month: m,
+            year: y,
+            editable: false,
+            selectable: true,
+            autoheight: true,
+            selectHelper: true,
+            weekMode: 'variable',
+            select: function (start, end, allDay) {
+
+            },
+            events: [
+            dcrJSON_g
+            ],
+            dayClick: function (date, allDay, jsEvent, view) {
+                var hidoctorStartDate = new Date(dcrJSON_g[1].Data[0].HidoctorStartDate);
+                if (date < hidoctorStartDate) {
+                    $.msgbox('You cant enter DCR before your joining date.', { type: "error" });
+                    return false;
+                }
+                if (!($(this).hasClass('fc-other-month')) && !isdcrLock_g) {
+                    ShowModalPopup('dvLoading');
+                    fnValidation(date);
+                    HideModalPopup('dvLoading');
+                }
+
+            },
+            eventClick: function (event, element) {
+            }
+        });
+
+        // Highlight the Server Current Date.
+        $(".fc-today").removeClass("fc-today");
+        if($('#my').html().split(' ')[0].toUpperCase() == monthArray[new Date(curdate_g).getMonth()].toUpperCase())
+        {
+            //$("#calendar .fc-daynumber").
+            for(var daynumberIndex=0;daynumberIndex<$('#calendar .fc-day-number').length;daynumberIndex++)
+            {
+                if(!$($("#calendar .fc-day-number")[daynumberIndex].parentNode.parentNode).hasClass('fc-other-month'))
+                {
+                    if($("#calendar .fc-day-number")[daynumberIndex].innerHTML == new Date(curdate_g).getDate())
+                    {
+                        $($("#calendar .fc-day-number")[daynumberIndex].parentNode.parentNode).addClass("fc-today");
+                        break;
+                    }
+                }
+            }
+        }
+        fnSetDCROptions();
+        $(".fc-header-right").html($('#dvControls').html());
+        $('#dvControls').html("");
+        $('#my').css('fontSize', '18px');
+        if (isdcrLock_g) {
+            $('#dvCalendar').addClass('locked');
+        }
+        HideModalPopup('dvLoading');
+    }
+
+    function fngetMonthNumber(monthName) {
+        if (monthName.toUpperCase() == "JANUARY") {
+            return 1;
+        }
+        if (monthName.toUpperCase() == "FEBRUARY") {
+            return 2;
+        }
+        if (monthName.toUpperCase() == "MARCH") {
+            return 3;
+        }
+        if (monthName.toUpperCase() == "APRIL") {
+            return 4;
+        }
+        if (monthName.toUpperCase() == "MAY") {
+            return 5;
+        }
+        if (monthName.toUpperCase() == "JUNE") {
+            return 6;
+        }
+        if (monthName.toUpperCase() == "JULY") {
+            return 7;
+        }
+        if (monthName.toUpperCase() == "AUGUST") {
+            return 8;
+        }
+        if (monthName.toUpperCase() == "SEPTEMBER") {
+            return 9;
+        }
+        if (monthName.toUpperCase() == "OCTOBER") {
+            return 10;
+        }
+        if (monthName.toUpperCase() == "NOVEMBER") {
+            return 11;
+        }
+        if (monthName.toUpperCase() == "DECEMBER") {
+            return 12;
+        }
+    }
+
+    function fnDaysInMonth(month, year) {
+        return new Date(year, month, 0).getDate();
+    }
+
+    function fnGetPreviousMonth(monthName) {
+        if (monthName.toUpperCase() == "JANUARY") {
+            return "DECEMBER"
+        }
+        if (monthName.toUpperCase() == "FEBRUARY") {
+            return "JANUARY";
+        }
+        if (monthName.toUpperCase() == "MARCH") {
+            return "FEBRUARY";
+        }
+        if (monthName.toUpperCase() == "APRIL") {
+            return "MARCH";
+        }
+        if (monthName.toUpperCase() == "MAY") {
+            return "APRIL";
+        }
+        if (monthName.toUpperCase() == "JUNE") {
+            return "MAY";
+        }
+        if (monthName.toUpperCase() == "JULY") {
+            return "JUNE";
+        }
+        if (monthName.toUpperCase() == "AUGUST") {
+            return "JULY";
+        }
+        if (monthName.toUpperCase() == "SEPTEMBER") {
+            return "AUGUST";
+        }
+        if (monthName.toUpperCase() == "OCTOBER") {
+            return "SEPTEMBER";
+        }
+        if (monthName.toUpperCase() == "NOVEMBER") {
+            return "OCTOBER";
+        }
+        if (monthName.toUpperCase() == "DECEMBER") {
+            return "NOVEMBER";
+        }
+    }
+    function fnCheckRecon(month,year)
+    {
+        debugger;
+        var value=fnGetPrivilegeValue("SAMPLE_RECON_EFFECTIVE_FROM","");
+        if(value.length>0)
+        {
+            var _this = null;
+            context = ["Api/ReconApi/CheckPendingReconInDCR", Company_Code, curUserCode_g, (year +'-' + month+'-01')];
+            CoreREST.get(_this, context, null, fnCheckReconSuccess, fnCheckReconfailure);
+        }
+    }
+    function fnCheckReconSuccess(data)
+    {
+        debugger;
+        recon_Status=data;
+
+    }
+    function fnCheckReconfailure()
+    {
+        recon_Status=1;
+    }
+
+
+</script>
+<style type='text/css'>
+    #dvCalendar {
+        width: 80%;
+        margin: 0px auto;
+        z-index: 200 !important;
+    }
+
+    #calendar {
+        margin: 0px auto;
+        z-index: 200 !important;
+    }
+
+    .locked {
+        height: 100%;
+        width: 100%;
+        background-color: #000;
+        z-index: 99;
+        filter: alpha(opacity=15);
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=15);
+        -moz-opacity: 0.15;
+        opacity: 0.15;
+    }
+</style>
+<div id="dvCalendar">
+    <div id="dvLoading" style="display: none">
+        <img src="../../Content/themes/base/images/hd/loader.gif" />
+    </div>
+    <div id="dvControls" style="display: none">
+    </div>
+
+    <div id='calendar'>
+    </div>
+
+</div>
+
+<div id="dvTimesheet">
+</div>

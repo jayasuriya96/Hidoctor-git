@@ -1,0 +1,508 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<style>
+    .batch {
+        font-size: 14px;
+        line-height: 1.25;
+        margin-bottom: 1.25em;
+        font-weight: bold;
+    }
+
+    select:required:invalid {
+        color: gray;
+    }
+
+    option[value=""][disabled] {
+        display: none;
+    }
+
+    option {
+        color: black;
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+        background-color: limegreen;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .Indot {
+        height: 10px;
+        width: 10px;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .DeleteProduct, .AddProduct {
+        cursor: pointer;
+    }
+
+    .list {
+        max-height: 550px;
+        overflow-y: scroll;
+    }
+
+    .calendars {
+        position: relative;
+        right: 14px;
+    }
+
+    .collapsebatch, .collapsebatchs {
+        cursor: pointer;
+    }
+
+    .batchlable {
+        margin-bottom: 0px;
+        position: relative;
+        top: 10px;
+    }
+
+    #CreateBatchEdit {
+        cursor: pointer;
+    }
+
+    .editdelete {
+        color: blue;
+        text-align: right;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 12px;
+    }
+
+    .information {
+        cursor: pointer;
+        color: blue;
+        font-size: 18px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .status {
+        position: relative;
+        bottom: 16px;
+        float: right;
+    }
+
+    .badge {
+        position: relative;
+        bottom: 10px;
+    }
+
+    .blurbg {
+        position: fixed;
+        background-color: white;
+        opacity: 0.5;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
+    body {
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    }
+
+    .ui-autocomplete {
+        display: none;
+        top: 1137px;
+        left: 76.0135px;
+        height: 200px;
+        overflow: auto;
+        width: 285px;
+    }
+
+    .sweet-alert h2 {
+        font-size: 20px !important;
+    }
+</style>
+<div class="col-xs-12 col-sm-12 col-md-12 clearfix">
+    <div role="tabpanel" class="tab-pane active container-fluid" id="home">
+        <div class="row flex-row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="padding:0px;">
+                <div class="panel panel-default list">
+                    <div class="panel-body">
+                        <div class="col-xs-12 col-sm-12 col-md-12 clearfix" style="padding:0px;">
+                            <h4>Batch List</h4>
+
+                            <form>
+                                <div class="form-group clearfix" style="padding:0px;">
+                                    <label class="col-sm-5 col-md-5 col-xs-5 col-form-label batchlable">Status :</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <select class="form-control" id="status" style="width: 100%;">
+                                            <option value="2">All</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">InActive</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix" style="padding:0px;">
+                                    <label for="inputEmail3" class="col-md-5 col-sm-5 col-xs-5 col-form-label batchlable">Region Name :</label>
+                                    <div class="col-sm-7 col-xs-7">
+                                        <input type="text" class="BatchRegion" id="txtRegionBatch" style="">
+                                        <input type="hidden" id="hdnRegionBatch" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix" style="padding:0px;">
+                                    <label for="inputPassword3" class="col-sm-5 col-xs-5 col-form-label batchlable">Customer Name : </label>
+                                    <div class="col-sm-7 col-xs-7" id="auto">
+                                        <input type="text" class="BDoctName" id="txtDoctorBatch">
+                                        <input type="hidden" id="hdnDotorBatch" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-xs-12" style="padding:0px;">
+                                    <button type="button" id="BatchD" class="btn btn-primary buttonSave" onclick="Batch.GetDetailsOfBatch();" style="float: right;">Go</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div id="batchDetails" class="col-sm-12 col-md-12 col-xs-12 clearfix" style="margin-top:10px;padding:0px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" style="padding:0px;">
+                <div class="panel panel-default" id="create">
+                    <div class="panel-body">
+                        <h4>Create Batch</h4>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix" id="Cregion">
+                                <input type="text" class="BRegion" placeholder="Region Name" id="txtRegion">
+                                <input type="hidden" id="hdnRegion" />
+
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix " id="regauto">
+                                <input type="text" class="CName" placeholder="Customer Name" id="txtDoctor">
+                                <input type="hidden" id="hdnDotor" />
+
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" placeholder="Batch Name" id="BatchName">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="number" class="form-control" placeholder="No Of Chicks" id="NoOfChicks" min="1">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" placeholder="Start Date" id="Start" readonly>
+
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" placeholder="End Date" id="End" readonly>
+                            </div>
+                        </div>
+                        @*<div class="form-group col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                                <label style="margin-left: 18px;">Status:</label>
+                                <input type="radio" class="statusofbatch" name="Bstatus" value="1" style="margin-left: 18px;" checked="checked" /><label>Active</label>
+                                <input type="radio" class="statusofbatch" name="Bstatus" value="0" style="margin-left: 18px;" /><label>In Active</label>
+                            </div>*@
+                        <div class="form-group col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-6 clearfix" style="text-align: center;">
+                                <button type="button" id="createBatch" class="btn btn-primary buttonSave">Create</button>
+                                @*</div>
+                                    <div class="col-md-6">*@
+                                <button type="button" id="cancel" class="btn btn-primary buttonCancel">Cancel</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="fullEdit">
+                    <div id="Edit">
+                        <div class="panel panel-default" id="CreateBatchEdit">
+                            <div class="panel-heading">Create New Batch</div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-sm-12 col-md-12 col-xs-12 clearfix">
+                                    <div class="col-sm-12 col-md-7  col-xs-12 col-lg-7" id="BatchDetails">
+
+                                    </div>
+                                    <div class="col-sm-12 col-lg-5 col-md-5 col-xs-12">
+                                        <h4 id="EditBatch" style="color:blue;text-align:right;cursor:pointer;">Edit</h4>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><lable>Region Name : </lable><lable id="EDRegion"></lable></li>
+                                        <li class="list-group-item"><lable>Customer Name : <lable id="EDCustomerName"></lable></lable></li>
+                                        <li class="list-group-item"><lable>Batch Number : </lable><lable id="EDBNumber"></lable></li>
+                                        <li class="list-group-item"><lable>No Of Chicks : </lable><lable id="EDNChicks"></lable></li>
+                                        <li class="list-group-item"><lable>Start Date : </lable><lable id="EDSDate"></lable></li>
+                                        <li class="list-group-item"><lable>End Date : </lable><lable id="EDEDate"></lable></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ProductAdd" class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                        <div class="panel panel-default clearfix">
+                            <div class="panel-body col-sm-12 col-md-12  col-xs-12 clearfix">
+                                <div id="editschedule"></div>
+
+                                <div class="form-group col-sm-12 col-md-8 col-lg-8 clearfix">
+                                    <input type="text" class="form-control" placeholder="Schedule Name" id="ScheduleName">
+                                </div>
+                                <div class="form-group col-sm-12 col-md-8 col-lg-8 clearfix">
+                                    <input type="text" class="form-control" placeholder="Start Date" id="ScheduleSDate" readonly>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-8 col-lg-8 clearfix">
+                                    <input type="text" class="form-control" placeholder="End Date" id="ScheduleEDate" readonly>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-8 col-lg-8 clearfix">
+                                    <input type="number" class="form-control" min="1" max="9999" placeholder="No. of Weeks" id="ScheduleNumofWeeks" onkeypress="return fnValidateWeek(this,event)"; />
+                                </div>
+
+                                <div class="col-sm-12 col-md-12 col-lg-12 clearfix">
+                                    <div class="col-sm-12 col-md-8 col-lg-8 clearfix" id="pro" style="padding:0px;">
+                                        @*<div class="col-md-6 clearfix" id="pro">*@
+                                        <h4>Product Name</h4>
+                                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix Add_1" style="padding:0px;">
+                                            <div class="col-xs-1 col-sm-1 clearfix form-group" style="padding:0px;"><span><i class="fa fa-search" aria-hidden="true" style="color: #09e5da;"></i></span></div>
+                                            <div class="col-xs-6 col-sm-6 clearfix form-group" style="padding:0px;margin-right:7px;">
+                                                <input type="text" name="product" class="form-control product" placeholder="Select" id="productName_1" />
+                                                <input type="hidden" class="hdprod" name="hdproduct" id="hdnproductcode_1" />
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 clearfix form-group" style="padding:0px;">
+                                                <input type="text" name="dose" class="form-control dose" placeholder="Dose" id="dose_1" />
+                                                <span id="firstpluse"><i class="fa fa-plus AddProduct" aria-hidden="true" style="color:#09e5da; margin-left: 5px;"></i></span>
+                                            </div>
+                                            @*<span><i class="fa fa-trash DeleteProduct" id="delete_1" onclick="Batch.fnDeleteProduct(1)" aria-hidden="true" style="color:red;margin-left: 5px;"></i></span>*@
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix Add_2" style="padding:0px;">
+                                            <div class="col-xs-1 col-sm-1 clearfix form-group" style="padding:0px;">
+                                                <span><i class="fa fa-search" aria-hidden="true" style="color: #09e5da;"></i></span>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 clearfix form-group" style="padding:0px;margin-right:7px;">
+                                                <input type="text" name="product" class="form-control product" placeholder="Select" id="productName_2" />
+                                                <input type="hidden" class="hdprod" name="hdproduct" id="hdnproductcode_2" />
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 clearfix form-group" style="padding:0px;">
+                                                <input type="text" name="dose" class="form-control dose" placeholder="Dose" id="dose_2" />
+                                            </div>
+                                            @*<span><i class="fa fa-trash DeleteProduct" id="delete_2" onclick="Batch.fnDeleteProduct(2)" aria-hidden="true" style="color:red;margin-left: 5px;"></i></span>*@
+                                            <span><i class="fa fa-plus AddProduct" aria-hidden="true" style="color:#09e5da; margin-left: 5px;"></i></span>
+
+                                        </div>
+
+                                        <div id="addingproduct"></div>
+
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-4 col-xs-12 form-group clearfix" style="padding:0px;">
+                                        <h4>Notes</h4>
+                                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                                            <textarea class="form-control" cols="25" rows="3" id="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xs-12 clearfix">
+                                    <div class="col-sm-6 col-md-6" style="text-align:center;">
+                                        <button type="button" id="SaveSchedule" class="btn btn-primary buttonSave">Save</button>
+                                        @*</div>
+                                            <div class="col-md-6">*@
+                                        <button type="button" id="CancelSchedule" class="btn btn-primary buttonCancel">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SchDetails" class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px">
+                        <div class="panel panel-default clearfix" style="padding:5px">
+                            <div class="panel-body col-sm-12 col-md-12" style="padding:0px">
+                                <div id="schDetailBind" class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px"></div>
+                                <div class="col-sm-5 col-md-5"></div>
+                                <div class="col-sm-7 col-md-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default" id="Update">
+                    <div class="panel-body">
+                        <h4>Update Batch</h4>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix" id="autoregion">
+                                <input type="text" class="form-control BRegion" id="UPtxtRegion">
+                                <input type="hidden" id="UPhdnRegion" />
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix" id="upauto">
+                                <input type="text" class="form-control UPCName" id="UPtxtDoctor" placeholder="Customer Name">
+                                <input type="hidden" id="UPhdnDotor" />
+
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" id="UPBatchName" placeholder="Batch Name">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="number" class="form-control" id="UPNoOfChicks" placeholder="No Of Chicks">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" id="UPStart" placeholder="Start Date" readonly>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-4 col-xs-12 col-lg-4 clearfix">
+                                <input type="text" class="form-control" id="UPEnd" placeholder="End Date" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            <label style="margin-left: 18px;">Status:</label>
+                            <input type="radio" class="statusUpdate" id="status1" name="status" value="1" style="margin-left: 18px;" checked="checked" /><label>Active</label>
+                            <input type="radio" class="statusUpdate" id="status0" name="status" value="0" style="margin-left: 18px;" /><label>In Active</label>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                            @*<div class="col-md-" style="text-align:right;">*@
+                            <button type="button" id="UPDateBatch" class="btn btn-primary buttonSave">Update</button>
+                            @*</div>
+                                <div class="col-md-6">*@
+                            <button type="button" id="UPDatecancel" class="btn btn-primary buttonCancel">Cancel</button>
+                            @*</div>*@
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="BatchQuality">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        @*<div class="modal" id="BatchQuality">
+            <div class="modal-dialog" id="batchProductInfo">*@
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <span class="modal-title">Information</span>
+                <button type="button" class="close" id="closemodel" onclick="Batch.fnRemarkClose();">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="tblProductBatchInfo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="Remark">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <span class="modal-title">Information</span>
+                <button type="button" class="close" id="closemodel" onclick="$('#Remark').hide();">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body clearfix">
+                <div class="col-sm-12 col-md-12 clearfix">
+                    <div class="col-md-2 col-xs-5">
+                        <label>Remarks:</label>
+                    </div>
+                    <textarea cols="25" rows="3" id="RemarkNotes"></textarea>
+                </div>
+                <div style="text-align:center" class="col-sm-12 col-md-12 clearfix">
+                    <button type="button" id="SaveRemark" class="btn btn-primary buttonSave" onclick="Batch.fnRemarkStatusChange();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/BatchMobile.js?v=@DateTime.Now.Ticks"></script>
+<script type="text/javascript">
+    var CompanyCode = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        $("#fullEdit").hide();
+        $("#UpDate").hide();
+        $('#SchDetails').hide();
+        $('#firstpluse').hide();
+        Batch.initialize();
+        $('.AddProduct').click(function () {
+            Batch.fnAddProduct();
+        });
+        $('#Start').datepicker({
+            dateFormat: 'dd-mm-yy',
+            onSelect: function (selected) {
+                var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate() + 1);
+                $("#End").datepicker("option", "minDate", dt);
+            }
+        });
+        $('#End').datepicker({
+            dateFormat: 'dd-mm-yy',
+            onSelect: function (selected) {
+                debugger;
+                var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate() - 1);
+                $("#Start").datepicker("option", "maxDate", dt);
+            }
+        });
+        $('#UPStart').datepicker({
+            dateFormat: 'dd-mm-yy',
+            onSelect: function (selected) {
+                var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate() + 1);
+                $("#UPEnd").datepicker("option", "minDate", dt);
+            }
+        });
+        $('#UPEnd').datepicker({
+            dateFormat: 'dd-mm-yy',
+            onSelect: function (selected) {
+                debugger;
+                var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate() - 1);
+                $("#UPStart").datepicker("option", "maxDate", dt);
+            }
+        });
+    });
+    var selector = 'input[name=product]';
+    $(document).on('keydown.autocomplete', selector, function () {
+        $(this).autocomplete({
+            delay: 45,
+            source: Batch.defaults.Product,
+            minLength: 1,
+            select: function (event, ui) {
+                debugger;
+                $('#'+this.id).val(ui.item.label);
+                var hd='#hdnproductcode_'+this.id.split('_')[1]
+                $(hd).val( ui.item.id);
+            },
+            open: function () {
+                $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+            },
+            close: function () {
+                $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+            }
+        });
+    });
+
+</script>

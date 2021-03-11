@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "DCRActivityLockRelease";
+}
+<style>
+    .headerbox {
+        width:100%;
+        height:150px;
+    }
+    .userDetailsbox {
+        width:30%;
+        float:left;
+    }
+    .headerTitle {
+        font-weight:bold;
+        text-decoration:underline;
+    }
+    #HeaderUserDetails {
+        width:50%;
+        float:left;
+    }
+    #HeaderManagerDetails {
+        width:49%;
+        float:left;
+    }
+    #tblManagerDetails {
+        float:right;
+    }
+    #tbluserDetails {
+        float:left;
+    }
+    
+    .ManagerDetailsbox {
+        width:30%;
+        float:left;
+    }
+
+    #ReleaseGrid {
+        width:50%;
+        float:left;
+    }
+    .hide {
+        display:none;
+    }
+    .show {
+        display:block;
+    }
+     .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+     .e-grid .e-gridheader
+     {
+         background-color:white !important;
+     }
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+    .className 
+    {
+        border : none !important;
+
+    }
+      table
+    {
+        border-collapse: unset !important;
+    }
+</style>
+@*<h2>DCRActivityLockRelease</h2>*@
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/DCRLock.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<link href="../../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<div>
+@*<div class="col-lg-3" id="divleft" class="treebg">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+        <div id="usertree" style="height: 700px;">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+    </div>*@
+@*<div class='col-xs-12'>*@
+<div class='col-xs-3 leftNav' id='leftNav' style="width:22%;margin-top:20px;">
+    <div id="usertree" style="float: left; height: auto; width: 100%">
+    </div>
+    @*<span id="spnTreeResize" onclick="fnUserTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+    <div style="width: 1px;"></div>
+</div>
+@*</div>*@
+<div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+    <div style="display: none;" id="divToggle">
+        <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+              onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                onclick="fnToggleInput()">Hide Input</span>
+    </div>
+</div>
+    <div style="width: 73%;float:left;margin: 6px;padding-left: 10px;min-height:500px;display:none;" id="dataDiv">
+        <input type="hidden" id="hdnUserCode" />
+        <div id="dvuserHeaderDetails" style="margin-top:15px;"></div>
+        <div id="dvTitle" style="color:black;height: 37px;font-size: 20px;padding: 3px;margin-left: -10px;"></div>
+      
+        <div class="tabs" style="display:none;">
+            <ul class="nav nav-tabs">
+                <li><a href="#" onclick="fnreleasedata();" style="font-size:14px;font-weight:bold;">Lock Data</a></li>
+                <li><a href="#"  onclick="fnBindRelaeseData(0);" style="font-size:14px;font-weight:bold;">Release Data</a></li>
+            </ul>
+        </div>
+        <div id="ReleaseGrid" style="width:104%;margin-top:25px;">
+           
+        </div>  
+        <div id="ReleasedGrid" style="width:99%;margin-top:25px;">
+
+        </div>  
+        <div style="clear:both"></div>
+        <div style="width:100%;height:60px;"><input id="btnRelease" style="width:125px;font-size:18px;" type="button" value="Release" onclick="fnReleaseLock()" /></div>
+    </div>
+</div>
+
+<script>
+    var currentUserCode_g = "";
+    $(document).ready(function () {
+        $("#lnkFilter").hide();
+        $("#tblActivityLock_length").hide();
+        $("#tblActivityLock_filter").hide();
+        AjaxGlobalHandler.Initiate();
+        try{
+             currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.UserCode)); 
+          @*currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));*@
+            if(currentUserCode_g != null && currentUserCode_g != '')
+            {
+                //bind user tree
+                //fnBindUserTree("usertree", userCode);
+                //$("#dvAjaxLoad").hide();
+                $("#leftNav").show();                
+                fnTreePosiitionNew("usertree");
+                //  fnBindUserTreeNew("usertree");
+                fnGetUserTreeByUserNewmethod(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {
+                        fnSearchUsersNew();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $('#txtFrom').monthpicker();
+                $('#txtTo').monthpicker();
+                $('#dvAjaxLoad').hide()
+            }
+        }
+        catch(err)
+            {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+
+    
+    function fnUserTreePostInit() 
+    {
+        //get and highlight the locked users in the tree.
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Activity/DCRLock/GetActivityLockedUsers',
+            success: function (jsData) {
+                $("#usertree").dynatree("getRoot").visit(function (node) {
+                    var users = jsonPath(jsData, "$.[?(@@.User_Code=='" + node.data.key + "')]");
+                    if(users.length > 0){
+                        $(node.span).addClass('tree-node-active'); }
+                });
+            }
+        });
+    }
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $('#usertree').hide();
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#usertree').show();
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7');
+            $('#divMain').removeClass('col-xs-8');
+            $('#divMain').removeClass('col-xs-9');
+            $("#divMain").addClass('col-xs-9');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    //Used To Resize the Tree
+    function fnUserTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'usertree');
+    }
+
+</script>

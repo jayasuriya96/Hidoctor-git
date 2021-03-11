@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdvancedCourse.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdCourseList.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdminMaster.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/bootstrap.min.css" rel="stylesheet" />
+
+<script src="../../Areas/HDNextGen/Scripts/Course/FileUpload.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/bootstrap.min.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/jquery.form.js"></script>
+
+<div class="col-md-12 clsRoundMain">
+    <div class="clsWidget">
+        <div class="clsDvHeader clsRoundHead">
+            <div class="active-full-circle pull-right" id="dvStep3">
+                <div class="clsPaddingNone clsSpnNumber">3</div>
+                <div class="clsSpnNumbertext">@Resources.Course.Course_Properties_Step</div>
+            </div>
+            <div class="inactive-full-circle pull-right" id="dvStep2">
+                <div class="clsPaddingNone clsSpnNumber">2</div>
+                <div class="clsSpnNumbertext">@Resources.Course.Course_Properties_Step</div>
+            </div>
+            <div class="inactive-full-circle  pull-right" id="dvStep1">
+                <div class="clsPaddingNone clsSpnNumber">1</div>
+                <div class="clsSpnNumbertext">@Resources.Course.Course_Properties_Step</div>
+            </div>
+            <div class="clsRoundheadtext">
+                Course Name: @ViewBag.Course_Name.ToString()
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvQuestionContent" class="clearfix">
+    <input type="hidden" id="hdnCourseId" value="0" />
+    <input type="hidden" id="hdnSectionId" value="0" />
+    <input type="hidden" id="hdnCourseMode" value="INSERT" />
+    <input type="hidden" id="hdnCourseName" value="" />
+    <div class="col-lg-12 clsCourseSurText clearfix" id="dvCreatedCourseName">
+    </div>
+    <div class="clsDvHeader col-md-12 clearfix">
+        <h4 id="dvQuestionTitle" class="heading am-big-font">Course Name: xxx</h4>
+    </div>
+    <div class="col-lg-12 form-group clearfix">
+        <div class="col-lg-12 clearfix" id="dvAllQuestions">
+        </div>
+        <div id="dvAnsInfo" class="col-lg-12 clearfix"></div>
+        <div class="col-lg-12 clsbtnAddQuestion text-right clearfix">
+            <a class="btn btn-primary" id="btnAddQuestion"></a>
+            <a class="btn btn-primary" id="btnBackQuestion"></a>
+            <a class="btn btn-primary" id="btnQuestionNext"></a>
+        </div>
+    </div>
+</div>
+<div class="" id="dvImgModal" style="display: none;">    
+    <div class="" id="dvModalBodyQuesPre">
+        <img alt="" class="img-responsive" id="dvQuesPreview" />
+    </div>   
+</div>
+<div id="dvCoursePubContent" style="display: none;" class="clearfix">
+    <div class="col-lg-12 clearfix" id="dvViewPubCourse"></div>
+</div>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateQuestion.js?"></script>
+<script src="../../Areas/HDNextGen/Scripts/Course/FileUpload.js?"></script>
+
+<script>
+    var courseID_g = '';
+    var sectionID_g = '';
+    var cName_g = '';
+    
+    courseID_g = @Html.Raw(Json.Encode(ViewBag.Course_Id))
+    sectionID_g = @Html.Raw(Json.Encode(ViewBag.Section_Id))
+    cName_g = @Html.Raw(Json.Encode(ViewBag.Course_Name))
+    sectionName_g = @Html.Raw(Json.Encode(ViewBag.Section_Name))
+
+    $(function () {                        
+        $("#divPageHeader").html("Create Questions");
+        QUESTIONS.fnGetCourseQuestionAnswers();
+
+        QUESTIONS.fnInitializeEvents();
+
+        $('#btnAddQuestion').html('<i class="fa fa-plus-square"></i> ' + "@Resources.Course.Course_NewQuestion");
+        $('#btnQuestionNext').html('<i class="fa fa-arrow-circle-right"></i> Save & Preview');
+        $('#btnBackQuestion').html('<i class="fa fa-arrow-circle-left"></i> ' + "@Resources.Course.Course_Quest_Back_But_Text");
+        $('#spnQuestionTitle').html();
+    });
+
+    /////////// ************** DISPLAY TEXT ****************************/
+    var courseNametext = "@Resources.AdCourse.Course_Name";
+    var surDescText = "@Resources.AdCourse.Course_Description";
+    var dvQuestText = "@Resources.AdCourse.Course_Question";
+    var dvQuestTypeText = "@Resources.AdCourse.Course_QuestionType";
+    var dvQuesDescText = "@Resources.AdCourse.Course_QuestionDescription";
+    var dvQuestImageText = "@Resources.AdCourse.Course_QuestionImage";
+    var dvQuesHintText = "Hint";
+    var dvChoiceText = "@Resources.AdCourse.Course_Choices";
+    var dvQuesReqText = "@Resources.AdCourse.Course_Question_Required";
+    var spnQuesReq = "@Resources.AdCourse.Course_QuestionRequired_Yes";
+    var spnQuesNotReq = "@Resources.AdCourse.Course_QuestionRequired_No";
+    var spnSingleChoice = "@Resources.AdCourse.Course_QuestionType_SingleChoice";
+    var spnMultiChoice = "@Resources.AdCourse.Course_QuestionType_MultiChoice";
+    var spnSingleText = "@Resources.AdCourse.Course_QuestionType_SingleText";
+    //var btnQuestSubmit = "@Resources.AdCourse.Course_QuestionSubmit";
+    var btnQuestSubmit = "Save and Add New Question";
+    var btnQuestCancel = "@Resources.AdCourse.Course_QuestionCancel";
+    var CourseQuestActionEdit = "@Resources.AdCourse.Course_Quest_Action_Edit";
+    var CourseQuestActionCopy = "@Resources.AdCourse.Course_Quest_Action_Copy";
+    var CourseQuestActionDelete = "@Resources.AdCourse.Course_Quest_Action_Delete";
+    var CourseQuestActionMoveUp = "@Resources.AdCourse.Course_Quest_Action_Move_Up";
+    var CourseQuestActionEdit = "@Resources.AdCourse.Course_Quest_Action_Edit";
+    var CourseQuestActionMoveDown = "@Resources.AdCourse.Course_Quest_Action_Move_Down";
+    //var surDeleteConfirm = "Resources.AdCourse.Course_Delete_Confirm";
+    var surQuesTxtEmptyMsg = "@Resources.AdCourse.Course_Quest_Text_Valid_Err_Msg";
+    var surQuesTxtSplErrMsg = "@Resources.AdCourse.Course_Quest_Text_SPL_Err_Msg";
+    var surQuesDescEmptyMsg = "@Resources.AdCourse.Course_Quest_Desc_Valid_Err_Msg";
+    var surQuestAnsSplErrMsg = "@Resources.AdCourse.Course_Ans_SPL_Err_Msg";
+    var surSubmitText = "Resources.AdCourse.Course_Submit_Text";
+    //var CourseImgUploadText = "Resources.AdCourse.Course_Img_Upload_Text";
+    //var surImgUploadSuccessMsg = "Resources.AdCourse.Course_Img_Upload_Success_Text";
+    //var surImgUploadErrorMsg = "Resources.AdCourse.Course_Img_Upload_Error_Text";
+    var surQuesImgUploadProgress = "@Resources.AdCourse.Course_Question_Img_Upload_Progress";
+    var surQuesImgUploadSuccess = "@Resources.AdCourse.Course_Question_Img_Upload_Success";
+    var surQuesImgUploadFailed = "@Resources.AdCourse.Course_Question_Img_Upload_Error";
+    //var surImgValid = "Resources.AdCourse.Course_Image_Valid_Text";
+    var uploadButtonText = "@Resources.AdCourse.Course_Image_Select_text";
+    var Course_Question_Next = "Save & Preview";
+
+    var courseQuesEditSingleMsg = "@Resources.AdCourse.Course_Edit_Single_Question_Alert";
+    var Course_Question_Mandatory = "@Resources.Course.Course_Question_Mandatory";
+</script>

@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "TpVsActualDoctorVisits";
+    Layout = null;    
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">
+    #tblUserDetail_info, #tblUserDetail tbody, #tblUserDetail_filter {
+        display: none;
+    }
+
+    #tblUserDetail_wrapper {
+        min-height: 0px !important;
+    }
+
+    div.dataTables_scroll {
+        clear: both;
+    }
+</style>
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr class="trHeight">
+                    <td>Month & Year
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" />
+                        <input type="hidden" id="hdnUserCode" />
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td></td>
+                    <td>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnTpVsActualDoctorVisitsReport();" />
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+
+        <div id="divReport">
+            <div id="divSubReport"></div>
+        </div>
+    </div>
+</div>
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/TpReports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#txtFromDate').monthpicker();        
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+
+            var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+            if (userCode == null) {
+                $("#dvTree").show();
+                var dvTree = $("#tree");
+                fnBindUserTree("tree");
+                $('#divInput').hide();
+                $('#divReport').hide();
+                $('#divToggle').hide();           
+            }
+            else {
+                var dvTree = $("#tree");
+                fnBindUserTree("tree");
+                $("#txtFromDate").val(@Html.Raw(Json.Encode(ViewBag.fromMonth)));            
+                $("#hdnUserCode").val(@Html.Raw(Json.Encode(ViewBag.userCode)));           
+           
+                $('#divInput').show();
+                $("#dvTree").hide();
+                $('#divReport').hide();
+                $("#divMain").css('width', '100%');
+                $("#spnTreeToggle").html('Show Tree');
+                $('#divToggle').show();
+                fnTpVsActualDoctorVisitsReport();
+                $("#dvAjaxLoad").hide();
+            }
+          
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdnUserCode').val(node.data.key);
+        $('#divInput').show();
+        $("#dvTree").hide();
+        $("#divMain").css('width', '100%');
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        fnClearTpVsActualDoctorVisitsReport();
+        $("#divSubReport").empty();       
+        $('#divReport').hide();
+    }
+    
+    function fnUserTreePostInit() {
+    }
+</script>
+

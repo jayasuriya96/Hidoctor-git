@@ -1,0 +1,41 @@
+﻿<style>
+    .dcr_chemist_header {
+        background: #e4ecf3 !important;
+        line-height: 25px;
+        font-family: Segoe UI;
+        font-size: 13px;
+        border: 0px !important;
+        color: #444;
+        text-align: center;
+    }
+
+    .rcpa {
+        margin-top: 1%;
+    }
+</style>
+
+
+<div id="RCPA_Chemist" class="chemistDay">
+    <div class="chemistheader" style="" onclick="fnTableShowHide('tbl_chemist_RCPA','spnchemistRCPA')">
+        <div class="collapse" id="spnchemistRCPA" style="padding: 5px; text-align: left !important; font-family: Segoe UI; padding-left: 15px; font-weight: bold; float: left">
+            <div style="float: left" id="divChemist">RCPA Details</div>
+            @*
+            <img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadchemist"><span id="chemistLoadingTitle">RCPA autofill setting</span>*@
+        </div>
+        <div class="helpIconmargin">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','CHEMIST')" />
+        </div>
+    </div>
+    <table id="tbl_chemist_RCPA" class="cvtable">
+        <tr style="display: none;">
+            <td class="" style="text-align: left;">
+                <div style="float: left; margin-right: 5px;" id="DocDisplayName"></div>
+                <div>Name</div>
+            </td>
+
+            <td class="txtpob" style="text-align: left; padding-left: 11px; display: none;">POB
+            </td>
+            <td class="dcr_chemist_header"></td>
+        </tr>
+    </table>
+</div>

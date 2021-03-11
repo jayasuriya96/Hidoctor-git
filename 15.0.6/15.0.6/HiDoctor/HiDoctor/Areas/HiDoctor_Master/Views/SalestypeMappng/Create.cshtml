@@ -1,0 +1,66 @@
+﻿@model HiDoctor_Master.Models.SalestypeMapping
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<div id="product_type" style="padding-top:5px;padding-left:10%;">
+    <div id="Source_Product_Type">
+        <div class="col-xs-4" style="width: 20% !important;">
+            <label style="font-size: 13px;">Source Product Type :</label>
+        </div>
+        <div class="col-xs-6" style="width: 15% !important;">
+            <select class="form-control" id="src_product_type" onchange="product_Mapping.fnGetProductTypelstForDes();"></select>
+        </div>
+    </div>
+    <div id="Destination_Product_Type">
+        <div class="col-xs-4" style="width: 20% !important;">
+            <label style="font-size: 13px;">Destination Product Type :</label>
+        </div>
+        <div class="col-xs-6" style="width: 15% !important;">
+            <select class="form-control" id="des_product_type" onchange="product_Mapping.fnClear();"></select>
+        </div>
+    </div>
+    <div id="SPLGO">
+        <input class="btn" id="btnGO" type="button" onclick="product_Mapping.fnGetSourceProductList();" value="GO" />
+    </div>
+
+</div>
+<div id="div-product" class="clearfix">
+    <div style="width: 100%; padding-top: 10px;" class="clearfix">
+        <div id="dvTable" style="width: 38%; float: left; display:none;">
+            <table id="tblDataTable" class="data display datatable" style="height: 400px; overflow: auto;"></table>
+        </div>
+        <div id="frmloading" style="display:none"><img src="../../Content/images/loading.gif" /></div>
+        <div id="dvTable1" style="width: 60%; height: 400px; float: left; margin-left: 2%; display:none;">
+            <table id="tblDataTable1" class='data display datatable'></table>
+        </div>
+    </div>
+    <div style="margin-left: 40%; display:none;" id="div_Save">
+        <input class="btn" id="btnSave" type="button" onclick="product_Mapping.fnSave();" value="SAVE" />
+    </div>
+</div>
+<p>
+    @Html.Hidden("ProductCode")
+</p>
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/saletypemapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    //page load event
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            product_Mapping.fnGetSourceProductType();
+            //getnonsaleproduct();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>
+
+
+
+

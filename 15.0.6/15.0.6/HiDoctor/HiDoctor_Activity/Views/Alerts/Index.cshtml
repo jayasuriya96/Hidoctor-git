@@ -1,0 +1,2244 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style>
+    #tblRecords {
+        margin-left: 485px;
+        width: 640px;
+    }
+
+    .fixed-side-first{
+        position:absolute !important;
+        min-width: 85px;
+        max-width: 85px;
+        left: 106px!important;
+    }
+
+    .fixed-side-third{
+        position:absolute !important;
+        min-width: 200px;
+        max-width: 200px;
+        left:391px !important;
+    }
+
+    .fixed-side-second{
+        position:absolute !important;
+        min-width: 200px;
+        max-width: 200px;
+        left:191px !important;
+    }
+
+
+    th {
+        background-color: blue;
+        color: white;
+    }
+
+    .btn_right {
+        margin-right: 2%;
+    }
+
+    .btn_left {
+        margin-left: 2%;
+    }
+
+    .container {
+        margin-top: 3%;
+    }
+
+    .btn-default {
+        float: right;
+        margin-right: 0;
+        display: inline-block;
+    }
+
+    .dropdown {
+        display: inline-block;
+    }
+
+    #sendId:hover {
+        color: darkgray;
+    }
+
+    #DismissId:hover {
+        color: darkgray;
+    }
+
+    .floating-box {
+        float: left;
+        width: 248px;
+        height: 40px;
+        margin: 11px;
+    }
+
+    table {
+        border-collapse: collapse;
+        /*width: 300px;*/
+        overflow-x: scroll;
+        display: block;
+    }
+
+    thead {
+        background-color: #EFEFEF;
+    }
+
+        thead tr {
+            text-align: left !important;
+        }
+
+    tbody {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        min-height: auto;
+        max-height: 270px;
+    }
+
+    td,
+    th {
+        min-width: 249px;
+        height: 25px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 249px;
+    }
+
+        td.AlignCssMd, th.AlignCssMd {
+            min-width: 138px !important;
+            height: 25px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            max-width: 260px !important;
+        }
+
+        td.AlignCss, th.AlignCss {
+            min-width: 95px !important;
+            height: 25px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            max-width: 260px !important;
+        }
+
+    /*td.removeWidth, th.removeWidth {
+            margin-top: 15px;
+            min-width: auto !important;
+            height: 25px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            max-width: 260px !important;
+        }*/
+
+    .modal-dialog {
+        padding: 0px 0px !important;
+    }
+</style>
+<div class="container">
+    <div class="col-lg-12">
+
+        <div class="col-lg-1">
+        </div>
+        <div class="col-lg-10">
+            <label style="font-size: 16px;margin-left:30px;">Year:</label>
+            <select id="AlertYearDrop">
+                <option id="Curr_Year" value=""></option>
+                <option id="Prev_Year" value=""></option>
+            </select>
+            <label style="font-size: 16px;margin-left:30px;">Month:</label>
+            <select id="AlertMonthDrop" style="width: 65px;">
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+            <label style="font-size: 16px;margin-left:30px;">Alert Type:</label>
+            <select id="AlertTypeDrop" onchange="fnAlertStatus(this);">
+                <option value="1">Call Average Alert</option>
+                <option value="2">Absence Alert</option>
+            </select>
+            <label style="font-size: 16px;margin-left:30px;">Alert Status:</label>
+            <select id="AlertStatusDrop">
+                <option id="OptNS" value="1">Not Yet Sent Alert</option>
+                <option id="OptSnt" value="2">Sent Alert</option>
+                <option id="OptDs" value="0">Dismiss Alert</option>
+            </select>
+        </div>
+        <div class="col-lg-1">
+            <button onclick="fnSubmit()" type="button" class="btn btn-primary">GO</button>
+        </div>
+    </div>
+    <br />
+    <br />
+
+    <div id="tblRecords" style="width: 664px"></div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="width:1150px;height:605px;">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="height: 605px;">
+                <div class="modal-header" style="height: 180px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 style="margin-top:0px;text-align:center;">
+                        <b id="modalTitle">Doctor Call Average Alert</b>
+                    </h2>
+                    <div style="background-color:#eeeeee;height: 120px;">
+                        <div class="floating-box">
+                            <b><u>User Name(Employee Name):</u></b>
+                            <br />
+                            <span id="ModalUserName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Region Name:</u></b>
+                            <br />
+                            <span id="ModalRegionName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Designation:</u></b>
+                            <br />
+                            <span id="ModalDesignation"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>HiDoctor Start Date:</u></b>
+                            <br />
+                            <span id="ModalStartDate"></span>
+                        </div>
+
+                        <div id="ModalCurrCall" class="floating-box">
+                            <b><u>Expected Call Average:</u></b>
+                            <br />
+                            <span id="ModalExpAvg"></span>
+                        </div>
+
+                        <div id="ModalExpCall" class="floating-box">
+                            <b><u>Current Call Average:</u></b>
+                            <br />
+                            <span id="ModalCallAvg"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Name:</u></b>
+                            <br />
+                            <span id="ModalManagerName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Region Name:</u></b>
+                            <br />
+                            <span id="ModalMgrRegName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" id="DocCallMailContent" style="height: 320px;">
+                </div>
+
+                <div class="modal-footer">
+                    <input id="HeaderValue" type="hidden" value="" />
+                    <input id="HeaderUserCode" type="hidden" value="" />
+                    <button onclick="fnSentAlert()" id="btndocsend" style="display:none" type="button" class="btn btn-success" data-dismiss="modal">Send</button>
+                    <button style="margin-right:500px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="MailSentModal" role="dialog">
+        <div class="modal-dialog" style="width:1150px;height:650px;">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="height: 673px;">
+                <div class="modal-header" style="height: 180px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 style="margin-top:0px;text-align:center;">
+                        <b id="MailmodalTitle">Doctor Call Average Alert</b>
+                    </h2>
+                    <div style="background-color:#eeeeee;height: 120px;">
+                        <div class="floating-box">
+                            <b><u>User Name(Employee Name):</u></b>
+                            <br />
+                            <span id="MailModalUserName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Region Name:</u></b>
+                            <br />
+                            <span id="MailModalRegionName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Designation:</u></b>
+                            <br />
+                            <span id="MailModalDesignation"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>HiDoctor Start Date:</u></b>
+                            <br />
+                            <span id="MailModalStartDate"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Expected Call Average:</u></b>
+                            <br />
+                            <span id="MailModalExpAvg"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Current Call Average:</u></b>
+                            <br />
+                            <span id="MailModalCallAvg"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Name:</u></b>
+                            <br />
+                            <span id="MailModalManagerName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Region Name:</u></b>
+                            <br />
+                            <span id="MailModalMgrRegName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="height: 420px;">
+                    <div id="DocCallsentLst" style="width: 1091px;height:400px;margin-left:6px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button style="margin-right:540px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="AbsentSentMailModal" role="dialog">
+        <div class="modal-dialog" style="width:1150px;height:605px;">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="height: 673px;">
+                <div class="modal-header" style="height: 180px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 style="margin-top:0px;text-align:center;">
+                        <b id="AbsentSentMailmodalTitle">Absence Alert</b>
+                    </h2>
+                    <div style="background-color:#eeeeee;height: 120px;">
+                        <div class="floating-box">
+                            <b><u>User Name(Employee Name):</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalUserName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Region Name:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalRegionName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Designation:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalDesignation"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>HiDoctor Start Date:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalStartDate"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Absent From Date:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalFromDate"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Absent To Date:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalToDate"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Name:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalManagerName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Region Name:</u></b>
+                            <br />
+                            <span id="AbsentSentMailModalMgrRegName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="height: 420px;">
+                    <div id="AbsentSentMailLst" style="width: 1091px;height:400px;margin-left:6px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button style="margin-right:540px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="AbsentMailModal" role="dialog">
+        <div class="modal-dialog" style="width:1150px;height:605px;">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="height: 605px;">
+                <div class="modal-header" style="height: 180px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 style="margin-top:0px;text-align:center;">
+                        <b id="AbsentMailModalTitle">Absence Alert</b>
+                    </h2>
+                    <div style="background-color:#eeeeee;height: 120px;">
+                        <div class="floating-box">
+                            <b><u>User Name(Employee Name):</u></b>
+                            <br />
+                            <span id="AbsentMailModalUserName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Region Name:</u></b>
+                            <br />
+                            <span id="AbsentMailModalRegionName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Designation:</u></b>
+                            <br />
+                            <span id="AbsentMailModalDesignation"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>HiDoctor Start Date:</u></b>
+                            <br />
+                            <span id="AbsentMailModalStartDate"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Absent From:</u></b>
+                            <br />
+                            <span id="AbsentMailModalFrom"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Absent To:</u></b>
+                            <br />
+                            <span id="AbsentMailModalTo"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Name:</u></b>
+                            <br />
+                            <span id="AbsentMailModalManagerName"></span>
+                        </div>
+
+                        <div class="floating-box">
+                            <b><u>Manager Region Name:</u></b>
+                            <br />
+                            <span id="AbsentMailModalMgrRegName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" id="AbsentMailContent" style="height: 320px;">
+                </div>
+                <div class="modal-footer">
+                    <input id="AbsentMailHeaderValue" type="hidden" value="" />
+                    <input id="AbsentMailHeaderUserCode" type="hidden" value="" />
+                    <button onclick="fnSentAlert()" id="btnabssend" style="display:none" type="button" class="btn btn-success" data-dismiss="modal">Send</button>
+                    <button style="margin-right:500px;" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="RemarksModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Remarks</b></h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="txtRemarks" rows="5" cols="80"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="fnSaveRemark(1)">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="RemarksModalAlert" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><b>Warning!</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <strong>Warning!</strong>Please Fill The Remarks!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="fnSaveRemark(2)">Ok</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="myModalregion" class="modal fade" role="dialog" style="overflow-y:hidden;">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">User Hierarchy</h4>
+                </div>
+                <div class="modal-body" style="height:400px;overflow:auto;">
+                    <div id="regionTreeNew"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnccsave" onclick="fnSaveCCUsers();">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Notification.js"></script>
+<script type="text/javascript">
+    var Alert_Type;
+    var Alert_Year;
+    var Alert_Month;
+    var Method_params = "";
+    var Alert_Status = "";
+    var LoggedUserName = "@ViewBag.LoggedUserName";
+    var LoggedEmployeeName = "@ViewBag.LoggedEmployeeName";
+    var UserCode = "@ViewBag.RequestUserCode";
+    var loggedUserTypeName = "@ViewBag.loggedUserTypeName";
+    var CompanyCode = "@ViewBag.CompanyCode";
+    var pdfBloburl = ""
+    var SelRow;
+    var PDF_file_name = "";
+    var dismiss_selID = '';
+    var sentresponse = '';
+    var ActionDate = '';
+    var ActionDate2 = '';
+    var mail_id = '';
+    var cc_mail_id = '';
+    var alert_selId = '';
+    var AbsCounterValue = '';
+    var Templatedetails = '';
+    var CCmaillst = '';
+    var TemAlert_SelId = '';
+    var Temstatus = '';
+    var Temfilename = '';
+    var TemToMailId = '';
+    var TemCC_Mail_Id = '';
+    var TemFilepath = '';
+    var SelUserCode = '';
+    var SelAlertType = '';
+    var json = '';
+    var seluserCCmail = '';
+    var AlCounter = '';
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        $.blockUI({ message: '<h3> Just a moment...</h3>' });
+        Alert_Type = 1;
+        $("#Curr_Year").html((new Date()).getFullYear());
+        $("#Curr_Year").val((new Date()).getFullYear());
+        $("#Prev_Year").html((new Date()).getFullYear() - 1);
+        $("#Prev_Year").val((new Date()).getFullYear() - 1);
+        $("#AlertYearDrop").val((new Date()).getFullYear());
+        var d = new Date();
+        var curr_mnth = d.getMonth() + 1;
+        $("#AlertMonthDrop").val(curr_mnth);
+
+
+        Method_params = ["AlertsApi/AlertNotice/", CompanyCode, UserCode, curr_mnth, (new Date()).getFullYear(), 1, 1];
+        CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+
+        $('table').on('scroll', function () {
+            $("table > *").width($("table").width() + $("table").scrollLeft());
+        });
+        Alert_Status = $("#AlertStatusDrop").val();
+        fnGetTemplateDetails();
+        fnGetCCmailusers();
+    });
+
+    function fnGetTemplateDetails() {
+        debugger;
+        Method_params = ["AlertsApi/GetAlertTemplate/", CompanyCode];
+        CoreREST.get(null, Method_params, null, fnBindTemplateSCB, BindFailure);
+
+    }
+    function fnBindTemplateSCB(res)
+    {
+        debugger
+        Templatedetails =res.list;
+    }
+    function fnGetCCmailusers() {
+        debugger;
+        Method_params = ["AlertsApi/GetCCmailusers/", CompanyCode];
+        CoreREST.get(null, Method_params, null, fnGetCCmailusersSCB, BindFailure);
+
+    }
+    function fnGetCCmailusersSCB(res) {
+        debugger
+        CCmaillst = res.list;
+    }
+    function fnAlertStatus(sel) {
+        debugger;
+        if ($("#AlertTypeDrop").val() == 1) {
+            $("#OptSnt").show();
+            $("#OptDs").show();
+        }
+        else if ($("#AlertTypeDrop").val() == 2) {
+            $("#OptSnt").hide();
+            $("#OptDs").hide();
+        }
+
+        if (sel.value == 2) {
+            $('#AlertStatusDrop').val(1);
+        } else {
+            $('#AlertStatusDrop').val('');
+        }
+    }
+    function fnSubmit() {
+        $.blockUI({ message: '<h3> Just a moment...</h3>' });
+        Alert_Year = $("#AlertYearDrop").val();
+        Alert_Month = $("#AlertMonthDrop").val();
+        Alert_Type = $("#AlertTypeDrop").val();
+        Alert_Status = $("#AlertStatusDrop").val();
+
+        Method_params = ["AlertsApi/AlertNotice", CompanyCode, UserCode, Alert_Month, Alert_Year, Alert_Type, Alert_Status];
+        CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+    }
+    function BindSuccessData(response) {
+        debugger;
+        if (Alert_Type == 1) {
+            var tblData = "";
+            if (response.Message == "SUCCESS" && response.list.length > 0) {
+                tblData += "<table id='AlertCandidate' class='sticky'><thead><tr><th class='fixed-side-first' width='20%'>S.No</th>";
+                tblData += "<th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th><th>Employee Number</th>";
+                tblData += "<th>Designation</th><th>Region Name</th><th>Manager Name</th><th>Manager Region Name</th>";
+                tblData += "<th class='AlignCssMd'>Expected Call Average</th><th class='AlignCssMd'>Doctors Visited</th><th class='AlignCssMd'> Field Days</th><th class='AlignCssMd'>Current Call Average</th>";
+                tblData += "<th class='AlignCssMd'>Alert Raised Date</th>";
+                tblData += "<th class='AlignCssMd'>CC Users</th>";
+                if (Alert_Status == 2) {
+                        tblData += "<th class='AlignCssMd'>View Count</th>";
+                }
+                tblData += "<th class='AlignCssMd'>Action</th></tr></thead><tbody>";
+                for (var i = 0; i < response.list.length; i++) {
+                    tblData += "<tr><td class='fixed-side-first' width='20%'>" + parseInt(i + 1) + "</td>";
+                    tblData += "<td class='fixed-side-second' width='20%' id='User_Name_" + parseInt(i + 1) + "'>";
+                    tblData += "<input type=hidden value='" + response.list[i].Email_Id + "' class='hdnEmail_" + parseInt(i + 1) + "'/>";
+                    tblData += "<input type=hidden value='" + response.list[i].From_Mail_Id + "' class='hdnEmailFrom_" + parseInt(i + 1) + "'/>";
+                    tblData += "<input type=hidden value='" + response.list[i].CC_Mail_ID + "' class='hdnCCEmail_" + parseInt(i + 1) + "'/>";
+                    tblData += "<input type=hidden value='" + response.list[i].User_Code + "' class='hdnUserCode_" + parseInt(i + 1) + "'/>" + response.list[i].User_Name + "</td>";
+                    tblData += "<td class='fixed-side-third' width='20%' id='EmpName_" + parseInt(i + 1) + "'>" + response.list[i].Employee_Name + "</td><td id='EmpNum_" + parseInt(i + 1) + "'>" + response.list[i].Employee_Number + "</td>";
+                    tblData += "<td id='Designation_" + parseInt(i + 1) + "'>" + response.list[i].User_Type_Name + "</td><td id='RegionName_" + parseInt(i + 1) + "'>" + response.list[i].Region_Name + "</td>";
+                    tblData += "<td id='ManagerName_" + parseInt(i + 1) + "'>" + response.list[i].Reporting_User_Name + "</td><td id='MgrRegionName_" + parseInt(i + 1) + "'>" + response.list[i].Reporting_Region_Name + "</td>";
+                    tblData += "<input type=hidden value='" + response.list[i].HiDoctor_Start_Date + "' id='HiDoctorJoinDate_" + parseInt(i + 1) + "'/></td><td class='AlignCssMd' id='ExpAvg_" + parseInt(i + 1) + "'>" + response.list[i].Expected_call_Avg + "</td>";
+                    tblData += "<td class='AlignCssMd' id= 'DocVisit_" + parseInt(i + 1) + "'>" + response.list[i].Doctor_Visit + "</td><td class='AlignCssMd' id= 'FieldDays_" + parseInt(i + 1) + "'>" + response.list[i].Field_Days + "</td>";
+                    tblData += "<td class='AlignCssMd' id='CurrAvg_" + parseInt(i + 1) + "'>" + response.list[i].Current_Call_Avg + "</td><input type=hidden value=" + response.list[i].Alerts_Header + " class='hdn_" + parseInt(i + 1) + "'/>";
+                    tblData += "<td class='AlignCssMd'>" + response.list[i].Alert_Run_Date + "</td>";
+                    tblData += "<td class='AlignCssMd'><span onclick=fnSelectCC('" + response.list[i].User_Code + "',"+Alert_Type+",0) style=color:blue;cursor:pointer;text-decoration:underline; data-toggle=modal data-target=#myModalregion>Select Users</span></td>";
+                    if (Alert_Status == 2) {
+                            if (response.list[i].View_Count > 0) {
+                                tblData += "<td class='AlignCssMd'><span onclick='fnViewSent(" + parseInt(i + 1) + ")' id=sendId style=color:blue;cursor:pointer;text-decoration:underline; data-toggle=modal data-target=#MailSentModal>" + response.list[i].View_Count + "</span></td>"
+                            }
+                            else {
+                                tblData += "<td class='AlignCssMd'><span>NA</span></td>";
+                            }
+                            if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                                tblData += "<td class='AlignCssMd'><span onclick=fnSent(''," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send</span>&nbsp;&nbsp;";
+                            }
+                            else {
+                                tblData += "</td></tr>";
+                            }
+                    }
+                    if (Alert_Status == 0) {
+                        if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                            tblData += "<td class='AlignCssMd'><span onclick=fnSent(''," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send</span>&nbsp;&nbsp;";
+                        }
+                        else {
+                            tblData += "</td></tr>";
+                        }
+                    }
+                    if (Alert_Status == 1) {
+                            if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                                tblData += "<td class='AlignCssMd'><span onclick=fnSent(''," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send</span>&nbsp;&nbsp;";
+                            }
+                            if (response.list[i].User_Access_Enabled == 2) {
+                                tblData += "|&nbsp;&nbsp;<span onclick='FnDismiss(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ")' id=DismissId value=" + response.list[i].Alerts_Header + " style=color:blue;cursor:pointer;text-decoration:underline;>Ignore</span></td></tr>";
+                            }
+                            if (response.list[i].User_Access_Enabled == 0) {
+                                tblData += "<td class='AlignCssMd'><span onclick='FnDismiss(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ")' id=DismissId value=" + response.list[i].Alerts_Header + " style=color:blue;cursor:pointer;text-decoration:underline;>Ignore</span></td></tr>";
+                            }
+                        }
+                        else {
+                            tblData += "</td></tr>";
+                    }
+                }
+
+            }
+            else {
+                tblData += "<table id='AlertCandidate' class='sticky'><thead><tr><th class='fixed-side-first' width='20%'>S.NO</th><th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th><th class='removeWidth'>Employee Number</th>";
+                tblData += "<th class='removeWidth'>Designation</th><th class='removeWidth'>Region Name</th><th class='removeWidth'>Manager Name</th><th class='removeWidth'>Manager Region Name</th>";
+                tblData += "<th class='removeWidth'>Expected Call Average</th><th class='removeWidth'>Doctors Visited</th><th class='removeWidth'> Field Days</th><th class='removeWidth'>Current Call Average</th>";
+                tblData += "<th class='removeWidth'>Alert Raised Date</th>";
+                tblData += "<th class='removeWidth'>CC Users</th>";
+                if (Alert_Status == 2) {
+                        tblData += "<th class='removeWidth'>View Count</th>";
+                }
+                tblData += "<th class='removeWidth'>Action</th></tr></thead><tbody style='background-color:#f9f9f9;'>";
+                tblData += "<tr><td colspan=15 style='padding-left: 540px;'>No Records Found</td></tr>";
+            }
+
+            tblData += "</tbody></table>";
+            $("#tblRecords").html(tblData);
+        }
+        else if (Alert_Type == 2) {
+            var tblData = "";
+            debugger;
+            if (response.Message == "SUCCESS" && response.list.length > 0) {
+                tblData += "<table id='AlertCandidate' class='sticky'><thead><tr><th class='AlignCss fixed-side-first' width='20%'>S.No</th><th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th><th>Employee Number</th>";
+                tblData += "<th>Designation</th><th>Region Name</th><th>Manager Name</th><th>Manager Region Name</th>";
+                tblData += "<th class='AlignCssMd'>Absent From</th><th class='AlignCssMd'>Absent To</th><th class='AlignCssMd'>Alert Days</th>";
+                tblData += "<th class='AlignCssMd'>Alert Raised Date</th>";
+                tblData += "<th class='AlignCssMd'>CC Users</th>";
+                if (Alert_Status == 2) {
+                        tblData += "<th class='AlignCss'>View Count</th>";
+                }
+                tblData += "<th class='AlignCssMd'>Action</th></tr></thead><tbody>";
+                for (var i = 0; i < response.list.length; i++) {
+                    tblData += "<tr><td class='AlignCss fixed-side-first' width='20%'>" + parseInt(i + 1) + "</td><td class='fixed-side-second'  width='20%' id='User_Name_" + parseInt(i + 1) + "'><input type=hidden value=" + response.list[i].Group_Id + " class='hdnGroup_" + parseInt(i + 1) + "'/><input type=hidden value=" + response.list[i].Email_Id + " class='hdnEmail_" + parseInt(i + 1) + "'/><input type=hidden value=" + response.list[i].From_Mail_Id + " class='hdnEmailFrom_" + parseInt(i + 1) + "'/><input type=hidden value=" + response.list[i].CC_Mail_ID + " class='hdnCCEmail_" + parseInt(i + 1) + "'/><input type=hidden value=" + response.list[i].User_Code + " class='hdnUserCode_" + parseInt(i + 1) + "'/>" + response.list[i].User_Name + "</td>";
+                    tblData += "<td class='fixed-side-third' width='20%' id='EmpName_" + parseInt(i + 1) + "'>" + response.list[i].Employee_Name + "</td><td id='EmpNum_" + parseInt(i + 1) + "'>" + response.list[i].Employee_Number + "</td>";
+                    tblData += "<td id='Designation_" + parseInt(i + 1) + "'>" + response.list[i].User_Type_Name + "</td><td id='RegionName_" + parseInt(i + 1) + "'>" + response.list[i].Region_Name + "</td>";
+                    tblData += "<td id='ManagerName_" + parseInt(i + 1) + "'>" + response.list[i].Reporting_User_Name + "</td><td id='MgrRegionName_" + parseInt(i + 1) + "'>" + response.list[i].Reporting_Region_Name + "</td>";
+                    tblData += "<input type=hidden value='" + response.list[i].HiDoctor_Start_Date + "' id='HiDoctorJoinDate_" + parseInt(i + 1) + "'/><td class='AlignCssMd' id='AbsentFromDate_" + parseInt(i + 1) + "'>" + response.list[i].Absent_From_Date + "</td>";
+                    tblData += "<td class='AlignCssMd' id='AbsentToDate_" + parseInt(i + 1) + "'>" + response.list[i].Absent_To_Date + "</td>";
+                    tblData += "<td class='AlignCssMd' id='AbsentCounterValue_" + parseInt(i + 1) + "'>" + response.list[i].Absence_Counter_Value + "</td>";
+                    tblData += "<input type=hidden value=" + response.list[i].Alerts_Header + " class='hdn_" + parseInt(i + 1) + "'/>";
+                    tblData += "<td class='AlignCssMd'>" + response.list[i].Alert_Run_Date + "</td>";
+                    tblData += "<td class='AlignCssMd'><span onclick=fnSelectCC('" + response.list[i].User_Code + "'," + Alert_Type + "," + response.list[i].Absence_Counter_Value + ") style=color:blue;cursor:pointer;text-decoration:underline; data-toggle=modal data-target=#myModalregion>Select Users</span></td>";
+                    if (Alert_Status == 2) {
+                            if (response.list[i].View_Count > 0) {
+                                tblData += "<td class='AlignCss'><span onclick='fnViewSent(" + parseInt(i + 1) + ")' id=sendId style=color:blue;cursor:pointer;text-decoration:underline; data-toggle=modal data-target=#AbsentSentMailModal>" + response.list[i].View_Count + "</span></td>"
+                            }
+                            else {
+                                tblData += "<td class='AlignCss'><span>NA</span></td>";
+                            }
+                            tblData += "<td class='AlignCssMd'>" + response.list[i].Alert_Run_Date + "</td>";
+                            if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                                tblData += "<td class='AlignCssMd'><span onclick=fnSent(''," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send</span>&nbsp;&nbsp;";
+                            }
+                            else {
+                                tblData += "</td></tr>";
+                            }
+                    }
+
+                    if (response.list[i].Absence_Counter_Value == 14) {
+                        tblData += "<input type='hidden' id='AbsentFirstDate_" + parseInt(i + 1) + "' value='" + response.list[i].Action_first_Date + "'/>";
+                    }
+                    else if (response.list[i].Absence_Counter_Value == 21) {
+                        tblData += "<input type='hidden' id='AbsentFirstDate_" + parseInt(i + 1) + "' value='" + response.list[i].Action_first_Date + "'/>";
+                        tblData += "<input type='hidden' id='AbsentSecondDate_" + parseInt(i + 1) + "' value='" + response.list[i].Action_Second_Date + "'/>";
+                    }
+                    if (Alert_Status == 0) {
+                        if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                            tblData += "<td class='AlignCssMd' ><span onclick=fnSent(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send </span>&nbsp;&nbsp;";
+                        }
+                        else {
+                            tblData += "</td></tr>";
+                        }
+                    }
+                    if (Alert_Status == 1) {
+                        if (response.list[i].User_Access_Enabled == 2 || response.list[i].User_Access_Enabled == 1) {
+                            tblData += "<td class='AlignCssMd' ><span onclick=fnSent(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ",'" + response.list[i].Email_Id + "','" + response.list[i].CC_Mail_ID + "') id=sendId style=color:blue;cursor:pointer;text-decoration:underline;>Send </span>&nbsp;&nbsp;";
+                        }
+
+                        if (response.list[i].User_Access_Enabled == 2) {
+                            tblData += "|&nbsp;&nbsp;<span onclick='FnDismiss(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ")' id=DismissId value=" + response.list[i].Alerts_Header + " style=color:blue;cursor:pointer;text-decoration:underline;>Ignore</span></td></tr>";
+                        }
+                        if (response.list[i].User_Access_Enabled == 0) {
+                            tblData += "<td class='AlignCssMd'><span onclick='FnDismiss(" + response.list[i].Alerts_Header + "," + parseInt(i + 1) + ")' id=DismissId value=" + response.list[i].Alerts_Header + " style=color:blue;cursor:pointer;text-decoration:underline;>Ignore</span></td></tr>";
+                        }
+                    }
+                    else {
+                        tblData += "</td></tr>";
+                    }
+                }
+
+            }
+            else {
+                tblData += "<table id='AlertCandidate' class='sticky'><thead><tr><th class='fixed-side-first' width='20%'>S.NO</th><th class='fixed-side-second' width='20%'>User Name</th><th class='fixed-side-third' width='20%'>Employee Name</th><th class='removeWidth'>Employee Number</th>";
+                tblData += "<th>Designation</th><th>Region Name</th><th>Manager Name</th><th>Manager Region Name</th>";
+                tblData += "<th class='removeWidth'>Absent From</th><th class='removeWidth'>Absent To</th><th class='removeWidth'>Alert Days</th>";
+                tblData += "<th class='removeWidth'>Alert Raised Date</th>";
+                tblData += "<th class='AlignCssMd'>CC Users</th>";
+                if (Alert_Status == 2) {
+                    tblData += "<th class='removeWidth'>View Count</th>";
+                }
+                tblData += "<th style='width: 111px;'>Action</th></tr></thead><tbody>";
+                tblData += "<tr><td colspan=15 style='padding-left: 540px;'>No Records Found</td></tr>";
+            }
+
+            tblData += "</tbody></table>";
+            $("#tblRecords").html(tblData);
+        }
+        $('table').on('scroll', function () {
+            $("table > *").width($("table").width() + $("table").scrollLeft());
+        });
+        $.unblockUI();
+    }
+    function BindFailure(response) {
+        $.unblockUI();
+    }
+
+    function fnGetActionDateDismiss(CompanyCode, UserCode, Alert_Header, Alert_SelId) {
+        debugger;
+        dismiss_selID = Alert_SelId;
+        Method_params = ["AlertsApi/AbsenceAlertDismiss/", CompanyCode, UserCode, Alert_Header];
+        CoreREST.get(null, Method_params, null, BindSuccessDismiss, BindFailure);
+
+    }
+    function BindSuccessDismiss(response) {
+        debugger;
+        var user_Name = $("#User_Name_" + dismiss_selID).text();
+        var Header_Id = $(".hdn_" + dismiss_selID + "").val();
+
+        if (response.list[0].count_number == 1 || response.list[0].count_number == 2) {
+            fnMsgAlert("info", "Alert Screen", "Future Alert for " + user_Name + " not been Ignored Yet!");
+            return false;
+        }
+        else {
+            bootbox.confirm({
+                message: "<h3>Are you sure want to ignore the alert?</h3>",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+
+                callback: function (result) {
+                    if (result == true) {
+                        debugger;
+                        $("#txtRemarks").val('');
+                        $("#RemarksModal").modal();
+                    }
+                }
+            });
+        }
+        
+    }
+    function fnSaveRemark(SaveOptions) {
+        debugger;
+        var Header_Id = $(".hdn_" + dismiss_selID + "").val();
+        var Alerts_Header = $("#AbsentMailHeaderValue").val();//$(".hdn_" + dismiss_selID + "").val();
+        var Remarks = $("#txtRemarks").val().trim();
+        var pattern = /[^a-z|^A-Z|^\s]/;
+        if (document.getElementById("txtRemarks").value.match(pattern)) {
+            fnMsgAlert("info", "Alert Screen", "Only alphabets from a-z and A-Z are allowed!");
+            return false;
+        }
+        if (Remarks.length > 200) {
+            fnMsgAlert("info", "Alert Screen", "Only 200 Characters are allowed!");
+            return false;
+        }
+        if (SaveOptions == 1) {
+            if ($.trim($("#txtRemarks").val()) == null || $.trim($("#txtRemarks").val()) == '') {
+                $('#RemarksModal').modal('hide');
+                $('#RemarksModalAlert').modal('show');
+            }
+            else {
+                $('#RemarksModalAlert').modal('hide');
+                $('#RemarksModal').modal('show');
+                Method_params = ["AlertsApi/AlertDismiss", CompanyCode, UserCode, Header_Id, Alert_Type, Remarks];
+                CoreREST.post(null, Method_params, null, AlertDismissSuccess, AlertDismissFailure);
+                dismiss_selID = '';
+            }
+        }
+        if (SaveOptions == 2) {
+            $('#RemarksModalAlert').modal('hide');
+            $('#RemarksModal').modal('show');
+        }
+    }
+
+    function fnGetActionDateSent(CompanyCode, UserCode, Alert_Header, Alert_SelId) {
+        dismiss_selID = Alert_SelId;
+        Method_params = ["AlertsApi/AbsenceAlertSend", CompanyCode, UserCode, Alert_Header];
+        CoreREST.getsync(null, Method_params, null, BindSuccessSend, BindFailure);
+    }
+    function BindSuccessSend(response) {
+        debugger
+        var user_Name = $("#User_Name_" + dismiss_selID).text();
+        if (response.list[0].count_number != 0) {
+            fnMsgAlert("info", "Alert Screen", "Previous Alert for " + user_Name + " not been sent!<br> Kindly send those Alerts");
+            sentresponse = "false";
+            return false;
+
+        }
+        dismiss_selID = '';
+        $.unblockUI();
+    }
+    function FnDismiss(Header_Id, Alert_SelId) {
+        var Alerts_Header = $(".hdn_" + Alert_SelId + "").val();
+        if (Alert_Type == 2) {
+
+            var User_Code = $(".hdnUserCode_" + Alert_SelId).val();
+            var Absent_To_Date = $("#AbsentToDate_" + Alert_SelId).html();
+            var user_Name = $("#User_Name_" + Alert_SelId).text();
+
+            fnGetActionDateDismiss(CompanyCode, UserCode, Alerts_Header, Alert_SelId);
+
+        }
+        else if (Alert_Type == 1) {
+
+            dismiss_selID = Alert_SelId;
+            var User_Code = $(".hdnUserCode_" + Alert_SelId).val();
+            bootbox.confirm({
+                message: "<h3>Are you sure want to ignore the alert?</h3>",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+
+                callback: function (result) {
+                    if (result == true) {
+                        $("#txtRemarks").val('');
+                        $("#RemarksModal").modal();
+
+                    }
+                }
+            });
+        }
+    }
+
+    function AlertDismissSuccess(response) {
+        debugger;
+        if (response.Message == "SUCCESS") {
+            Method_params = ["AlertsApi/AlertNotice", CompanyCode, UserCode, Alert_Month, Alert_Year, Alert_Type, Alert_Status];
+            CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+            $('#RemarksModal').modal('hide');
+            fnMsgAlert("success", "Alert Screen", "Alert Dismissed Successfully!");
+        }
+    }
+    function AlertDismissFailure(response) {
+    }
+    function PdfContentSuccess(response) {
+        alert(response);
+    }
+    function PdfContentFailure(response) {
+        alert(response);
+    }
+    function fnSent(Alerts_Header, Alert_SelId, To_Mail_Id, CC_Mail_Id) {
+        debugger;
+        sentresponse = '';
+        mail_id = '';
+        cc_mail_id = '';
+        alert_selId = '';
+        SelRow = Alert_SelId;
+
+         TemAlert_SelId = '';
+         Temstatus = '';
+         Temfilename = '';
+         TemToMailId = '';
+         TemCC_Mail_Id = '';
+         TemFilepath = '';
+
+        var From_Mail_Id = $(".hdnEmailFrom_" + SelRow).val();
+        if (From_Mail_Id == null || From_Mail_Id == "" || From_Mail_Id == undefined) {
+            fnMsgAlert("info", "Alert Screen", "Sender MailID is Empty!");
+            return false;
+        }
+        if (To_Mail_Id == null || To_Mail_Id == "" || To_Mail_Id == undefined) {
+            fnMsgAlert("info", "Alert Screen", "Recipient MailID is Empty!");
+            return false;
+        }
+      
+        //if (CC_Mail_Id == null || CC_Mail_Id == "" || CC_Mail_Id == undefined) {
+        //    fnMsgAlert("info", "Alert Screen", "CC MailID is Empty!");
+        //    return false;
+        //}
+        mail_id = To_Mail_Id;
+        //cc_mail_id = CC_Mail_Id;
+        alert_selId = Alert_SelId;
+
+        if (Alert_Type == 1) {
+            var CCmail = $.grep(CCmaillst, function (element, index) {
+                return element.Usercode == $(".hdnUserCode_" + Alert_SelId + "").val() && element.AlertType == Alert_Type && element.AlertCounter == AlCounter;
+            });
+
+            if (CCmail.length > 0) {
+                debugger;
+                if (CCmail.length == 1) {
+                    cc_mail_id = CCmail[0].Email_Id;
+                }
+                else {
+                    for (var i = 0; i < CCmail.length; i++) {
+                        if (i == (CCmail.length - 1))
+                            cc_mail_id += CCmail[i].Email_Id;
+                        else
+                            cc_mail_id += CCmail[i].Email_Id + ',';
+                    }
+                }
+            }
+
+
+            $('#btndocsend').hide();
+            $.blockUI({ message: '<h3> Just a moment...</h3>' });
+            $("#DocCallMailContent").empty();
+            SelRow = Alert_SelId;
+            fnGetPDfContent(Alert_SelId, 0, '', To_Mail_Id, CC_Mail_Id);
+            if ($("#User_Name_" + Alert_SelId).text().length > 25) {
+                var userNameSplit = $("#User_Name_" + Alert_SelId).text() + "(" + $("#EmpName_" + Alert_SelId).html() + ")";
+                userNameSplit = userNameSplit.match(/.{1,26}/g);
+                $("#ModalUserName").html(userNameSplit[0] + "<br>" + userNameSplit[1]);
+            }
+            else {
+                $("#ModalUserName").html($("#User_Name_" + Alert_SelId).html() + "(" + $("#EmpName_" + Alert_SelId).html() + ")");
+            }
+            $("#ModalRegionName").html($("#RegionName_" + Alert_SelId).html());
+            $("#ModalManagerName").html($("#ManagerName_" + Alert_SelId).html());
+            $("#ModalDesignation").html($("#Designation_" + Alert_SelId).html());
+            $("#ModalStartDate").html($("#HiDoctorJoinDate_" + Alert_SelId).val());
+            $("#ModalMgrRegName").html($("#MgrRegionName_" + Alert_SelId).html());
+            $("#HeaderValue").val($(".hdn_" + Alert_SelId + "").val());
+            $("#HeaderUserCode").val($(".hdnUserCode_" + Alert_SelId + "").val());
+            $("#ModalExpAvg").html($("#ExpAvg_" + Alert_SelId).html());
+            $("#ModalCallAvg").html($("#CurrAvg_" + Alert_SelId).html());
+            $("#myModal").modal();
+        }
+        else if (Alert_Type == 2) {
+            var CCmail = $.grep(CCmaillst, function (element, index) {
+                return element.Usercode == $(".hdnUserCode_" + Alert_SelId + "").val() && element.AlertType == Alert_Type && element.AlertCounter == $("#AbsentCounterValue_" + Alert_SelId + "").html();
+            });
+
+            if (CCmail.length > 0) {
+                debugger;
+                if (CCmail.length == 1) {
+                    cc_mail_id = CCmail[0].Email_Id;
+                }
+                else {
+                    for (var i = 0; i < CCmail.length; i++) {
+                        if (i == (CCmail.length - 1))
+                            cc_mail_id += CCmail[i].Email_Id;
+                        else
+                            cc_mail_id += CCmail[i].Email_Id + ',';
+                    }
+                }
+            }
+            
+            $('#btnabssend').hide();
+            $("#AbsentMailContent").empty();
+            if (Alert_Status == 1) {
+                var User_Code = $(".hdnUserCode_" + Alert_SelId).val();
+                var Absent_To_Date = $("#AbsentToDate_" + Alert_SelId).html();
+                var user_Name = $("#User_Name_" + Alert_SelId).text();
+
+                fnGetActionDateSent(CompanyCode, UserCode, Alerts_Header, Alert_SelId);
+            }
+            if (sentresponse == "false") {
+
+                return false;
+            }
+            $.blockUI({ message: '<h3> Just a moment...</h3>' });
+            SelRow = Alert_SelId;
+            if ($("#AbsentCounterValue_" + Alert_SelId + "").html() == 7) {
+
+                fnGetPDfContentforSevenAbsentee(Alert_SelId, $("#AbsentCounterValue_" + Alert_SelId + "").html(), '', 0, To_Mail_Id, CC_Mail_Id);
+            }
+            else if ($("#AbsentCounterValue_" + Alert_SelId + "").html() == 14) {
+                fnGetActionDate(CompanyCode, UserCode, Alerts_Header);
+                //fnGetPDfContentforFourteenAbsentee(Alert_SelId, $("#AbsentCounterValue_" + Alert_SelId + "").html(), '', 0, To_Mail_Id, CC_Mail_Id);
+            }
+            else if ($("#AbsentCounterValue_" + Alert_SelId + "").html() == 21) {
+                fnGetActionDate(CompanyCode, UserCode, Alerts_Header);
+                // fnGetPDfContentfortwentyOneAbsentee(Alert_SelId, $("#AbsentCounterValue_" + Alert_SelId + "").html(), '', 0, To_Mail_Id, CC_Mail_Id);
+
+            }
+
+
+
+            $("#AbsentMailModalUserName").html($("#User_Name_" + Alert_SelId).html() + "(" + $("#EmpName_" + Alert_SelId).html() + ")");
+            $("#AbsentMailModalRegionName").html($("#RegionName_" + Alert_SelId).html());
+            $("#AbsentMailModalManagerName").html($("#ManagerName_" + Alert_SelId).html());
+            $("#AbsentMailModalDesignation").html($("#Designation_" + Alert_SelId).html());
+            $("#AbsentMailModalStartDate").html($("#HiDoctorJoinDate_" + Alert_SelId).val());
+            $("#AbsentMailModalMgrRegName").html($("#MgrRegionName_" + Alert_SelId).html());
+            $("#AbsentMailHeaderValue").val($(".hdn_" + Alert_SelId + "").val());
+            $("#AbsentMailHeaderUserCode").val($(".hdnUserCode_" + Alert_SelId + "").val());
+            $("#AbsentSentMailModalFromDate").html($("#AbsentFromDate_" + Alert_SelId).html());
+            $("#AbsentMailModalFrom").html($("#AbsentFromDate_" + Alert_SelId).html());
+            $("#AbsentMailModalTo").html($("#AbsentToDate_" + Alert_SelId).html());
+            $("#AbsentMailModal").modal();
+
+        }
+        $.unblockUI();
+    }
+    function fnSentAlert() {
+        debugger;
+        var Content = "";
+        var To_Mail_Id = mail_id;
+        var CC_Mail_Id = cc_mail_id;
+        var EmployeeName = $("#EmpName_" + SelRow).html().trim();
+        var ManagerName =  LoggedUserName.trim();
+        var AlertMonth = $("#AlertMonthDrop option:selected").text();
+        var AlertYear = $("#AlertYearDrop").val();
+
+        if (Alert_Type == 1) {
+            var header_Value = $("#HeaderValue").val();
+            var ToUser_Code = $("#HeaderUserCode").val().trim();
+            debugger;
+            SendCallAvgMail(SelRow, 1, PDF_file_name, To_Mail_Id, CC_Mail_Id);
+           // fnGetPDfContent(SelRow, 1, PDF_file_name, To_Mail_Id, CC_Mail_Id);
+        }
+        else if (Alert_Type == 2) {
+            var header_Value = $("#AbsentMailHeaderValue").val();
+            var ToUser_Code = $("#AbsentMailHeaderUserCode").val().trim();
+            AbsCounterValue = $("#AbsentCounterValue_" + SelRow + "").html().trim();
+            if ($("#AbsentCounterValue_" + SelRow + "").html() == 7) {
+                SendLongAbsSevenMail(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+               // fnGetPDfContentforSevenAbsentee(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+            }
+            else if ($("#AbsentCounterValue_" + SelRow + "").html() == 14) {
+                SendLongAbsFourteenMail(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+                //fnGetPDfContentforFourteenAbsentee(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+            }
+            else if ($("#AbsentCounterValue_" + SelRow + "").html() == 21) {
+                SendLongAbstwentyOneMail(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+                //fnGetPDfContentfortwentyOneAbsentee(SelRow, $("#AbsentCounterValue_" + SelRow + "").html(), PDF_file_name, 1, To_Mail_Id, CC_Mail_Id);
+            }
+        }
+        if (AbsCounterValue == '')
+        {
+            AbsCounterValue = 0;
+        }
+        Method_params = ["AlertsApi/MailSent", CompanyCode, header_Value, UserCode, ToUser_Code, EmployeeName, AlertMonth, AlertYear, ManagerName, AbsCounterValue, Alert_Type, PDF_file_name, To_Mail_Id];
+        CoreREST.post(null, Method_params, null, MailSentSuccess, MailSentFailure);
+    }
+    function MailSentSuccess(response) {
+        if (response.Message == "SUCCESS") {
+            Method_params = ["AlertsApi/AlertNotice", CompanyCode, UserCode, Alert_Month, Alert_Year, Alert_Type, Alert_Status];
+            CoreREST.get(null, Method_params, null, BindSuccessData, BindFailure);
+            //bootbox.alert("Mail Sent Successfully!");
+            fnMsgAlert("success", "Alert Screen", "Mail Sent Successfully!");
+        }
+
+        // $.unblockUI();
+    }
+    function MailSentFailure(response) {
+        fnMsgAlert("error", "Alert Screen", "Mail Sent Failed!");
+        //bootbox.alert("Mail Sent Failed!");
+    }
+
+    function fnViewSent(Row_No) {
+        $.blockUI({ message: '<h3> Just a moment...</h3>' });
+        if (Alert_Type == 1) {
+            $("#MailModalUserName").html($("#User_Name_" + Row_No).text() + "(" + $("#EmpName_" + Row_No).html() + ")");
+            $("#MailModalRegionName").html($("#RegionName_" + Row_No).html());
+            $("#MailModalManagerName").html($("#ManagerName_" + Row_No).html());
+            $("#MailModalDesignation").html($("#Designation_" + Row_No).html());
+            $("#MailModalStartDate").html($("#HiDoctorJoinDate_" + Row_No).val());
+            $("#MailModalMgrRegName").html($("#MgrRegionName_" + Row_No).html());
+            $("#MailModalExpAvg").html($("#ExpAvg_" + Row_No).html());
+            $("#MailModalCallAvg").html($("#CurrAvg_" + Row_No).html());
+        }
+        else if (Alert_Type == 2) {
+            $("#AbsentSentMailModalUserName").html($("#User_Name_" + Row_No).text() + "(" + $("#EmpName_" + Row_No).html() + ")");
+            $("#AbsentSentMailModalRegionName").html($("#RegionName_" + Row_No).html());
+            $("#AbsentSentMailModalManagerName").html($("#ManagerName_" + Row_No).html());
+            $("#AbsentSentMailModalDesignation").html($("#Designation_" + Row_No).html());
+            $("#AbsentSentMailModalStartDate").html($("#HiDoctorJoinDate_" + Row_No).val());
+            $("#AbsentSentMailModalMgrRegName").html($("#MgrRegionName_" + Row_No).html());
+            $("#AbsentMailModalFrom").html($("#AbsentFromDate_" + Row_No).html());
+            $("#AbsentSentMailModalToDate").html($("#AbsentToDate_" + Row_No).html());
+        }
+
+
+        Method_params = ["AlertsApi/MailSentList", CompanyCode, $(".hdn_" + Row_No + "").val(), Alert_Type];
+        CoreREST.get(null, Method_params, null, ViewSuccessData, ViewFailure);
+    }
+
+    function ViewSuccessData(response) {
+        var tblData = "";
+        tblData += "<table class='table table-striped' border=1><thead style='display: grid;'><tr><th class='AlignCss'>S.NO</th><th>Sent By</th><th>Sent Date</th><th>Attachment Path</th>";
+        tblData += "<th>Email ID</th></tr></thead><tbody style='display: grid;'>";
+        if (response.Message == "SUCCESS" && response.list.length > 0) {
+            for (var i = 0; i < response.list.length; i++) {
+                if (Alert_Type == 1) {
+                    var pdfpath = "callaverage";
+                } else {
+                    var pdfpath = "longabsence";
+                }
+               
+                var path = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + response.list[i].Attachment_Path + "";
+                tblData += "<tr><td class='AlignCss'>" + parseInt(i + 1) + "</td><td>" + response.list[i].Action_By + "</td>";
+                tblData += "<td>" + response.list[i].Action_Date + "</td><td><a href='https://docs.google.com/viewerng/viewer?url=" + path + "' target='_blank'>View Attachment</td>";
+                tblData += "<td>" + response.list[i].Email_ID + "</td></tr>";
+            }
+
+        }
+        else {
+            tblData += "<tr><td colspan=5 style='text-align: center;'>No Records Found</td></tr>";
+        }
+        tblData += "</tbody></table>";
+        if (Alert_Type == 1) {
+            $("#DocCallsentLst").html(tblData);
+        }
+        else if (Alert_Type == 2) {
+            $("#AbsentSentMailLst").html(tblData);
+        }
+        $.unblockUI();
+    }
+
+    function ViewFailure(response) {
+        $.unblockUI();
+    }
+
+    function fnDateConvert(date) {
+        var returnDate = date;
+        return returnDate.split('/').join('-');
+    }
+    function fnGetCurrDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + '-' + mm + '-' + dd;
+        // var today = dd + '/' + mm + '/' + yyyy;
+        return today;
+    }
+    function fnGetPDfContent(Alert_SelId, status, filename, To_Mail_Id, CC_Mail_Id) {
+        debugger;
+        var pdfpath = '';
+        var host = "";
+        var reqHeader = null;
+        var Company_Logo_Path = "";
+        var currDate = fnGetCurrDate();
+
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = "";
+        var Company_Logo_Path = '';
+        var Header = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='1000px' width='700px'><tbody><tr><td align='center' style='padding: 0px;' valign='top' width='600'><img src='[{Company_Logo_Path}]' style='' /></td></tr></tbody></table>";
+        var Footer = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='842px' width='595px'><tbody><tr><td align='center' valign='top' width='595px'><br /><span style='font-size: 13px; line-height: 15px; font-family: Arial,Helvetica,sans-serif; color: darkgray;'>91, Santhome High Road, Raja Annamalaipuram, Chennai – 600 028. INDIA. Phone : 91-44-2463 3333 – 6<br />Regd. Office : 6, Cathedral Road, Chennai – 600 086, INDIA<br />Email : hrd@ttkhealthcare.com Website : www.ttkhealthcare.com<br />CIN : l24231TN1958PLC003647 </span></td></tr></tbody></table>";
+
+        var Doccall = $.grep(Templatedetails, function (element, index) {
+                    return element.TemplateName == 'CallAverage_pdf';
+        });
+
+        if (Doccall.length > 0) {
+            host = Doccall[0].HostName;
+            reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+            Company_Logo_Path = Doccall[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+
+        if (filename == "") {
+            PDF_file_name = "DCA_" + $("#AlertMonthDrop").val() + "_" + $("#AlertYearDrop").val() + "_" + $("#EmpNum_" + Alert_SelId).html() + "_" + Date.now() + ".pdf";
+        }
+        else {
+            PDF_file_name = filename;
+        }
+        var pdfext = '';
+        pdfpath = "callaverage";
+        var genpdfdata = Object.assign({}, MailObject);
+        //var ctcInLakhs = '330000';
+
+        //genpdfdata.data.Add_1 = "xxx, yyy";
+        ////genpdfdata.API_key = masterApiKey;
+        //genpdfdata.data.Can_Mobile = '9090909090';
+        //genpdfdata.data.Can_Email = 'jothi@swaas.net';
+        //genpdfdata.data.CTC_total = '330000';
+        //genpdfdata.data.CTC_Rupees = "RUPEES Three Lakhs Thirty Three Thousand ONLY";
+        //genpdfdata.data.GM_ZBM_RBM_File = 'dvs';
+        //genpdfdata.data.Company_Logo_Path = '';
+        //genpdfdata.data.Division_Name = 'Endura';
+        //genpdfdata.data.Date =  currDate;
+        //genpdfdata.data.req_id = "GUID123";
+        //genpdfdata.data.header = '';
+        //genpdfdata.data.footer = ''
+        //genpdfdata.data.DYN_PARTICULARS ='';
+        //genpdfdata.data.Designation_Name = 'MSR';
+        //genpdfdata.data.Full_Name = 'MR Alert User'
+        //genpdfdata.data.filename = PDF_file_name;
+        //genpdfdata.data.filepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+        //genpdfdata.data.Last_Name = 'User';
+        //genpdfdata.data.Location = 'Pune';
+        //genpdfdata.data.First_Name ='Alert';
+        //genpdfdata.data.Medical_Fitness = '10';
+        //genpdfdata.data.No_Of_Days = '6';
+        //genpdfdata.data.Probation_Trainee = '6';
+        //genpdfdata.data.Ref_No = '';
+        //genpdfdata.data.Req_Date = currDate;
+        //genpdfdata.data.Offer_Position = '';
+        //genpdfdata.data.Offer_Design = '';
+        //// genpdfdata.data.Req_Pos_Name = ScheduleInterview._defaults.MRFDetails.Req_Pos_Name;
+        //genpdfdata.data.Req_Pos_Name = 'MSR';
+        //genpdfdata.data.Req_Div_Name = 'Endura';
+        //genpdfdata.data.Salutation = 'MR Alert';
+        //genpdfdata.data.Authority_Name = 'Test';
+        //genpdfdata.data.Authority_Designation = 'Test';
+        //genpdfdata.data.Authority_Signature = '';
+        //genpdfdata.data.Region_Name = 'Delhi';
+        //genpdfdata.data.to_mail = '';
+
+        genpdfdata.data.filename = PDF_file_name;
+        genpdfdata.data.action_date =currDate;
+        genpdfdata.data.employee_name=$("#EmpName_" + Alert_SelId).html();
+        genpdfdata.data.employee_number=$("#EmpNum_" + Alert_SelId).html();
+        genpdfdata.data.designation=$("#Designation_" + Alert_SelId).html();
+        genpdfdata.data.region_name=$("#RegionName_" + Alert_SelId).html();
+        genpdfdata.data.expcall_avg=$("#ExpAvg_" + Alert_SelId).html();
+        genpdfdata.data.actcall_avg=$("#CurrAvg_" + Alert_SelId).html();
+        genpdfdata.data.CallAvg_month=$("#AlertMonthDrop option:selected").text();
+        genpdfdata.data.CallAvg_year=$("#AlertYearDrop").val();
+        genpdfdata.data.send_flag=status;
+        genpdfdata.data.filepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+        //genpdfdata.data.mail_subject="Deviation in Doctor Call Average - Regarding - Needs Immediate Attention!!";
+        genpdfdata.data.sender_name = LoggedEmployeeName,
+        genpdfdata.data.sender_designation = loggedUserTypeName,
+        genpdfdata.data.to_mail = '';
+        genpdfdata.data.header = Header.replace("[{Company_Logo_Path}]", Company_Logo_Path);
+        genpdfdata.data.footer = Footer;
+        genpdfdata.data.req_id = "GUID001";
+        PDFGenerator.GenerateOffer("POST", host, reqHeader, genpdfdata, GenerateOfferSCB, function () { alert("Generate offer Failed.") });
+        TemAlert_SelId = Alert_SelId;
+        Temstatus = status;
+        Temfilename = filename;
+        TemToMailId = To_Mail_Id;
+        TemCC_Mail_Id = CC_Mail_Id;
+        TemFilepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+    }
+    function GenerateOfferSCB(result) {
+        debugger
+        if (result.trim() != "") {
+            var ApiPdfStatus = eval('(' + result + ')');
+            if (ApiPdfStatus.response[0].code == "200") {
+                //var pdfBloburl = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + PDF_file_name + "";
+                $("#DocCallMailContent").append("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br/><h2 style='text-align:center'><button type='button' class='btn btn-primary'><a href='https://docs.google.com/viewerng/viewer?url=" + TemFilepath + "' target='_blank'><b style='color:white;'>View</b></a></button>&nbsp;<button type='button' class='btn btn-primary'><a href=" + TemFilepath + "><b style='color:white;'>Download</b></a></button></h2>");
+                $('#btndocsend').show();
+            }
+        }
+        else {
+            alert("Error Generating Call Average PDF");
+        }
+    }
+
+    //function fnGetPDfContent(Alert_SelId, status, filename, To_Mail_Id, CC_Mail_Id) {
+    //    debugger
+    //    var currDate = fnGetCurrDate();
+    //    var host = "";
+    //    var reqHeader = null;
+    //    var Company_Logo_Path = "";
+    //    var masterApiKey = ""
+    //    var Doccall = $.grep(Templatedetails, function (element, index) {
+    //        return element.TemplateName == 'CallAverage_pdf';
+    //    });
+
+    //    if (Doccall != null) {
+    //        host = Doccall[0].HostName;
+    //        reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+    //        Company_Logo_Path = Doccall[0].Company_Logo_Path;
+    //    }
+    //    else {
+    //        alert("Generation Failed.");
+    //    }
+
+    //    if (host == "" || host == undefined || host == null) {
+    //        alert("Configuration not found.");
+    //        return false;
+    //    }
+
+    //    if (filename == "") {
+    //        PDF_file_name = "DCA_" + $("#AlertMonthDrop").val() + "_" + $("#AlertYearDrop").val() + "_" + $("#EmpNum_" + Alert_SelId).html() + "_" + Date.now() + ".pdf";
+    //    }
+    //    else {
+    //        PDF_file_name = filename;
+    //    }
+    //    pdfBloburl = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + PDF_file_name + "";
+    //    var genpdfdata = Object.assign({}, MailObject);
+    //    genpdfdata.data.file_name = PDF_file_name;
+    //    genpdfdata.data.action_date =currDate;
+    //    genpdfdata.data.employee_name=$("#EmpName_" + Alert_SelId).html();
+    //    genpdfdata.data.employee_number=$("#EmpNum_" + Alert_SelId).html();
+    //    genpdfdata.data.designation=$("#Designation_" + Alert_SelId).html();
+    //    genpdfdata.data.region_name=$("#RegionName_" + Alert_SelId).html();
+    //    genpdfdata.data.expcall_avg=$("#ExpAvg_" + Alert_SelId).html();
+    //    genpdfdata.data.actcall_avg=$("#CurrAvg_" + Alert_SelId).html();
+    //    genpdfdata.data.CallAvg_month=$("#AlertMonthDrop option:selected").text();
+    //    genpdfdata.data.CallAvg_year=$("#AlertYearDrop").val();
+    //    genpdfdata.data.send_flag=status;
+    //    genpdfdata.data.file_path= "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + PDF_file_name;
+    //    genpdfdata.data.mail_subject="Deviation in Doctor Call Average - Regarding - Needs Immediate Attention!!";
+    //    genpdfdata.data.to_mail = '';
+    //    genpdfdata.data.req_id = "GUID129";
+
+    //    PDFGenerator.GenerateOffer("POST", host, reqHeader, genpdfdata, GenerateOfferSCB, function () { alert("Generate offer Failed.") });
+    //}
+
+    function SendCallAvgMail(Alert_SelId, status, Temfilename, To_Mail_Id, CC_Mail_Id)
+    {
+        debugger
+        var TemplateName = "Doctor_Call_Average";
+        var Doccall = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == TemplateName;
+        });
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = ""
+
+        if (Doccall != null) {
+            host = Doccall[0].HostName;
+            reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+            Company_Logo_Path = Doccall[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+        var offerMaildata = Object.assign({}, MailObject);
+        offerMaildata.data.cc_mail = CC_Mail_Id;
+        //offerMaildata.data.File_Url = BLOB_HOST + "/" + CompanyCode.toLowerCase() + "/email" + "/" + PDF_file_name;
+        offerMaildata.data.Attachment = TemFilepath;
+        offerMaildata.data.Mail_Subject = "Deviation in Doctor Call Average - Regarding - Needs Immediate Attention!!",
+        offerMaildata.data.employee_name = $("#EmpName_" + Alert_SelId).html(),
+        offerMaildata.data.employee_number = $("#EmpNum_" + Alert_SelId).html(),
+        offerMaildata.data.sender_name = LoggedUserName,
+        offerMaildata.data.sender_designation = loggedUserTypeName,
+        offerMaildata.data.region_name = $("#RegionName_" + Alert_SelId).html(),
+        offerMaildata.data.Sender_Emp_Name = LoggedEmployeeName;
+        offerMaildata.data.Mail_Sender_Name = LoggedUserName;
+        offerMaildata.data.Sender_Mail = $(".hdnEmailFrom_" + Alert_SelId).val();
+        offerMaildata.data.to_mail = $(".hdnEmail_" + Alert_SelId).val();
+        offerMaildata.data.expcall_avg = $("#ExpAvg_" + Alert_SelId).html(),
+        offerMaildata.data.actcall_avg = $("#CurrAvg_" + Alert_SelId).html(),
+        offerMaildata.data.CallAvg_month= $("#AlertMonthDrop option:selected").text(),
+        offerMaildata.data.CallAvg_year= $("#AlertYearDrop").val(),
+        offerMaildata.data.req_id = "GUID126";
+        $.ajax({
+            type: "POST",
+            headers: reqHeader,
+            url: host,
+            data: JSON.stringify(offerMaildata),
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                if (resp.trim() != "") {
+                    var ApiPdfStatus = eval('(' + resp + ')');
+                    var text = "";
+                    var icon = "info";
+                    if (ApiPdfStatus.response[0].code == "200") {
+                        text = "Mail has been sent";
+                        icon = "success";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "400") {
+                        text = "Failure";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "204") {
+                        text = "Invalid Mail";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "403") {
+                        text = "Authentication Failed";
+                    }
+                }
+                else {
+                    alert("Failed Sending Mail.");
+                }
+            },
+            error: function (result) {
+                alert("Failed Sending Mail.");
+            }
+        });
+    }
+    function SendLongAbsSevenMail(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id) {
+        debugger
+        var TemplateName = "Long_Absence_Seven";
+        var Doccall = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == TemplateName;
+        });
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = ""
+
+        if (Doccall != null) {
+            host = Doccall[0].HostName;
+            reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+            Company_Logo_Path = Doccall[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+        var offerMaildata = Object.assign({}, MailObject);
+        offerMaildata.data.cc_mail = CC_Mail_Id; //GenoffCCmailid;
+        //offerMaildata.data.File_Url = BLOB_HOST + "/" + CompanyCode.toLowerCase() + "/email" + "/" + PDF_file_name;
+        offerMaildata.data.employee_name = $("#EmpName_" + Alert_SelId).html(),
+        offerMaildata.data.employee_number = $("#EmpNum_" + Alert_SelId).html(),
+        offerMaildata.data.sender_name = LoggedUserName,
+        offerMaildata.data.sender_designation = loggedUserTypeName,
+        offerMaildata.data.region_name = $("#RegionName_" + Alert_SelId).html(),
+        offerMaildata.data.Attachment = TemFilepath;
+        offerMaildata.data.Mail_Subject = "Warning Letter - Unauthorized long absence - Regarding - Needs Immediate Attention!!",
+        offerMaildata.data.Sender_Emp_Name = LoggedEmployeeName;
+        offerMaildata.data.Mail_Sender_Name = LoggedUserName;
+        offerMaildata.data.Sender_Mail = $(".hdnEmailFrom_" + Alert_SelId).val();
+        offerMaildata.data.to_mail = To_Mail_Id;//$(".hdnEmail_" + Alert_SelId).val();
+        offerMaildata.data.req_id = "GUID126";
+        $.ajax({
+            type: "POST",
+            headers: reqHeader,
+            url: host,
+            data: JSON.stringify(offerMaildata),
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                if (resp.trim() != "") {
+                    var ApiPdfStatus = eval('(' + resp + ')');
+                    var text = "";
+                    var icon = "info";
+                    if (ApiPdfStatus.response[0].code == "200") {
+                        text = "Mail has been sent";
+                        icon = "success";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "400") {
+                        text = "Failure";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "204") {
+                        text = "Invalid Mail";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "403") {
+                        text = "Authentication Failed";
+                    }
+                }
+                else {
+                    alert("Failed Sending Mail.");
+                }
+            },
+            error: function (result) {
+                alert("Failed Sending Mail.");
+            }
+        });
+    }
+    function SendLongAbsFourteenMail(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id)
+    {
+        debugger;
+        var TemplateName = "Long_Absence_Fourteen";
+        var Doccall = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == TemplateName;
+        });
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = ""
+
+        if (Doccall != null) {
+            host = Doccall[0].HostName;
+            reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+            Company_Logo_Path = Doccall[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+        var offerMaildata = Object.assign({}, MailObject);
+        offerMaildata.data.cc_mail = CC_Mail_Id; //GenoffCCmailid;
+        //offerMaildata.data.File_Url = BLOB_HOST + "/" + CompanyCode.toLowerCase() + "/email" + "/" + PDF_file_name;
+        offerMaildata.data.Attachment = TemFilepath;
+        offerMaildata.data.Mail_Subject = "Showcause Notice - Unauthorized long absence - Regarding - Needs Immediate Attention!!",
+        offerMaildata.data.employee_name = $("#EmpName_" + Alert_SelId).html(),
+        offerMaildata.data.employee_number = $("#EmpNum_" + Alert_SelId).html(),
+        offerMaildata.data.sender_name = LoggedUserName,
+        offerMaildata.data.sender_designation = loggedUserTypeName,
+        offerMaildata.data.region_name = $("#RegionName_" + Alert_SelId).html(),
+        offerMaildata.data.Sender_Emp_Name = LoggedEmployeeName;
+        offerMaildata.data.Mail_Sender_Name = LoggedUserName;
+        offerMaildata.data.Sender_Mail = $(".hdnEmailFrom_" + Alert_SelId).val();
+        offerMaildata.data.to_mail = To_Mail_Id;//$(".hdnEmail_" + Alert_SelId).val();
+        offerMaildata.data.req_id = "GUID126";
+        $.ajax({
+            type: "POST",
+            headers: reqHeader,
+            url: host,
+            data: JSON.stringify(offerMaildata),
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                if (resp.trim() != "") {
+                    var ApiPdfStatus = eval('(' + resp + ')');
+                    var text = "";
+                    var icon = "info";
+                    if (ApiPdfStatus.response[0].code == "200") {
+                        text = "Mail has been sent";
+                        icon = "success";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "400") {
+                        text = "Failure";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "204") {
+                        text = "Invalid Mail";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "403") {
+                        text = "Authentication Failed";
+                    }
+                }
+                else {
+                    alert("Failed Sending Mail.");
+                }
+            },
+            error: function (result) {
+                alert("Failed Sending Mail.");
+            }
+        });
+    }
+    function SendLongAbstwentyOneMail(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id)
+    {
+    debugger
+        var TemplateName = "Long_Absence_Twentyone";
+        var Doccall = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == TemplateName;
+        });
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = ""
+
+        if (Doccall != null) {
+            host = Doccall[0].HostName;
+            reqHeader = { "Master-api-key": Doccall[0].Master_Api_Key };
+            Company_Logo_Path = Doccall[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+
+        var offerMaildata = Object.assign({}, MailObject);
+        offerMaildata.data.cc_mail = CC_Mail_Id; //GenoffCCmailid;
+        //offerMaildata.data.File_Url = BLOB_HOST + "/" + CompanyCode.toLowerCase() + "/email" + "/" + PDF_file_name;
+        offerMaildata.data.Attachment = TemFilepath;
+        offerMaildata.data.Mail_Subject = "Abandonment of Service - Regarding - Needs Immediate Attention!!",
+        offerMaildata.data.employee_name = $("#EmpName_" + Alert_SelId).html(),
+        offerMaildata.data.employee_number = $("#EmpNum_" + Alert_SelId).html(),
+        offerMaildata.data.sender_name = LoggedUserName,
+        offerMaildata.data.sender_designation = loggedUserTypeName,
+        offerMaildata.data.region_name = $("#RegionName_" + Alert_SelId).html(),
+        offerMaildata.data.Sender_Emp_Name = LoggedEmployeeName;
+        offerMaildata.data.Mail_Sender_Name = LoggedUserName;
+        offerMaildata.data.Sender_Mail = $(".hdnEmailFrom_" + Alert_SelId).val();
+        offerMaildata.data.to_mail = To_Mail_Id;//$(".hdnEmail_" + Alert_SelId).val();
+        offerMaildata.data.req_id = "GUID126";
+
+        $.ajax({
+            type: "POST",
+            headers: reqHeader,
+            url: host,
+            data: JSON.stringify(offerMaildata),
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                if (resp.trim() != "") {
+                    var ApiPdfStatus = eval('(' + resp + ')');
+                    var text = "";
+                    var icon = "info";
+                    if (ApiPdfStatus.response[0].code == "200") {
+                        text = "Mail has been sent";
+                        icon = "success";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "400") {
+                        text = "Failure";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "204") {
+                        text = "Invalid Mail";
+                    }
+                    else if (ApiPdfStatus.response[0].code == "403") {
+                        text = "Authentication Failed";
+                    }
+                }
+                else {
+                    alert("Failed Sending Mail.");
+                }
+            },
+            error: function (result) {
+                alert("Failed Sending Mail.");
+            }
+        });
+    }
+    function fnGetActionDate(CompanyCode, UserCode, Alert_Header) {
+        debugger;
+        ActionDate = '';
+        ActionDate2 = '';
+        Method_params = ["AlertsApi/AbsenceAlertPDF/", CompanyCode, UserCode, Alert_Header];
+        CoreREST.getsync(null, Method_params, null, BindSuccessActionDate, BindFailure);
+    }
+    function BindSuccessActionDate(response) {
+        debugger;
+        // ActionDate = response;
+        if (response.list.length == 1) {
+            ActionDate = response.list[0].Mail_Sent_Date;
+        }
+        else if (response.list.length == 2) {
+            ActionDate = response.list[0].Mail_Sent_Date;
+            ActionDate2 = response.list[1].Mail_Sent_Date;
+        }
+        if ($("#AbsentCounterValue_" + alert_selId + "").html() == 14) {
+            fnGetPDfContentforFourteenAbsentee(alert_selId, $("#AbsentCounterValue_" + alert_selId + "").html(), '', 0, mail_id, cc_mail_id);
+        }
+        else if ($("#AbsentCounterValue_" + alert_selId + "").html() == 21) {
+            fnGetPDfContentfortwentyOneAbsentee(alert_selId, $("#AbsentCounterValue_" + alert_selId + "").html(), '', 0, mail_id, cc_mail_id);
+
+        }
+    }
+
+    function fnGetPDfContentforSevenAbsentee(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id) {
+        debugger
+       
+        var pdfpath = '';
+        var host = "";
+        var reqHeader = null;
+        var Company_Logo_Path = "";
+        var currDate = fnGetCurrDate();
+
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = "";
+        var Company_Logo_Path = '';
+        var AbsFrom = $("#AbsentFromDate_" + Alert_SelId + "").html();
+        var newAbsFrom = AbsFrom.split("-").reverse().join("-");
+        var Header = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='1000px' width='700px'><tbody><tr><td align='center' style='padding: 0px;' valign='top' width='600'><img src='[{Company_Logo_Path}]' style='' /></td></tr></tbody></table>";
+        var Footer = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='842px' width='595px'><tbody><tr><td align='center' valign='top' width='595px'><br /><span style='font-size: 13px; line-height: 15px; font-family: Arial,Helvetica,sans-serif; color: darkgray;'>91, Santhome High Road, Raja Annamalaipuram, Chennai – 600 028. INDIA. Phone : 91-44-2463 3333 – 6<br />Regd. Office : 6, Cathedral Road, Chennai – 600 086, INDIA<br />Email : hrd@ttkhealthcare.com Website : www.ttkhealthcare.com<br />CIN : l24231TN1958PLC003647 </span></td></tr></tbody></table>";
+
+        var Longabsseven = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == 'Long_Absence_Seven_PDF';
+        });
+
+        if (Longabsseven.length > 0) {
+            host = Longabsseven[0].HostName;
+            reqHeader = { "Master-api-key": Longabsseven[0].Master_Api_Key };
+            Company_Logo_Path = Longabsseven[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+        if (filename == "") {
+            PDF_file_name = "LA_" + Date.now($("#AbsentFromDate_" + Alert_SelId + "").html()) + "_" + $("#EmpNum_" + Alert_SelId).html() + "_" + Date.now() + ".pdf";
+        }
+        else {
+            PDF_file_name = filename;
+        }
+        var pdfext = '';
+        pdfpath = "longabsence";
+        var genpdfdata = Object.assign({}, MailObject);
+
+        genpdfdata.data.filename = PDF_file_name;
+        genpdfdata.data.action_date = currDate;
+        genpdfdata.data.employee_name = $("#EmpName_" + Alert_SelId).html();
+        genpdfdata.data.employee_number = $("#EmpNum_" + Alert_SelId).html();
+        genpdfdata.data.designation = $("#Designation_" + Alert_SelId).html();
+        genpdfdata.data.region_name = $("#RegionName_" + Alert_SelId).html();
+        genpdfdata.data.absence_from_date = newAbsFrom;
+        genpdfdata.data.send_flag = status;
+        genpdfdata.data.filepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+        genpdfdata.data.sender_name = LoggedEmployeeName,
+        genpdfdata.data.sender_designation = loggedUserTypeName,
+        genpdfdata.data.to_mail = $(".hdnEmail_" + Alert_SelId).val();
+        genpdfdata.data.header = Header.replace("[{Company_Logo_Path}]", Company_Logo_Path);
+        genpdfdata.data.footer = Footer;
+        genpdfdata.data.req_id = "GUID002";
+        PDFGenerator.GenerateOffer("POST", host, reqHeader, genpdfdata, GeneratelongabssevenSCB, function () { alert("Generate offer Failed.") });
+        TemAlert_SelId = Alert_SelId;
+        Temstatus = status;
+        Temfilename = filename;
+        TemToMailId = $(".hdnEmail_" + Alert_SelId).val();
+        TemCC_Mail_Id = CC_Mail_Id;
+        TemFilepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+
+        //pdfBloburl = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + PDF_file_name + "";
+        //var genpdfdata = Object.assign({}, MailObject);
+
+
+        //var paramData = {
+        //    "API_key": "79fbb58631463981e1e84c5954beb69000bbbd6e",
+        //    "platform_id": 1033,
+        //    "campaign_id": 30,
+        //    "template_category": 2,
+        //    "file_name": PDF_file_name,
+        //    "action_date": currDate,
+        //    "employee_name": $("#EmpName_" + Alert_SelId).html(),
+        //    "employee_number": $("#EmpNum_" + Alert_SelId).html(),
+        //    "designation": $("#Designation_" + Alert_SelId).html(),
+        //    "region_name": $("#RegionName_" + Alert_SelId).html(),
+        //    "absence_from_date": newAbsFrom,
+        //    "sender_name": LoggedUserName,
+        //    "mail_sender_name": LoggedUserName,
+        //    "sender_designation": loggedUserTypeName,
+        //    "send_flag": status,
+        //    "file_path": "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/",
+        //    //"email_content": "Long Absent from " + $("#AbsentFromDate_" + Alert_SelId + "").html() + "",
+        //    "email_content": "Dear " + $("#EmpName_" + Alert_SelId).html() + "<br><br>Please find attached letter with regard to your unauthorized absence from work.<br><br>You are advised to go through the same carefully and respond immediately.<br><br>Regards,<br>" + LoggedEmployeeName,
+        //    "mail_subject": "Warning Letter - Unauthorized long absence - Regarding - Needs Immediate Attention!!",
+        //    "Reciever_Maild_Id": $(".hdnEmail_" + Alert_SelId).val(),
+        //    "mail_sender_email": $(".hdnEmailFrom_" + Alert_SelId).val(),
+        //    "mail_cc": CC_Mail_Id
+        //}
+        //$.ajax({
+        //    type: 'POST',
+        //    url: 'http://swaasemailsys.com/ttk_email/index.php/transaction_schedule/Put_Long_Absence_Seven',
+        //    //url:'https://hdnotifications.co.in/hd/index.php/transaction_schedule/Put_Long_Absence_Seven',
+        //    data: JSON.stringify(paramData),
+        //    contentType: "application/json; charset=utf-8",
+        //    success: function (result) {
+        //        debugger;
+        //        var ApiPdfStatus = eval('(' + result + ')')
+        //        if (ApiPdfStatus.response.status == "200") {
+        //            $("#AbsentMailContent").append("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br/><h2 style='text-align:center'><button type='button' class='btn btn-primary'><a href='https://docs.google.com/viewerng/viewer?url=" + pdfBloburl + "' target='_blank'><b style='color:white;'>View</b></a></button>&nbsp;<button type='button' class='btn btn-primary'><a href=" + pdfBloburl + "><b style='color:white;'>Download</b></a></button></h2>");
+        //            $.unblockUI();
+        //        }
+        //        else {
+        //            $.unblockUI();
+        //        }
+        //    },
+        //    error: function (result) {
+        //        debugger;
+        //        $.unblockUI();
+        //        ActionDate = '';
+        //    }
+        //});
+    }
+    function GeneratelongabssevenSCB(result) {
+        debugger
+        if (result.trim() != "") {
+            var ApiPdfStatus = eval('(' + result + ')');
+            if (ApiPdfStatus.response[0].code == "200") {
+                $("#AbsentMailContent").append("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br/><h2 style='text-align:center'><button type='button' class='btn btn-primary'><a href='https://docs.google.com/viewerng/viewer?url=" + TemFilepath + "' target='_blank'><b style='color:white;'>View</b></a></button>&nbsp;<button type='button' class='btn btn-primary'><a href=" + TemFilepath + "><b style='color:white;'>Download</b></a></button></h2>");
+                $('#btnabssend').show();
+            }
+        }
+        else {
+            alert("Error Generating Long Absence PDF");
+        }
+    }
+
+    function fnGetPDfContentforFourteenAbsentee(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id) {
+        debugger;
+        var pdfpath = '';
+        var host = "";
+        var reqHeader = null;
+        var Company_Logo_Path = "";
+        var currDate = fnGetCurrDate();
+
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = "";
+        var Company_Logo_Path = '';
+        var AbsFrom = $("#AbsentFromDate_" + Alert_SelId + "").html();
+        var newAbsFrom = AbsFrom.split("-").reverse().join("-");
+        var Mail_Sent_Date = ActionDate.split("-").reverse().join("-");
+        var Header = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='1000px' width='700px'><tbody><tr><td align='center' style='padding: 0px;' valign='top' width='600'><img src='[{Company_Logo_Path}]' style='' /></td></tr></tbody></table>";
+        var Footer = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='842px' width='595px'><tbody><tr><td align='center' valign='top' width='595px'><br /><span style='font-size: 13px; line-height: 15px; font-family: Arial,Helvetica,sans-serif; color: darkgray;'>91, Santhome High Road, Raja Annamalaipuram, Chennai – 600 028. INDIA. Phone : 91-44-2463 3333 – 6<br />Regd. Office : 6, Cathedral Road, Chennai – 600 086, INDIA<br />Email : hrd@ttkhealthcare.com Website : www.ttkhealthcare.com<br />CIN : l24231TN1958PLC003647 </span></td></tr></tbody></table>";
+
+        var Longabsfourteen = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == 'Long_Absence_Fourteen_PDF';
+        });
+
+        if (Longabsfourteen.length > 0) {
+            host = Longabsfourteen[0].HostName;
+            reqHeader = { "Master-api-key": Longabsfourteen[0].Master_Api_Key };
+            Company_Logo_Path = Longabsfourteen[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+        if (filename == "") {
+            PDF_file_name = "LA_" + Date.now($("#AbsentFromDate_" + Alert_SelId + "").html()) + "_" + $("#EmpNum_" + Alert_SelId).html() + "_" + Date.now() + ".pdf";
+        }
+        else {
+            PDF_file_name = filename;
+        }
+        var pdfext = '';
+        pdfpath = "longabsence";
+        var genpdfdata = Object.assign({}, MailObject);
+
+        genpdfdata.data.filename = PDF_file_name;
+        genpdfdata.data.action_date = currDate;
+        genpdfdata.data.employee_name = $("#EmpName_" + Alert_SelId).html();
+        genpdfdata.data.employee_number = $("#EmpNum_" + Alert_SelId).html();
+        genpdfdata.data.designation = $("#Designation_" + Alert_SelId).html();
+        genpdfdata.data.region_name = $("#RegionName_" + Alert_SelId).html();
+        genpdfdata.data.absence_from_date = newAbsFrom;
+        genpdfdata.data.first_action_date = Mail_Sent_Date;
+        genpdfdata.data.send_flag = status;
+        genpdfdata.data.filepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+        genpdfdata.data.sender_name = LoggedEmployeeName,
+        genpdfdata.data.sender_designation = loggedUserTypeName,
+        genpdfdata.data.to_mail = $(".hdnEmail_" + Alert_SelId).val();
+        genpdfdata.data.header = Header.replace("[{Company_Logo_Path}]", Company_Logo_Path);
+        genpdfdata.data.footer = Footer;
+        genpdfdata.data.req_id = "GUID003";
+        PDFGenerator.GenerateOffer("POST", host, reqHeader, genpdfdata, GeneratelongabssevenSCB, function () { alert("Generate offer Failed.") });
+        TemAlert_SelId = Alert_SelId;
+        Temstatus = status;
+        Temfilename = filename;
+        TemToMailId = $(".hdnEmail_" + Alert_SelId).val();
+        TemCC_Mail_Id = CC_Mail_Id;
+        TemFilepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+
+        //var data = {
+        //    "API_key": "79fbb58631463981e1e84c5954beb69000bbbd6e",
+        //    "platform_id": 1033,
+        //    "campaign_id": 30,
+        //    "template_category": 3,
+        //    "file_name": PDF_file_name,
+        //    "action_date": currDate,
+        //    "employee_name": $("#EmpName_" + Alert_SelId).html(),
+        //    "employee_number": $("#EmpNum_" + Alert_SelId).html(),
+        //    "designation": $("#Designation_" + Alert_SelId).html(),
+        //    "region_name": $("#RegionName_" + Alert_SelId).html(),
+        //    "absence_from_date": newAbsFrom,
+        //    "first_action_date": Mail_Sent_Date,
+        //    "sender_name": LoggedUserName,
+        //    "mail_sender_name": LoggedUserName,
+        //    "sender_designation": loggedUserTypeName,
+        //    "send_flag": status,
+        //    "file_path": "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/",
+        //    "email_content": "Dear " + $("#EmpName_" + Alert_SelId).html() + "<br><br>Please find attached letter with regard to your unauthorized absence from work.<br><br>You are advised to go through the same carefully and respond immediately.<br><br>Regards,<br>" + LoggedEmployeeName,
+        //    "mail_subject": "Showcause Notice - Unauthorized long absence - Regarding - Needs Immediate Attention!!",
+        //    "Reciever_Maild_Id": $(".hdnEmail_" + Alert_SelId).val(),
+        //    "mail_sender_email": $(".hdnEmailFrom_" + Alert_SelId).val(),
+        //    "mail_cc": CC_Mail_Id
+        //}
+        //$.ajax({
+        //    type: 'POST',
+        //    url: 'https://swaasemailsys.com/ttk_email/index.php/transaction_schedule/Put_Long_Absence_fourteen',
+        //    //url:'https://hdnotifications.co.in/hd/index.php/transaction_schedule/Put_Long_Absence_fourteen',
+        //    data: JSON.stringify(data),
+        //    contentType: "application/json; charset=utf-8",
+        //    success: function (result) {
+        //        debugger;
+        //        var ApiPdfStatus = eval('(' + result + ')')
+        //        if (ApiPdfStatus.response.status == "200") {
+        //            $("#AbsentMailContent").append("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br/><h2 style='text-align:center'><button type='button' class='btn btn-primary'><a href='https://docs.google.com/viewerng/viewer?url=" + pdfBloburl + "' target='_blank'><b style='color:white;'>View</b></a></button>&nbsp;<button type='button' class='btn btn-primary'><a href=" + pdfBloburl + "><b style='color:white;'>Download</b></a></button></h2>");
+        //            $.unblockUI();
+        //        }
+        //        else {
+        //            $.unblockUI();
+        //        }
+        //    },
+        //    error: function (result) {
+        //        debugger;
+        //        $.unblockUI();
+        //        ActionDate = '';
+        //    }
+        //});
+    }
+
+    function fnGetPDfContentfortwentyOneAbsentee(Alert_SelId, Counter_Val, filename, status, To_Mail_Id, CC_Mail_Id) {
+        debugger;
+        var pdfpath = '';
+        var host = "";
+        var reqHeader = null;
+        var Company_Logo_Path = "";
+        var currDate = fnGetCurrDate();
+
+        var host = "";
+        var reqHeader = null;
+        var masterApiKey = "";
+        var Company_Logo_Path = '';
+        var AbsFrom = $("#AbsentFromDate_" + Alert_SelId + "").html();
+        var newAbsFrom = AbsFrom.split("-").reverse().join("-");
+        var Mail_Sent_Date = ActionDate.split("-").reverse().join("-");
+        var Mail_Sent_Date2 = ActionDate2.split("-").reverse().join("-");
+        var Header = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='1000px' width='700px'><tbody><tr><td align='center' style='padding: 0px;' valign='top' width='600'><img src='[{Company_Logo_Path}]' style='' /></td></tr></tbody></table>";
+        var Footer = "<table align='center' border='0' cellpadding='0' cellspacing='0' height='842px' width='595px'><tbody><tr><td align='center' valign='top' width='595px'><br /><span style='font-size: 13px; line-height: 15px; font-family: Arial,Helvetica,sans-serif; color: darkgray;'>91, Santhome High Road, Raja Annamalaipuram, Chennai – 600 028. INDIA. Phone : 91-44-2463 3333 – 6<br />Regd. Office : 6, Cathedral Road, Chennai – 600 086, INDIA<br />Email : hrd@ttkhealthcare.com Website : www.ttkhealthcare.com<br />CIN : l24231TN1958PLC003647 </span></td></tr></tbody></table>";
+
+        var Longabstwone = $.grep(Templatedetails, function (element, index) {
+            return element.TemplateName == 'Long_Absence_Twentyone_PDF';
+        });
+
+        if (Longabstwone.length > 0) {
+            host = Longabstwone[0].HostName;
+            reqHeader = { "Master-api-key": Longabstwone[0].Master_Api_Key };
+            Company_Logo_Path = Longabstwone[0].Company_Logo_Path;
+        }
+        else {
+            alert("Failed to send Mail.");
+        }
+
+        if (host == "" || host == undefined || host == null) {
+            alert("Failed to get Notification Configs.");
+            return false;
+        }
+
+        if (filename == "") {
+            PDF_file_name = "LA_" + Date.now($("#AbsentFromDate_" + Alert_SelId + "").html()) + "_" + $("#EmpNum_" + Alert_SelId).html() + "_" + Date.now() + ".pdf";
+        }
+        else {
+            PDF_file_name = filename;
+        }
+        var pdfext = '';
+        pdfpath = "longabsence";
+        var genpdfdata = Object.assign({}, MailObject);
+
+        genpdfdata.data.filename = PDF_file_name;
+        genpdfdata.data.action_date = currDate;
+        genpdfdata.data.employee_name = $("#EmpName_" + Alert_SelId).html();
+        genpdfdata.data.employee_number = $("#EmpNum_" + Alert_SelId).html();
+        genpdfdata.data.designation = $("#Designation_" + Alert_SelId).html();
+        genpdfdata.data.region_name = $("#RegionName_" + Alert_SelId).html();
+        genpdfdata.data.absence_from_date = newAbsFrom;
+        genpdfdata.data.first_action_date = Mail_Sent_Date;
+        genpdfdata.data.second_action_date = Mail_Sent_Date2;
+        genpdfdata.data.send_flag = status;
+        genpdfdata.data.filepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+        genpdfdata.data.sender_name = LoggedEmployeeName,
+        genpdfdata.data.sender_designation = loggedUserTypeName,
+        genpdfdata.data.to_mail = $(".hdnEmail_" + Alert_SelId).val();
+        genpdfdata.data.header = Header.replace("[{Company_Logo_Path}]", Company_Logo_Path);
+        genpdfdata.data.footer = Footer;
+        genpdfdata.data.req_id = "GUID004";
+        PDFGenerator.GenerateOffer("POST", host, reqHeader, genpdfdata, GeneratelongabssevenSCB, function () { alert("Generate offer Failed.") });
+        TemAlert_SelId = Alert_SelId;
+        Temstatus = status;
+        Temfilename = filename;
+        TemToMailId = $(".hdnEmail_" + Alert_SelId).val();
+        TemCC_Mail_Id = CC_Mail_Id;
+        TemFilepath = "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/" + pdfpath + "/" + PDF_file_name + "";
+
+        //var paramData = {
+        //    "API_key": "79fbb58631463981e1e84c5954beb69000bbbd6e",
+        //    "platform_id": 1033,
+        //    "campaign_id": 30,
+        //    "template_category": 4,
+        //    "file_name": PDF_file_name,
+        //    "action_date": currDate,
+        //    "employee_name": $("#EmpName_" + Alert_SelId).html(),
+        //    "employee_number": $("#EmpNum_" + Alert_SelId).html(),
+        //    "designation": $("#Designation_" + Alert_SelId).html(),
+        //    "region_name": $("#RegionName_" + Alert_SelId).html(),
+        //    "absence_from_date": newAbsFrom,
+        //    "first_action_date": Mail_Sent_Date,
+        //    "second_action_date": Mail_Sent_Date2,
+        //    "sender_name": LoggedUserName,
+        //    "mail_sender_name": LoggedUserName,
+        //    "sender_designation": loggedUserTypeName,
+        //    "send_flag": status,
+        //    "file_path": "https://nbfiles.blob.core.windows.net/" + CompanyCode.toLowerCase() + "/",
+        //    // "email_content": "Long Absent from " + $("#AbsentFromDate_" + Alert_SelId + "").html() + "",
+        //    "email_content": "Dear " + $("#EmpName_" + Alert_SelId).html() + "<br><br>Please find attached letter with regard to your unauthorized absence from work.<br><br>You are advised to go through the same carefully and respond immediately.<br><br>Regards,<br>" + LoggedEmployeeName,
+        //    "mail_subject": "Abandonment of Service - Regarding - Needs Immediate Attention!!",
+        //    "Reciever_Maild_Id": $(".hdnEmail_" + Alert_SelId).val(),
+        //    "mail_sender_email": $(".hdnEmailFrom_" + Alert_SelId).val(),
+        //    "mail_cc": CC_Mail_Id
+        //}
+        //// e.preventDefault();
+        //$.ajax({
+        //    type: 'POST',
+        //    url: 'http://swaasemailsys.com/ttk_email/index.php/transaction_schedule/Put_Long_Absence_twentyone',
+        //    //url:'https://hdnotifications.co.in/hd/index.php/transaction_schedule/Put_Long_Absence_twentyone',
+        //    data: JSON.stringify(paramData),
+        //    contentType: "application/json; charset=utf-8",
+        //    success: function (result) {
+        //        debugger;
+        //        var ApiPdfStatus = eval('(' + result + ')')
+        //        if (ApiPdfStatus.response.status == "200") {
+        //            $("#AbsentMailContent").append("<img style='margin-top:60px;margin-left:435px;' src='/Images/pdf_pixabay_1493877090501.jpg' alt='call avg pdf' width='220' height='140'><br/><h2 style='text-align:center'><button type='button' class='btn btn-primary'><a href='https://docs.google.com/viewerng/viewer?url=" + pdfBloburl + "' target='_blank'><b style='color:white;'>View</b></a></button>&nbsp;<button type='button' class='btn btn-primary'><a href=" + pdfBloburl + "><b style='color:white;'>Download</b></a></button></h2>");
+        //            $.unblockUI();
+        //        }
+        //        else {
+        //            $.unblockUI();
+        //        }
+
+        //    },
+        //    error: function (result) {
+        //        debugger;
+        //        $.unblockUI();
+        //        ActionDate = '';
+        //    }
+        //});
+    }
+
+    function fnSelectCC(UserCode,Alerttype,Counter) {
+        debugger
+         seluserCCmail = $.grep(CCmaillst, function (element, index) {
+             return element.Usercode == UserCode && element.AlertType == Alerttype && element.AlertCounter == Counter;
+         });
+         AlCounter=Counter;
+        SelUserCode = UserCode;
+        SelAlertType=Alerttype;
+        Method_params = ["AlertsApi/GetAboveHierarchyUsers", CompanyCode, UserCode];
+        CoreREST.getsync(null, Method_params, null, fnGetRegionTreeSuccessCallback, BindFailure);
+    }
+    function fnGetRegionTreeSuccessCallback(data) {
+        debugger;
+        $('#regionTreeNew').html('');
+        json = data.list;
+        var content = '';
+        var Sno = 1;
+        content += '<table class="table table-sm" id="tblregion">';
+        content += '<thead><tr>';
+        content += '<th scope="col"></th>';
+        content += '<th scope="col">Users</th>';
+        content += '</tr>';
+        content += '</thead>';
+        content += '<tbody>';
+        for (var i = 0; i < json.length; i++) {
+            content += '<tr>';
+            content += '<td><input type="checkbox" class="Chkboxreg" name="chkregion" id="chkbox_' + i + '" value=' + json[i].User_Code + ' aria-label="..."></td>';
+            content += '<input class="emailid_' + i + '" type="hidden" value=' + json[i].Email_Id + '>';
+            content += '<input class="usercode_' + i + '" type="hidden" value=' + json[i].User_Code + '>';
+            content += '<td>'+ json[i].Employee_Name + ' (' + json[i].User_Name + ')</td>';
+            content += '</tr>';
+            Sno++;
+        }
+        content += '</tbody></table>';
+        $('#regionTreeNew').append(content);
+        $('#myModalregion').modal('show');
+        if (seluserCCmail.length > 0) {
+            debugger
+            for (var i = 0; i < json.length; i++) {
+                debugger;
+                var CCmail = $.grep(seluserCCmail, function (element, index) {
+                    return element.CCUser_Code == json[i].User_Code;
+                });
+                if (CCmail.length > 0) {
+                    $("input[value='" + CCmail[0].CCUser_Code + "']").prop('checked', true);
+                }
+            }
+        }
+    }
+
+    function fnSaveCCUsers() {
+        debugger
+        $('#btnccsave').prop('disabled', true);
+        var lstCCMail = [];
+        var obj = {};
+        var Companycode = CompanyCode;
+        var UserArray = [];
+        var region = $('[name="chkregion"]:checked');
+        if (region.length > 0) {
+            for (var i = 0; i < json.length; i++) {
+                if ($("#chkbox_" + i).is(':checked')) {
+                    obj = {
+                        CompanyCode:CompanyCode,
+                        Usercode: SelUserCode,
+                        CCUser_Code: $(".usercode_" + i).val(),
+                        Email_Id: $(".emailid_" + i).val(),
+                        AlertType: SelAlertType,
+                        LoggedUser: UserCode,
+                        AlertCounter: AlCounter
+                    }
+                    lstCCMail.push(obj);
+                }
+            }
+            var objlst = {
+                lstCCMail: lstCCMail
+            }
+            Method_params = ["AlertsApi/SaveCCMailUsers", CompanyCode];
+            CoreREST.post(null, Method_params, objlst, SaveCCMailUsersSCB, BindFailure);
+          //  CoreREST.requestInvoke("/MPRFApi/V1", "SaveCCMailUsers", objlst, "POST", SaveCCMailUsersSCB, null, null);
+        }
+        else {
+            swal("", "Please Select any User", "info");
+            $('#btnccsave').prop('disabled', false);
+            return false;
+        }
+    }
+    function SaveCCMailUsersSCB(resp) {
+        debugger
+        if (resp > 0) {
+            fnMsgAlert("success", "Alert Screen", "Users saved Successfully!");
+            $('#btnccsave').prop('disabled', false);
+            fnGetCCmailusers();
+        }
+        else {
+            fnMsgAlert("Failed to Update User Details.");
+            $('#btnccsave').prop('disabled', false);
+        }
+       
+    }
+
+</script>

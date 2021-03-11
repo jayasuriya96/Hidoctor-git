@@ -1,0 +1,478 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/MTO.css" rel="stylesheet" />
+<style>
+    .e-calendar {
+        max-width: none !important;
+        padding: 0px;
+    }
+
+    .e-calendar {
+        background-color: antiquewhite !important;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        box-shadow: #e0e0e0;
+        color: black !important;
+    }
+
+    #date_label {
+        color: red;
+        font-weight: bold;
+    }
+
+    .control_wrapper {
+        max-width: initial;
+        margin: 0 auto;
+    }
+
+    body.highcontrast #date_label {
+        color: white;
+    }
+
+    .e-customStyle span.e-icons.highlight1 {
+        margin-top: -10px;
+        display: block;
+        margin-left: 4px;
+    }
+
+    .e-customStyle span.e-icons.highlight2 {
+        margin-top: -10px;
+        display: block;
+        margin-left: 4px;
+    }
+
+    .e-customStyle span.e-icons.highlight1,
+    .e-customStyle span.e-icons.highlight1:before {
+        color: red;
+    }
+
+    .e-customStyle span.e-icons.highlight2,
+    .e-customStyle span.e-icons.highlight2:before {
+        color: rgb(0, 0, 255);
+    }
+
+    body.highcontrast .e-customStyle td.birthday span.e-icons.highlight1,
+    body.highcontrast .e-customStyle td.birthday span.e-icons.highlight1:before {
+        color: #ff6161;
+    }
+
+    body.highcontrast .e-customStyle td.birthday span.e-icons.highlight2,
+    body.highcontrast .e-customStyle td.birthday span.e-icons.highlight2:before {
+        color: #ff6161;
+    }
+
+    body.highcontrast .e-customStyle td.farewell span.e-icons.highlight1,
+    body.highcontrast .e-customStyle td.farewell span.e-icons.highlight1:before {
+        color: #2bc700;
+    }
+
+    body.highcontrast .e-customStyle td.farewell span.e-icons.highlight2,
+    body.highcontrast .e-customStyle td.farewell span.e-icons.highlight2:before {
+        color: #2bc700;
+    }
+
+    body.highcontrast .e-customStyle td.vacation span.e-icons.highlight1,
+    body.highcontrast .e-customStyle td.vacation span.e-icons.highlight1:before {
+        color: #ff7d1a;
+    }
+
+    body.highcontrast .e-customStyle td.vacation span.e-icons.highlight2,
+    body.highcontrast .e-customStyle td.vacation span.e-icons.highlight2:before {
+        color: #ff7d1a;
+    }
+
+    .e-customStyle .e-other-month span.e-icons.highlight1:before {
+        content: "";
+    }
+
+    .e-customStyle .e-other-month span.e-icons.highlight2:before {
+        content: "";
+    }
+
+    body.highcontrast.e-bigger .e-customStyle.e-calendar span.e-icons.highlight1:before,
+    body.highcontrast .e-customStyle.e-bigger.e-calendar span.e-icons.highlight1:before,
+    body.bootstrap.e-bigger .e-customStyle.e-calendar span.e-icons.highlight1:before,
+    body.bootstrap .e-customStyle.e-bigger.e-calendar span.e-icons.highlight1:before {
+        top: 1px;
+    }
+
+    body.highcontrast.e-bigger .e-customStyle.e-calendar span.e-icons.highlight2:before,
+    body.highcontrast .e-customStyle.e-bigger.e-calendar span.e-icons.highlight2:before,
+    body.bootstrap.e-bigger .e-customStyle.e-calendar span.e-icons.highlight2:before,
+    body.bootstrap .e-customStyle.e-bigger.e-calendar span.e-icons.highlight2:before {
+        top: 1px;
+    }
+
+    .e-bigger .e-customStyle.e-calendar span.e-icons.highlight1:before,
+    .e-customStyle.e-bigger.e-calendar span.e-icons.highlight1:before {
+        top: -1px;
+    }
+
+    .e-bigger .e-customStyle.e-calendar span.e-icons.highlight2:before,
+    .e-customStyle.e-bigger.e-calendar span.e-icons.highlight2:before {
+        top: -1px;
+    }
+
+    .e-customStyle span.e-icons.highlight1:before {
+        content: "\e190";
+        vertical-align: middle;
+        margin-right: 3px;
+        font-size: 4px;
+        position: relative;
+        top: 1px;
+        font-weight: normal;
+    }
+
+    .e-customStyle span.e-icons.highlight2:before {
+        content: "\e190";
+        vertical-align: middle;
+        margin-right: 3px;
+        font-size: 4px;
+        position: relative;
+        top: 1px;
+        font-weight: normal;
+    }
+
+    .e-customStyle .e-selected span.e-icons.highlight1:before {
+        color: #fff;
+    }
+
+    .e-customStyle .e-selected span.e-icons.highlight2:before {
+        color: #fff;
+    }
+
+    .e-customStyle span.e-icons.highlight1,
+    .e-customStyle.e-calendar .e-content span.special,
+    .e-customStyle.e-calendar .e-content span.daycell {
+        font-weight: bold;
+    }
+
+    .e-customStyle span.e-icons.highlight2,
+    .e-customStyle.e-calendar .e-content span.special,
+    .e-customStyle.e-calendar .e-content span.daycell {
+        font-weight: bold;
+    }
+
+    .e-customStyle.e-calendar .e-content span.special {
+        color: red;
+    }
+
+    .e-customStyle.e-calendar .e-content span.daycell {
+        color: #ff9e00;
+    }
+
+    .info {
+        position: fixed;
+        margin-left: -33px;
+        color: white;
+        margin-top: 21px;
+        font-size: 16px;
+    }
+
+    #catbutton {
+        text-align: right;
+        position: fixed;
+        bottom: 0px;
+    }
+
+    #activity {
+        text-align: right;
+        position: fixed;
+        bottom: 0px;
+    }
+
+    .dot {
+        height: 55px;
+        width: 55px;
+        background-color: #e3165b;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot1 {
+        height: 55px;
+        width: 55px;
+        background-color: blue;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot2 {
+        height: 55px;
+        width: 55px;
+        background-color: green;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot3 {
+        height: 55px;
+        width: 55px;
+        background-color: darkorange;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    /*for Multiselect*/
+    .e-calendar .e-content td.e-selected1 span.e-day {
+        background-color: green;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+    }
+    /*Field*/
+    .e-calendar .e-content td.e-selectedField span.e-day {
+        background-color: blue;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+    }
+
+    .e-calendar .e-content td.e-selectedAttendance span.e-day {
+        background-color: green;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+    }
+
+    .e-calendar .e-content td.e-selectedLeave span.e-day {
+        background-color: darkorange;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+    }
+
+    .e-calendar .e-content td.e-selectedDraft span.e-day {
+        background-color: gray;
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+    }
+
+    .box h3 {
+        text-align: center;
+        position: relative;
+        top: 80px;
+    }
+
+    .boxfiled {
+        background: blue;
+        margin: 10px auto;
+        color: #fff;
+    }
+
+    .boxAtt {
+        background: green;
+        margin: 10px auto;
+        color: #fff;
+    }
+
+    .boxLeave {
+        background: darkorange;
+        margin: 10px auto;
+        color: #fff;
+    }
+
+    .boxdraft {
+        background: #777777c7;
+        margin: 10px auto;
+        color: #fff;
+    }
+
+    .effect1 {
+        -webkit-box-shadow: 0 10px 6px -6px #777;
+        -moz-box-shadow: 0 10px 6px -6px #777;
+        box-shadow: 0 10px 6px -6px #777;
+    }
+
+    .full:hover {
+        opacity: 1.0;
+        filter: alpha(opacity=100); /* For IE8 and earlier */
+    }
+
+    .names {
+        background: #777777c7;
+        color: #fff;
+        position: relative;
+        bottom: 23px;
+        right: 12px;
+        padding: 2px 10px;
+        border-radius: 4px;
+    }
+</style>
+<div>
+    <div class="full" style="display:initial;">
+        <div class="stackblitz-container material">
+            <div class="col-lg-12 control-section" style="padding:0px;">
+                <div class="control_wrapper" style="overflow:auto">
+                    <div id="container">
+                        <div id="calendar" class="e-customStyle"></div>
+                        <br>
+                        <div class="col-xs-12">
+                            <span id="date_label">Selected Date :</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="CPDDetails" class="col-lg-12 col-md-12 col-xs-12">
+</div>
+<div style="position: fixed;bottom: 0px;" id="activity">
+    <div id="cpdact"></div>
+    <div id="catbutton" class="col-lg-12 col-md-12 col-xs-12 clearfix">
+        <span class="dot" onclick="CPD.fnclick()"><i class="fa fa-plus info" aria-hidden="true"></i></span>
+    </div>
+</div>
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/CPDCalendar.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var CPD_Date='';
+    var today='';
+    var MaxDate='';
+    var MinDate='';
+    var span;
+    var addClass = ej.base.addClass;
+    var LID='';
+    var EmployeeNumber='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        @*MinDate=@Html.Raw(Json.Encode(ViewBag.MinDate));
+        MaxDate=@Html.Raw(Json.Encode(ViewBag.MaxDate));*@
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        gettodaydate();
+    });
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    function gettodaydate(){
+        debugger
+        if (navigator.onLine == true){
+            var Userstatus = fnuserstatus();
+            if (Userstatus) {
+                $.ajax(
+               {
+                   async:false,
+                   type: 'POST',
+                   data: 'subDomainName=' + subDomainName,
+                   url: '../../HiDoctor_Activity/CPD/GettodayDate',
+                   success: function (response) {
+                       debugger
+                       today = response[0].TodayDate;
+                       var dateobj= new Date(today);
+                       MinDate=new Date(dateobj.getFullYear(), dateobj.getMonth() - 2, 1);
+                       MinDate=("0" + (MinDate.getMonth() + 1)).slice(-2) + '/' + ("0" + MinDate.getDate()).slice(-2) + '/' + MinDate.getFullYear() + ' ' +("0" + MinDate.getHours()).slice(-2) + ':' + ("0" + MinDate.getMinutes()).slice(-2) + ':' + ("0" + MinDate.getSeconds()).slice(-2);
+                       MaxDate = today;
+                       CPD.initialize();
+                   }
+               })
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+    function fnfield(EmployeeNumber)
+    {
+        if (navigator.onLine == true){
+            var Userstatus = fnuserstatus();
+            debugger
+            if (Userstatus) {
+                if(CPD_Date=='')
+                {
+                    swal('Please select Date', "", "info");
+                }
+                else{
+                        var CPD=CPD_Date.split('/')[2] +'/' +CPD_Date.split('/')[0]+'/'+CPD_Date.split('/')[1];
+                        //window.location.href = '../MTO/MTOField?MTO_Date='+MTO+'&MTO_Id=0&LID='+LID;
+                        window.location.href = '../CPD/CPDField?CPD_Date='+CPD+'&CPD_Id=0 &Repnum='+EmployeeNumber +'&LID='+LID;
+                    }
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+
+    function fnleave()
+    {
+        var Userstatus = fnuserstatus();
+        debugger
+        if (navigator.onLine == true){
+            if (Userstatus) {
+                if(CPD_Date=='')
+                {
+                    swal('Please select Date', "", "info");
+                }
+                else{
+                    var CPD=CPD_Date.split('/')[2] +'/' +CPD_Date.split('/')[0]+'/'+CPD_Date.split('/')[1];
+                    window.location.href = '../CPD/CPDLeave?CPD_Date='+CPD+'&CPD_Id=0&LID='+LID;
+                    // window.location.href = '../CPD/CPDLeave?CPD_Date='+CPD+'&CPD_Id=0';
+                }
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+    function fnattendence()
+    {
+        var Userstatus = fnuserstatus();
+        debugger
+        if (navigator.onLine == true){
+            if (Userstatus) {
+                if(CPD_Date=='')
+                {
+                    swal('Please select Date', "", "info");
+                }
+                else{
+                    var CPD=CPD_Date.split('/')[2] +'/' +CPD_Date.split('/')[0]+'/'+CPD_Date.split('/')[1];
+                    window.location.href = '../CPD/CPDAttendance?CPD_Date='+CPD+'&CPD_Id=0&LID='+LID;
+                    //window.location.href = '../CPD/CPDAttendance?CPD_Date='+CPD+'&CPD_Id=0';
+                }
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    }
+</script>

@@ -1,0 +1,95 @@
+﻿@model MVCModels.RequestMasterModel
+
+@{
+   Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+<style>
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+
+<div class="col-lg-11  form-group">
+    <div class="row clearfix form-group">
+        <div class="col-xs-2">
+            <label>Request Name</label>
+        </div>
+        <div class="col-xs-3 form-group">
+            <input type="hidden" id="hdnRequestCodeval" name="RequestCode" />
+            <input type="text" id="txtRequestName" class='form-control' maxlength="100" />
+        </div>
+    </div>
+
+    <div class="row clearfix form-group">
+        <div class="col-xs-2">
+            <label>Request Entity</label>
+        </div>
+        <div class="col-xs-3 form-group">
+            <select class="form-control selectboxWidth" onchange="fncreditLimit();" id="ddlreqEntity">
+                <option value="0">-Select Request Entity-</option>
+                <option value="1">Customer Wise</option>
+                <option value="2">Region Wise</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row clearfix form-group">
+        <div class="col-xs-2 form-group">
+            <label>Request Type</label>
+        </div>
+        <div class="col-xs-3 form-group">
+            <select class="form-control selectboxWidth" id="ddlreqType">
+                <option value="0">-Select Request Type-</option>
+                <option>Financial</option>
+                <option>Non-Financial</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="Creditlimit" style="display:none" class="row clearfix form-group">
+        <div class="col-xs-2 form-group">
+            <label>Credit Limit</label>
+        </div>
+        <div class="col-xs-3 form-group">
+            <input type="text" id="txtcreditclient" class='form-control' />
+        </div>
+    </div>
+
+    <div class="row clearfix form-group">
+        <div class="col-xs-2 form-group">
+            <label>Cycle</label>
+        </div>
+        <div class="col-xs-3 form-group">
+            <input type="hidden" id="hdncyclecodeval" name="CycleCode" />
+            <select class="selectboxWidth form-control" id="ddlcycle"></select>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="row col-lg-11 form-group clearfix">
+        <input type="button" id="btnsave" onclick="fnSaveRequestMaster();" value="Save" class="btn btn-primary"></input>
+        <input type="hidden" name="Update" value="I" id="hdnMode" />
+        <input type="button" id="btncancel" value="Cancel" onclick="fnCancelRequestscreen();" class="btn btn-primary"></input>
+    </div>
+    <div style="clear: both;"></div>
+    <br />
+    @Html.ActionLink("Download Request Master details", "PutRequestMasterIntoExcel")
+    <br />
+    <div id="divRequestMaster"></div>
+</div>
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RequestMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        fnGetCycle();
+        fnGetRequestDetails();
+        $("#dvAjaxLoad").hide();
+    });
+</script>
+

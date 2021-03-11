@@ -1,0 +1,1637 @@
+﻿/* **************************************STRAT: Target *****************************************/
+#dvMain
+{
+     font-size:12px;
+     font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+#dvMain input[type="text"],#dvExpMain input[type="text"]
+{
+    color:#000 !important;
+    background:#fff;
+    font-family:Arial !important;
+    font-weight:lighter;
+    font-size:15px !important;
+    border:1px solid #D8D8D8 !important;
+    vertical-align:middle !important;
+    padding-top:3px !important;
+    height:27px !important;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+#dvMain table td,#dvDailyBlock table td,#dvNonDailyBlock table td
+{
+  /*   border:none !important;*/
+     font-size:12px;
+     font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+#divMain table th {
+    border:none !important;
+}
+.dvHeader
+{
+    background-color:#F6F6F6;
+    font-size: 15px;
+    height: 25px;
+    padding: 8px;
+}
+.popup
+{
+    border: 1px solid #000; 
+    padding: 20px; 
+    font-size: 13px; 
+    display: none; 
+    margin-left: 5%; 
+    width: 500px;
+    -webkit-border-radius: 5px; 
+    box-shadow: 2px 2px 2px 2px #efefef;
+    background-color:#fff;
+    height:76px;
+}
+.dvDetheader
+{
+    background:#e8f1ff;
+    margin-top:3px;
+    border:1px solid #efefef;
+    padding:3px;
+    border-radius: 5px; 
+}
+.tblTarget input
+{
+    font-size: 13px; 
+    border:1px solid #7EADD9;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    background:#E8F1FF;
+}
+#tblTarget
+{
+    border:1px solid #99BBE8;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+#divMain
+{
+     font-size:12px;
+     font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+.tableth
+{
+    background:#E8F1FF !important;
+    text-align:center !important;
+    font-weight:bold;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+    vertical-align:middle;
+}
+
+.tblTarget input[type="button"]
+{
+    font-size: 13px; 
+    border:1px solid gray;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+    background:#efefef;
+    color:Black !important;
+    width:100%;
+}
+.amtdiv
+{
+    font-weight:bold;
+    text-align:center;
+}
+.inputdisabled
+{
+    background-color:#efefef !important;
+    border:1px solid gray !important;
+}
+.error
+{
+    border:1px solid red;
+    background:red;
+}
+.regionHeader
+{
+    font-size:15px;
+    color:#2875ad;
+}
+.delete
+{
+    float:right !important;
+    cursor: pointer;
+    vertical-align:top !important;
+}
+.bgGreen
+{
+    background:#E0FFCC !important;
+    border:1px solid #006600 !important;
+}
+.bgRed
+{
+    background:#FFEBEB !important;
+    border:1px solid #FF0000 !important;
+}
+.trHighlight
+{
+    background:#F9F9F9;
+}
+.freezebg
+{
+    background: #E8F1FF url('/Areas/HiDoctor_Activity/content/images/Web/hd/lock.png') no-repeat top left !important;
+    text-align: center;
+}
+#divMain table td
+{
+    border:none !important;
+}
+#dvMain table
+{
+    border:none !important;
+}
+#tblfreeze
+{
+    border:none !important;
+   
+}
+/* **************************************END: Target *****************************************/
+/************************** STRAT: Accomapnist SFC*******************************/
+.accPopup
+{
+    /*background: url(..\Content\themes\base\images\hd\arrow3.jpg) no-repeat;*/
+    width:32px  !important;
+    height:32px  !important;   
+    font-weight:bolder;
+    font-size:15px;
+    color:Black;
+}
+.accPopup:hover
+{
+    cursor:pointer;
+}
+
+#dvAccPopUp
+{
+     width:450px !important;
+     min-height:150px !important;
+     background-color:#f3f3f3;   
+     border:3px solid #d3d3d3;      
+}
+
+.dvAccPopUpClose
+{   
+     width: 80%; 
+     height: 16px;
+     float:right;
+}
+
+#dvAccPopUpSub
+{
+    float: left; 
+    clear:both;
+    height: auto; 
+    width: 450px;     
+    vertical-align:middle;
+    font-size:14px;
+    font-weight:bold;
+}
+
+#tblPopUp, #tblPopUp td
+{
+    border:none;
+    width:100%;
+}
+
+#dvAccompSelectPopUpSub,#dvSubDailyPopup
+{
+    background-color:#f3f3f3;        
+    height:250px;
+    width:100%; 
+    overflow:auto;  
+    float:left;   
+}
+
+#tblAccompPopup
+{
+    width:100%;
+    border:none;
+}
+
+/*#tblAccompPopup td
+{
+    background: url(../Content/themes/base/images/hd/headerrow1.jpg) repeat ;    
+}*/
+
+#tblAccompPopup td:hover
+{
+	cursor:pointer;
+}
+
+#divAccMessage
+{
+	 text-align:left; 
+	 color:Red;
+	 float:left;
+	 padding-left:5px;	 
+}
+/************************************ End Accomapnist SFC ************************************/
+
+/*********************************** DAILY CALL PLANNER - START ********************************/
+.mainDiv
+{
+    border: 1px solid #111;
+    padding: 15px;
+    width: 95%;
+    background-color: #fff;
+    color: #888 !important;
+    clear:both;
+    height:auto;
+}
+
+.mainDiv2
+{   
+    padding: 0px;
+    width: 100%;
+    background-color: #fff;
+    color: #888 !important;
+    clear:both;
+    height:auto;
+    margin-top:-15px;
+}
+.dailyPopUp
+{
+     width:450px !important;     
+     background-color:#f3f3f3;   
+     border:3px solid #d3d3d3;      
+}
+
+.dvErrorMessage
+{
+    float:left;
+    width:100%;
+    color:#C96464;
+    font-size:11px;
+}
+
+#divDailyCallDetail a,#divDailyCallDetailCreate a
+{
+    text-decoration:underline;
+    font-size:13px;
+    cursor:pointer;
+}
+.dvTab
+{
+     float: left; 
+     width: 100%; 
+     height: auto;
+     margin-top: 20px;    
+}
+
+.dvTabdetail
+{
+     width: 100%;
+     border-right:3px solid #f3f3f3;
+     border-bottom:3px solid #f3f3f3;     
+     border-left:3px solid #f3f3f3;
+     padding:10px;
+     height:auto;
+}
+/************************************** DAILY CALL PLANNER- END **************************/
+
+/*************************** EXPENSE GROUP- START *************************************/
+.expHeader
+{
+    width:100%;
+    background-color:#E8F1FF;
+    border-bottom:3px solid #f3f3f3;     
+    border-top:3px solid #f3f3f3; 
+    vertical-align:middle;
+    font-size:24px;
+    font-weight:normal; 
+    padding:10px 0px 10px 5px;    
+}
+.dvExpAlign
+{
+    width:100%;
+    float:left;
+    margin-top:20px;
+    color:#666;
+}
+
+.dvExpAlign input[type="text"]
+{
+    width:250px;
+}
+#dvExpMain
+{
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+#dvExpMain input[type="text"]
+{
+    font-size:12px !important;
+}
+#dvDailyBlock select,#dvNonDailyBlock select
+{
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    font-size:12px !important;
+}
+
+.trbgColor
+{
+    border:2px solid Red;
+}
+#divEligDetail
+{
+    float:right;
+    width:auto;
+    border:2px solid #ff8c00;
+    background-color:#FFF4E1;
+    height:auto;      
+    padding:5px;    
+    color:#A83F00; 
+    margin-right:-10px; 
+    z-index:99999;
+    position:absolute;
+    right:6%;
+    top:10%;     
+}
+#tblEligDetail,#tblEligDetail td
+{
+    border:none !important;
+}
+
+/*************************** EXPENSE GROUP- END *************************************/
+
+/***** START: DCR Doctor Visit *******************/
+.listheaderbar
+{
+    /* background-color: #0072C6 !important;*/
+    /*background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/header-bg.png') repeat-x !important;*/
+    /*background:#E0E0E0;*/
+    height:30px;
+    font-size:12px;
+    border-left: 1px solid #BCBCBC;
+    border-top: 1px solid #BCBCBC;
+    border-right: 1px solid #BCBCBC;
+    border-bottom: 1px solid #BCBCBC;
+    cursor:pointer;
+    background-color:#EFEFEF !important;
+}
+.dcr_product_header, .dcr_chemist_header, #tblAccompanist thead tr th, #tblIntermediate thead tr th, #tblStockiest thead tr th, #tblExpense thead tr th, #tblLeaveBalance thead tr th, #tblActivity tr th
+{
+    /*background: #fafafa url('../content/themes/base/images/hd/Titlebar.jpeg') repeat-x !important;*/
+}
+.expand
+{
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/arrow.png') no-repeat left center !important;
+    margin-left:3px;
+}
+.collapse
+{
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/arrow1.png') no-repeat left center !important;
+    margin-left:3px;
+}
+.hand
+{
+    background: #066ECD url('/Areas/HiDoctor_Activity/content/images/Web/hd/hand.png') no-repeat right center !important;
+}
+.rcpaTable
+{
+    outline: 1px solid #CCCC99;
+}
+
+.rcpaTable td
+{
+    background:#EEE !important;
+}
+
+.rcpaHeader td
+{
+    background: #EEE;
+}
+
+.float_right
+{
+    float: right;
+}
+
+.dcr_doctor_name
+{
+    width:76% !important;
+}
+
+#div_doctorvisit
+{
+    padding: 5px;
+    width: 100%;
+   /*background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/bg.png') repeat !important;*/
+    color: #111 !important;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.gotoStockiestBtn
+{
+   cursor:pointer;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #ffffff;
+	padding: 5px 10px;
+	font-weight:bold;
+	border:1px solid #2F5BB7;
+	background-image: -webkit-linear-gradient(top,#64AED4, #2190C5) !important;
+    background-image: -moz-linear-gradient(top,#64AED4, #2190C5) !important;
+    background-image: -ms-linear-gradient(top,#64AED4, #2190C5) !important;
+    background-image: -o-linear-gradient(top,#64AED4, #2190C5) !important;
+    background-image: linear-gradient(top,#64AED4, #2190C5) !important;
+}
+
+#div_doctorvisit_top
+{
+    width: 100%;
+    height: 50px;
+    padding-top: 15px;
+    padding-left: 5px;
+}
+
+.grdRow
+{
+    cursor: pointer;
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+    border-bottom: 1px solid #E7E7E7;
+    color: #444;
+    vertical-align: middle;
+    line-height: 30px; 
+    font-family:'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+    border-right:1px solid #c0c1c0;
+    border-left:1px solid #c0c1c0;
+    border-bottom:1px solid #c0c1c0;
+    height:37px;
+}
+
+.grdRow td
+{
+    border:0px;
+    vertical-align: top; 
+}
+
+.grdRowSelected
+{
+    font-weight:bold;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow: 0 6px 6px -6px black;
+    box-shadow: 0 6px 6px -6px black;
+    background:none !important;
+   background-color:#fafafa !important;
+    border-right:none;
+    width:100%;
+    font-family:Segoe UI;
+}
+.productBox, .chemistBox
+{
+    height:auto !important;
+    overflow:visible;
+    margin-bottom:5px !important;
+}
+
+.noborder
+{
+    border: 0px;
+}
+
+.grdRow:hover
+{
+    cursor: pointer;
+    background:#fff !important;
+}
+
+#div_doctorvisit label
+{
+    text-align:right;
+    padding-right:20px;
+}
+
+.dcr_doc_vmvt
+{
+    width: 45%;
+    float: left;
+}
+
+.dcr_doc_vmvt label
+{
+    padding-right:61px !important;    
+}
+
+.div_doc_pob
+{
+    float: left;
+    width:40%;
+}
+
+.div_doc_pob label
+{
+    padding-right:90px !important;
+}
+
+.div_doc_pob input
+{
+    width: 42%;
+}
+
+.div_doc_speciality
+{
+    width:45%;
+    float:left;
+}
+
+.div_doc_speciality label
+{
+    padding-right:63px !important;
+}
+
+.div_doc_speciality input
+{
+  width:38%;  
+}
+
+.div_doc_remarks
+{
+    width:50%;
+    float:left;
+}
+
+.div_doc_remarks label
+{
+    vertical-align:top;
+    padding-right: 5px !important;
+}
+
+.div_doc_remarks textarea
+{
+    width:80%;
+}
+
+.dcr_product_header, .dcr_chemist_header
+{
+    background:#F9F9F9 !important;
+    line-height: 25px;
+    font-family:Segoe UI;
+    font-size:13px;
+    border:0px !important;
+    color:#444;
+    text-align:center;
+}
+
+
+
+.txtproduct
+{
+    width: 60%;
+    text-align:left;
+}
+
+.txtproduct input
+{
+    width: 80%;
+}
+
+.txtpob
+{
+    vertical-align: top;
+    width:10% !important;
+}
+
+.txtqty input, .txtpob input
+{
+    width: 50px;
+}
+
+.txtchemist
+{
+    width: 80% !important;
+}
+
+.txtchemist input
+{
+    width: 92% !important;
+}
+
+.removeicon
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/trash1_16x16.gif') no-repeat center center;
+    width: 16px;
+    height: 16px;
+}
+
+#div_doctorvisit_form, #tbl_chemist, #tbl_Produts
+{
+    width: 99%;
+}
+
+#tbl_chemist, #tbl_Produts, #tbl_DetailedProducts
+{
+    border-left:1px solid #bcbcbc;
+    border-right:1px solid #bcbcbc;
+    border-bottom:1px solid #bcbcbc;
+}
+
+#tbl_chemist td, #tbl_Produts td, #accompanistDetail, #intermediatePlace, #leaveBalanceTable
+{
+   background-color:#F9F9F9;
+   border:0px !important;
+   border-bottom:1px solid #aaa;
+   line-height:20px;
+   margin:0px auto;
+   padding:2px;
+   text-align:left;
+
+}
+
+.tdsaleprod, .tdcomp
+{
+    width: 30%;
+    overflow:hidden;
+}
+
+.txtsaleprod, .txtcomp, .txtcompqty
+{
+    width: 100px;
+}
+
+.txtcomp
+{
+    background: #fff url('/Areas/HiDoctor_Activity/content/images/Web/hd/competitors-icon.png') no-repeat top right;
+    width: 94%;
+}
+
+.txtcompqty
+{
+    width: 5px !important;
+}
+
+.divdoclist
+{
+    float: left;
+    width: 49.5%;
+}
+
+.headerbar
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/titlebg.png') repeat-x !important; 
+    height: 10px;
+    clear: both;
+    width: 97.5%;
+    padding: 8px;
+    color:#222;
+    font-weight:bold;
+    border: 1px solid #7F9DB9;
+}
+
+#tblAccompanist, #tblIntermediate, #tblLeaveBalance, #tblStockiest, #tblExpense, #tblActivity
+{
+    outline:1px solid #c0c0c1;
+    width:100%; 
+    background:#F9F9F9;
+}
+
+#tblAccompanist tr, #tblIntermediate tr, #tblStockiest tr, #tblExpense tr, #tblLeaveBalance tr, #tblActivity tr
+{
+     line-height:15px;     
+     padding:5px;
+}
+ 
+#tblLeaveBalance tr td
+{     
+     line-height:10px;  
+}
+   
+#tblAccompanist thead tr th, #tblIntermediate thead tr th, #tblStockiest thead tr th, #tblExpense thead tr th, #tblLeaveBalance thead tr th, #tblActivity tr th
+{
+    
+    /*background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/header-bg.png') repeat-x !important;*/
+    clear: both;
+    color:#000011;     
+    border-bottom: 1px solid #BCBCBC;
+    background-color:#EFEFEF;
+    line-height:21px;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+#tblLeaveBalance thead tr th
+{   
+    background-color:#e8e8e8; 
+    height: 10px;
+    clear: both;
+    padding: 8px;
+    border: 1px solid #888;      
+    font-weight:bold;
+    color:#555;     
+}
+
+.inputicon
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/pill-icon_24x24.png') no-repeat top center;
+    height:24px;
+    width:24px;
+    margin-left:-2px;
+    float:left;
+    margin-top:-7px;
+    vertical-align:middle;
+}
+
+.chemisticon
+{
+    background:  url('/Areas/HiDoctor_Activity/content/images/Web/hd/chemisticon.JPG') no-repeat top center;
+    width: 20px;
+    height: 31px;
+    float:left;
+    margin-left:-2px;
+    margin-top:-7px;
+    margin-right:5px;
+    vertical-align:middle;      
+}
+
+.rcpaTable td
+{
+    background:#EEE !important;
+}
+
+.rcpaHeader td
+{
+    background: #EEE !important;
+}
+/*************** END: DCR DoctorVisit *************/
+/*************** START: DCR Header *************/
+
+.time, .numeric
+{
+    width: 75px !important;
+}
+
+#div_Header
+{
+    /*border: 1px solid #111;*/
+    /*background: #fff url('/Areas/HiDoctor_Activity/content/images/Web/hd/bg.png') repeat top right;*/
+    padding: 15px;
+    width: 95%;
+    background-color: #fff;
+    color: #888 !important;
+    
+}
+.unapprovedetail
+{
+    background: #D14836;
+    width:50%;
+    height:auto;
+    padding:5px;
+    text-align:left !important;
+    color:#fff;
+    border-radius:2px 2px 2px 2px;
+    font-weight:bold;
+    cursor:pointer;
+    opacity: 0.8;
+}
+
+#tblHeader td
+{
+    border: none;
+    padding:5px;
+}
+
+#div_Header label {
+    color: #111 !important;
+    padding: 5px !important;
+    white-space: nowrap;
+}
+
+#tblHeader
+{
+    border: none !important;
+}
+
+.first_td
+{
+    width: 25% !important;
+    color:black !important;
+}
+/*************** END: DCR Header *************/
+
+table.data
+{
+    width: 100%;
+    border: 0;
+    margin-bottom: 2em;
+    border-collapse: collapse;
+}
+
+table.data thead th
+{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    background-color: #EEE;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+table.data td
+{
+    vertical-align: top;
+}
+
+table.data tbody tr td
+{
+    background: #FFF;
+    border-bottom: 1px dotted #DDD;
+}
+
+table.data th
+{
+    padding: 10px 0;
+}
+
+table.data tbody td
+{
+    padding: 5px;
+}
+
+table.data tr.even td
+{
+    background: #F9F9F9;
+}
+
+table.data.stripe tr:nth-child(odd) td
+{
+    background-color: #F6F6F6;
+}
+
+table.data.stripe tr:nth-child(even) td
+{
+    background-color: #FFF;
+}
+
+/*********************** START : DCR INSTANT REPORT **************************/
+
+.GridRow
+{
+    font-weight: bold;
+    font-size: 9pt;
+    color: #330000;
+    font-family: Cambria,Calibri,Arial;
+    background-color: white;
+    padding: 3px,3px,3px,3px;
+}
+
+.GridAlternativeRow
+{
+    font-weight: bold;
+    font-size: 9pt;
+    color: #330000;
+    font-family: Cambria,Calibri,Arial;
+    background-color: white;
+    padding: 3px,3px,3px,3px;
+}
+
+.GridHeader
+{
+    font-weight: bold;
+    font-size: 9pt;
+    color: #ffffff;
+    font-family: Calibri,Cambria,Verdana,;
+    background-color: highlight;
+}
+
+.GridColumnHeader
+{
+    font-weight: bolder; 
+    font-size: 10pt;
+    color: #330000;
+    font-family: Arial,Cambria,Calibri;
+    background-color: #d7edff;
+}
+
+.GridColumnHeader1
+{
+    font-weight: bold;
+    font-size: 10pt;
+    color: #ffffff;
+    font-family: Arial,Cambria,Calibri;
+    background-color: #56A5EC;
+    padding-left:50%;
+}
+
+.GridColumnHeader2
+{
+    font-weight: bold;
+    font-size: 9pt;
+    color: #ffffff;
+    font-family: Arial,Tahoma, Verdana;
+    background-color: #404040;
+}
+
+.GridColumnHeader3
+{
+    font-weight: bold;
+    font-size: 9pt;
+    color: #ffffff;
+    font-family: Arial,Tahoma, Verdana;
+    background-color: #660033;
+}
+
+#prog-bar,#prog-bar-att
+{
+	color:#AAA;
+	font-size:12px;
+	margin-top:-5px;
+	padding-top:10px;
+	width:100%;
+	list-style-type:none;
+	height:55px;
+	font-weight:bold;
+}
+
+#prog-bar,#prog-bar-att
+{
+	color:#AAA;
+	font-size:12px;
+	margin-top:-5px;
+	padding-top:10px;
+	width:100%;
+	height:30px;
+	font-weight:bold;
+	border-bottom:1px solid #7F9DB9;
+	margin:0px auto;
+	vertical-align:middle;
+}
+
+
+.steps
+{
+    width: 960px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Georgia, serif;
+    color: #777;
+    margin: auto;
+}
+
+.stepno1
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_1-gray.png') no-repeat ;
+    height:26px;
+    color:#000;
+    white-space:nowrap;
+    /*width:6%;*/
+    float:left;
+    text-align:left;
+    padding-left:30px;
+    padding-top:5px;
+}
+
+.step1Selected
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_1-green.png') no-repeat ;
+    height:26px;
+    color:#000;
+    white-space:nowrap;    
+    float:left;
+    text-align:left;
+    padding-left:30px;
+    padding-top:5px;
+}
+
+.stepno2
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_2-gray.png') no-repeat ;
+    height:26px;
+    color:#000;
+    white-space:nowrap;
+    /*width:12%;*/
+    float:left;
+    padding-top:6px;
+    text-align:center;
+    padding-left:30px;
+    margin-top:0px;  
+    vertical-align:middle;   
+}
+
+.stepno3
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_3-gray.png') no-repeat top left ;
+    height:26px;
+    color:#000;
+    white-space:nowrap;
+    /*width:9%;*/
+    float:left;
+    text-align:right;
+    padding-left:30px;
+    padding-top:5px;
+    margin-top:2px;
+}
+
+.step2Selected
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_2-green.png') no-repeat ;
+    /*height:26px;
+    color:#000;
+    white-space:nowrap;
+    width:12%;
+    padding-top:7px;
+    text-align:center;
+    float:left;
+    padding-left:20px;
+    margin-top:3px;*/
+}
+
+.step3Selected
+{
+    background: url('/Areas/HiDoctor_Activity/content/images/Web/hd/step_3-green.png') no-repeat ;
+    height:26px;
+    color:#000;
+    white-space:nowrap;
+    /*width:9%;*/
+    float:left;
+    text-align:right;
+    padding-left:30px;
+    padding-top:5px;
+}
+
+/*************************** END *******************************/
+
+/*************************START: Instant Report*****************/
+#dvcompanyName
+{
+    text-align:center;
+    font-weight:bold;
+    font-size:16px;
+    
+}
+
+.gridHeader
+{
+    font-size:15px;
+    font-weight:bold;
+    text-align:center;
+    padding-top:20px;
+    
+}
+
+.gridHeader h3
+{
+    border: 1px solid #6082AD;
+    background:url(/Areas/HiDoctor_Activity/content/images/Web/hd/titlebg.png) repeat-x scroll left top #688AB5;
+    height:20px;
+    color:#fff !important;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+}
+
+
+/*************************END: Instant Report*****************/
+/****** START: DCR Stockiest Expense ***********/
+#div_stockiestexpense
+{
+    padding: 15px;
+    width: 95%;
+    color: #888 !important;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+#stockiestDetails
+{
+    margin-bottom:15px;
+}
+
+#tblStockiest td, #tblExpense td
+{
+    vertical-align: top;
+    border: none;
+    padding:5px;
+}
+
+#tblStockiest thead, #tblExpense thead
+{
+    border: none;
+}
+
+#tblStockiest tr, #tblExpense tr
+{
+    border: none !important;
+}
+
+input[type="button"]
+{
+    cursor:pointer;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #ffffff;
+	padding: 5px 10px;
+	background:#357AE8;
+	border-radius: 3px;
+	border:none;
+}
+
+#tblStockiest td input[type="text"], textarea
+{
+    width: 94%;
+}
+
+#tblExpense td input[type="text"], textarea
+{
+    width: 94%;
+}
+
+.textareaexpand
+{
+    height: 75px !important;
+}
+
+.checknumeric
+{
+    width: 75px !important;
+}
+
+.numericth
+{
+    width:15%;
+}
+/****** END: DCR Stockiest Expense *************/
+
+
+/********** START: DCR Leave Entry *******************/
+#div_leave
+{
+    border: 1px solid #111;
+    padding: 15px;
+    width: 95%;
+    background: #fff;
+    color: #111 !important;
+}
+
+#tblLeave td
+{
+    border: none;
+}
+
+#tblLeave
+{
+    border: none !important;
+}
+
+.leaveLink
+{
+    color:Blue;
+    text-decoration:underline;
+}
+
+.leaveLink:hover
+{
+    color:#0033CC;
+    cursor:pointer; 
+    text-decoration:underline;
+}
+/*************** END: DCR Leave Entry *************/
+/************************************ Tour Planner Starts here *******************************/
+/* Work Flow Starts here */
+.alert-message
+{
+    background-image: none;
+    background-color: #FDF5D9;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    padding: 14px;
+    border-color: #FCEEC1 !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+
+/* TP */
+.main-div
+{
+    background-color: #efefef !important;
+    padding: 5px;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.main-div table th {
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border:none !important;
+}
+.inner-div
+{
+    border: 1px solid #efefef;
+    float: left;
+    background-color: #fff !important;
+    padding: 3px;
+    margin: 3px;
+    border-radius: 5px;
+}
+.inner-divTp
+{
+    border: 1px solid #efefef;
+    float: left;
+    background-color: #fff !important;
+    padding: 3px;
+    /*margin: 3px;*/
+    border-radius: 5px;
+}
+.divHeader
+{
+    background-color: #efefef;
+    width: 99%;
+    font-size: 20px;
+    border-radius: 5px;
+    height: 30px;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+.divHeadertp
+{
+    background-color: #efefef;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 5px;
+    height: 30px;
+    padding-top: 10px;
+    padding-left: 5px;
+    height:65px;
+}
+#dvMain select
+{
+    padding: 5px !important;
+    font-size: 12px !important;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+#dvBigDate
+{
+    font-size: 32px;
+    padding: 5px;
+    float: left;
+    color: Gray;
+}
+#dvday
+{
+    font-size: 22px;
+    padding: 5px;
+    float: right;
+    color: Gray;
+}
+/* the overlayed element */
+.simple_overlay
+{
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 10000; /* styling */
+    background-color: #fff;
+    width: 700px;
+    min-height: 530px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+}
+.simple_overlay_doc_proc
+{
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 10000; /* styling */
+    background-color: #fff;
+    width: 980px;
+    min-height: 450px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+}
+/* close button positioned on upper right corner */
+.simple_overlay .close
+{
+    background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    z-index:99;
+}
+.simple_overlay_doc_proc .close
+{
+    background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}
+/* styling for elements inside overlay */
+.details
+{
+    position: absolute;
+    font-size: 11px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.details h3
+{
+    color: #aba;
+    font-size: 15px;
+}
+.dv-ref-header
+{
+    background-color: #efefef;
+    min-height: 30px;
+    border-radius: 3px;
+    padding-top: 5px;
+}
+.dv-ref
+{
+    height: 195px;
+    overflow: auto;
+}
+#tblAccPopup td:hover
+{
+    cursor: pointer;
+    border: 1px solid #efefef !important;
+    color: #C63828;
+}
+#dvAccompaninstPopUp
+{
+    height: 245px !important;
+    overflow: auto;
+}
+.free-day
+{
+    background: red;
+}
+.doc-detail-head-overlay
+{
+    font-size: 12px;
+    color: #A30303;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar
+{
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb
+{
+    /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+    background: #EFEFEF;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive
+{
+    background: #EFEFEF;
+}
+.tpapplied a.ui-state-default
+{
+    color: white;
+    background-color: #3C81EF;
+    background: #3C81EF;
+}
+.tpapproved a.ui-state-default
+{
+    color: white;
+    background-color: Green;
+    background: Green;
+}
+.tpunapprove a.ui-state-default
+{
+    color: white;
+    background-color: #A30303;
+    background: #A30303;
+}
+.tpdrafted a.ui-state-default
+{
+    color: white;
+    background-color: #E47297;
+    background: #E47297;
+}
+.tpholiday a.ui-state-default
+{
+    color: white;
+    background-color: #806D7E;
+    background: #806D7E;
+}
+.tpsunday a.ui-state-default
+{
+    color: white;
+    background-color: #736F6E;
+    background: #736F6E;
+}
+.spnBlack
+{
+    background: #696969;
+    color: White;
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+    margin: 1px;
+    font-size: 12px !important;
+}
+.spnBlack-Insights
+{
+    background: #696969;
+    color: White;
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+    margin: 1px;
+    font-size: 12px !important;
+    float:right;
+}
+.spn-deep-Black
+{
+    background: #000;
+    color: White;
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+    margin: 1px;
+    font-size: 12px !important;
+}
+.tpInprogress
+{
+    border: 1px solid #F0C36D !important;
+    background-color: #F9EDBE;
+    width: 33%;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 33%;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.div-tp-joint-accompanist
+{
+    border: 1px solid #F0C36D !important;
+    background-color: #F9EDBE;
+    padding: 4px;
+    font-size: 12px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 95%;
+}
+.dv-tp-month
+{
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    background: #efefef;
+}
+.dv-controls-load
+{
+    vertical-align: middle;
+    text-align: center;
+    margin-top: 50%;
+}
+.dv-reference-load
+{
+    vertical-align: middle;
+    text-align: center;
+}
+.highlight
+{
+    background-color: Yellow;
+}
+.div-dashboard
+{
+    background-color: #387DEB;
+    color: White;
+    font-size: 20px;
+    border-radius: 5px;
+    height: 30px;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+.td-dashboard
+{
+    background-color: #387DEB;
+    color: White;
+    padding: 5px;
+}
+.div-inner-dashboard
+{
+    float: left;
+    width: 31%;
+    height: 250px;
+    overflow: auto;
+    border: 1px solid #efefef;
+}
+
+/************************************ Tour Planner Ends here *******************************/
+/************************************ TP Approval Starts Here *****************************/
+.td-tp-applied
+{
+    color: #1E90FF !important;
+}
+.td-tp-approved
+{
+    color: #006400 !important;
+}
+.td-tp-unapproved
+{
+    color: #DC143C !important;
+}
+.group
+{
+    background:-moz-linear-gradient(top, #FEFEFE 0%, #E2E1E1 100%); /* FF3.6+ */
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#E2E1E1)); /* Chrome,Safari4+ */
+	background:-webkit-linear-gradient(top, #FEFEFE 0%,#E2E1E1 100%); /* Chrome10+,Safari5.1+ */
+	background:-o-linear-gradient(top, #FEFEFE 0%,#E2E1E1 100%); /* Opera11.10+ */
+	background:-ms-linear-gradient(top, #FEFEFE 0%,#E2E1E1 100%); /* IE10+ */
+	background:linear-gradient(top, #FEFEFE 0%,#E2E1E1 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEFEFE', endColorstr='#E2E1E1');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEFEFE', endColorstr='#E2E1E1')";
+	
+	color: #333;
+    font-size:14px !important;
+    cursor:pointer;
+    
+    -moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+	border-radius: 100px;
+	font-weight:bold;
+	border: 1px solid #ADADAD;	
+	box-shadow: 1px 1px 10px rgba(205,205,205,.35);
+}
+.group-exp-col
+{
+    font-size:12px !important;
+    cursor:pointer;
+    font-style:italic;
+    color:Gray !important;
+}
+.spn-small-font
+{
+    font-size:11px;
+}
+.tdexpand
+{
+    display:block !important;
+}
+.tree-node-active
+{
+    font-style:italic !important;
+    background-color: #E8F1FF !important; /* reddish */
+}
+.italic-small
+{
+    font-size:12px !important;
+    cursor:pointer;
+    font-style:italic;
+    color:Gray !important;
+    text-decoration:underline;
+}
+/************************************ TP Approval Ends Here *****************************/
+/* TABLE
+----------------------------------------------------------*/
+
+table
+{
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+}
+
+table td
+{
+    padding: 3px;
+    border: solid 1px #e8eef4;
+}
+
+table th
+{
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+}
+
+/* Help Item CSS stars here  */
+.helpIcon {
+    cursor:pointer;
+    float:left;
+    margin-left:5px
+}
+.helpIconmargin {
+    cursor:pointer;
+    float:right;
+    margin:5px
+}
+/* Help Item CSS ends here */
+
+.dv-Approval-month
+{
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    background: #efefef;
+}

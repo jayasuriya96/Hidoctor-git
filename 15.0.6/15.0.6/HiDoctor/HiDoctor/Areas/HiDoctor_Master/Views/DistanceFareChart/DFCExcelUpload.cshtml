@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "DFCExcelUpload";
+    Layout = null;
+}
+
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style>
+    .dvHeader {
+        width: 99.2%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 1%;
+        padding-top: 4px;
+    }
+
+    #dvRedirect {
+        font-size: 14px;
+        width: 90%;
+        padding-left: 10%;
+    }
+
+    #dvRules a {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #dvDFCExcelMain {
+        border-bottom: 1px solid #0072c6;
+        border-right: 1px solid #0072c6;
+        border-left: 1px solid #0072c6;
+        min-height: 450px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #dvRules {
+        width: 48%;
+        float: left;
+        border-right: 1px solid #efefef;
+        padding-left: 1%;
+    }
+
+    #ifrmExcel {
+        width: 100%;
+        padding: 2%;
+    }
+
+    #dvFrame {
+        width: 97%;
+        height: 75px;
+        padding-top: 5%;
+        padding-left: 3%;
+    }
+</style>
+
+<form action="../HiDoctor_Master/DistanceFareChart/DFCExcelBulkAddResult" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="form-group panel panel-primary" id="dvDFCExcelMain">
+        <div class="dvHeader">
+            DFC - Excel Upload
+        </div>
+        <div class="form-group panel-body">
+            <div id="dvRules" class="col-sm-6 table-responsive form-group">
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">Step 1 : Download</td>
+                    </tr>
+                    <tr>
+                        <td>1.Please @Html.ActionLink("Download", "DownloadDFCExcelTemplate", "DistanceFareChart", new { }, null) the DFC Master excel upload template</td>
+                    </tr>
+                    <tr>
+                        <td>2.Update the DFC details in the template</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            3.Do not alter the excel file structure(i.e.adding or removing the column)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            4.Do not rename the excel file name and the sheet name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            5.Do not rename the columns
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            6.Click the “Choose/Browse file” button to get the file
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            7.Click the upload button to upload the data
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            8. Below mentioned fields are mandatory <span class="Mandatory">*</span>
+                            <div class="col-lg-12 table-responsive">
+                                <table>
+                                    <tr>
+                                        <td>1.User_Type_Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.Entity_Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.Travel_Mode</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.Date_From</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.Date_To</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.From_Km</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7.To_Km</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8.Fare_Amount</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9.Is_Amount_Fixed</td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            9.Please do not modify the Row_No column values
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            10.Please do not use WRAPTEXT/ALT+ENTER while enter the values. If you use then system will consider this as a special character.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            11.Please enter the mentioned date format (YYYY/MM/DD)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            12.Please enter 0 for No and 1 for Yes in Is_Amount_Fixed 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            13.After entering the required number of row's please delete the remaining enteries in Row_No from the excel without altering the Row_No for the entered rows.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-6 form-group">
+                <div style="font-weight: bold;" class="col-lg-12">
+                    Step 2 : Upload
+                </div>
+                <div class="col-lg-12 form-group">
+                    <input type="file" id="file" name="file" accept=".xlsx" />
+                    <br />
+                    <input type="submit" id="btnUp" value="Upload" class="btn btn-primary" style="margin:10px; margin-top:10px;"/>
+                </div>
+                <div id="dvFrame" class="form-group col-lg-12">
+                    <iframe name="ifrmExcel"></iframe>
+                </div>
+                <div id="dvRedirect" class="form-group col-lg-12">
+                    <br />
+                    <a href="#" onclick="fnRedirectToBP('DFC_UPLOAD');">>>Go to Batch processing</a>
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</form>
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnValidateUploadedFile() {
+        debugger;
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        $("#dvMsgError").html('');
+        $("#dvMsgSuccess").html('');
+        var fileName = $('#file').val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xlsx") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xlsx file only');
+                return false;
+            }
+        }
+    }
+</script>

@@ -1,0 +1,468 @@
+﻿@{
+    ViewBag.Title = "ActivityVsSalesDashBoard";
+    Layout = null;
+}
+<style type="text/css">
+    .dvActivityDashHead {
+        /*background-color: #A5A5A5;
+        color: #fff;*/
+        background-color: #0A0A62;
+        color: white;
+        height: 30px;
+        font-size: 19px;
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+
+    #page-header {
+        display: none;
+    }
+
+    .ui-multiselect {
+        width: 100% !important;
+    }
+
+    .ScrollDown {
+        background-image: url('../Content/images/gr.png');
+        height: 25px;
+        width: 32px;
+    }
+
+    .ScrollUp {
+        background-image: url('../Content/images/less.png');
+        height: 25px;
+        width: 32px;
+    }
+
+    .tdBorder {
+        padding-left: 5px;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dvFullSpark {
+    }
+
+    .ui-progressbar {
+        height: 11px;
+        width: 100px;
+    }
+
+        .ui-progressbar span {
+            width: 100px;
+            position: absolute;
+            text-align: center;
+            font-size: 11px;
+            height: 11px !important;
+            margin-top: -5px;
+        }
+
+    #dvField .ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+        border-bottom-left-radius: 0px !important;
+    }
+
+    #dvField .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .ui-corner-all {
+        -webkit-border-radius: 0px !important; /*{cornerRadius}*/
+        border-radius: 0px !important; /*{cornerRadius}*/
+    }
+
+    .NoValue {
+        text-align: center;
+        font-style: italic;
+        background-color: #fff !important;
+    }
+
+    #dvLeftPanel {
+        z-index: 9999;
+        /*width: 20%;*/
+        float: left;
+        border: 1px solid #efefef;
+        background-color: #efefef;
+        position: absolute;
+    }
+
+        #dvLeftPanel .ui-multiselect-menu {
+            z-index: 99999 !important;
+            position: absolute !important;
+        }
+
+    .dvChartTitle {
+        width: 85%;
+        float: left;
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+        /*height: 20px;*/
+    }
+
+    #dvRegion {
+        font-size: 14px;
+        float: left;
+        margin-top: 5px;
+    }
+
+    #dvRightPanel {
+        width: 100%;
+        float: left;
+        border: 1px solid #efefef;
+    }
+
+    #dvMainCatwiseDocCoverage {
+        width: 25%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+    }
+
+    #dvCatwiseDocCoverage {
+        width: 100%;
+        float: left;
+        height: 300px;
+    }
+
+    #dvMainSS {
+        width: 73%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+        margin-left: 5px;
+    }
+
+    #dvSS {
+        width: 100%;
+        min-height: 250px;
+    }
+
+    #dvMainCatwiseDoctors {
+        width: 24%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+    }
+
+    #dvCatwiseDoctors {
+        width: 100%;
+        float: left;
+        height: 300px;
+    }
+
+    #dvMainCatAndCoverage {
+        width: 25%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+        margin-left: 5px;
+    }
+
+    #dvCatAndCoverage {
+        width: 100%;
+        float: left;
+        height: 300px;
+    }
+
+    #dvMainDetailedDoctors {
+        width: 24%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+        margin-left: 5px;
+    }
+
+    #dvDetailedDoctors {
+        width: 100%;
+        float: left;
+    }
+
+    #dvMainNonSamples {
+        width: 24%;
+        float: left;
+        height: 320px;
+        border: 1px solid #efefef;
+        margin-left: 5px;
+    }
+
+    #dvNonSamples {
+        width: 100%;
+        float: left;
+        height: 300px;
+    }
+</style>
+<div style="width: 100%;">
+    <div style="width: 100%;" class="dvActivityDashHead">
+        Activity Vs Sales
+    </div>
+    <div style="width: 100%;">
+        <div id="imgScroll" class="ScrollUp" style="cursor: pointer; float: left;"></div>
+        <div style="width: 100%">
+            <div style="width: 57%; float: left;">
+                <div id="dvRegion"></div>
+            </div>
+            <div style="float: left; width: 39%;">
+                * figures indicated in the dashboards are showing approximate values.<br />
+                To see accurate value,please see the relevant reports.
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div id="dvLeftPanel">
+            <table style="width: 100%;">
+                <tr id="trDiv">
+                    <td style="width: 30%;">Division
+                    </td>
+                    <td>
+                        <select id="drpDivision" onchange="fnGetRegionType();" style="width: 100%;">
+                            <option value="0">-Select Division-</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Region Type
+                    </td>
+                    <td>
+                        <select id="drpRegionType" onblur="fnBindRegions()" style="width: 100%;">
+                            <option value="0">-Select RegionType-</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Territory
+                    </td>
+                    <td>
+                        @*  <select id="drpTerritory" style="width: 100%;" multiple="multiple">
+                            <option value="0">-Select Region-</option>
+                        </select>*@
+                        <div style="width: 100%;" id="dvRegionList"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Period Type
+                    </td>
+                    <td>
+                        <select id="drpPeriodType" onchange="fnBindMonth();" style="width: 100%;">
+                            <option value="0">Select Option</option>
+                            <option value="M">Month</option>
+                            <option value="Q">Quarter</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="tdPeriod">Select Month
+                    </td>
+                    <td>
+                        <select id="drpPeriod" style="width: 100%;">
+                            <option value="0">Select Period</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Show" class="btn primary small" onclick="fnActivityVsSalesSubmit()" />&nbsp&nbsp
+                        <img src="~/Images/load.gif" style="display: none" id="imgloginLoad" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="dvRightPanel">
+            <div style="width: 100%; margin: 5px;">
+                <div id="dvMainCatwiseDocCoverage">
+                    <div>
+                        <div class="dvChartTitle" style="float: left">Categorywise Doctor Coverage</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_VS_SALES','CATEGORYWISE_COVERAGE')" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="dvCatwiseDocCoverage">
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="dvMainSS">
+                    <div style="width: 100%;">
+                        <div style="width: 20%">Select Product</div>
+                        <div style="width: 30%; float: left;">
+                            <select id="cboProduct" multiple="multiple" style="width: 30% !important;"></select>
+                        </div>
+                        <div style="width: 39%;">
+                            <input type="button" id="btnGo" onclick="fnBindProducts();" value="Go" class="btn primary small" />
+                        </div>
+                    </div>
+                    <div id="dvSS">
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="width: 100%; margin: 5px;">
+                <div id="dvMainCatwiseDoctors">
+                    <div>
+                        <div class="dvChartTitle" style="float: left">
+                            No of Doctors
+                        </div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_VS_SALES','NO_DOCTORS')" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="dvCatwiseDoctors">
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="dvMainCatAndCoverage">
+                    <div>
+                        <div class="dvChartTitle" style="float: left">% visit coverage / % visit achieved</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_VS_SALES','COVERAGE_ACHIEVED')" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="dvCatAndCoverage"></div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="dvMainDetailedDoctors">
+                    <div>
+                        <div class="dvChartTitle" style="float: left;">Detailed Doctors</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_VS_SALES','DETAILED_DOCTORS')" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="dvDetailedDoctors"></div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="dvMainNonSamples">
+                    <div>
+                        <div class="dvChartTitle" style="float: left;">Doctors who received Samples and gifts</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('ACTIVITY_VS_SALES','DOCTORS_SAMPLE_GIFT')" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="dvNonSamples"></div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <input type="hidden" id="hdnCurrentDate" />
+</div>
+<script src="~/Scripts/HD/Dashboard.js?v=@HiDoctor.BuildNumber.BuildNo" language="javascript"></script>
+<script type="text/javascript">
+    var currentDate = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#drpTerritory").multiselect().multiselectfilter();
+        $("#cboProduct").multiselect();
+        try {
+            currentDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate))
+                $("#hdnCurrentDate").val(currentDate);
+            $.blockUI();
+            fnGetDivisionCount()
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function Test() {
+
+        alert(1);
+    }
+
+    $("#imgScroll").click(function () {
+        if ($('#imgScroll').hasClass("ScrollUp")) {
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+            $("#dvLeftPanel").hide();
+            // $("#dvRightPanel").css('width', '79%');
+        }
+        else {
+            $("#dvLeftPanel").show();
+            //$("#dvRightPanel").css('width', '98%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+        }
+    });
+    //function to bind the division
+    function fnGetDivisionCount() {
+        $.ajax({
+            type: 'GET',
+            url: "DashBoard/GetDivisionCount",
+            async: false,
+            success: function (response) {
+                if (response != '') {
+                    response = eval('(' + response + ')');
+                    var count = 0;
+                    if (response.Tables[0].Rows.length > 0) {
+                        count = response.Tables[0].Rows[0].Count;
+                    }
+
+                    if (count == 0) {
+                        var divisionCode = "";
+                        if ($("#drpDivision").is(":visible")) {
+                            divisionCode = $("#drpDivision").val();
+                        }
+                        $("#trDiv").css('display', 'none');
+                        //fnGetRegionType();
+                        $.ajax({
+                            type: 'GET',
+                            url: "DashBoard/GetRegionTypesByDivision",
+                            data: "DivisionCode=" + divisionCode + "",
+                            success: function (response) {
+                                response = eval('(' + response + ')');
+                                $('option', $("#drpRegionType")).remove();
+                                $("#drpRegionType").append("<option value=0>Select RegionType</option>");
+                                $("#drpRegionType").append("<option value=ALL>ALL</option>");
+                                for (var i = 0; i < response.Tables[0].Rows.length; i++) {
+                                    $("#drpRegionType").append("<option value=" + response.Tables[0].Rows[i].Region_Type_Code + ">" + response.Tables[0].Rows[i].Region_Type_Name + "</option>");
+                                }
+                                //  $("#drpTerritory").multiselect('destroy');
+                                // $("#drpTerritory").multiselect();
+                                //$("#drpTerritory").multiselect({
+                                //    noneSelectedText: 'Select RegionType'
+                                //}).multiselectfilter();
+                                $.blockUI();
+                                fnActivityVsSalesPageLoad();
+                            },
+                            error: function (e) {
+                                fnMsgAlert('error', 'Error', 'Bind Region Type failed');
+                            }
+                        });
+                    }
+                    else {
+                        $("#trDiv").css('display', '');
+                        //fnBindDivision();
+                        $.ajax({
+                            type: 'GET',
+                            url: "DashBoard/GetDivision",
+                            success: function (response) {
+                                response = eval('(' + response + ')');
+                                $('option', $("#drpDivision")).remove();
+                                $("#drpDivision").append("<option value=0>-Select Division-</option>");
+                                for (var i = 0; i < response.Tables[0].Rows.length; i++) {
+                                    $("#drpDivision").append("<option value=" + response.Tables[0].Rows[i].Division_Code + ">" + response.Tables[0].Rows[i].Division_Name + "</option>");
+                                }
+                                fnGetRegionType();
+                                fnActivityVsSalesPageLoad();
+                            },
+                            error: function (e) {
+                                fnMsgAlert('error', 'Error', 'Bind User Division failed');
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error', 'Error', 'Bind User Division failed');
+            }
+        });
+    }
+</script>

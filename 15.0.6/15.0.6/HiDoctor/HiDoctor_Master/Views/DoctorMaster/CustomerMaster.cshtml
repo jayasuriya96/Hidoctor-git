@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable = $('#tblCustomer').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "DoctorMaster/GetAllCustomers",
+            "bProcessing": true,
+            "aoColumns": [
+
+                             {
+                                 "sName": "Customer_Name"
+                             },
+        {
+            "sName": "Customer_Code"
+        },
+{
+    "sName": "Address1"
+},
+{
+    "sName": "Address2"
+},
+{
+    "sName": "Local_Area"
+},
+{
+    "sName": "City"
+},
+{
+    "sName": "Phone"
+},
+{
+    "sName": "Mobile"
+},
+{
+    "sName": "MDL_Number"
+},
+        {
+            "sName": "Region_Code"
+        },
+{
+    "sName": "Region_Type_Code"
+}
+
+
+
+            ], "sDom": 'T<"clear">lfrtip', "oTableTools": {
+                "sSwfPath": "/Content/ZeroClipboard.swf"
+            }
+        });
+    });
+    $("#dvAjaxLoad").hide();
+</script>
+<table id="tblCustomer" class="data display datatable">
+</table>

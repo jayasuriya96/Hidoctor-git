@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "SecondarySalesTrendAnalysisNew";
+    Layout = null;
+}
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr>
+                    <td>From Month 
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>To Month 
+                    </td>
+                    <td>
+                        <input type="text" id="txtToDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;">Product Name </td>
+                    <td style="vertical-align: top;">
+                        <select id="ddlProductName" multiple="multiple" style="width: 375px;">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Report type          
+                    </td>
+                    <td>
+                        <select id="ReportOption">
+                            <option value="Unit">Unit</option>
+                            <option value="Amount">Amount</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="hidden" id="hdnRegionCode" /><br>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnSecondarySalesTrendAnalysisNew();" />
+                    </td>
+                </tr>
+            </table>
+
+            <div id="dvloading" style="display: none">
+                 <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div id="divMonthName" style="text-align: center">
+            <label id="MonthName"></label>
+        </div>
+        <div id="divReport" >
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SecondaySales.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#txtFromDate').monthpicker();
+        $('#txtToDate').monthpicker();
+    });  
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            fnBindRegionTree("tree");
+            $("#dvTree").show();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+
+        $('#ddlProductName').empty();
+        $("#ddlProductName").multiselect('destroy');
+        fnShowProductMulDetails();
+        fnMonthAndYear();
+    }   
+    function fnRegionTreePostInit() {
+
+    }
+
+</script>

@@ -1,0 +1,309 @@
+﻿@{
+    ViewBag.Title = "ExpenseAnalysisGroupWiseReportNew";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">
+    #dvLoadingExpense, #dvLoadingAccpName {
+        background-color: #E8F1FF;
+        border: 3px solid #d3d3d3;
+    }
+
+    .text_filter, .search_init {
+        width: 80px !important;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_xls {
+        display: none;
+    }
+</style>
+<div id="dvLoadingExpense" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingExpense');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+    <div style="width: auto;">
+        <div id="dvNonDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+</div>
+
+<div id="dvLoadingAccpName" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingAccpName');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvSubAccpName" style="margin: 10px;">
+        </div>
+    </div>
+</div>
+
+<div class='col-xs-12'>
+
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="dvTree" style="width: 100%; float: left">
+            <div id="tree" style="float: left; height: auto; width: 100%">
+            </div>
+        </div>
+        <span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>
+
+    <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+            <div class="helpIconright">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('EXPENSE_GROUP_ANALYSIS','PAGE')" />
+            </div>
+        </div>
+
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr class="trHeight">
+                    <td>Start Date & End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnUserCode" />
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadioExpenseGroupWise();" />
+                        <label for="2">
+                            Approved</label>
+
+
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td>Show
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkDoctor" value="D" name="chkDocChemist" checked="checked" />
+                        <label for="D">
+                            Doctor</label>
+                        <input type="checkbox" id="chkChemist" value="C" name="chkDocChemist" />
+                        <label for="C">
+                            Chemist</label>
+                        <input type="checkbox" id="chkManager" value="M" name="chkDocChemist" />
+                        <label for="M">
+                            Accompanist</label>
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td>Activity Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkField" value="F" name="dcrActivity" onclick="fnChangeActivityRadio();" />
+                        <label for="2">
+                            Field</label>
+                        <input type="checkbox" id="chkAttendance" value="A" name="dcrActivity" onclick="fnChangeActivityRadio();" />
+                        <label for="1">
+                            Attendance</label>
+                        <input type="checkbox" id="rbActivityAll" name="allActivity" value="F,A" onclick="fnChangeActivityCheck();" /><label
+                            for="0">
+                            All</label>
+                    </td>
+                </tr>
+
+                <tr class="trHeight">
+                    <td></td>
+                    <td>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnExpenseAnalysisGroupWiseReport();" />
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+
+        </div>
+        <div class="helpIconright">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('EXPENSE_GROUP_ANALYSIS','TABLE')" />
+        </div>
+        <div id="divReport">
+        </div>
+        <form action="../HiDoctor_Reports/Reports/DownloadComprehensiveAnalysisReportExcel" method="post" enctype="multipart/form-data" target="ifrmExcel">
+            <div id="dvExcelPrint" style='float: left; width: 100%; display: none;'>
+                <div style="float: right; width: 65px; padding: 3px; background-color: #efefef; border: 1px solid #d3d3d3; margin-bottom: 10px; margin-right: 4%;">
+                    <input type="submit" id="CA_Excel" value="" />
+                    <div id='dvPrint' onclick='fnPrint("divCompPrint","ifrmCompPrint");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'></div>
+                </div>
+                @Html.Hidden("sd")
+                @Html.Hidden("ed")
+                @Html.Hidden("userCode")  
+                @Html.Hidden("reportType") 
+            </div>
+        </form>
+        <iframe id="ifrmExcel" style="display: none;" name="ifrmExcel"></iframe>
+
+        <div id="divCompReport">
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<iframe id="ifrmCompPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divCompPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    var expenseReportid_g = "";
+    var reportName = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $("#leftNav").show();
+            var leftNav = $("#tree");
+            fnTreePosiition("tree");
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.cur_UserCode));
+            fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");                
+            //fnDCRConsolidatedReport();
+            $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {                       
+                    fnSearchUsers();
+                    return false;
+                }
+            });
+
+            $("#dvTree").show();
+            //   var dvTree = $("#tree");
+            //   fnBindUserTree("tree");
+            $('#divInput').hide();
+            $('#divReport').hide();
+            $('#divCompReport').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+            expenseReportid_g = "NEW";
+            reportName = "CURRENTUSER";
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    var selKeys = new Array();
+
+
+
+    function fnUserTreeNodeClick(node) {
+        
+        $('#hdnUserCode').val(node.data.key);
+        // selKeys = [];
+        //selKeys.push(node.data.key);
+        $('#userCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Hide Tree');
+        $('#divToggle').show();
+        $("#divMain").addClass('col-xs-9')
+        //  $("#dvTree").hide();
+        //   $("#spnTreeToggle").html('Show Tree');
+        //   $('#divToggle').show();
+        // $("#divMain").css('width', '100%');
+        fnClearExpenseAnalysisGroupWiseReport();
+        $("#divReport").empty();
+        $('#divCompReport').empty();
+        $('#divCompReport').hide();
+        $('#divReport').hide();
+
+        // $("#spnTreeToggle").html('Hide Tree');
+        //$('#divToggle').show();
+        //  $("#divMain").css('width', '100%');
+        //   $("#divMain").addClass('col-xs-9')
+
+        $('#dvTablePrint').hide();  
+        $('#spnPeriodDetail').html("");
+        $("#leftNav").show();
+    }
+
+    function fnUserTreePostInit() {
+    }
+    function fnToggleTree() {
+        
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            // $('#tree').hide();
+            // $("#leftNav").hide();
+            $('#dvTree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {                    
+            $('#dvTree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');            
+            $("#spnTreeToggle").html('Hide Tree');           
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+
+        }
+    }
+
+    function fnTreeResize(obj) {
+        
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'dvTree');
+    }
+</script>

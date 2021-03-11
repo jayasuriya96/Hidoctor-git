@@ -1,0 +1,324 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: normal !important;
+    }
+
+    .CheckBoxStyle {
+        border: 1px dotted gray;
+        width: 100%;
+    }
+</style>
+
+<fieldset>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+    <div id="divInputControls" class="col-lg-12">
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Distribution Type
+            </div>
+            <div class="col-lg-8 form-group">
+                <div id="divDistTypeAll" class="radio-inline" style="float: left">
+                    <label>
+                        <input type="radio" id="rdoDistTypeAll" name="rdoDistType" value="A" onchange="fnShowTree()" />To All
+                    </label>
+                </div>
+                <div id="divDistTypeUsers" class="radio-inline" style="float: left">
+                    <label>
+                        <input type="radio" id="rdoDistTypeUsers" name="rdoDistType" value="U" onchange="fnShowTree()" />Show User Types
+                    </label>
+                </div>
+                <div id="divDistTypeRegions" class="radio-inline" style="float: left">
+                    <label>
+                        <input type="radio" id="rdoDistTypeRegions" name="rdoDistType" value="R" onchange="fnShowTree()" />Show Region Types
+                    </label>
+                </div>
+                <div id="divDistTypeMyTeam" class="radio-inline" style="float: left">
+                    <label>
+                        <input type="radio" id="rdoDistTypeMyTeam" name="rdoDistType" value="M" onchange="fnShowTree()" />My Team
+                    </label>
+                </div>
+                <div id="divDistTypeGroup" class="radio-inline" style="float: left; display: none;">
+                    <label>
+                        <input type="radio" id="rdoDistTypeGroup" name="rdoDistType" value="G" onchange="fnShowTree()" />Group
+                    </label>
+                </div>
+
+            </div>
+            <div class="col-lg-2"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group" id="divTreeWithCheckBoxes">
+            <div id="divisionLable" class="col-lg-2 form-group">Division Name</div>
+            <div class="col-lg-6 form-group">
+
+                <div id="divDivision" class="CheckBoxStyle">
+                    <div id="divDivionsCheckBoxes">
+                    </div>
+                </div>
+                <div id="divUserType" class="CheckBoxStyle">
+                    <div id="divUserTypeCheckBoxes">
+                    </div>
+                    <input type="button" id="btnSelectUser" value="Select Users" onclick="fnSelectUsers()" />
+                </div>
+                <div id="divRegionType" class="CheckBoxStyle">
+                    <div id="divRegionTypeCheckBoxes">
+                    </div>
+                    <input type="button" id="btnSelectRegion" value="Select Regions" onclick="fnSelectRegions()" />
+                </div>
+                <div id="divUserTypesUnderMe" class="CheckBoxStyle">
+                    <div id="divUserTypesUnderMeCheckBoxes">
+                    </div>
+                    <input type="button" id="btnSelectUserUnderMe" value="Select Users" onclick="fnSelectUsersUnderMe()" />
+                </div>
+                <div id="divUserGroup" class="CheckBoxStyle" style="display: none;">
+                    <div id="divUserGroupCheckBoxes">
+                    </div>
+                    <input type="button" id="btnSelectUserGroup" value="Select User Group" onclick="fnSelectUserGroup()" />
+                </div>
+                <div id="divAllUserTree" style="float: left; height: 350px; width: 100%">
+                </div>
+                <div id="divUserTree" style="float: left; height: 350px; width: 100%; margin-top: 1%">
+                </div>
+                <div id="divRegionTree" style="float: left; height: 350px; width: 100%">
+                </div>
+                <div id="divMyTeamTree" style="float: left; height: 350px; width: 100%">
+                </div>
+                <div id="divGroupTree" style="float: left; height: 350px; width: 100%">
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Title
+            </div>
+            <div class="col-lg-2 form-group">
+                <input type="text" id="txtTitle" class="form-control" />
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Message
+            </div>
+            <div class="col-lg-2 form-group">
+                <textarea id="txtMessage" cols="100" rows="10"></textarea>
+                @*
+                <textarea id="txtMessage" class="form-control"></textarea>*@
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Hyperlink
+            </div>
+            <div class="col-lg-2 form-group">
+                <input type="text" id="txtHyperlink" class="form-control" />
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Priority
+            </div>
+            <div class="col-lg-8 form-group">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoPriorityHigh" name="rdoPriority" value="0" />High
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoPriorityMedium" name="rdoPriority" value="1" />Medium
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoPriorityLow" name="rdoPriority" value="2" />Low
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Valid From
+            </div>
+            <div class="col-lg-2 form-group">
+                <input type="text" id="txtValidFrom" class='datepicker form-control' />
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Valid To
+            </div>
+            <div class="col-lg-2 form-group">
+                <input type="text" id="txtValidTo" class='datepicker form-control' />
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Acknowledgment Reqd?
+            </div>
+            <div class="col-lg-2 form-group">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoAckReqdYes" name="rdoAckReqd" value="Y" />Yes
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoAckReqdNo" name="rdoAckReqd" value="N" />No
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Show as a Ticker
+            </div>
+            <div class="col-lg-2 form-group">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoOnlyTickerYes" name="rdoOnlyTicker" value="1" />Yes
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoOnlyTickerNo" name="rdoOnlyTicker" value="0" />No
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Highlight
+            </div>
+            <div class="col-lg-2 form-group">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoHighlightYes" name="rdoHighlight" value="1" />Yes
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" id="rdoHighlightNo" name="rdoHighlight" value="0" />No
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-8"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group">
+                Attachment
+            </div>
+            <div class="col-lg-4 form-group">
+                <input type="file" name="fileUploader" id="fileUploader" class="form-control" />
+            </div>
+            <div class="col-lg-6 form-group"></div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="link" class="col-lg-12 form-group" style="display: none">
+            <div class="col-lg-2 form-group"></div>
+            <div class="col-lg-8 form-group">
+                <a id="editfilepathlink" href="#">Edited File path</a>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-2 form-group"></div>
+            <div class="col-lg-8 form-group">
+                <input type="button" id="btnSave" value="Save" class="btn btn-primary" onclick="fnValidateAndSaveNotice();" />
+                <input type="button" id="btnClear" value="Clear" class="btn btn-primary" onclick="fnClearForm();" />
+            </div>
+            <div class="col-lg-2"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+    </div>
+    <div id="divSummaryGrid" class="table-responsive">
+    </div>
+    <div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+        <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+            <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+                <img src="~/Images/close.png" />
+            </span>
+            <h2 id="popheader" class="popheader"></h2>
+            <div id="divModel" style="height: 500px; overflow: auto" class="table-responsive">
+            </div>
+            <div style="clear: both">
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/NoticeBoard.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+    var selectedKeys = "";
+    var saveMode = "NEW";
+    var msgCode_edit = "";
+    var todaysDate = '@(ViewBag.TodaysDate)';
+    var attachmentFileSize = 0;
+    var attachmentMaxSize = '@(ViewBag.AttachmentSize)';
+    attachmentMaxSize = parseInt(attachmentMaxSize);
+
+    $(document).ready(function () {
+        fnLoadControls();
+        $("#divisionLable").hide();
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 2
+            });
+        });
+
+        $("#dvAjaxLoad").hide();
+    });
+
+    $('#fileUploader').bind('change', function () {
+        //attachmentFileSize = this.files[0].size;
+        var fileControl = document.getElementById("fileUploader");
+        if (fileControl.files != undefined && fileControl.files != null && fileControl.files[0] != null) {
+            attachmentFileSize = fileControl.files[0].size;
+        }
+    });
+
+    function fnUserTreePostInit() {
+
+    }
+
+    function fnRegionTreePostInit() {
+    }
+</script>

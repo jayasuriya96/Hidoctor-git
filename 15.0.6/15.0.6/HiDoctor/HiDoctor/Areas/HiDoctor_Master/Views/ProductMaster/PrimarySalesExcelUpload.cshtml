@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "PrimarySalesExcelUpload";
+    Layout=null;
+}
+<style>
+    #dvRules a {
+        cursor: pointer;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<form action="../HiDoctor_Master/ProductMaster/PrimarySalesExcelUploadResult" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="panel panel-primary">
+        <div class=" panel-heading">
+            <h3 class="panel-title">Primary Sales - Excel Upload</h3>
+        </div>
+
+        <div class="panel-body">
+            <div id="dvRules" class="col-sm-6" style="border-right: 1px solid #ddd;">
+                <table>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">Step 1 : Download</td>
+                    </tr>
+                    <tr>
+                        <td>1.Please @Html.ActionLink("Download", "DownloadPrimarySalesExcelTemplate", new { }) the primary sales excel upload template</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table style="padding-left: 3%;">
+                                <tr>
+                                    <td colspan="2" style="font-weight: bold">Master Data Download</td>
+                                </tr>
+                                <tr>
+                                    <td><a onclick="fnGenerateExcelData('PRODUCT');">Click here to generate Product Master data</a></td>
+                                    <td><a id="aDownloadProduct" style="display: none; text-decoration: underline;">Product Master Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a onclick="fnGenerateExcelData('REGION');">Click here to generate Region Master data</a></td>
+                                    <td><a id="aDownloadRegion" style="display: none; text-decoration: underline;">Region Master Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a onclick="fnGenerateExcelData('CUSTOMER');">Click here to generate Customer Master data</a></td>
+                                    <td><a id="aDownloadCustomer" style="display: none; text-decoration: underline;">Customer Master Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a onclick="fnGenerateExcelData('DEPOT');">Click here to generate Depot Master data</a></td>
+                                    <td><a id="aDownloadDepot" style="display: none; text-decoration: underline;">Depot Master Download</a></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2.Update the product details in the template</td>
+                    </tr>
+                    <tr>
+                        <td>3.Do not alter the excel file structure(i.e.adding or removing the column)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4.Do not rename the excel file name and the sheet name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5.Do not rename the columns
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6.Click the “Choose/Browse file” button to get the file
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7.Click the upload button to upload the data
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8. Below mentioned fields are mandatory <span class="Mandatory">*</span>
+                            <div style="width: 70%; padding-left: 20%;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>1.HQ
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.HQID</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.CUSTCD</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.DEPOTCD</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.INVOICE_NO
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.INVDATE
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7.PRODUCTCODE
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8.INVOICEQTY
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9.VALUE
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9.Please do not modify the Row_No column values
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10.Please do not use WRAPTEXT/ALT+ENTER while enter the values. If you use then system will consider this as a special character.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <div class="col-lg-12">
+                    <div style="font-weight: bold;" class="col-lg-12">
+                        Step 2 : Upload
+                    </div>
+                    <div>
+                        <div class="col-lg-3" style="padding-top: 3px;">Transaction Type</div>
+                        <div class="col-lg-4">
+                            <input type="radio" name="rdTransType" value="INVOICE" checked="checked" />Invoice
+                            <input type="radio" name="rdTransType" value="SALESRETURN" />Sales Return
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+                        <input type="file" id="file" name="file" accept=".xls" />
+                        <br />
+                        <input type="submit" id="btnUp" value="Upload" class="btn small primary" />
+                    </div>
+                    <div id="dvFrame" class="col-lg-12" style="padding-top: 2%; height: 100px;">
+                        <iframe name="ifrmExcel" style="width: 100%;"></iframe>
+                    </div>
+                    <div id="dvRedirect" class="col-lg-12">
+                        <br />
+                        <a href="#" onclick="fnRedirectToBP('PRIMARYSALES_UPLOAD');">>>Go to Batch processing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Hidden("hdnTransType")
+  
+</form>
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnValidateUploadedFile() {
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        var fileName = $('#file').val();
+        var transType = $("input[type='radio'][name='rdTransType']:checked").val();
+        $("#hdnTransType").val(transType);
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xls") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xls file only');
+                return false;
+            }
+        }
+    }
+
+    function fnGenerateExcelData(masterType) {
+
+        $.ajax({
+            url: '../HiDoctor_Master/ProductMaster/DownloadMasterData',
+            type: "POST",
+            data: "masterType=" + masterType,
+            success: function (result) {
+                if (result == "NO DATA") {
+                    fnMsgAlert('info', 'Info', 'No data found');
+                    return;
+                }
+                if (result) {
+                    if (masterType == "PRODUCT") {
+                        $('#aDownloadProduct').attr("href", "../Content/XLTemplates/" + result);
+                        $('#aDownloadProduct').html(result);
+                        $('#aDownloadProduct').css("display", "block");
+                    }
+                    if (masterType == "REGION") {
+                        $('#aDownloadRegion').attr("href", "../Content/XLTemplates/" + result);
+                        $('#aDownloadRegion').html(result);
+                        $('#aDownloadRegion').css("display", "block");
+                    }
+                    if (masterType == "CUSTOMER") {
+                        $('#aDownloadCustomer').attr("href", "../Content/XLTemplates/" + result);
+                        $('#aDownloadCustomer').html(result);
+                        $('#aDownloadCustomer').css("display", "block");
+                    }
+                    if (masterType == "DEPOT") {
+                        $('#aDownloadDepot').attr("href", "../Content/XLTemplates/" + result);
+                        $('#aDownloadDepot').html(result);
+                        $('#aDownloadDepot').css("display", "block");
+                    }
+
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

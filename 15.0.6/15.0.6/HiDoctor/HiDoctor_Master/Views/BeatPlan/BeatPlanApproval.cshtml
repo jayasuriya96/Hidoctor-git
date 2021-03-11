@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "BeatPlanApproval";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+
+<style>
+    #dvMainBody {
+        height: 850px;
+    }
+
+    #dvTree {
+        height: 600px;
+        overflow: auto;
+        float: left;
+    }
+
+    #dvApprove {
+        display: none;
+        float: right;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    .e-grid .e-gridheader tr:first-child th {
+        background-color: gray;
+    }
+
+    span.e-headertext {
+        color: white;
+        text-align: center;
+    }
+
+    .card-columns1 {
+        column-count: 1;
+    }
+
+    @@media only screen and (min-width: 768px) {
+        .flex {
+            width: 100%;
+        }
+
+        .card-columns {
+            column-count: 4;
+        }
+    }
+
+    @@media only screen and (min-width: 992px) {
+        .flex {
+            width: auto;
+        }
+
+        .card-columns {
+            column-count: 4;
+        }
+    }
+
+    .localArea_label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: unset;
+        font-size: 13px;
+    }
+</style>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Beat/Patch Plan Approval
+        </div>
+        <div class="card-body" id="dvMainBody" style="overflow-y:auto;">
+            <div class="flex-fill col-sm-3" id="idShowhidelink">
+                <p class="text-primary mb-0 mt-1" style="cursor:pointer;text-decoration:underline;" id="showhide">Hide</p>
+            </div>
+            <div class="col-sm-12 col-md-12 mt-3">
+                <div class="col-sm-3 col-md-3" id="dvTree">
+
+                </div>
+                <div class="col-sm-9 col-md-9" id="dvApprove">
+                    <div class="col-xs-12 form-row">
+                        <div class="d-flex">
+                            <div class="p-2 bg-highlight">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="BeatPlansStatus" value="-1" id="hdnHeaderId">
+                                    <label class="custom-control-label" for="hdnHeaderId"><b>All</b></label>
+                                </div>
+                            </div>
+                            <div class="p-2 bg-highlight">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="BeatPlansStatus" value="2" id="hdnHeaderId_2" checked="">
+                                    <label class="custom-control-label" for="hdnHeaderId_2"><b>Applied</b></label>
+                                </div>
+                            </div>
+                            <div class="p-2 bg-highlight">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="BeatPlansStatus" value="1" id="hdnHeaderId_1">
+                                    <label class="custom-control-label" for="hdnHeaderId_1"><b>Approved</b></label>
+                                </div>
+                            </div>
+                            <div class="p-2 bg-highlight">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="BeatPlansStatus" value="0" id="hdnHeaderId_0">
+                                    <label class="custom-control-label" for="hdnHeaderId_0"><b>UnApproved</b></label>
+                                </div>
+                            </div>
+                            <div class="p-2 bg-highlight">
+                                <button type="button" id="dvbuttonGet" class="btn btn-info col-sm-12 btn-sm " onclick="BeatPlanApproval.fnGetBeatPlanDetails('S');">Show Details</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="clear: both;border-bottom: 1px solid darkgrey;padding-bottom: 10px;"></div>
+                    <div class="d-flex flex-row bd-highlight justify-content-center mt-2" style="" id="dvCommonFunctions">
+                        <h6>List of Beat / Patch Plan(s) of the Region "<span id="spanregionName"></span>" in "<span id="spanStatus"></span>" Status.</h6>
+                    </div>
+                    <div style="clear: both;border-bottom: 1px solid darkgrey;padding-bottom: 10px;"></div>
+                    <div class="text-left text-primary" id="dvSelectAll" style="">
+                        <p style="cursor:pointer;text-decoration:underline;">
+                            <span id="selectallBeats">Select All</span>
+                        </p>
+                    </div>
+                    <div class="mt-3" style="overflow-y:auto">
+                        <div class="mt-3 card-columns" id="divReport">
+
+                        </div>
+                    </div>
+                    <div class="row float-right" id="dvbuttons" style="display:none !important;">
+                        <div class="p-2 bg-highlight" id="divApprovebtn">
+                            <button type="button" class="btn btn-info btn-sm col-sm-12" id="btnApprove" onclick="BeatPlanApproval.fnSubmitApprovalorUnApproval('A')">Approve</button>
+                        </div>
+                        <div class="p-2 bg-highlight">
+                            <button type="button" class="btn btn-warning btn-sm col-sm-12" id="btnUnApprove" onclick="BeatPlanApproval.fnSubmitApprovalorUnApproval('U')">UnApprove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl show" data-backdrop="static" tabindex="-1" role="dialog" id="beatModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel">Beat / Patch Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="BeatPlanApproval.fnCloseBeatModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="beatPopBody" style="height: 550px;overflow-y: auto;">
+                <div class="" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl show" data-backdrop="static" tabindex="-1" role="dialog" id="EntityModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel"><span id="spanEntity"></span> Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="BeatPlanApproval.fnCloseEntityModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="EntityPopBody" style="height: 550px;overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/BeatPlan/BeatPlanApproval.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script type="text/javascript">
+    var companyCode="";
+    var companyId="";
+    var loguserCode="";
+    var currentRegionCode_g = "";
+    var selectedRegionCode_g="";
+    var selectedRegionName_g="";
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        companyCode = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        companyId = @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        loguserCode = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        BeatPlanApproval.defaults.CompanyCode=companyCode;
+        BeatPlanApproval.defaults.CompanyId=companyId;
+        BeatPlanApproval.defaults.RegionCode=currentRegionCode_g;
+        BeatPlanApproval.defaults.UserCode=loguserCode;
+        fnBindRegionTree("dvTree");
+        BeatPlanApproval.Init();
+    });
+    function fnRegionTreeActivate(node) {
+        debugger;
+        selectedRegionCode_g=node.data.key;
+        selectedRegionName_g=node.data.title;
+        $('#spanregionName').html(node.data.title);
+        if(currentRegionCode_g!=selectedRegionCode_g){
+            $.blockUI();
+            $("#selectallBeats").text('Select All');
+            $('input[name="BeatPlansStatus"][value="2"]').attr('checked',true);
+            BeatPlanApproval.defaults.SelectedRegionCode=selectedRegionCode_g;
+            var beatStatus="";
+            $('input[name="BeatPlansStatus"]:checked').each(function () {
+                beatStatus+= $(this).next().text()+ ',';
+            });
+            beatStatus=beatStatus.slice(0,-1);
+            $('#spanStatus').html(beatStatus);
+            $('#dvCreate').show();
+            $('#showhide').html('Show');
+            $("#dvTree").css('display', 'none');
+            $('#dvApprove').css('float','left');
+            $('#dvApprove').removeClass('col-sm-9');
+            $('#dvApprove').removeClass('col-md-9');
+            $('#dvApprove').addClass('col-sm-12');
+            $('#dvApprove').addClass('col-md-12');
+            BeatPlanApproval.fnGetBeatPlanDetails('S');
+        }else{
+            swal('Info', 'Beat\Patch Plan cannot be Approved\UnApporved Self.', 'info');
+        }
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+    $('#showhide').click(function () {
+        if ($("#dvTree").css('display') == 'none') {
+            $('#showhide').html('Hide');
+            $("#dvTree").css('display', 'flex');
+            $('#dvApprove').css('float','right');
+            $('#dvApprove').removeClass('col-sm-12');
+            $('#dvApprove').removeClass('col-md-12');
+            $('#dvApprove').addClass('col-sm-9');
+            $('#dvApprove').addClass('col-md-9');
+        }
+        else {
+            $('#showhide').html('Show');
+            $("#dvTree").css('display', 'none');
+            $('#dvApprove').css('float','left');
+            $('#dvApprove').removeClass('col-sm-9');
+            $('#dvApprove').removeClass('col-md-9');
+            $('#dvApprove').addClass('col-sm-12');
+            $('#dvApprove').addClass('col-md-12');
+
+        }
+    });
+    //$('#hdnHeaderId').on('click',function(e){
+    //    if($('#hdnHeaderId').is(':checked')){
+    //        $('#hdnHeaderId_1').attr('checked',false);
+    //        $('#hdnHeaderId_2').attr('checked',false);
+    //        $('#hdnHeaderId_0').attr('checked',false);
+    //    }else{
+    //        $('#hdnHeaderId_1').attr('disabled',false);
+    //        $('#hdnHeaderId_2').attr('disabled',false);
+    //        $('#hdnHeaderId_0').attr('disabled',false);
+    //    }
+    //});
+    $('input[name="BeatPlansStatus"]').on('click',function(){
+        $('#divReport').hide();
+        $('#dvSelectAll').hide();
+        $('#dvbuttons').hide();
+        var beatStatus="";
+        $('input[name="BeatPlansStatus"]:checked').each(function () {
+            beatStatus+= $(this).next().text()+ ',';
+        });
+        beatStatus=beatStatus.slice(0,-1);
+        if(beatStatus.toUpperCase()=="ALL"){
+            beatStatus="Applied,Approved,UnApproved";
+        }
+        $('#spanStatus').html(beatStatus);
+    });
+
+    $(document).on('click','#selectallBeats', function () {
+        debugger;
+        $("input[type=checkbox][name='beatforApproval']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#selectallBeats").text('UnSelect All');
+        }
+        else {
+            $("#selectallBeats").text('Select All');
+        }
+    });
+
+
+</script>

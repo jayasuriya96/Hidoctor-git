@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "ConfigSettings";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvInsertConfig">Add Config</a></li>
+            <li><a href="#dvEditConfig">Edit Config</a></li>
+        </ul>
+        <div id="dvInsertConfig" class="form-group">
+            <div class="col-lg-12 form-group">
+                <div class="col-sm-2 form-group">
+                    Configuration Name 
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="text" id="txtConfiName" class="form-control" maxlength="200" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-sm-2 form-group">
+                    Configuration Value
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="text" id="txtConfigValue" class="form-control" maxlength="1000" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-sm-2 form-group">
+                    Possible Values
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="text" id="txtPossibleValue" class="form-control" maxlength="500" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-sm-2 form-group">
+                    Configuration Type
+                </div>
+                <div class="col-sm-4 form-group">
+                    <select id="cboConfigType" class="form-control">
+                        <option value="0">-Select Config Type-</option>
+                        <option value="DCR">DCR</option>
+                        <option value="REPORT">REPORT</option>
+                        <option value="APPROVAL">APPROVAL</option>
+                        <option value="WTB">WTB</option>
+                        <option value="OTC">OTC</option>
+                        <option value="INWARD">INWARD</option>
+                        <option value="DASHBOARD">DASHBOARD</option>
+                        <option value="USER">USER</option>
+                        <option value="PRIMARY">PRIMARY_SALES</option>
+                    </select>
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+                <div class="col-sm-2 form-group"></div>
+                <div class="col-sm-4 form-group">
+                    <input type="button" class="btn small primary" id="btnConfSave" value="Save" onclick="fnConfigSubmit();" />
+                    <input type="button" class="btn small primary" value="Reset" onclick="fnConfigClearAll();" />
+                </div>
+                <div class="col-lg-6" style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvEditConfig" class="col-lg-12 form-group" style="overflow: auto;">
+            <div id="dvConfigtems" class="table-responsive"></div>
+        </div>
+
+    </div>
+</div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<input type="hidden" id="hdnConfigID" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MenuMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvPanel").tabs();
+        fnFillConfigDetails();
+        $("#dvAjaxLoad").hide();
+    });
+
+
+</script>
+

@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span>
+        </div>
+        <div id="divReport">
+        </div>
+        <div id="divSummaryReport">
+        </div>
+        <input type="hidden" id="hdnRegionCode" />
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Reports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            fnBindRegionTree("tree");
+            $("#dvTree").show();
+            $("#divMain").css('width', '80%');
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html("");
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        fnManPowerStatusReport();
+
+    }
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $("#dvTree").hide();
+            $("#divMain").css('width', '100%');
+            $("#spnTreeToggle").html('Show Tree');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $("#dvTree").show();
+            $("#divMain").css('width', '80%');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+</script>

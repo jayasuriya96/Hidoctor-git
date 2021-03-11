@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "DashboardDrilldown";
+    Layout = null;
+}
+
+<style>
+        #tblDCRComplaince {
+        border: 1px solid #76787A;
+        background-color:#2353da66;
+        font-size: 16px;
+        font-weight: 100;
+        font-weight: bold;
+    }
+    #ComplaniceCount{
+     padding: 10px 12px 12px 55px;
+    padding-right: 20%;
+    font-weight: bold;
+    font-size: 150%;
+    }
+    #complaincetitle {
+    font-size: 100%;
+    margin-top: 0%;
+    margin-bottom: 10%;
+    }
+    #ComplianceDetail{
+      padding: 6px;
+    }
+        .cls-back-dash {
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        font-size: 14px;
+        color: blue;
+        margin-bottom: 5px;
+    }
+    #headingh2 {
+        padding-top: 10px;
+    }
+
+</style>
+<div>
+    <span style="" class="cls-back-dash">Back to Dashboard</span>
+     <h2 id="headingh2">DCR Compliance</h2> 
+     <div class="col-lg-12">
+         <div class="col-lg-9" style="margin-top:2%;">
+ <table id="tblDCRComplaince" class="table table-bordered">
+                <tr>
+                    <td style="width:15%;">
+                        <span style="float: right">Division Name </span>
+                    </td>
+                    <td style="width:20%;">
+                         <select id="ddlDcrComplianceDivsion" style="width: 100%;"></select>
+                    </td>
+                    <td style="width:14%;">
+                        <span style="float: right">User Category</span>
+                    </td>
+                    <td style="width:20%;">
+                        <select id="ddlUserType" style="width: 100%;">
+                            <option value="0">All</option>
+                            <option value="1">Field</option>
+                            <option value="2">Non Field</option>
+                        </select>
+                    </td>
+                    <td style="width:12%;">
+                        <span style="float: right">Month</span>
+                    </td>
+                    <td style="width:20%;">
+                        <select id="ddlMode" style="width: 100%;">
+                            <option value="Previous">Previous</option>
+                            <option value="Current">Current</option>
+                        </select>
+                    </td>
+                </tr>
+     </table>
+             </div>
+         <div class="col-lg-1">
+            
+             <input class="btn btn-primary" style="margin-top: 47%;" type="button" value="GO" onclick="AdminDashboard.fngetDCRComplianceDetail()" />
+         </div>
+          <div class="col-lg-2" id="dcrcount">
+              <div class="panel panel-default">
+    <div class="panel-heading dcr" style="background-color:#2353da66;font-weight: bold;">DCR Compliance</div>
+    <div class="panel-body"style="padding-top: 2px !important; padding-bottom: 0px !important;">
+        <div  id="ComplaniceCount"></div>
+        <div id="complaincetitle"></div>
+    </div>
+  </div>
+             </div>
+     </div>
+ <div id="ComplianceDetailTable">
+     <div id="heading"></div>
+     <div id="ComplianceDetail"></div>
+ </div>
+   <div></div>
+</div>
+<script src="~/Scripts/HD/AdminDashboard.js"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script>
+    var Month_Status=@Html.Raw(Json.Encode(ViewBag.Month_Status));
+    var IsBack = @Html.Raw(Json.Encode(ViewBag.IsBacks));
+ $(document).ready(function () {
+     AjaxGlobalHandler.Initiate();
+     debugger;
+     AdminDashboard.getDivisionsForDcrCompliance();
+     if(Month_Status=='PREVIOUS')
+     {
+         $('#ddlMode').val('Previous');
+     }
+     else{
+         $('#ddlMode').val('Current');
+     }
+     
+     $('.cls-back-dash').unbind('click').bind('click', function(){
+         if(IsBack=="NO") {
+             $('#main').load('Dashboard/AdminDashBoard');
+         }
+         else
+             fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+         //   $('#main').load('Dashboard/AdminDashBoard?IsBack=YES');
+     });
+     $('#dcrcount').hide();
+ });
+</script>

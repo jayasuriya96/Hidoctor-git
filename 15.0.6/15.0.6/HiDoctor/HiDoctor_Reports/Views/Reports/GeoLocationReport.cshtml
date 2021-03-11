@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "GeoLocationReport";
+  Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr>
+                    <td>Start Date 
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>End Date
+                    </td>
+                    <td>
+
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnUserCode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2_Approved" name="dcrStatus" onclick="fnChangedRadio();" />
+                        Approved
+                        <input type="checkbox" id="chkApplied" value="1_Applied" name="dcrStatus" onclick="fnChangedRadio();" />
+                        Applied
+                        <input type="checkbox" id="chkUnApproved" value="0_Unapproved" name="dcrStatus" onclick="fnChangedRadio();" />
+                        Unapproved     
+                         <input type="checkbox" id="chkDraft" value="3_Draft" name="dcrStatus" onclick="fnChangedRadio();" />
+                        Draft                              
+                        <input type="checkbox" id="rbAll" name="all" value="0,1,2,3" onclick="fnChangedCheck();" checked="checked" />
+                        All
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="btnShow" name="Show" value="Show" onclick="fnGetGeoLocationReport();" />
+                    </td>
+                </tr>
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div id="divHeader"></div>
+        <div id="divInstrauction">
+            <b>* If Location is not found in this report, here are the steps. 
+                                  Just copy paste our latitude and longitude in google maps and press enter.</br>
+                 &nbsp; It would automatically get the location.</b>
+        </div>
+        <div id="divReport">
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+
+    $(document).ready(function () {
+        try {
+            $("#dvTree").show();
+            fnBindUserTree("tree");
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnUserTreeNodeClick(node) {
+        $("#divReport").html("");
+        $("#divHeader").html("");
+        $("#dvTree").hide();
+        $('#hdnUserCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+    }
+
+    function fnUserTreePostInit() {
+
+    }
+</script>

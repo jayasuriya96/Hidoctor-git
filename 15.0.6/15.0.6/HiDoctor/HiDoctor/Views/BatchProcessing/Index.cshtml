@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<style>
+    .dvHeader {
+        width: 100%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+</style>
+
+
+<script src="~/Scripts/HD/BatchProcessing.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<div>
+    <div id="dvErrMsg" class="BPErrMsg" style="display: none"></div>
+    <div class="dvHeader" style="margin-top:15px;">Batch Processing Type(s)</div>
+    <div style="border: 1px solid #0072c6; width: 100%;">
+        <div id="dvBpTypes" style="width: 95%; clear: both;margin-left:5%;">
+            <div style="width: 90%; padding-left: 1%;">
+
+                <label style="font-size:14px;"><b style="margin-left:19%;">Select Batch Processing Type</b></label>
+
+
+                <select id="batchtype" style="margin-top:12px;margin-left:3%;">
+                    <option>--Select Batch Processing Type--</option>
+                    <option value="INWARD_BULK_UPLOAD" id="optInward" name="BpType">Inward Upload</option>
+                    @*<option value="INWARD_UPLOAD"  id="optInward" name="BpType">Inward Upload</option>*@
+                    <option value="DOCTOR_UPLOAD" name="BpType">Doctor Upload</option>
+                    <option value="CHEMIST_UPLOAD" name="BpType">Chemist Upload</option>
+                    <option value="USER_UPLOAD" name="BpType">User Upload</option>
+                    <option value="EMPLOYEE_UPLOAD" name="BpType">Employee Upload</option>
+                    <option value="REGION_UPLOAD" name="BpType">Region Upload</option>
+                    <option value="STOCKIEST_UPLOAD" name="BpType">Stockiest Upload</option>
+                    <option value="PRODUCT_UPLOAD" name="BpType">Product Upload</option>
+                    <option value="SFC_UPLOAD" name="BpType">SFC Upload</option>
+                    <option value="PSU_UPLOAD" name="BpType">PrimarySales Upload</option>
+                    <option value="Payslip_Upload" name="BpType">Payslip Upload</option>
+                    <option value="HOLIDAY_UPLOAD" name="BpType">Holiday Upload</option>
+                    <option value="DFC_UPLOAD" name="BpType">DFC Upload</option>
+                    <option value="LEAVE_BALANCE_UPLOAD" name="BpType">Leave Balance Upload</option>
+                </select>
+
+                @*<input type="radio" value="INWARD_UPLOAD" name="BpType" id="rdInward" />
+                    <label for="rdInward">Inward Upload</label><br />
+                    <input type="radio" value="DOCTOR_UPLOAD" name="BpType" id="rdDoctor" />
+                    <label for="rdInward">Doctor Upload</label><br />
+                    <input type="radio" value="CHEMIST_UPLOAD" name="BpType" id="rdChemist" />
+                    <label for="rdInward">Chemist Upload</label><br />
+                    <input type="radio" value="USER_UPLOAD" name="BpType" id="rdUser" />
+                    <label>User Upload</label><br />
+                    <input type="radio" value="EMPLOYEE_UPLOAD" name="BpType" id="rdEmployee" />
+                    <label>Employee Upload</label><br />
+                    <input type="radio" value="REGION_UPLOAD" name="BpType" id="rdRegion" />
+                    <label>Region Upload</label><br />
+                    <input type="radio" value="STOCKIEST_UPLOAD" name="BpType" id="rdStockiest" />
+                    <label>Stockiest Upload</label><br />
+                    <input type="radio" value="PRODUCT_UPLOAD" name="BpType" id="rdProduct" />
+                    <label>Product Upload</label><br />
+                    <input type="radio" value="SFC_UPLOAD" name="BpType" id="rdSFC" />
+                    <label>SFC Upload</label><br />
+                    <input type="radio" value="PSU_UPLOAD" name="BpType" id="rdPrimarySales" />
+                    <label>PrimarySales Upload</label><br />
+                    <input type="radio" value="PAYSLIP_UPLOAD" name="BpType" id="rdpayslip" />
+                    <label>Payslip Upload</label><br />
+                    <input type="radio" value="CCM_UPLOAD" name="BpType" id="rdCCM" />
+                    <label>CCM Upload</label><br />
+                    <input type="radio" value="HOLIDAY_UPLOAD" name="BpType" id="rdHoliday" />
+                    <label>Holiday Upload</label><br />
+                    <input type="button" onclick="fnGetBPHeader();" class="btn small primary" value="View" />*@
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="margin-top:1%;">
+            <div class="col-xs-3" style="margin-left:10%;">
+                <label style="font-size:14px;padding-left:10%;"><b>Effective from</b></label>
+                <input type="text" style="margin-left:1%;" name="frmDateReg" required id="fromDate" value="">
+                <label style="font-size:14px;margin-left:8%;"><b>Effective To</b></label>
+                <input type="text" style="margin-left:2%;" name="frmDateReg" required id="toDate" value="">
+                <input type="button" style="margin-left:2%;" onclick="fnGetBPHeader();" class="btn small primary" value="GO" />
+                <input type="button" style="margin-left:10%;" onclick="fnGetBPHeader();" class="btn small primary" value="Refresh" />
+            </div>
+            @*<div class="col-xs-3" style="margin-left:3%;">
+                    <label style="font-size:14px;"><b>Effective To</b></label>
+                </div>
+                <div class="col-xs-3" style="margin-left:3%;">
+                    <input type="date" />
+                </div>*@
+        </div>
+        <div style="clear: both"></div>
+        <div id="batchProcessingGRD" style="margin-bottom: 5px;">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvOverLay">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#dvOverLay').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Error Details</span>
+    </div>
+    <div id="batchProcessingErrorLogGRD" style="height: 500px;"></div>
+</div>
+<script>
+    var bpType = "";
+    var inwardType=@Html.Raw(Json.Encode(ViewBag.InwardType));
+
+    bpType = @Html.Raw(Json.Encode(ViewBag.BpType));
+
+    $(document).ready(function () {
+        fnGetdate();
+        $(function () {
+            $("#fromDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+            });
+        });
+        $(function () {
+            $("#toDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                maxDate:0,
+                changeMonth: true,
+                changeYear:true,
+                //showButtonPanel: true
+            });
+        });
+
+        AjaxGlobalHandler.Initiate();
+        $('#divPageHeader').html('Batch Processing');
+        $("#dvOverLay").overlay().load();
+
+        debugger;
+        if(inwardType.toUpperCase()=="YES" && bpType=="")
+        {
+            debugger;
+            $("#optInward").val('INWARD_BULK_UPLOAD');
+        }
+        else{
+            $("#optInward").val('INWARD_BULK_UPLOAD');
+        }
+
+        if(bpType=='INWARD_UPLOAD' || bpType=='INWARD_BULK_UPLOAD')
+        {
+            debugger;
+            $("#optInward").val(bpType);
+        }
+
+        if(bpType != '' && bpType != null) {
+            $("#batchtype").val(bpType);
+            var value=1;
+            fnGetBPHeader(value);
+        }
+
+        $('#dvAjaxLoad').hide();
+
+    });
+    function fnDownloadErrorReport(bpId)
+    {
+        debugger;
+        var bpId= $("#excelDownload").attr('value');
+        if(bpId!='')
+            $.ajax({
+                url: "BatchProcessing/GetErrorReportID",
+                type: "POST",
+                data: "bpId=" + bpId,
+                success: function () {
+                    window.open('/BatchProcessing/DownloadErrorReport')
+                },
+            });
+    }
+
+</script>

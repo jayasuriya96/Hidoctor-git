@@ -1,0 +1,724 @@
+﻿
+
+ul li {
+    list-style-type: disc;
+}
+
+li {
+    margin-bottom: .5em;
+}
+
+/* the overlayed element */
+.simple_overlay {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 10000; /* styling */
+    background-color: #fff;
+    width: 600px;
+    min-height: 540px !important;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+}
+
+/* close button positioned on upper right corner 
+.simple_overlay .close
+{
+    background-image: url(../Content/images/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}*/
+
+/* styling for elements inside overlay */
+.details {
+    position: absolute;
+    font-size: 11px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.div-overlay-header {
+    background: #efefef;
+    font-size: 12px;
+    padding: 5px;
+    width: 98%;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.modal-dialog {
+    -webkit-box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+    background: white;
+    background-clip: padding-box;
+    border-right: 1px solid #ACACAC;
+    border-bottom: 1px solid #ACACAC;
+    border-right: 1px solid rgba(0, 0, 0, .333);
+    border-bottom: 1px solid rgba(0, 0, 0, .333);
+    outline: 0;
+}
+
+.li {
+    background-color: white;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin-right: -1px;
+    min-width: 15px;
+    padding: 7px 7px 6px;
+    text-align: center;
+}
+
+/* .li:active {
+        background-color: white;
+        border-top: 1px solid #CCC;
+        border-left: 1px solid #CCC;
+        border-right: 1px solid #CCC;
+        font-weight: bold;
+    }
+
+.active {
+    background-color: white;
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    font-weight: bold;
+}*/
+
+/*table td {
+    border: none !important;
+}*/
+
+ul.dynatree-container {
+    border: none !important;
+    height: 92.5% !important;
+    font-family: "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans",Arial, "sans-serif" !important;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    /*-webkit-border-radius: 10px;     border-radius: 10px;*/
+    background: #EFEFEF;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: #EFEFEF;
+    }
+
+/*select, input[type=text] {
+    font-family: "Segoe UI", "Segoe UI Web Regular", "Segoe UI Symbol", "Helvetica Neue", "BBAlpha Sans", "S60 Sans",Arial, "sans-serif" !important;
+    width: 50%;
+}
+
+input[type=text] {
+    width: 50% !important;
+}*/
+
+.container {
+    min-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.container {
+    width: 1024px;
+}
+
+.button {
+    font-size: 13px;
+    font-family: "Segoe UI";
+    height: 25px;
+    border: 1px solid #CCC;
+    background-color: #F8F8F8;
+    color: #333;
+    cursor: pointer;
+    border-radius: 2px;
+    outline: 0;
+    -webkit-box-sizing: border-box;
+    -webkit-box-align: center;
+    text-align: center;
+    width: 20%;
+}
+
+.buttonicon {
+    display: inline-block;
+    width: 14px;
+    height: 16px;
+    overflow: hidden;
+    vertical-align: middle;
+    padding-right: 3px;
+}
+
+.button:hover, .button:focus {
+    color: black;
+    border-color: #AAA;
+    background-color: #FEFEFE;
+    -moz-box-shadow: 1px 1px 1px rgba(160,160,160,0.2);
+    -webkit-box-shadow: 1px 1px 1px rgba(160, 160, 160, 0.2);
+    box-shadow: 1px 1px 1px rgba(160, 160, 160, 0.2);
+}
+
+.popUpTitle {
+    font-family: Segoe UI Light, Tahoma, Arial, Verdana;
+    font-size: 18px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    height: 55px;
+    background-color: #F3F3F3;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 15px;
+    padding-right: 20px;
+    padding-top: 15px;
+}
+
+.caption {
+    color: #888;
+}
+
+.popUpTitle-close {
+    background-color: #F3F3F3;
+    padding-top: 8px;
+    z-index: 2002;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    height: 100%;
+    background-color: #F3F3F3;
+    width: 30px;
+}
+
+    .popUpTitle-close span {
+        display: block;
+        margin: 1px;
+        position: absolute;
+        text-indent: -99999px;
+        overflow: hidden;
+        background-repeat: no-repeat;
+    }
+
+.popUpTitle a {
+    cursor: pointer;
+}
+
+
+.dvError {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    height: 30px;
+    text-align: left;
+    border: 1px dotted #EFEFEF;
+    width: 95%;
+}
+
+
+
+.dvAjaxLoad {
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+    display: block;
+    position: fixed;
+    top: 30%;
+    opacity: 4;
+    display: none;
+}
+
+.highlight {
+    background-color: Yellow;
+}
+
+#User_Pass {
+    width: 94%;
+}
+
+.dvInfo {
+    /*  background-color: #EAF4FD !important;     height: 25px;     padding-left: 8%;     border: 1px solid #79B7E7;     border-bottom-left-radius: 5px 5px;     border-bottom-right-radius: 5px 5px;     border-top-left-radius: 5px 5px;     border-top-right-radius: 5px 5px;     width: 80%;     margin-left: 10px;     padding-top: 5px;     margin-top: 10px;*/
+    font-style: italic;
+    float: right;
+    padding-right: 10px;
+    font-size: 14px;
+    color: green;
+}
+
+#dvUserAjaxLoad {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin-left: 13%;
+    margin-top: 25%;
+}
+
+.pageHeader {
+    height: 40px;
+    border-top: 1px solid #000;
+    border-left: none;
+    border-right: none;
+}
+
+/************************** STRAT: Accomapnist SFC*******************************/
+.accPopup {
+    /*background: url(..\Content\themes\base\images\hd\arrow3.jpg) no-repeat;*/
+    width: 32px !important;
+    height: 32px !important;
+    font-weight: bolder;
+    font-size: 15px;
+    color: Black;
+}
+
+    .accPopup:hover {
+        cursor: pointer;
+    }
+
+#dvAccPopUp {
+    width: 450px !important;
+    min-height: 150px !important;
+    background-color: #f3f3f3;
+    border: 3px solid #d3d3d3;
+}
+
+.dvAccPopUpClose {
+    width: 80%;
+    height: 16px;
+    float: right;
+}
+
+#dvAccPopUpSub {
+    float: left;
+    clear: both;
+    height: auto;
+    width: 450px;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#tblPopUp, #tblPopUp td {
+    border: none;
+    width: 100%;
+}
+
+#dvAccompSelectPopUpSub, #dvSubDailyPopup {
+    background-color: #f3f3f3;
+    height: 250px;
+    width: 100%;
+    overflow: auto;
+    float: left;
+}
+
+#tblAccompPopup {
+    width: 100%;
+    border: none;
+}
+
+    /*#tblAccompPopup td
+{
+    background: url(../Content/themes/base/images/hd/headerrow1.jpg) repeat ;    
+}*/
+
+    #tblAccompPopup td:hover {
+        cursor: pointer;
+    }
+
+#divAccMessage {
+    text-align: left;
+    color: Red;
+    float: left;
+    padding-left: 5px;
+}
+/************************************ End Accomapnist SFC ************************************/
+
+/*************************** EXPENSE GROUP- START *************************************/
+.expHeader {
+    width: 100%;
+    vertical-align: middle;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 10px 0px 10px 0px;
+}
+
+.dvExpAlign {
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+    color: #666;
+}
+
+#dvExpMain input[type="text"] {
+    color: #000 !important;
+    background: #fff;
+    font-family: Arial !important;
+    font-weight: lighter;
+    font-size: 15px !important;
+    border: 1px solid #D8D8D8 !important;
+    vertical-align: middle !important;
+    padding-top: 3px !important;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+#dvDailyBlock table td, #dvNonDailyBlock table td {
+    border: none;
+    font-size: 12px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    padding: 5px;
+}
+
+
+.dvExpAlign input[type="text"] {
+    width: 150px !important;
+}
+
+#dvExpMain, #dvExpMain select {
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+    #dvExpMain input[type="text"], #tblNonDaily, #tblDaily {
+        font-size: 12px !important;
+    }
+
+#dvDailyBlock select, #dvNonDailyBlock select {
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    width: auto !important;
+}
+
+#divEligDetail {
+    float: right;
+    width: auto;
+    border: 2px solid #ff8c00;
+    background-color: #FFF4E1;
+    height: auto;
+    padding: 5px;
+    color: #A83F00;
+    z-index: 99999;
+    position: absolute;
+    right: 4%;
+    top: 22%;
+}
+
+#tblEligDetail, #tblEligDetail td, #tblHoliday td {
+    border: none !important;
+}
+
+    #tblEligDetail th, #tblHoliday th {
+        font-weight: bold;
+    }
+
+#dvLoadingExpense {
+    background-color: #E8F1FF;
+    border: 3px solid #d3d3d3;
+}
+
+.tblTarget input {
+    font-size: 13px;
+    border: 1px solid #7EADD9;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    background: #E8F1FF;
+}
+
+#tblTarget {
+    border: 1px solid #99BBE8;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.tblTarget input[type="button"] {
+    font-size: 13px;
+    border: 1px solid gray;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+    background: #efefef;
+    color: Black !important;
+    width: 100%;
+}
+
+.tableth {
+    background: #E8F1FF !important;
+    text-align: center !important;
+    font-weight: bold;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+    padding: 4px;
+}
+
+.cmbBox {
+    margin-left: 5px;
+}
+
+.field-validation-error {
+    color: coral !important;
+    font-size: 12px !important;
+}
+
+.trbgColor {
+    background-color: #FFBFBF;
+}
+
+.td-a {
+    color: #06C;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/*************************** EXPENSE GROUP- END *************************************/
+#div-inward input[type=text] {
+    width: 54% !important;
+}
+
+
+/***************Price Group*******************/
+.tdHeaderStyle {
+    text-align: center;
+    background-color: #0A0A62;
+    color: white;
+    border-right: 1px solid white;
+    height: 25px;
+    font-size: 14px;
+}
+
+.tdDecimal {
+    text-align: right;
+    padding-right: 3px;
+}
+
+.docProDelete {
+    background: url('../Content/images/cross.png') no-repeat !important;
+    height: 20px;
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+.errorIndicator {
+    background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px;
+    border: 1px solid red !important;
+    text-align: left !important;
+    cursor: pointer;
+}
+
+
+/******************* START- WEEKEND GROUP **************************/
+.listheaderbar {
+    background-color: #3B6792 !important;
+    color: #fff;
+    height: 16px !important;
+    padding: 8px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial,Helvetica, sans-serif !important;
+    font-size: 13px;
+    cursor: pointer;
+    float: left;
+}
+
+.expand {
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/expand1.png') no-repeat left center !important;
+}
+
+.collapse {
+    background: transparent url('/Areas/HiDoctor_Activity/content/images/Web/hd/expand2.png') no-repeat left center !important;
+}
+
+.WYearHeader {
+    width: 99%;
+    background-color: #707070;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    float: left;
+}
+
+.WInputBox {
+    width: 100%;
+    float: left;
+    border-top: 1px solid #6c0;
+}
+
+.WInputRow {
+    width: 100%;
+    float: left;
+}
+
+.WInptuRight {
+    width: 59%;
+    float: left;
+    padding: 5px 0px 2px 0px;
+}
+
+    .WInptuRight select {
+        width: 92%;
+    }
+
+    .WInptuRight input[type="text"] {
+        width: 90%;
+    }
+
+.WInputLeftHeader {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.WInptuLeft {
+    width: 25%;
+    float: left;
+    padding: 5px 0px 2px 0px;
+}
+
+    .WInptuLeft input[type="text"] {
+        width: 90%;
+    }
+
+.MonthContainer {
+    width: 100%;
+    float: left;
+}
+
+.WMonthHeader {
+    background-color: #dfdfdf;
+    border-top: 1px solid #06C;
+    /*background: -webkit-gradient(linear, right top, left bottom, from(#d3d3d3), to(#efefef));*/
+}
+
+.WMonthHeaderTop {
+    width: 91% !important;
+    padding-right: 3.4% !important;
+    text-align: center;
+    border-bottom: none !important;
+}
+
+.MonthContainer .WMonthDetail {
+    margin: 1.5%;
+    width: 30%;
+    float: left;
+}
+
+.MonthContainer .WMonthRow {
+    width: 98%;
+    float: left;
+    margin-right: 2%;
+    border-left: 1px solid #06C;
+}
+
+    .MonthContainer .WMonthRow .WMonthColumn {
+        width: 4%;
+        float: left;
+        padding: 2% 4%;
+        border-right: 1px solid #06C;
+        border-bottom: 1px solid #06C;
+    }
+
+.selectedDay {
+    background-color: #F7C309;
+}
+
+.WWeekColor {
+    background-color: rgba(464,571,185,.5);
+}
+
+@media screen and (min-width:1230px) {
+    .WInputLeftHeader {
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+    .WMonthHeaderTop {
+        padding-right: 2.8% !important;
+    }
+
+    .MonthContainer .WMonthRow {
+        width: 95%;
+    }
+
+    .WYearHeader {
+        padding: 8px;
+    }
+}
+/******************* END- WEEKEND GROUP ****************************/
+
+.dvUp {
+    width: 100%;
+    background: url('../Content/images/up_arrow.png') no-repeat !important;
+    height: 25px;
+    margin-left: 30%;
+    font-size: 24PX;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+.dvDown {
+    background: url('../Content/images/down_arrow.png') no-repeat !important;
+    height: 25px;
+    margin-left: 30%;
+    font-size: 24PX;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+.dvRight {
+    /*background: url('../Content/images/move-right.png') no-repeat !important;*/
+    height: 25px;
+    margin-left: 30%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+.dvLeft {
+    /*background: url('../Content/images/move-left.png') no-repeat !important;*/
+    height: 25px;
+    margin-left: 30%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+.dvRefresh {
+    background: url('../Content/images/refresh.jpg') no-repeat !important;
+    height: 25px;
+    margin-left: 17%;
+    font-size: 30PX;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+
+.dvAllRight {
+    /*background: url('../Content/images/move-right.png') no-repeat !important;*/
+    height: 25px;
+    margin-left: 17%;
+    font-size: 19px;
+    font-weight: bold;
+    cursor: pointer !important;
+}
+
+  .Mandatory {
+        color: red;
+    }

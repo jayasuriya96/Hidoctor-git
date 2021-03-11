@@ -1,0 +1,134 @@
+﻿@model HiDoctor_Master.Models.ExpenseGroupModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<link href="../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style type="text/css">
+    #ddlExpenseGroup {
+        width: auto;
+    }
+    #tblDaily td, #tblDaily th, #tblNonDaily td, #tblNonDaily th {
+        padding: 2px;
+    }
+    .cmbBox {
+        width: auto !important;
+    }    
+    .catTable th {
+        background-color:#bdbdbd !important;
+        color:#fff;    
+        border:none !important;  
+        padding:1px 4px 1px 4px !important; 
+    }
+    .catTable td {
+        padding:1px 4px 1px 4px !important; 
+         border:none !important;   
+         background-color:#fafafa;
+    }    
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)    
+    <div id="dvExpMain">
+    <div id="divUnidueCheck" style="display: none;" />
+      
+        <div class="dvExpAlign">
+            <div style="float: left; font-size: 18px; font-weight: normal;" id="summaKeda">
+             @Html.LabelFor(model => model.Expense_Group_Name)
+                @Html.TextBoxFor(model => model.Expense_Group_Name, new { @class = "autoGroup", @onblur="eventBinder(this);" })
+                @Html.ValidationMessageFor(model => model.Expense_Group_Name)
+
+
+                <input type="hidden" id="hdnGroupCode" />
+                <input type="hidden" id="hdnCatE" />
+                <input type="hidden" id="hdnCatNE" />
+            </div>
+            <div style="float: right;">
+                <img src="../Areas/HiDoctor_Master/Content/images/help_icon.jpg" id="idHelp" onmouseover="fnShowHelp()" onmouseout="fnHideHelp()" />
+                <div id="divEligDetail" style="display: none;">
+                <span style="font-weight: bold;"><u>Help: What does the value mean?</u></span><br />
+                <table id="tblEligDetail" cellpadding="0" cellspacing="-5">
+                    <tr>
+                        <td>E<br />
+                                S<br />
+                                SD<br />
+                                SD_FLAT<br />                               
+                                SD_SLAB<br />
+                                D<br />
+                                D_FLAT<br />
+                                D_SLAB<br />
+                                DS<br />
+                                DS_FLAT<br />
+                                DS_SLAB
+                            </td>
+                            <td>: Fixed Eligibility Amount<br />
+                                : Taken from SFC<br />
+                                : First take SFC,if not then take DFC,step up<br />
+                                : First take SFC,if not then take DFC,Flat<br />
+                                : First take SFC,if not then take DFC,Slab<br />
+                                : DFC,Step up<br />
+                                : DFC,Flat<br />
+                                : DFC,Slab<br />
+                                : First take DFC step up,if not then take SFC<br />
+                                : First take DFC Flat,if not then take SFC<br />
+                                : First take DFC Slab,if not then take SFC
+                            </td>
+                    </tr>                    
+                </table>
+            </div>
+            </div>
+        </div>
+
+        <div class="dvExpAlign" style="font-size: 18px; font-weight: normal;">
+            <div style="width: 50%; float: left;">
+                Expense Details<span id="spnSelect" style="display:none;"> for <span style="color: #5478E4" id="spnSelectRegion"></span></span></div>
+            <div style="float: right; width: 30%;">
+                <div style="float: left;">
+                    @Html.LabelFor(model => model.Copy_Expense_Group)</div>
+                <div style="font-size: 13px; float: left; margin-left: 10px;">
+                    @Html.DropDownListFor(model => model.Copy_Expense_Group, ViewBag.expenseGroup as SelectList, "- Select Expense Group -", new { id = "ddlExpenseGroup" })
+                    @Html.ValidationMessageFor(model => model.Copy_Expense_Group)
+                </div>
+            </div>
+        </div>
+
+        <div class="dvExpAlign">
+            <div id="dvDailyBlock">
+            </div>
+        </div>
+
+        <div class="dvExpAlign">
+            <div id="dvNonDailyBlock">
+            </div>
+        </div>
+        <p>
+            <input type="button" value="Save" onclick="fnSaveChart()"/>
+            <input type="button" value="Reset" onclick="fnClearAllExpense()" />
+        </p>
+    </div>
+}
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ExpenseGroup.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            
+            fnGetExpenseDetailsTable();
+         
+            $("#Expense_Group_Name").blur(function () {  });
+            $("#ddlExpenseGroup").change(function () { fnGetGroupPrefillData(this); });
+            $("#dvAjaxLoad").hide();
+        } catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function eventBinder(elem) {
+         fnValidateAutofill(elem, group_g, "Expense_Group_Name", "hdnGroupCode"); fnGetGroupPrefillData(elem);
+    }
+</script>

@@ -1,0 +1,89 @@
+﻿<style type="text/css">
+    .OHRow {
+        width: 100%;
+        border-bottom: 1px solid #d3d3d3;
+        float: left;
+        font-size: 12px;
+    }
+
+    .OHCol1 {
+        width: 20%;
+        float: left;
+    }
+
+    .OHCol2 {
+        width: 52%;
+        float: left;
+        margin-left: 1%;
+        margin-right: 1%;
+        line-height: 1.5em;
+    }
+
+    .OHCol3 {
+        width: 25%;
+        float: left;
+    }
+
+    .icon-eye {
+        background: url(/jquerymobile/glyphish/12-eye.png) 50% 50% no-repeat;
+        background-size: 24px 16px;
+    }
+</style>
+
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnOrderHistoryloginUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div data-theme="b" data-role="header">
+    <a data-role="button" href="#page1" data-icon="home" data-iconpos="notext"
+        class="ui-btn-right" id="HNOrderHistory"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Customer Order History
+        </h5>
+    </div>
+</div>
+<div data-theme="c" data-role="header" id="OHCustName">
+    <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h5>
+
+</div>
+
+<div id="OHOrderMonth" data-theme="c" data-role="header">
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="ddlOHMonth">
+                Select Month :
+            </label>
+            <select id="ddlOHMonth" name="" data-mini="true">
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="OHOrderDetail">
+    <h4 id="hOHOrderDetail" style="border-bottom: 1px solid #d3d3d3;">Order Details</h4>
+    <div id="OHOrderDetailHistory">
+    </div>
+</div>
+
+<div data-role="content">
+    <a id="OHClose" data-role="button" data-theme="b" href="#">Close
+    </a>
+</div>
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var orders_g = new Array();
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnOrderHistoryloginUserName').html(loginUserName_g);  
+        var currentDate=@Html.Raw(Json.Encode(ViewBag.currentDate));
+
+        $("#OHCustName h5").html("Name: " + cName_g);
+        $("#ddlOHMonth").change(function () { fnGetMonthWiseOrderHistory(cCode_g,sPersonCode_g); });    
+        $("#HNOrderHistory").click(function () { fnNavSaleOrderEntry(cCode_g, cName_g, sPersonCode_g, adrs_g, tNo_g, cNo_g); });
+        $("#OHClose").click(function () { fnNavSaleOrderEntry(cCode_g, cName_g, sPersonCode_g, adrs_g, tNo_g, cNo_g); });
+        fnBindOrderHistory(cCode_g,sPersonCode_g,cName_g,currentDate);       
+    });   
+</script>

@@ -1,0 +1,282 @@
+﻿@{
+    Layout = null;
+    ViewBag.title = "DashboardV2";
+}
+
+<style>
+    .cls-dashboard-content {
+        background-color: #EEEEEE;
+        min-height: 300px;
+        padding: 7px;
+    }
+
+    .cls-common-head .panel-heading {
+        background-color: #7986CB !important;
+        color: white;
+    }
+
+    .ddlPS select {
+        float: right;
+        padding: 1px!important;
+    }
+
+    .input-group-addon {
+        padding: 8px 12px;
+        position: absolute;
+        top: -14px;
+        right: -236px;
+        bottom: -17px;
+    }
+
+    .table-striped {
+        background-color: gainsboro;
+    }
+
+    .joinAttrition {
+        color: blue;
+        width: 21%;
+        float: right;
+        position: absolute;
+        left: 368px;
+        top: 7px;
+        padding: 6px 1px 5px 19px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+        right: 1px;
+        top: 20px;
+        border: 1px solid rgba(128, 128, 128, 0.27);
+        border-radius: 3px;
+    }
+
+    #dvCategoryCoverage .table > thead > tr > th, #dvCategoryCoverage .table > tbody > tr > th, #dvCategoryCoverage .table > tfoot > tr > th, #dvCategoryCoverage .table > thead > tr > td, #dvCategoryCoverage .table > tbody > tr > td, #dvCategoryCoverage .table > tfoot > tr > td {
+        padding: 3px !important;
+    }
+
+    #dvCategoryCoverage .table {
+        margin-bottom: 1px !important;
+    }
+
+    #dvCategoryCoverage {
+        right: 0px;
+        position: absolute;
+        padding: 0px 0px 23px 0px;
+        zoom: 1;
+        height: 333px;
+    }
+
+    .btn-active {
+        background-color: cornflowerblue;
+        color: white !important;
+    }
+
+    .cls-positive .btn-switch .btn-inactive {
+        background-color: #65C0B7 !important;
+    }
+
+    #tillMonth {
+        color: black;
+        /*background-color: #7986CB !important;*/
+        width: 50px;
+        height: 19px;
+        padding: 4px 19px 21px 11px;
+        position: absolute;
+        top: 191px;
+    }
+
+    #previousMonth {
+        color: black;
+        /*background-color: #7986CB !important;*/
+        width: 50px;
+        height: 9px;
+        padding: 4px 19px 20px 13px;
+        position: absolute;
+        /* right: -223px; */
+        top: 111px;
+        left: -14px;
+    }
+
+    #currentMonth {
+        color: black;
+        /*background-color: #7986CB !important;*/
+        width: 50px;
+        /* height: 16px; */
+        padding: 4px 18px 6px 14px;
+        position: absolute;
+        top: 44px;
+    }
+
+    #dvJoinAttrion .panel {
+        height: 416px;
+    }
+
+    #excludeSS .hover {
+        background-color: skyblue;
+    }
+
+    #AtriJoinMonth {
+    }
+
+    #excludeSSS {
+        margin: -2px 0 0;
+        margin-top: -13px;
+    }
+    /*#dvCategoryCoverage {
+        background-color:darkslategray;
+    }*/
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/DashBoard/DashBoardV2.css" rel="stylesheet" />
+<div class="cls-dashboard-content">
+    <div>
+        <div class="row">
+            <div class="col-sm-12 clearfix" style="margin-bottom: 10px; right: 28px;">
+                <div class="col-sm-6" id="dvPSwithTarget">
+                    <div class="col-sm-12 clearfix">
+                        <div class="panel cls-cat-cov-main cls-common-head" style="width: 480px; height: 377px;">
+
+                            <div class="panel-heading ddlPS" style="padding: 20px 12px;">
+                                <div class="col-sm-5" style="padding: 0px 3px 13px 2px; position: absolute; left: 27px; top: 10px;font-size:14px;">
+                                    Primary Vs SS with Target   
+                              @*<select id="ddlPrimarySSTarget" style="width:30%; float:right"></select>*@
+                                </div>
+                                <div class="col-sm-4" style="position: absolute; left: 195px; top: 9px; font-size:14px">
+                                    <input type="checkbox" id="excludeSSS" />
+                                    <label id="ExcludeCaption" style="position: inherit; left: 29px; margin-top: -5px; font-weight:400"></label>
+                                </div>
+
+                                <div class="col-sm-3" style="position: absolute; right: -8px; top: 6px;">
+                                    <select id="ddlPrimarySecondary" class="dropdown" style="color: blue; position: absolute; height: 32px; float: right; width: 95px;"></select>
+                                </div>
+                                @*<span class="fa fa-refresh" id="btnRefreshPST" title="Refresh" style="position:absolute; left:467px; top:16px;"></span>*@
+                            </div>
+                            <div id="dvPandSwithTargetBarChat">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel cls-cat-cov-main cls-common-head" style="width: 480px; height: 377px;">
+                        <div class="panel-heading" style="padding: 20px 12px;">
+                            <div class="col-sm-12 clearfix" id="dvCategoryCoverageHeader">
+                                <div style="padding: 0px 3px 13px 2px; position: absolute; left: 9px; top: -15px;">                                  
+                                    <label id="DrCaption" style="font-size:14px; font-weight:400" ></label>
+                                    <select id="ddlCategoryCoverageDivision" class="dropdown" style="color: blue; height: 32px; padding: 3px 7px 4px 21px; right: -199px;"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-3">
+                                <div class="col-sm-2">
+                                    <input type="button" value="TM" id="tillMonth" class="btn-inactive" title="Till Month" style="cursor: pointer" />
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <input type="button" value="PM" id="previousMonth" class="btn-inactive" title="Previous Month" style="cursor: pointer" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="button" value="FM" id="currentMonth" class="btn-active" title="Current Month" style="cursor: pointer" />
+                                </div>
+                            </div>
+                            <div class="col-sm-9" id="dvCategoryCoverage">
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 clearfix" style="right: 28px;">
+
+                <div class="col-sm-6" id="dvProduct">
+                    <div class="col-sm-12 clearfix">
+                        <div class="panel cls-cat-cov-main cls-common-head" style="width: 480px;">
+
+                            <div class="panel-heading" style="padding: 23px 12px;">
+                                <div class="col-sm-6" style="padding: 0px 3px 13px 2px; position: absolute; left: 27px; top: 10px;font-size:14px;">
+                                    Product Wise Performance     
+                                </div>
+                                <div class="col-sm-3">
+                                    <select id="ddlProductWisePerformance" style="color: blue; width: 100px; height: 33px; position: absolute; right: -191px; bottom: 60px; top: -15px;"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    @*         <form id="returnval">*@
+                                    <input type="text" class="clsProductPerformance" id="txtProductPerformance" placeholder="Product Name" style="color: blue; width: 150px; height: 33px; position: absolute; right: -236px; bottom: 60px; top: -15px;" />
+                                    <input type="hidden" id="hdnProductPerformance" />
+                                    @*  </form>*@
+                                    @*                       <span class="input-group-addon">
+                                                <i class="fa fa-search"></i>
+                                         </span>*@
+                                    @*<select id="dvProductPerformance" class="productPerformancelst" style="color:blue;width: 100px;height: 33px;position: absolute;right: -217px;bottom: 60px;top: -12px;"></select> *@
+                                </div>
+                            </div>
+
+                            <div id="dvProductWiseBarChat">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="dvJoinAttrion">
+
+                    <div class="panel cls-cat-cov-main  cls-common-head">
+                        <div class="panel-heading"  style="font-size:14px;">
+                            Joiner Vs Attrition
+                                            <select class="joinAttrition" id="ddlJoinerAttrition"></select>
+                        </div>
+
+
+
+                        @*              <div class="dropdown">
+                                <span class="fa fa-ellipsis-v toggle-menu" title="Menu"></span>
+                                <div class="dropdown-content">
+                                
+                                    <p> <span style="color:black;">Division Name : </span><select id="ddlJoinerAttrition" style="width: 100%;"></select></p>
+                                </div>
+                            </div>  *@
+                        <div id="dvJoinerAttrition" style="overflow:scroll; height:381px;">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/HD/DashBoardV2.js"></script>
+<script type="text/javascript">
+    var doctor_caption = "";
+    var stockist_caption = "";
+
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        doctor_caption=@Html.Raw(Json.Encode(ViewBag.doctor_caption));
+        stockist_caption=@Html.Raw(Json.Encode(ViewBag.stockist_caption));
+          
+        $("#ExcludeCaption").html("Exclude " +stockist_caption +" Without SS");
+        $("#DrCaption").html(doctor_caption + " Coverage");
+        //$("#DrMetCaption").html("No of "+doctor_caption+ " Met");
+        //$("#DrTotalCaption").html(doctor_caption+ "S Total")
+        $("#dvAjaxLoad").hide();
+        $('#page-header').hide();
+        $('#main').css('margin', "0px !important");
+        AdmindashboardV2.initialize();
+    });
+
+</script>

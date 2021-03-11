@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<h2>
+    DCR Report</h2>
+<div id="dvAccordion">
+    <h3 style="height: 30px; padding-left:23px;">
+        Instant Report</h3>
+    <div class="productBox">
+        <div id="dvInstantRpt" style="width: 95%; min-height: 300px; max-height: auto;">
+        </div>
+    </div>
+ @*   <h3 style="height: 30px; padding-left:23px;">
+        Activity Summary</h3>
+    <div class="productBox">
+        <div id="dvActSumRpt" style="width: 95%; height: auto;">
+        </div>
+    </div>
+    <h3 style="height: 30px; padding-left:23px;">
+        Daily Call Planner for- <span id="spnFirst"></span>
+    </h3>
+    <div class="productBox">
+        <div id="dvDailyCall1Rpt" style="width: 95%">
+        </div>
+    </div>
+    <h3 style="height: 30px; padding-left:23px;">
+        Daily Call Planner for- <span id="spnSecond"></span>
+    </h3>
+    <div class="productBox">
+        <div id="dvDailyCall2Rpt" style="width: 95%">
+        </div>
+    </div>*@
+</div>
+<div style="text-align: center">
+    <input type="button" onclick="fnRedirectToCalendar()" value="Go to Calendar & Submit Another DCR" class="" />
+    @*<a href="#" onclick="fnRedirectToCalendar()">Go to Calendar & Submit Another DCR</a>*@
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4InstantReport.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        var possibleDays = "";
+        var possibleDays=@Html.Raw(Json.Encode(ViewBag.possibleDays));
+        var firstDay = possibleDays.split('_')[0];
+        var secondDay = possibleDays.split('_')[1];
+        Company_Code =@Html.Raw(Json.Encode(ViewBag.Company_Code));
+        UserCode =@Html.Raw(Json.Encode(ViewBag.UserCode));
+        RegionCode =@Html.Raw(Json.Encode(ViewBag.RegionCode));
+        CompanyId =@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        $("#spnFirst").html(firstDay.split('^')[0]);
+        $("#spnSecond").html(secondDay.split('^')[0]);
+
+        fnLoadInstantRepot(@Html.Raw(Json.Encode(ViewBag.dcrDate)),@Html.Raw(Json.Encode(ViewBag.flag)));
+        fnLoadActivitySummary(@Html.Raw(Json.Encode(ViewBag.dcrDate)));
+        fnLoadDailyCallPlan1(firstDay);
+        fnLoadDailyCallPlan2(secondDay);
+        $("#dvAccordion").accordion({ collapsible: true });
+    });
+
+    function fnLoadActivitySummary(dcrActualDate) {
+        $('#dvActSumRpt').load('../HiDoctor_Activity/ActivitySummary/Index/?dcrDate=' + dcrActualDate);
+    }
+    function fnLoadInstantRepot(dcrDate, flag) {
+        $('#dvInstantRpt').load('../HiDoctor_Activity/DCRV4InstantReport/Index/?dcrActualDate=' + dcrDate + '&flag=' + flag_g+ '&Company_Code=' + Company_Code+ '&UserCode=' + UserCode+ '&RegionCode=' + RegionCode+ '&CompanyId=' + CompanyId);
+    }
+    function fnLoadDailyCallPlan1(firstDay) {
+        var date = firstDay.split('^')[0];
+        var type = firstDay.split('^')[1];
+
+        date = date.split('/')[2] + '-' + date.split('/')[1] + '-' + date.split('/')[0];
+        $('#dvDailyCall1Rpt').load('../HiDoctor_Activity/DCRV4DailyCallPlanner/Index/?dcrDate=' + date + '&type=' + type);
+    }
+    function fnLoadDailyCallPlan2(secondDay) {
+        var date = secondDay.split('^')[0];
+        var type = secondDay.split('^')[1];
+        date = date.split('/')[2] + '-' + date.split('/')[1] + '-' + date.split('/')[0];
+        $('#dvDailyCall2Rpt').load('../HiDoctor_Activity/DCRV4DailyCallPlanner/Create/?dcrDate='+date+'&type=' + type);
+    }
+</script>

@@ -1,0 +1,528 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<style>
+    #dvAccPopUp {
+        top: 150px !important;
+    }
+
+    #trInterAuto {
+        background-color: #A5D16C;
+    }
+
+    .autoRouteComplete {
+        background-color: #A5D16C;
+    }
+
+    #trInterAuto td input[type="text"] {
+        color: #fff !important;
+        float: left;
+        border: 0px;
+        border-color: none;
+    }
+
+    .autoRouteComplete td input[type="text"] {
+        color: #fff !important;
+        float: left;
+        border: 0px;
+        border-color: none;
+        background-color: #A5D16C;
+    }
+
+    .routeCompHelp {
+        background-image: url("/Content/images/Help_Circle_Blue.png");
+        width: 25px;
+        height: 25px;
+        background-repeat: no-repeat;
+        float: right;
+    }
+
+    .lblRcHelp {
+        color: #1570A6;
+        padding: 5px;
+    }
+
+    .table-striped thead {
+        background-color: #0561B4 !important;
+        color: #fff;
+        width: 100%;
+        margin: 0px auto;
+    }
+
+    #divFreezeDCRMsg {
+        margin: 0% 10%;
+        text-align: left;
+        background-color: #fdf18c;
+        color: #414147;
+        font-weight: bold;
+        border: 1px solid rgb(253, 208, 140);
+    }
+
+    .accRemoveIcon {
+        display: block !important;
+        cursor: pointer;
+        font-size: 16px;
+        color: #ff0000;
+        left: -30px;
+        position: relative;
+    }
+
+    .accRemoveIconBlack {
+        display: block !important;
+        font-size: 16px;
+        cursor: not-allowed;
+        color: black;
+        pointer-events: none;
+        left: -30px;
+        position: relative;
+    }
+
+    .close {
+        display: none;
+    }
+
+    #AccModal {
+        min-height: 260px !important;
+        top: 150px !important;
+        z-index: 999999999 !important;
+    }
+
+    #Acc_Delete_Modal {
+        min-height: 373px !important;
+        z-index: 999999999 !important;
+    }
+
+    .helpIcon {
+        display: none;
+    }
+    ul.token-input-list-facebook {
+            width: 262px !important;
+    }
+</style>
+<div id="div_Header">
+    <div id="prog-bar">
+        <div class="stepno1 step1Selected ">
+            <span id="spnDCR" style="float: left"></span>
+            <div class="helpIcon">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_HEADER','PAGE')" />
+            </div>
+        </div>
+        <div id="dvstep2" style="width: 18%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno2 ">
+            <span id="spnDcoCus"> Doctors/Customers </span> - Visit Details
+        </div>
+        <div style="width: 7.5%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno3">
+            <span id="spnStockist">Stockist</span> Visit & Expense Details
+        </div>
+    </div>
+    <div id="prog-bar-att" style='display: none; text-align: center'>
+        <div class="stepno1 step1Selected ">
+            <span id="spnADCR" style="float: left"></span>
+        </div>
+        <div style="width: 28.5%; float: left;">
+            &nbsp
+        </div>
+        <div class="stepno2">
+            Expense Details
+        </div>
+    </div>
+    <div id="dvLoading" style="display: none">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+    </div>
+    <div id="dvAccPopUp" style="display: none; margin-top: -200px">
+        <input type="hidden" id="hdnAccompPopUP" />
+        <div class="dvAccPopUpClose">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+                 onclick="fnCloseAccPopUP()" />
+        </div>
+        <div class="dvAccPopUpClose" id="divAccMessage" style=""></div>
+        <div id="dvAccPopUpSub">
+            <table cellpadding="0" cellspacing="0" id="tblPopUp">
+                <tr>
+                    <td>
+                        Enter minimum of 3 characters from user name or region name:
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="txtMatching" />
+                        <span>
+                            <input type="button" id="btnGo" value="Go" onclick="fnGetAccompPopup()" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="dvAccompSelectPopUpSub" style="display: none;">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="clear: both">
+    </div>
+    <div id="divHeaderLoad" style="display: none;">
+        <center>
+            <div id="divUnapprove" class="unapprovedetail" onclick="fnHideUnapprove()" style="display: none;">
+            </div>
+            <div id='divFreezeDCRMsg' class="alert alert-warning" style="display:none;">
+                <span></span> Note: The approved TP details (i.e.Accompanist Name,Work Category, Work Place and SFC Details) are not allowed to be changed. To change any of these details, we request you to contact your HQ.
+            </div>
+            <table cellpadding="0px" cellspacing="0px" width="80%" border="0px" id="tblHeader">
+                <tr align="left">
+                    <td class="first_td">
+                        Date
+                    </td>
+                    <td colspan="2">
+                        <label id="DCR_Date">
+                        </label>
+                    </td>
+                </tr>
+                <tr align="left" id="rowAcc">
+                    <td class="first_td" style="vertical-align:middle;">
+                        <div style="float:left">
+                            <label style="padding: 0px !important;">
+                                Accompanists
+                            </label>
+                        </div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_HEADER','ACCOMPANISTS')" />
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <input type="hidden" id="hdnAccompRowData" />
+                        <div id="accompanistDetail">
+                        </div>
+                    </td>
+                </tr>
+                <tr align="left" id="divShowCP">
+                    <td class="first_td">
+                        <div style="float:left">Beat / Patch Name</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_HEADER','CP')" />
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <input type="text" id="CP_No" class="autoCP" />
+                        <input type="hidden" id="hdnCPCode" runat="server" />
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="first_td">
+                        <div style="float:left">Work Category</div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_HEADER','CATEGORY')" />
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <select id="ddlCategory" onchange="fnchangeCategory();fnSetIntermediatePrivilege();"></select>
+                        <div id="categorysettingcheck" style="margin-top:10px"></div>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="first_td">
+                        Work Place
+                    </td>
+                    <td colspan="2">
+                        @*<input type="text" id="Work_Place" class="autoIntermediateWork" />
+                        <input type="hidden" id="hdnWorkPlace" runat="server" />*@
+                        <div id="wcat" style="width:40%"><input type="text" id="Work_Place" name="Work_Place" class="form-control"  /></div>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="first_td" style="vertical-align: top">
+                        Start Time & End Time
+                    </td>
+                    <td>
+                        <div class="editor-field" style="float: left; width: 100px;">
+                            <input type="text" id="Start_Time" />
+                        </div>
+                        <div class="editor-field" style="float: left; width: 100px;">
+                            <input type="text" id="End_Time" />
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr align="left">
+                    <td class="first_td" style="vertical-align:middle;">
+                        <div style="float:left">
+                            <label>
+                                Place Details
+                            </label>
+                        </div>
+                        <div class="helpIcon">
+                            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_HEADER','SFC')" />
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <input type="hidden" id="hdnIntermediateRowData" />
+                        <div id="intermediatePlace">
+                        </div>
+                        <span id="lblRCHelp" class="lblRcHelp"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first_td" style="vertical-align:middle;text-align:left;margin-top:3px;">
+                        <label id="lblActivity" style="display:none;">
+                            Activity
+                        </label>
+                    </td>
+                    <td colspan="3">
+                        <div id="dvactivity" style='display: none'>
+                            <table id="tblActivity">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Activity Name
+                                        </th>
+                                        <th>
+                                            Start Time
+                                        </th>
+                                        <th>
+                                            End Time
+                                        </th>
+                                        <th>
+                                            Remarks
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <p style="text-align: center;margin-top: 3%;">
+            <input type="button" value="Next" id="btnHeaderSubmit" onclick="fnSubmitHeader()" />
+            <input type="button" value="Clear" onclick="fnClearHeader()" />
+        </p>
+    </div>
+</div>
+<div id="dvSFCPopUp" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvSFCPopUp').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>SFC</span>
+        </div>
+        <br />
+        <div style="height: 325px; overflow: auto;" class="col-lg-12">
+            <div id="dvAllSFC" class="col-lg-12 table-responsive">
+            </div>
+            <div class="col-lg-12" style="clear: both; margin: 5px;">
+                <button type="button" onclick="fnBindSelectedSFCCode();" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="divModelPopUp">
+    <div class="simple_overlay" id="Acc_Delete_Modal">
+        <div class="popUpTitle" style="height: 45px; text-align: center;">
+            <span style="font-size: 20px;">Alert</span>
+        </div>
+
+        <div id="divAccDocDetail_Call" style="height: 100%; overflow: scroll; font-size: 13px;">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content" style="border: none; webkit-box-shadow: none; box-shadow: none;">
+                    <div class="modal-header">
+                        @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="pUser_name"></p>
+                        <div>
+                            <div>
+                                <div class="main1">
+                                    <div class="empName" id="pEmpName"></div>
+                                    <div style="margin-bottom: 10px;">You are trying to remove <span id="pRemoveAccName"></span> from the accompanist list.</div>
+                                    <div style="margin-left: 20px;margin-bottom: 10px;">
+                                        <div class="con"><span>1.</span><span> If any visit of doctor that belongs to this accompanist or this region is avaliable in this DCR, system will remove that doctor visit from this DCR; and</span></div>
+                                        <div class="con"><span>2.</span><span> If you have marked this accompanist/region against any other doctor visits,the accompanist/region name will be removed.</span></div>
+                                        <div class="con"><span>3.</span><span> The CP,SFC records and visits of chemist who belongs to this accompanist / this region will also be removed.</span></div>
+                                    </div>
+                                    <div>Click OK to continue</div>
+                                    <div>Click CANCEL to retain this accompanist / region and related doctor visits.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 10px; float:right;">
+                    <input type="button" class="btn .btn-default" style="font-size: 14px;" name="name" value="CANCEL" onclick="fnAcc_Remove_Cancel();" />
+                    <input type="button" class="btn .btn-primary" style="font-size: 14px;" name="name" value="OK" onclick="fnAcc_Remove();" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="simple_overlay" style="padding: 0;" id="AccModal">
+        <!-- Modal content-->
+        <div class="popUpTitle" style="height: 45px; text-align: center;">
+            <span style="font-size: 20px;">Alert</span>
+        </div>
+
+        <div class="modal-body" style="padding: 15px 32px;">
+            <p id="pDel_User_name"></p>
+            <div>
+                <div>
+                    All the Doctor visits of this DCR will be marked as 'Accompanied Call' with this accompanist name
+                    <span id="pAcc_name"></span>
+                    If you wish to mark any visit as independent visit, Please go the doctor visit screen and modify that doctor visit.
+                </div>
+            </div>
+            <div style="margin-top: 10px;margin-left: 15px;">
+                <div style="display: inline-block;">
+                    <input type="checkbox" name="name" value="Yes" id="chk_mark_all_acc" style="width: 14px; height: 18px; margin: 0;" />
+                </div>
+                <div style="display: inline-block; vertical-align: top;">Mark all doctor visits as 'Indepent visits'</div>
+
+            </div>
+            <div style="vertical-align: top;">Click OK to continue</div>
+        </div>
+        <div class="modal-footer" style="margin-left: 80%;">
+            <input type="button" class="btn btn-default" style="font-size: 13px;" name="name" value="CANCEL" onclick="fnAcc_Visits_Cancel();" />
+            <input type="button" class="btn btn-primary" style="font-size: 13px;" name="name" value="OK" onclick="fnAcc_Visits_Save();" />
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRAllowedSpecialCharacters.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4Header12.7.0.1.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    var dcrDate = "";
+    var dcrStatus = "";
+    var currentRegion = "";
+    var currRegionName = "";
+    var cpNeed = "";
+    var isrcpa="";
+    var source="";
+    var sourceString="";
+    var flag_g="";
+    var actvistyJSON_g="";
+    var acc_g="";
+    var displayDate="";
+    var unapprovereason_g = "";
+
+    var CompanyCode = "";
+    var RegionCode = "";
+    var UserCode = "";
+    var User_Name = "";
+    var User_Type_Code = "";
+    // Code Revert.
+
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+
+        ShowModalPopup('dvLoading');
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        RegionCode=@Html.Raw(Json.Encode(ViewBag.Region_Code));
+        UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+        User_Name = @Html.Raw(Json.Encode(ViewBag.User_Name));
+        User_Type_Code = @Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+
+        var category=@Html.Raw(Json.Encode(ViewBag.category));
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        displayDate = @Html.Raw(Json.Encode(ViewBag.displayDate));
+        fnBindCategory(category);
+        fnGetTravelMode();
+        fnPrivilegeValueforHeaderName();
+        var activityFullName = fnGetSelectedActivityFullName(flag_g, isrcpa)
+        $("#DCR_Date").html(displayDate);
+        $('#spnDCR').html("DCR- "+ displayDate+ " "+activityFullName);
+        // set attendance controls
+        if(flag_g.toUpperCase() == "A")
+        {
+            $('#spnADCR').html("DCR - "+ displayDate+ " - "+activityFullName);
+            //var doc = fnGetPrivilegeValue("SHOW_SAMPLE_IN_DCR_ATTENDANCE", "NO");
+            //if (doc == 'YES') {
+            //    $('#prog-bar').css('display','');
+            //    $('#prog-bar-att').css('display','none');
+            //}
+            //else
+            //{
+                $('#prog-bar').css('display','none');
+                $('#prog-bar-att').css('display','');
+            //}
+
+            $('#btnHeaderSubmit').val("Next");
+            $('#divShowCP').css('display','none');
+            $('#rowAcc').css('display','none');
+
+        }
+        // assigning time picker for start and end date.
+        $('#Start_Time').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+
+        $('#End_Time').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+
+        if(flag_g.toUpperCase() == 'A')
+        {
+            $('#btnHeaderSubmit').val('Next');
+            $('#lblActivity').css('display','');
+        }
+
+        $("#Start_Time").addClass("time");
+        $("#End_Time").addClass("time");
+
+        $("#Start_Time").keypress(function () { return false; });
+        $("#End_Time").keypress(function () { return false; });
+
+        cpNeed = fnGetPrivilegeValue("CAMPAIGN_PLANNER", "NO");
+        if (cpNeed == "NO") {
+            $("#CP_No").attr('disabled', 'disabled');
+            $("#divShowCP").css('display','none');
+        }
+        else {
+            if (cpNeed == "YES") {
+                $("#CP_No").blur(function () { fnFillCpDetails(); });
+            }
+            if (cpNeed == "OPTIONAL") {
+                $("#CP_No").blur(function () { fnFillCpDetails(); });
+                //$("#CP_No").blur(function () { return fnCheckRemarksSpecialChar(event) });
+            }
+        }
+
+
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+
+        sourceString = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        source=sourceString.split('_')[0];
+        var region = "";
+        region=@Html.Raw(Json.Encode(ViewBag.regionCode));
+        currentRegion = region.split(',')[0];
+        currRegionName = region.split(',')[1];
+
+        // in page load the work place should be current region name, except in the case of drafted data.
+        //$("#Work_Place").blur(function() { return fnCheckRemarksSpecialChar(this) });
+        $("#ddlCategory").attr('selectedIndex','0');
+        $("#ddlCategory").change(function () { fnCategorySelected(); });
+        fnSetHeaderPrivileges();
+        GetHeaderDetails();
+        $('#txtMatching').keyup(function(e) {
+            if (e.which == 13) {  // detect the enter key
+                $('#btnGo').click(); // fire a sample click,  you can do anything
+            }
+        });
+        $("#Acc_Delete_Modal").overlay().load();
+        $("#AccModal").overlay().load();
+    });
+    $("#dvSFCPopUp").overlay().load();
+</script>

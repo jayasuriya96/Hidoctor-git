@@ -1,0 +1,285 @@
+﻿@{
+    ViewBag.Title = "DoctorView";
+    Layout = null;
+}
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style>
+    .clsRightPanel {
+        background-color: #eee;
+        padding: 5px;
+    }
+
+    .clsLeftPanel {
+        min-height: 532px;
+        height: auto;
+        /* margin: 0 -1px 0 0;*/
+        border-right: 1px solid #b6b6b6 !important;
+        background-color: #efefef;
+        padding-right: 0px !important;
+        padding-left: 5px !important;
+        float: left;
+    }
+
+    .clsDisabletxtBox {
+        background-color: darkgrey !important;
+    }
+
+    .clsheader {
+        background: #5E87B0 !important;
+        color: #fff;
+        text-align: center !important;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .clsProductHeader {
+        background: darkblue;
+        color: #fff;
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .clsdvVisit {
+        height: 600px;
+        overflow: auto;
+    }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+</style>
+<div class="col-xs-12 form-group panel" id="dvDoctorView">
+    <div class="col-xs-12 form-group panel-body">
+        <div id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <br />
+        <div class='col-xs-3 form-group clsLeftPanel' id='leftNav'>
+            <div id="regiontree" style="float: left; height: auto; width: 100%">
+            </div>
+        </div>
+        <div class='col-xs-9 form-group clsRightPanel' id="divMain">
+            <div class="col-xs-12 form-group" id="divInput">
+                <div class="row col-xs-12 form-group clearfix" id="divLegend">
+                    <label><span style="font-weight: bold;">1.You can search for Doctors based on the Region Name / Doctor Name / Specialty / MDL Number. These parameters can be entered ALL AT ONCE, or ONE AT A TIME or IN COMBINATION. Depending upon the parameters and search matches, records will be fetched.</span></label><br />
+                    <label><span style="font-weight: bold;">2 a)</span>To fetch ALL Doctors having ONE MDL Number, check "EQUAL TO" and enter the required MDL Number in MDL Num. 1 box.</label><br />
+                    <label><span style="font-weight: bold;">2 b)</span>To fetch ALL Doctors between 2 MDL Numbers, check "BETWEEN" and enter the required MDL Numbers in MDL Num. 1 and MDL Num. 2 boxes. Results will be returned inclusive of MDL Num. 1 and MDL Num.2.</label><br />
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; font-style: italic; color: blue;">NOTE: Between functionality will not work for MDL Numbers that contain alpha_numeric characters.</span> </label>
+                    <br />
+                    <label><span style="font-weight: bold;">2 c)</span>To fetch ALL Doctors having MDL Numbers that CONTAIN a particular number, check "CONTAINS" and enter the number in MDL Num. 1. For instance, if you enter 5, then records like 5, 50, 51, 500, 2500, 4005 all these will be returned.</label><br />
+                    <label><span style="font-weight: bold;">3.</span>To ensure previous search parameters are cleared, click "CLEAR".</label>
+                </div>
+                <div style="clear: both;"></div>
+                <br />
+                <div class="row col-xs-12 form-group clearfix" id="divRegionName" style="display: none;">
+                    <div class="col-xs-3">
+                        <label>Region Name:</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="txtRegionName" class="form-control" readonly="true" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row col-xs-12 form-group clearfix">
+                    <div class="col-xs-3">
+                        <label>Doctor Name:</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="txtDoctorName" class="form-control" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row col-xs-12 form-group clearfix">
+                    <div class="col-xs-3">
+                        <label>Specialty:</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <select class="selectboxWidth input-large" id="ddlspeciality">
+                            <option value="0">-Select Specialty-</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row col-xs-12 form-group clearfix">
+                    <div class="col-xs-3 clearfix">
+                        <label>MDL Number:</label>
+                    </div>
+                    <div class="col-xs-9 form-group clearfix">
+                        <div class="col-xs-3" style="padding-left: 2px;">
+                            <input type="radio" id="chkEqual" name="chkMDl" value="E" />
+                            <label for="E">Equal To</label><br />
+                            <input type="radio" id="chkBetween" name="chkMDl" checked="checked" value="B" />
+                            <label for="B">Between</label><br />
+                            <input type="radio" id="chkContains" name="chkMDl" value="C" />
+                            <label for="C">Contains</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <label>MDL Num1:</label>&nbsp;<input type="text" id="txtMdlNo1" class="form-control" /><br />
+                            <label>MDL Num2:</label>&nbsp;<input type="text" id="txtMdlNo2" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-xs-12 form-group clearfix">
+                    <div class="col-xs-3" style="clear: both;"></div>
+                    <div class="col-xs-6" style="padding-left: 2px;">
+                        <input type="button" value="Go" id="btnGotoDoctorView" class="btn btn-success" />&nbsp;&nbsp;
+                        <input type="button" value="Clear" class="btn btn-info" id="btnClearDoctorView" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-xs-12 form-group">          
+                <div class="col-xs-5 form-group" id="dvSearch" style="float:right"></div>
+            </div>
+            <br />
+            <div class="col-xs-12 form-group" style="min-height:100%;">
+                <div id="dvDoctorViewdetails" style="clear: both;"></div>
+            </div>
+            <br />
+            <div class="col-xs-12 form-group">
+                <div id="dvDoctordetails"></div>
+            </div>
+            <br />
+            <div class="col-xs-12 form-group">
+                <div class="col-xs-6 form-group">
+                    <div id="dvdoctorVisitHeader"></div>
+                    <div id="dvDoctorVisitDetails" class="clsdvVisit"></div>
+                </div>
+                <div class="col-xs-6 form-group">
+                    <div id="dvDoctorProductHeader"></div>
+                    <div id="dvProductMappingDetails" class="clsdvVisit"></div>
+                </div>
+            </div>
+<div style="clear:both"></div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="hdnRegionCode" />
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/DoctorQuickView.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            CUSTOMER.fnInitializeEvents();
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            if(currentRegionCode_g != null && currentRegionCode_g != ''){
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");                       
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+            }
+            $("#dvAjaxLoad").hide();
+        }
+        catch (e) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    
+    function fnToggleTree() {     
+        if ($("#spnTreeToggle").html() == "Hide Tree") {   
+            $('#leftNav').hide();        
+            $('#regiontree').hide();             
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');            
+            $("#divMain").addClass('col-xs-12'); 
+            $('#dvSearch').removeClass('col-xs-6');
+            $('#dvSearch').addClass('col-xs-5');           
+            $("#spnTreeToggle").html('Show Tree');
+         
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#leftNav').show();    
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');          
+            $('#divMain').removeClass('col-xs-12');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+            $('#dvSearch').removeClass('col-xs-5');
+            $('#dvSearch').addClass('col-xs-6');
+        }
+    }
+
+    function fnToggleInput() {   
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    function fnRegionTreeActivate(node) {  
+        $('#hdnRegionCode').val(node.data.key);         
+        $('#txtRegionName').val(node.data.title);
+        $('#divRegionName').show();
+        $('#ddlspeciality').val('0');	
+        $('#txtDoctorName').val('');
+        $('input[type=radio][value="B"]').first().attr('checked', 'checked');
+        $('#txtMdlNo1').val('');
+        if ($('#txtMdlNo2').hasClass('clsDisabletxtBox')) {
+            $('#txtMdlNo2').attr('readonly', false);
+            $('#txtMdlNo2').removeClass('clsDisabletxtBox');
+            $('#txtMdlNo2').val('');
+        }
+        else {
+            $('#txtMdlNo2').val('');
+        }
+        $('#dvDoctorViewdetails').empty();
+        $('#dvDoctordetails').empty();
+        $('#dvDoctorVisitDetails').empty();
+        $('#dvProductMappingDetails').empty();
+        $('#dvDoctorProductHeader').empty();
+        $('#dvdoctorVisitHeader').empty(); 
+        $('#dvSearch').empty();  
+        $("#dvAjaxLoad").hide();           
+    }
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnRegionTreeNodeClick(node){
+        $('#hdnRegionCode').val(node.data.key);         
+        $('#txtRegionName').val(node.data.title);
+        $('#divRegionName').show();
+        $('#ddlspeciality').val('0');	
+        $('#txtDoctorName').val('');
+        $('input[type=radio][value="B"]').first().attr('checked', 'checked');
+        $('#txtMdlNo1').val('');
+        if ($('#txtMdlNo2').hasClass('clsDisabletxtBox')) {
+            $('#txtMdlNo2').attr('readonly', false);
+            $('#txtMdlNo2').removeClass('clsDisabletxtBox');
+            $('#txtMdlNo2').val('');
+        }
+        else {
+            $('#txtMdlNo2').val('');
+        }
+        $('#dvDoctorViewdetails').empty();
+        $('#dvDoctordetails').empty();
+        $('#dvDoctorVisitDetails').empty();
+        $('#dvProductMappingDetails').empty();
+        $('#dvDoctorProductHeader').empty();
+        $('#dvdoctorVisitHeader').empty(); 
+        $('#dvSearch').empty();  
+        $("#dvAjaxLoad").hide();                 
+    }
+
+</script>

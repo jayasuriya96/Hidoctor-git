@@ -1,0 +1,106 @@
+﻿<style>
+    .ui-page {
+        height: 100% !important;
+    }
+</style>
+<div class="clearboth"></div>
+<div class="menucontent">
+    <a href="#" onclick="fnGoToMenu()">Menu
+    </a>
+</div>
+<div style="clear: both"></div>
+
+<div style="border: 1px solid; width: 99%">
+    <div id="divPendingApproval" style="display: none; background-color: dimgray; padding: 2%">
+        <span id="PendingApproval" style="color: white; font-size: initial;"></span>
+
+    </div>
+    <div id="ApprovalScreen" style="display: none; margin-left: 1%; padding: 2%">
+
+        <input type="submit" data-inline="true" data-theme="b" class="ui-btn-hidden" data-disabled="false" data-mini="true" onclick="fnDcrApproval()" value="Go to Dcr Approval">
+    </div>
+    <div id="divTPPendingApproval" style="display: none; background-color: dimgray; padding: 2%">
+        <span id="TPPendingApproval" style="color: white; font-size: initial;display:block;padding-bottom:5px;"></span>
+        <span id="TPApproval" style="color: white; font-size: initial;font-size:13px;font-style:italic"></span>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('span.cls_usernamespn').text(loginUserName_g);
+        try {
+            $("#dvAjaxLoad").hide();
+            var TPPendingApprovalUserCount = @Html.Raw(Json.Encode(ViewBag.TPPendingApprovalUserCount)); 
+            var SSPendingApprovalUserCount = @Html.Raw(Json.Encode(ViewBag.SSPendingApprovalUserCount)); 
+            var Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            fnTPApprovalPendingMsg(TPPendingApprovalUserCount);
+            fnmanagerApprovalPrivilage()
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnTPApprovalPendingMsg(tpPendingApprovalUserCount)
+    {
+        if(tpPendingApprovalUserCount >0 && SSPendingApprovalUserCount > 0)
+        {
+            $("#divTPPendingApproval").show();
+            $("#TPPendingApproval").html("You have <b>" + tpPendingApprovalUserCount + "</b> users TP(s) to be approved,"+SSPendingApprovalUserCount+"</b> users Secondary Sales to be approved");
+            $("#TPApproval").html("TP Approval can be done through web only.");
+        }
+        else if(tpPendingApprovalUserCount >0 && SSPendingApprovalUserCount == "")
+        {
+            $("#divTPPendingApproval").show();
+            $("#TPPendingApproval").html("You have <b>" + tpPendingApprovalUserCount + "</b> users TP(s) to be approved");
+            $("#TPApproval").html("TP Approval can be done through web only.");
+        }
+        else if(tpPendingApprovalUserCount =="" && SSPendingApprovalUserCount  > 0)
+        {
+            $("#divTPPendingApproval").show();
+            $("#TPPendingApproval").html("You have <b>" + SSPendingApprovalUserCount + "</b> users Secondary Sales to be approved");
+            $("#TPApproval").html("TP Approval can be done through web only.");
+        }
+    }
+    function fnmanagerApprovalPrivilage() {
+        $.ajax({
+            url: '/HiDoctor_Master/Approval/GetpendingDCR',
+            type: "GET",
+            success: function (result) {
+                var value = result.split('_')[0];
+                var count = result.split('_')[1];
+                var privilageCount = result.split('_')[2];
+                if (value == 'YES') {
+                    $("#divPendingApproval").show();
+                    $("#DCRApprovalScreen").show();
+                    $("#ApprovalScreen").show();
+                    $("#PendingApproval").html("You have <b>" + count + "</b> DCRs to be approved. At any point in time, you can have only a maximum of <b>" + privilageCount + "</b> DCRs.<br> <br>Please approve them to be able to enter your DCR.")
+                    $("#DCRApprovalScreen").html("Go To DCR Approval Screen")
+                    $('#DCRApprovalScreen').attr("href", "HiDoctor_Master/Approval/DCRApproval");
+                    $('#dcrapproval').html()
+                }
+
+            }
+        });
+
+    }
+
+    function fnDcrApproval() {
+        $.ajax({
+            url: '/HiDoctor_Activity/DCRApproval/dcrapprovalMobilescreen',
+            type: "GET",
+            success: function (result) {
+                $.mobile.changePage(result, {
+                    type: "post",
+                    reverse: false,
+                    changeHash: false
+                });
+            }
+        });
+
+
+    }
+
+</script>

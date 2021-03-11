@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "PrivilegeMapping";
+    Layout=null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    .mandatory {
+        color: red;
+    }
+
+    #dvPriValues {
+        height: 250px;
+        border: 1px solid #ddd;
+        overflow: auto;
+    }
+
+    #dvMapping a {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .collapseHeader {
+        text-align: left;
+        font-weight: bold;
+    }
+</style>
+
+<div>
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvInsertMapping">New Privilege Mapping</a></li>
+            <li><a href="#dvEditMapping">Edit Privilege Mapping</a></li>
+        </ul>
+        <div id="dvInsertMapping" class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvPriDetails">Privilege Details</div>
+                <div class="col-lg-12 panel-body">
+                    <div class="row clearfix form-group">
+                        <div class="col-xs-2">
+                            Privilege Name <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <select id="cboPrivilege" onchange="fnGetPrivilegeValues();"></select>
+                        </div>
+                    </div>
+                    <div class="row clearfix form-group" style="padding-bottom: 1%;">
+                        <div class="col-xs-2">
+                            Description
+                        </div>
+                        <div class="col-xs-6">
+                            <span id="spnDescription"></span>
+                        </div>
+                    </div>
+                    <div class="row clearfix form-group">
+                        <div class="col-xs-2">
+                            Privilege Values  <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-3">
+                            <div id="dvPriValues"></div>
+                        </div>
+
+                        <div class="col-xs-2">
+                            User Type<span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="dvUserTypeTree" style="height: 250px;"></div>
+                        </div>
+                    </div>
+                    <div class="row clearfix form-group">
+                        <div class="col-xs-2">
+                            Status<span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-6 col-sm-3">
+                            <input type="radio" name="rdStatus" value="1" checked="checked" />Enabled
+                            <input type="radio" name="rdStatus" value="0" />Disabled
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            @*
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvPriMapping">Mapping Details</div>
+                <div class="col-lg-12 panel-body">
+                </div>
+
+            </div>
+            *@
+            <div class="panel panel-default">
+                <div class="panel-heading" id="dvPriMapping">Request Details</div>
+                <div class="row col-lg-12 panel-body">
+
+                    <div class="row col-lg-12">
+                        <div class="col-xs-2 form-group">
+                            Request From <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            <input type="text" id="txtRequestFrom" class="form-control" maxlength="30" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row col-lg-12 clearfix">
+                        <div class="col-xs-2 form-group">
+                            Request Date <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            <input type="text" id="txtRequestDate" class="form-control" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row col-lg-12 clearfix">
+                        <div class="col-xs-2 form-group">
+                            Support User <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            <input type="text" id="txtSupportUser" class="form-control" maxlength="50" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row col-lg-12 clearfix">
+                        <div class="col-xs-2 form-group">
+                            Request Reason <span class="mandatory">*</span>
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            <textarea id="txtRequestReason" class="form-control" style="min-height: 100px;" maxlength="1000"></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="">
+                <input type="button" class="btn small primary" value="Submit" onclick="fnSubmit();" />
+                <input type="button" value="Clear" class="btn small primary" onclick="fnClearAll();" />
+            </div>
+        </div>
+        <div id="dvEditMapping" class="col-lg-12 form-group" style="overflow: auto;">
+            <div class="row col-lg-12 clearfix">
+                <div class="col-xs-2 form-group">
+                    Privilege Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboSearchPrivilege" class="form-control"></select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row col-lg-12 clearfix">
+                <div class="col-xs-2 form-group">
+                    User Type Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboSearchUserType" class="form-control"></select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row col-lg-12 clearfix">
+                <div class="col-xs-2 form-group">
+                    <input type="button" value="Submit" class="btn small primary" onclick="fnGetUserTypePrivilegeMapping();" />
+                </div>
+            </div>
+            <div id="dvMapping" class="col-lg-12 table-responsive"></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PrivilegeMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script lang="ja">
+    var selectedUserTypeCodes, selectedUserTypeNames;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvPanel").tabs();
+        fnBindUserTypeTreeWithCheckbox("dvUserTypeTree");
+        fnGetActivePrivileges();
+        fnGetActiveUserTypes();
+        $('#txtRequestDate').datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+        $('#dvPanel').removeClass('col-lg-12');
+        $('#dvPanel').addClass('col-lg-12');
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnUserTypeTreeSelect(select, node) {
+        selectedUserTypeCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selectedUserTypeNames = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.title;
+        });
+    }
+    function fnUserTypeTreeNodeClick(node) {
+    }
+    function fnUserTypeTreePostInit(node) {
+    }
+</script>
+

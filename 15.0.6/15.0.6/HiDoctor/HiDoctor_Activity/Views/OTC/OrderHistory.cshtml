@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "OrderHistory";
+}
+
+<h2>OrderHistory</h2>
+<div id="divsfc_DNUM" data-inset="true" style="border-bottom: 1px solid gray"><a href="#" data-role="button" data-icon="delete" data-iconpos="notext" style="float: right;" onclick="fnSFCDelete(DNUM)" id="spnSFCDelete_DNUM">Delete</a><table style="width: 100%">
+    <tr>
+        <td>
+            <h5>From Place</h5>
+        </td>
+        <td>
+            <select name="" data-mini="true" id="ddlFromPlace_DNUM" class="clsFromPlace">
+                <option value="0">Select FromPlace</option>
+            </select><input name="" id="txtFromPlace_DNUM" placeholder="If not listed type here" value="" maxlength="50" type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset"></td>
+    </tr>
+    <tr>
+        <td>
+            <h5>To Place</h5>
+        </td>
+        <td>
+            <select name="" data-mini="true" id="ddlToPlace_DNUM" class="clsToPlace fillDist">
+                <option value="0">Select ToPlace</option>
+            </select><input name="" id="txtToPlace_DNUM" maxlength="50" placeholder="If not listed type here" value="" type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset"></td>
+    </tr>
+    <tr>
+        <td>
+            <h5>Travel Mode</h5>
+        </td>
+        <td>
+            <select name="" data-mini="true" id="ddlTravelMode_DNUM" class="clsTravelMode">
+                <option value="0">Select TravelMode</option>
+            </select></td>
+    </tr>
+    <tr>
+        <td>
+            <h5>Distance</h5>
+        </td>
+        <td>
+            <input name="" class="clsCheckNumeric" maxlength="4" id="txtDistance_DNUM" placeholder="Distance" value="" type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset"><input type="hidden" id="hdnDistanceFareCode_DNUM" /><input type="hidden" id="hdnRouteWay_DNUM" /><input type="hidden" id="hdnFromPlace_DNUM" /><input type="hidden" id="hdnToPlace_DNUM" />
+            <input type='hidden' id='hdnSFCRegion_DNUM' /><input type='hidden' id='hdnSFCVersion_DNUM' /><input type='hidden' id='hdnSFCCategory_DNUM' /></td>
+    </tr>
+</table>
+</div>

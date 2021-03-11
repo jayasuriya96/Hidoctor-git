@@ -1,0 +1,159 @@
+﻿<style type="text/css">
+    .OtcOrderID {
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .OHDrefno h4 {
+        text-align: left;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .OTCHeaderreason {
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .OHDR {
+        float: left;
+        width: 29.5%;
+    }
+
+    .OHDL1 {
+        float: left;
+        width: 4.5%;
+    }
+
+    .OHDL2 {
+        float: left;
+        width: 95%;
+    }
+
+        .OHDL2 div {
+            float: left;
+            width: 100%;
+            line-height: 1.5em;
+        }
+
+    .SCHRow {
+        width: 100%;
+        float: left;
+        font-size: 12px;
+    }
+
+    #OHDSchemeDetails h6 {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    .OHDRow {
+        width: 100%;
+        border-bottom: 1px solid #d3d3d3;
+        float: left;
+        font-size: 12px;
+    }
+
+    .OHDL {
+        float: left;
+        width: 70%;
+    }
+
+    .OHDOrderSummaryL {
+        float: left;
+        width: 80%;
+        color: black;
+        font-size: 12px;
+    }
+
+    .OHDOrderSummaryR {
+        float: left;
+        width: 19%;
+        color: black;
+        font-size: 12px;
+    }
+</style>
+
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnOrderStatusEdit"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div data-theme="b" data-role="header">
+    <a id="CLHome" data-role="button" data-theme="b" href="#page1" data-icon="home"
+        data-iconpos="notext" class="ui-btn-right" onclick="fnGoToOTC()"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Order Status
+        </h5>
+    </div>
+    <div class="OtcOrderID" data-theme="c" data-role="header" id="OtcOrdercode">
+        <h3 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h3>
+    </div>
+    <div data-theme="c" data-role="header" id="OtcCustName">
+        <h5 style="text-align: left !important; margin-top: 0.10%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h5>
+    </div>
+</div>
+<div role="main" class="ui-content ui-body-d" data-theme="d" data-role="content">
+    <div class="OHDrefno">
+        <h4 id="Cl_lbRefNo"></h4>
+        <h4 id="Cl_lbDueDate"></h4>
+    </div>
+    <div data-role="content">
+        <div id="OHDOrderSummary" data-role="collapsible-set" data-theme="b" data-content-theme="c">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Order Summary
+                </h3>
+                <div class="OHDOrderSummaryL">No of Products Ordered:</div>
+                <div class="OHDOrderSummaryR" id="OHDProductOrd"></div>
+                <div class="OHDOrderSummaryL">No of Quantity Ordered:</div>
+                <div class="OHDOrderSummaryR" id="OHDQtyOrd"></div>
+                <div class="OHDOrderSummaryL">No of Offer Products:</div>
+                <div class="OHDOrderSummaryR" id="OHDOffProductOrd"></div>
+                <div class="OHDOrderSummaryL">No of Offer Products Qty:</div>
+                <div class="OHDOrderSummaryR" id="OHDOffQtyOrd"></div>
+                <div class="OHDOrderSummaryL">Order Value:</div>
+                <div class="OHDOrderSummaryR" id="OHDOrderValue"></div>
+                <div style="clear: both;"></div>
+            </div>
+
+        </div>
+    </div>
+    <div data-role="content">
+        <div data-role="collapsible-set" data-theme="b" data-content-theme="c">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Scheme / Offer Products
+                </h3>
+                <div id="dvofferProduct"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="OTCHeaderreason">
+            <h3>Reason for Unapproval
+            </h3>
+        </div>
+        <div id="cl_lbReason">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <a id="Cl_btnEdit" data-role="button" data-theme="b" href="#page1" style="display: none;">Edit Order
+    </a>
+    <a id="cl_btnHome" data-role="button" data-theme="b" onclick="fnGoToOTC()">Back to home
+    </a>
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var cCode_g = "", cName_g = "", sPersonCode_g = "", adrs_g = "", isEditOrder = "NO";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnOrderStatusEdit').html(loginUserName_g);
+        var orderCode=@Html.Raw(Json.Encode(ViewBag.orderCode));
+        isEditOrder=@Html.Raw(Json.Encode(ViewBag.isEdit));
+        fnBindOrderStatusEdit(orderCode);
+
+
+    });
+</script>
+

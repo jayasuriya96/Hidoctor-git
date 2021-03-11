@@ -1,0 +1,294 @@
+﻿<style>
+    div.ui-input-text {
+        float: left;
+        width: 20%;
+    }
+
+    .OHDR div.ui-input-text {
+        float: left;
+        width: 80%!important;
+    }
+
+    .OHDOrderSummaryL, .OHDOrderSummaryR {
+        color: #000;
+    }
+
+    .ui-header .ui-title {
+        text-align: center !important;
+        margin: .6em 2% .8em !important;
+    }
+</style>
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnSOAddProduct"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+
+<div data-theme="b" data-mini="true" data-role="header">
+    <a data-role="button" href="#page1" data-icon="home" data-iconpos="notext"
+        class="ui-btn-right" id="HNSOAddProd"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 id="SOHeader" style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Sale Order Entry
+        </h5>
+    </div>
+</div>
+
+
+<div data-theme="c" data-role="header" id="APCustName">
+    <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;"></h5>
+
+</div>
+
+<div id="APOrderDate" data-theme="c" data-role="header">
+    <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Order Date(dd/mm/yyyy): 
+    </h5>
+
+    <div style="margin-left: 1%;">
+        <input type="text" placeholder="dd" id="txtOrderDate" maxlength="2" />
+        <span style="float: left; padding: 6px;">/ </span>
+        <input type="text" placeholder="mm" id="txtOrderMonth" maxlength="2" />
+        <span style="float: left; padding: 6px;">/ </span>
+        <input type="text" placeholder="yyyy" id="txtOrderYear" maxlength="4" />
+    </div>
+    <div style="clear: both !important;"></div>
+</div>
+
+
+<div id="APOrderDateEdit" data-theme="c" data-role="header" style="display: none;">
+    <h5 id="SOOrderDateEdit" style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Order Date (dd/mm/yyyy):  
+    </h5>
+    <h5 id="SOOrderNumberEdit" style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Order Number :  
+    </h5>
+</div>
+
+<div id="dvSOProductList">
+</div>
+
+
+<div data-role="content">
+    <div data-role="content">
+        <a id="btnAddProduct" data-role="button" data-mini="true" data-theme="b" href="#page1"
+            data-icon="plus" data-iconpos="left" onclick="fnOpenProductSearch()">Add Product
+        </a>
+    </div>
+</div>
+
+<div data-role="content" id="SOBtnField" style="display: none;">
+
+    <div data-role="content">
+        <input id="SOOrderSummary" type="submit" data-theme="b" value="Order Summary"
+            data-mini="true">
+    </div>
+
+    <div data-role="content">
+        <input id="SOSchemeDetail" type="submit" data-theme="b" value="Scheme/Offer Products"
+            data-mini="true">
+    </div>
+
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="txtaSORefNumber">
+                Reference Number
+           
+            </label>
+            <textarea name="" id="txtaSORefNumber" placeholder="" data-mini="true"></textarea>
+        </div>
+    </div>
+
+
+    <div data-role="content">
+        <div id="APApprovalOldRemarks" style="margin-bottom: 10px;">
+        </div>
+        <div data-role="fieldcontain">
+            <label for="txtaSORemarks">
+                Remarks
+           
+            </label>
+            <textarea name="" id="txtaSORemarks" placeholder="" data-mini="true"></textarea>
+        </div>
+    </div>
+
+    <div id="APDueDate" data-theme="c">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Due Date(dd/mm/yyyy): 
+        </h5>
+
+        <div style="margin-left: 1%;">
+            <input type="text" placeholder="dd" id="txtDueDate" maxlength="2" />
+            <span style="float: left; padding: 6px;">/ </span>
+            <input type="text" placeholder="mm" id="txtDueMonth" maxlength="2" />
+            <span style="float: left; padding: 6px;">/ </span>
+            <input type="text" placeholder="yyyy" id="txtDueYear" maxlength="4" />
+        </div>
+        <div style="clear: both !important;"></div>
+    </div>
+
+    <div data-role="content">
+        <input id="btnSODraft" type="submit" data-theme="b" value="Save as Draft"
+            data-mini="true">
+    </div>
+
+    <div data-role="content">
+        <input id="btnSOSubmit" type="submit" data-theme="b" value="Submit for Approval"
+            data-mini="true">
+    </div>
+
+</div>
+
+<div id="dvOTCProductPopup" style="display: none;" data-options='{"mode":"blank","headerText":"Sale Order - Product search","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="txtOTCProductSN" style="width: 100%;">
+                Enter product short name
+           
+            </label>
+            <input name="" id="txtOTCProductSN" placeholder="Type atleast 3 characters"
+                value="" type="search" data-mini="true" style="width: 100%;">
+        </div>
+        <h5 style="text-align: center;">OR
+        </h5>
+        <div data-role="fieldcontain">
+            <label for="txtOTCProductSearch" style="width: 100%;">
+                Enter product name           
+            </label>
+            <input name="" id="txtOTCProductSearch" placeholder="Type atleast 3 characters"
+                value="" type="search" data-mini="true" style="width: 100%;">
+        </div>
+        <label id="lblOTCProdSearchErr" style="font-size: 11px; color: red;"></label>
+
+        <input id="btnAddOTCProduct" type="button" data-theme="b" data-icon="search"
+            data-iconpos="left" value="Search" data-mini="true">
+
+        <ul id="SOselectedProductlist" data-role="listview" data-mini="true" data-split-icon="Delete" data-theme="b" data-split-theme="b" data-split-icon-postion="left" data-split-icon="Delete" data-inset="true">
+        </ul>
+
+        <input id="btnAddOTCProductSubmit" type="button" data-theme="b" value="Submit" data-mini="true" onclick="fnBindSOSelectedProducts();">
+
+        <div class="dvSOsub" id="dvSearchProductList">
+        </div>
+
+    </div>
+</div>
+
+<div id="dvOTCOrderSummary" style="display: none;" data-options='{"mode":"blank","headerText":"Order Summary","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+
+    <div data-role="content">
+        <h5 style="margin-top: 0em; margin-bottom: 0.7em;">Order Summary
+        </h5>
+        <h6 style="margin: 0.2em;">
+            <div style="width: 30%; float: left;">Ref No :</div>
+            <div id="APRefNumber" style="width: 69.5%; float: left;"></div>
+        </h6>
+
+        <div class="OHDOrderSummaryL">Order Value :</div>
+        <div class="OHDOrderSummaryR" id="APOrderValue"></div>
+        <div class="OHDOrderSummaryL">No of Products Ordered :</div>
+        <div class="OHDOrderSummaryR" id="APProductOrd"></div>
+        <div class="OHDOrderSummaryL">No of Quantity Ordered :</div>
+        <div class="OHDOrderSummaryR" id="APQtyOrd"></div>
+        <div class="OHDOrderSummaryL">No of Offer Products :</div>
+        <div class="OHDOrderSummaryR" id="APOffProductOrd"></div>
+        <div class="OHDOrderSummaryL">No of Offer Products Qty :</div>
+        <div class="OHDOrderSummaryR" id="APOffQtyOrd"></div>
+        <h6 style="margin: 0.2em;">
+            <div id="APRemarks" style="width: 100%; float: left;"></div>
+        </h6>
+
+        <h6 style="margin: 0.2em; display: none; color: green;" id="APSuccessMessege">
+            <div style="width: 100%; float: left;">Your Order Saved successfully</div>
+        </h6>
+        <div data-role="content" id="btnRedirectOtcHome" style="display: none;">
+            <input type="submit" data-theme="b" value="Ok" data-mini="true" onclick="fnGoToOTC();">
+        </div>
+
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div id="dvOTCSchemeSummary" style="display: none;" data-options='{"mode":"blank","headerText":"Scheme/Offer Summary","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+
+    <div data-role="content" id="dvOTCSchemeSummaryDetail">
+    </div>
+</div>
+
+<div id="dvOTCChangePrice" style="display: none;" data-options='{"mode":"blank","headerText":"Change Price","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div data-role="content">
+        <input type="hidden" id="hdnPriceChangeRow" />
+        <h5 style="margin-top: 0em; margin-bottom: 0.7em;" id="dvOCProdNamePopUp"></h5>
+
+        <div data-role="fieldcontain">
+            <label for="txtOTCProdPricePopUp" style="width: 100%;">
+                Price           
+            </label>
+            <input name="" id="txtOTCProdPricePopUp" placeholder="" value="" type="text"
+                data-mini="true">
+        </div>
+        <div style="clear: both;"></div>
+
+        <label id="lblPriceChange" style="color: red; font-size: 11px;"></label>
+
+        <input id="btnPriceChange" type="button" data-theme="b" value="Submit"
+            data-mini="true" onclick="fnFillChangedPrice();">
+
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var orders_g = new Array();
+    var todayDate="";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnSOAddProduct').html(loginUserName_g);
+        try {
+            $("#APCustName h5").html("Name: " + cName_g);
+            $("#btnAddOTCProduct").click(function () { fnBindProductSearch(cCode_g, sPersonCode_g); });
+            $("#HNSOAddProd").click(function () { fnNavSaleOrderEntry(cCode_g, cName_g, sPersonCode_g, adrs_g,tNo_g,cNo_g); });
+          
+
+            var orderId = @Html.Raw(Json.Encode(ViewBag.orderId));
+            todayDate = @Html.Raw(Json.Encode(ViewBag.todayDate));
+            if (orderId == null) {
+                $("#SOHeader").append(' - New');  
+                $("#SOOrderSummary").click(function () { fnOpenOrderSummary(null,null); });
+                $("#SOSchemeDetail").click(function () { fnOpenOrderSchemeSummary(null,null); }); 
+
+                $("#btnSODraft").click(function () { fnSaveOTCOrder('3',null,null); });  
+                $("#btnSOSubmit").click(function () { fnSaveOTCOrder('2',null,null); });            
+
+                $("#txtOrderDate").val(todayDate.split('/')[2]); 
+                $("#txtOrderMonth").val(todayDate.split('/')[1]); 
+                $("#txtOrderYear").val(todayDate.split('/')[0]);  
+
+                $("#txtDueDate").val(todayDate.split('/')[2]); 
+                $("#txtDueMonth").val(todayDate.split('/')[1]); 
+                $("#txtDueYear").val(todayDate.split('/')[0]);                  
+            }
+            else{ // For Edit
+                var orderDate = @Html.Raw(Json.Encode(ViewBag.orderDate));
+                $("#SOHeader").append(' - Edit');
+
+                $("#APOrderDateEdit").css('display','');
+                $("#APOrderDate").css('display','none');
+                $("#SOOrderDateEdit").append(orderDate.split('-')[2]+'/'+orderDate.split('-')[1]+'/'+orderDate.split('-')[0]);
+                $("#SOOrderNumberEdit").append(orderId);
+                $("#SOBtnField").css('display','');    
+
+                $("#SOOrderSummary").click(function () { fnOpenOrderSummary(orderId,orderDate,""); });
+                $("#SOSchemeDetail").click(function () { fnOpenOrderSchemeSummary(orderId,orderDate,""); });  
+  
+                $("#btnSODraft").click(function () { fnSaveOTCOrder('3',orderDate,orderId); });  
+                $("#btnSOSubmit").click(function () { fnSaveOTCOrder('2',orderDate,orderId); });  
+                  
+                           
+                fnBindOrderHistoryDetailEdit(orderId);     
+            }            
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

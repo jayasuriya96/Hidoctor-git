@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "LockRelease";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="row col-xs-12 col-sm-12  form-group clearfix">
+    <div class="tab" style="margin-top: 10px;padding-left: 16%;font-size: 18px;">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link def active" href="#" onclick="LockRelease.fnlock();">Lock Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sum" role="tab" aria-controls="nav-profile" id="nav-profile" href="#" onclick="LockRelease.fnReleaseDetails();">Released Details</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 clearfix" style="width: 70%;font-size: 15px;margin-top: 21px;">
+
+        <div class="form-group col-sm-3" id="radiobtn">
+            <input type="radio" id="rdbtn" class="clsenty" name="inputEntity" value="SSNonEntrylock" onclick="LockRelease.fnselect();"><label id="ssRel">SS NonEntry LockRelease</label>
+
+        </div>
+    </div>
+    
+    <div class="col-xs-12 col-sm-12 clearfix" style="width: 70%;font-size: 15px;margin-top: 21px;">
+    <div class="panel panel-default list" id="Entry" style="margin-top: 20px;padding:30px 9px 30px;display:none">
+        <div class="panel-body">
+            <form>
+                <div class="form-group row">
+                    <label class="col-lg-2 col-form-label">Region Name</label>
+                    <div class="col-lg-2" id="auto">
+                        <div class="" id="dvtxtregionName">
+                            <input type="text" class="" id="regionname">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-left: 42%;text-align: left;padding-top:0px";>
+                    <input type="button" class="btn btn-primary" id="go" value="Go" onclick="LockRelease.fnstart();"/>
+
+                </div>
+              
+            </form>
+        </div>
+    </div>
+</div>
+  
+        <div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="margin-top: 20px; font-size:14px;padding: 0px;"id="lockeddata">
+            <div id="Lockeddetails" class="col-lg-12 col-md-12 col-sm-12 clearfix">
+                <button type="button" class="btn btn-primary input-sm" id="lockeddata" style="display:none" onclick="LockRelease.fnRelease();">Release</button>
+            </div>
+            @*<div class="form-group col-sm-2" id="btnrelease" style="display:none">
+                <button type="button" class="btn btn-primary input-sm" id="btnrelease" onclick="LockRelease.fnRelease();">Release</button>
+            </div>*@
+        </div>
+        <div class="modal" id="list" role="dialog" style="opacity: 1;display:none">
+            <div class="modal-dialog modal-lg" style="padding:0px;width: 50% !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Stockist Details</h4>
+                        <button type="button" class="close" id="closemodel" onclick="$('#list').hide();">&times;</button>
+                    </div>
+                    <div class="modal-body" style="max-height: 600px;overflow:auto;font-size:14px">
+                        <div class="modal-body" id="prefildetailedlist" style="height:400px;overflow:auto;"></div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+<div class="panel panel-default list" id="Release" style="padding:30px 9px 30px;font-size: 13px;display:none">
+    <div class="panel-body">
+        <form>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Region Name</label>
+                <div class="col-lg-2" id="auto">
+                    <div class="" id="dvtxtRegionName">
+                        <input type="text" class="" id="RegionName">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">From Date:</label>
+                <div class="col-lg-2 input-group">
+                    <input type="text" class="form-control" placeholder="From Date" id="Frmdate"style="" readonly>
+                    <span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">To Date</label>
+                <div class="col-lg-2 input-group">
+                    <input type="text" class="form-control" placeholder="To Date" id="Todate"style="" readonly>
+                    <span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>
+                </div>
+            </div>
+            
+            <div style="padding-left: 42%;text-align: left;padding-top: 34px";>
+                <input type="button" class="btn btn-primary" id="go" value="Go" onclick="LockRelease.fnShowDetails();" />
+                
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="margin-top: 20px; padding: 0px;"id="releaseddata">
+    <div id="detailedlist" class="col-lg-12 col-md-12 col-sm-12 clearfix"></div>
+</div>
+
+
+
+
+
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/LockRelease.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="~/Scripts/jquery.mtz.monthpicker.js"></script>
+<script src="~/Scripts/HD/common12.7.0.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        isResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+        $('#dvAjaxLoad').hide();
+
+        LockRelease.initialize();
+    });
+    $("#Frmdate").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date('01-01-2020')
+    });
+    $("#Todate").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date('01-01-2020')
+    });
+
+</script>
+
+

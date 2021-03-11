@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "ExpenseSummaryReport";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">   
+    #dvLoadingExpense {
+        background-color: #E8F1FF;
+        border: 3px solid #d3d3d3;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }    
+</style>
+<div id="dvLoadingExpense" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingExpense');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+    <div style="width: auto;">
+        <div id="dvNonDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+</div>
+
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr class="trHeight">
+                    <td>Start Date & End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnMainUserCode" />
+                        <input type="hidden" id="hdnUserCode" />
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="2">
+                            Approved</label>
+                        <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="1">
+                            Applied</label>
+                        <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="0">
+                            Unapproved</label>
+
+                        <input type="checkbox" id="rbAll" name="all" value="0,1,2" onclick="fnChangeCheck();" /><label
+                            for="0">
+                            All</label>
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td></td>
+                    <td>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnExpenseSummaryReport();" />
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+        <div id="divReport">
+        </div></br>
+        <div id="divSubReport" style="padding-top:20px;"></div>
+
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $("#dvTree").show();
+            fnBindUserTree("tree");
+            $('#divReport').hide();
+            $("#divSubReport").hide();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnUserTreeNodeClick(node) {
+
+        $("#dvTree").hide();
+        $('#hdnMainUserCode').val(node.data.key);
+        fnClearExpenseAnalysisReport();
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        $("#divReport").empty();
+        $("#divSubReport").empty();
+        $('#divReport').hide();
+        $("#divSubReport").hide();
+    }
+
+    function fnUserTreePostInit() {
+
+    }
+</script>

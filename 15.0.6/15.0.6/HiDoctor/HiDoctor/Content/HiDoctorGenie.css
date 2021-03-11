@@ -1,0 +1,174 @@
+﻿body {
+}
+
+#dvGenieHelp {
+    /*float: right;
+    margin-right: 2%;*/
+    cursor: pointer;
+}
+
+#divGenieReportMain {
+    height: 600px;
+    width: 80%;
+    background-color: #fff;
+}
+
+#divGenieReport {
+    font-size: 10px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    min-height: 550px;
+    overflow: auto;
+}
+
+.simple_overlayGeneie {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 999; /* styling */
+    background-color: #fff;
+    width: 500px;
+    min-height: 150px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+    top: 6px !important;
+    right: 10px !important;
+    float: right;
+    left: 49% !important;
+    height:auto;
+}
+
+.detailsGenie {
+    font-size: 10px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.simple_overlayGeneie .close {
+    background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}
+
+#divGenieSearch {
+    float: left;
+    width: 97%;
+    margin-left: 10px;
+}
+
+    #divGenieSearch input[type="text"] {
+        width: 80%;
+    }
+
+    #divGenieSearch a {
+        float: right;
+        margin-right: 5%;
+        margin-top: 1.5%;
+    }
+
+#divGenieNote {
+    float: left;
+    width: 96%;
+    font-size: 9px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+    #divGenieNote a {
+        float: right;
+    }
+
+        #divGenieNote a:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+#divGenieResult {
+    float: left;
+    width: 97%;
+    font-size:10px;
+}
+
+#imgGene {
+    position: absolute;
+    left: -80px;
+    opacity: 0.9;
+    width: 95px;
+    height: 175px;
+}
+
+.simple_overlayGeneie_Help {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 999; /* styling */
+    background-color: #fff;
+    width: 650px;
+    min-height: 150px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+    top: 6px !important;
+    right: 10px !important;
+    float: right;
+    left: 34% !important;
+    height:auto;
+}
+    .simple_overlayGeneie_Help img {
+        width:650px;
+    }
+
+.simple_overlayGeneie_Help .close {
+    background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}
+
+@media screen and (min-width:1230px) {
+    .simple_overlayGeneie {
+        width: 550px;
+        min-height: 180px;
+        left: 55% !important;
+        top: 8px !important;
+        height:auto;
+    }
+
+    .detailsGenie {
+        font-size: 11px;
+    }
+
+    #imgGene {
+        width: 110px;
+        height: 180px;
+        left: -95px;
+    }
+
+    #divGenieSearch {
+        margin-top: 3px;
+    }
+
+    #divGenieNote {
+        font-size: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .simple_overlayGeneie_Help {
+        width: 700px;
+        left: 43% !important;
+    }
+    .simple_overlayGeneie_Help img {
+        width: 700px;
+    }
+    #divGenieResult {
+        font-size:11px;
+    }
+}

@@ -1,0 +1,315 @@
+﻿@*<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mDCRApproval.js")"></script>*@
+@Scripts.Render("~/bundles/dcrapprovaljs")
+<link href="../../Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" />
+<link href="../../Content/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+<link href="../../Areas/HiDoctor_Activity/Content/jquery-ui.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" type="text/css" />
+<style>
+    div.ui-input-text
+    {
+        float: left;
+        width: 20%;
+    }
+
+    .ui-block-a
+    {
+        margin: 3px;
+    }
+
+    .cls_spnRCPAIndent
+    {
+        display: inline-block;
+        padding-left: 3px;
+    }
+
+    .cls_stockEnd
+    {
+        border: 1px solid #00ff90;
+    }
+
+input {
+    border: 1px solid #666;
+    padding: 4px;
+    font-size: 1em;
+    background-color: white;
+    width: 16em;
+  font-family: Consolas, monospace;
+}
+
+input.not-supported {
+    border-color: red;
+    background-color: rgba(252, 0, 0, 0.25);
+}
+    .mtz-monthpicker mtz-monthpicker-year {
+        font-family:Lucida Grande, Lucida Sans, Arial, sans-serif;
+        font-size:13px;
+    }
+    .ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all {
+            width: 176px;
+    }
+    .ui-select {
+        width: 50%;
+    }
+    .ui-collapsible-content ui-body-d {
+        height: 309px;
+    }
+    .ui-checkbox input {
+            margin: 0px -14px 1px;
+            zoom: 2.5;
+           -moz-transform:scale(1.5);
+    }
+    div.ui-input-text, .ui-select {
+        width: 100%;
+    }
+</style>
+
+<div style="clear:both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>DCR Approval
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <a onclick="fngoBack()" href="#" data-icon="arrow-l" id="aback" style="display: none"><< Back</a>
+    <div data-role="collapsible-set">
+        <div data-role="header" data-mini="true" data-theme="b" class="ui-header ui-bar-b" role="banner">
+            <h3>DCR Approval
+            </h3>
+</div>
+
+            <div id="dvInput">
+                <div style="float: left;width: 40%;padding: 15px;margin-top: 15px;">Month & Year</div>
+                <div style="float: left;width: 45%;margin-top: 15px;">
+                    <input id="txtMonth" style="width: 100%" />
+                </div>
+                <div style="float: left;width: 40%;padding: 15px;">Status</div>
+                <div style="float: left; width: 45%;">
+                     <select id="ddlStatus" style="width:100%">
+                            <option value="1">Applied</option>
+                            <option value="2">Approved</option>
+                        </select>
+                </div>   
+                <input type="hidden" id="hdnUserCode" />
+                <input type="hidden" id="hdnRegionCode" />
+                <input type="hidden" id="hdnDCRCode" />
+            <div>
+                <div style="display:block"><input type="checkbox" name="chkstatus" class="clsCheck" id="chkApplied" value="1" onclick="fncheck('M')" checked="checked"/>
+                <label style="margin: 88px;font-size: 20px !important;margin: 49px!important;">My Direct Reporting Users</label></div>
+                <div></div>
+                <input type="text" maxlength="30" id="txtUserName" placeholder="Search 3 letters" style="display:none" />
+            </div>
+            <div style="width: 10%;padding: 15px;">
+                <a data-role="button" id="btnGo" href="#page1" data-theme="b" class="ui-btn-left" onclick="fnGetDCRAppliedUsers()">Go
+                </a>
+            </div>
+            </div>
+            
+            <div id="dv-dcrappliedusers" style="height: 133px;overflow: auto;"></div>
+            <div style="height: 10px;"></div>
+            <div id="dv-dcrDCRAppliedDates" style="height: 112px;overflow: auto;"></div>
+            <div id="dv-result" class="dv-comp-border" style="display: none; background: white; font-size: 13px;"></div>
+            <div style="height: 10px;"></div>
+            <div id="dv-dcrdetails" style="display: none">
+                <ul data-role="listview" data-divider-theme="b" data-inset="true" data-mini="true">
+                    <li data-role="list-divider" role="heading"><span onclick="fnNextDate('P')" id="spnPrevious"><<</span>  <span id="spnUsername"></span><span onclick="fnNextDate('N')" id="spnNext">>></span>
+                    </li>
+                    <li data-theme="c">
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" style="width: 100%" id="dvDCRDate">
+                                DCR Date : <span id="spnDCRDate"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvDCREnteredDate">
+                                DCR Entered Date : <span id="spnDCREnteredDate"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvCP">
+                                CP Name : <span id="spnCPName"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvcategory">
+                                Category : <span id="spnCategory"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvworkplace">
+                                Work Place : <span id="spnWorkPlace"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dv-Accomp">
+                                Accompanist : <span id="spnAccompanist"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvTime">
+                                Timing : <span id="spnTiming"></span>
+                            </div>
+                            <div style="width: 100%" id="dvSFC">
+                                <span style="text-decoration: underline;" class="dv-bold-width">SFC</span>
+                                <div id="dv-sfc" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvDoctor">
+                                <span style="text-decoration: underline;" class="dv-bold-width" id="dvdoctorvisit"></span>
+                                <div id="dv-doctors" style="width: 100%"></div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div style="width: 100%" id="dvChemist">
+                                <div id="dv-chemist" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvStockiest">
+                                <span style="text-decoration: underline;" class="dv-bold-width" id="dvstockistvisit"></span>
+                                <div id="dv-stockiest" style="width: 100%"></div>
+                            </div>
+                          
+                            <div style="width: 100%" id="dvactivity">
+                                <span style="text-decoration: underline;" class="dv-bold-width">Activity</span>
+                                <div id="dv-activity" style="width: 100%"></div>
+                            </div>
+                              <div style="width: 100%" id="dvExpense">
+                                <span style="text-decoration: underline;" class="dv-bold-width">Expenses</span>
+                                <div id="dv-expenses" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvLeave">
+                                <div id="dv-Leave-header" style="width: 100%"></div>
+                                <span style="text-decoration: underline;" class="dv-bold-width">Leave Type</span>
+                                <div id="dv-Leave" style="width: 100%"></div>
+                            </div>
+                               <div style="width: 100%" id="dvDCRRemarks">
+                                <span style="text-decoration: underline;" class="dv-bold-width">DCR common Remarks</span>
+                                <div id="dv-remarks" style="width: 100%"></div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div style="width: 100%; border-top: 1px solid gray; margin-top: 10px">
+                                <span class="dv-bold-width">Do you want to approve this DCR?</span>
+                                <textarea name="" id="txtRemarks" placeholder="Reason"></textarea>
+
+                                <div id="dv-alert" class="dv-comp-border" style="display: none; background: white; font-size: 13px;color: red;"></div>
+
+                                <a data-role="button" id="btnApprove" href="#page1" class="ui-btn-left" data-theme="b" onclick="fnChangeStatus('2')" style="width:45%">Approve
+                                </a>&nbsp&nbsp
+                                <a data-role="button" id="btnUnApprove" href="#page1" class="ui-btn-left" data-theme="d" onclick="fnChangeStatus('0')" style="width:45%">Unapprove
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+</div>
+<div data-role="footer"></div>
+
+
+<script lang="ja">
+    var doctor_caption="";
+    var chemist_caption="";
+    var stockist_caption="";
+    $(document).ready(function () {
+        var curDate = @Html.Raw(Json.Encode(ViewBag.CurrrentDate)); 
+        AjaxGlobalHandler.Initiate();        
+        fnGetDivisions();
+        $('#txtMonth').monthpicker();
+        var monthName = fnMonthName();
+        $("#txtMonth").val(monthName + '-' + curDate.split('-')[0]);
+        var year = "";
+        var month="";
+        function fnMonthName() {
+            var month = new Array(12);
+            month[1] = "Jan";
+            month[2] = "Feb";
+            month[3] = "Mar";
+            month[4] = "Apr";
+            month[5] = "May";
+            month[6] = "Jun";
+            month[7] = "Jul";
+            month[8] = "Aug";
+            month[9] = "Sep";
+            month[10] = "Oct";
+            month[11] = "Nov";
+            month[12] = "Dec";
+            return month[parseInt(curDate.split('-')[1])];
+        }
+        $('span.cls_usernamespn').text(loginUserName_g);
+        var dcrApproval = @Html.Raw(Json.Encode(ViewBag.DCRApproval)); 
+        doctor_caption=@Html.Raw(Json.Encode(ViewBag.doctor_caption));
+        chemist_caption=@Html.Raw(Json.Encode(ViewBag.chemist_caption));
+        stockist_caption=@Html.Raw(Json.Encode(ViewBag.stockist_caption));
+        $("#dvdoctorvisit").html(doctor_caption +" visited");
+        $("#dvstockistvisit").html(stockist_caption+ " visit");
+        if(dcrApproval.split('_')[2] != "undefined")
+        {
+            if(dcrApproval.split('_')[2].toString() != ""){
+                $("#aback").show();
+                var date = dcrApproval.split('_')[0].toString();
+                date = date.split('/')[2].toString()+"-"+date.split('/')[1].toString()+"-"+date.split('/')[0].toString();
+                $.ajax({
+                    type: 'POST',
+                    data: 'dcrActualDate=' + date + "&flag=" + dcrApproval.split('_')[3].toString() + "&username=" + dcrApproval.split('_')[1].toString() + "&usercode=" + dcrApproval.split('_')[2].toString() + "&regioncode=" + dcrApproval.split('_')[4].toString() + "",
+                    url: '/HiDoctor_Activity/DCRApproval/GetUserInstantReport',
+                    success: function (response) {
+                        // we have the response
+                        $("#dvInput").css('display','none');
+                        $("#spnPrevious").css('display','none');
+                        $("#spnNext").css('display','none');
+
+                        $("#spnUsername").html(dcrApproval.split('_')[1].toString());
+                        flag =dcrApproval.split('_')[3].toString();
+                        fnDCRDeatils(eval('(' + response + ')'));
+                        fnGetAllPrivileges($("#hdnUserCode").val());
+                    },
+                    error: function (e) {
+                        alert("Eror" + e);
+                    }
+                });
+            }
+        }
+        var defaultOptions = "Attendance,Field,Leave";
+        //var dcrOptions = fnGetPrivilegeValue("DCR_ENTRY_OPTIONS", defaultOptions);
+        var dcrOptArr = new Array();
+        dcrOptArr = defaultOptions.split(',');
+        for (var i = 0; i < dcrOptArr.length; i++) {
+            $('#drpFlag').append('<option value="' + dcrOptArr[i].toString().toUpperCase() + '" >' + dcrOptArr[i] + '</option>');
+        }
+        $("#txtRemarks").keypress(function() { return fnEnterKeyPrevent(event) });
+    });
+   
+    function fncheck(check)
+    {
+        debugger;
+        if ($('.clsCheck:checked').length == 1) {
+            $('#txtUserName').css('display','none');
+        }
+        else {
+            $('#txtUserName').val('');
+            $('#txtUserName').css('display','block');
+        }
+    }
+    function fnGetDivisions() {  
+             
+        $.ajax({
+            type: 'post',
+            url: '/HiDoctor_Master/Approval/GetDivisions',
+            data: 'A',
+            success: function (jsData) {                
+                if (jsData != null && jsData != '' && jsData != undefined) {
+                    var jsonResult = eval('(' + jsData + ')');
+                    if (jsonResult.length > 0) {
+                        var selectcolumn = $("#ddlDivision");
+                        for (var s = 0 ; s < jsonResult.length; s++) {
+                            selectcolumn.append("<option value=" + jsonResult[s].Division_Code+">" + jsonResult[s].Division_Name + "</option>");                            
+                        }
+                        selectcolumn.append("<option value='ALLDIV' selected='selected'>ALL</option>");                        
+                        $('#ddlDivision').selectmenu('refresh');                      
+
+                    }
+                }
+
+            },
+            error: function () {
+                fnMsgAlert("Get Divisions failed.");
+            }
+        });
+    }
+
+   
+
+    function fngoBack(){
+        $.mobile.changePage("/HiDoctor_Activity/MobileNotification/Index", {
+            type: "post",
+            reverse: false,
+            changeHash: false
+        });
+    }
+</script>

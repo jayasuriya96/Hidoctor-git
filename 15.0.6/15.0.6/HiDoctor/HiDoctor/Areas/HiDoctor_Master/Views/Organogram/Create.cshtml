@@ -1,0 +1,1069 @@
+﻿@model HiDoctor_Master.Models.Organogram
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style type="text/css">
+    ul.dynatree-container {
+        height: 97% !important;
+    }
+</style>
+
+<div id="dvRegionMaster" class="container">
+    <div style="padding: 10px; width: 100%;">
+        <div id="divRegion" style="float: left; width: 49%; border: 1px solid #EFEFEF !important;">
+            <div style="width: 100%; height: 35px; padding-top: 5px; background-color: #0072c6!important; color: White;"
+                 class="popUpTitle">
+                Region Hierarchy
+            </div>
+            <div style="padding-top: 10px;">
+                <div onclick="fnAddRegion();" class="button" style="width: 11%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/Add.png) no-repeat !important;"></span><span>Add</span>
+                </div>
+                <div onclick="fnMoveRegionTreeUp('','');" class="button" style="width: 11%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/moveup.png) no-repeat !important;"></span><span>Up</span>
+                </div>
+                <div onclick="fnMoveRegionTreeDown('','');" class="button" style="width: 12%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/movedown.png) no-repeat !important;"></span><span>Down</span>
+                </div>
+                <div onclick="fnUpdateRegFullIndex();" class="button" style="width: 16%; float: left; margin-left: 8px; display:none; margin-right: 0em!important;"
+                     id="btnRefreshRegion">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/refresh.jpg) no-repeat !important;"></span><span>Refresh</span>
+                </div>
+                @*<div class="" style="float: left; margin-left: 8px; margin-right: 0em!important;">
+                        <div style="float: left; text-align: center; padding-top: 5px;">
+                            Search
+                        </div>
+                        <div style="float: left; width: 80px;">
+                            <input type="text" id="txtRegionSearch" name="txtRegionSearch" />
+                        </div>
+                    </div>*@
+            </div>
+            <br />
+            @*<span class="blink dvInfo" id="dvRegionInfo"></span>*@
+            @*<div id="dvRegionTree" style="float: left; width: 96%; height: 500px; padding-left: 20px;">
+                </div>*@
+
+
+            <div class='leftNav' id='leftNav' style="width: 485px;margin-left: 5px">
+                <div id="regiontree" style="float: left; height: auto; width: 100%">
+                </div>
+                @* <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+                <div style="width: 1px;"></div>
+            </div>
+            <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+                <div style="display: none;" id="divToggle">
+                    <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                          onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                            onclick="fnToggleInput()">Hide Input</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="divUser" style="float: right; width: 49%; border: 1px solid #EFEFEF !important;">
+            <div style="width: 100%; height: 35px; padding-top: 5px; background-color: #0072c6!important; color: White;"
+                 class="popUpTitle">
+                User Hierarchy
+            </div>
+            <div style="padding-top: 10px;">
+                @*   <div onclick="fnAddUser();" class="button" style="width: 11%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                        <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/Add.png) no-repeat !important;"></span><span>Add</span>
+                    </div>*@
+                <div onclick="fnAddUser();" class="button" style="width: 11%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/Add.png) no-repeat !important;"></span><span>Add</span>
+                </div>
+
+                <div onclick="fnMoveUserTreeUp('','');" class="button" style="width: 11%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/moveup.png) no-repeat !important;"></span><span>Up</span>
+                </div>
+                <div onclick="fnMoveUserTreeDown('','');" class="button" style="width: 12%; float: left; margin-left: 8px; margin-right: 0em!important;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/movedown.png) no-repeat !important;"></span><span>Down</span>
+                </div>
+                <div onclick="fnUpdateUserFullIndexNew();" class="button" style="width: 16%; float: left; margin-left: 8px; margin-right: 0em!important;"
+                     id="btnRefreshUser">
+                    @*  <div onclick="fnUpdateUserFullIndex();" class="button" style="width: 16%; float: left; margin-left: 8px; margin-right: 0em!important;"
+                        id="btnRefreshUser">*@
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/refresh.jpg) no-repeat !important;"></span><span>Refresh</span>
+                </div>
+                @*<div class="" style="float: left; margin-left: 8px; margin-right: 0em!important;">
+                        <div style="float: left; text-align: center; padding-top: 5px;">
+                            Search
+                        </div>
+                        <div style="float: left; width: 80px;">
+                            <input type="text" id="txtUserSearch" name="txtUserSearch" />
+                        </div>
+                    </div>*@
+            </div>
+            <br />
+            @*<div class="blink dvInfo" id="dvUserInfo">
+                </div>*@
+            @*<div id="dvUserTree" style="float: left; width: 96%; height: 500px; padding-left: 20px;">
+                </div>*@
+            <div class='leftNav' id='leftNav' style="width:486px;margin-left:5px;min-height:487px; height:542px;">
+                <div id="usertree" style="float: left; height: auto; width: 100%; ">
+                </div>
+                @*<span id="spnTreeResize" onclick="fnUserTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+                <div style="width: 1px;"></div>
+            </div>
+            @*</div>*@
+            <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+                <div style="display: none;" id="divToggle">
+                    <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                          onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                            onclick="fnToggleInput()">Hide Input</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 10px; width: 100%; clear: both;">
+        <div style="float: left; width: 50%;">
+            <input type="button" id="btnRefRegion" value="Refresh Region" class="btn small primary"
+                   onclick="fnUpdateRegionIndex();" />
+        </div>
+        <div style="float: left; width: 50%;">
+            <input type="button" id="btnRefUser" value="Refresh User" class="btn small primary"
+                   onclick="fnUpdateUserFullIndexNew();" style="margin-left: 10px" />
+        </div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvAddRegion" style="left: 10% !important; width: 800px; z-index: 999 !important;">
+    <div class="">
+        <div class="popUpTitle">
+            <span>Region Master</span> <a class="popUpTitle-close" style="background: url(../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;"
+                                          onclick="fnClose(dvAddRegion);"></a>
+        </div>
+        <br />
+        <div style="padding-left: 20px;">
+            <div id="dvErrorRegion">
+            </div>
+            <div>
+                <br />
+                @*<div id="btnSave1" onclick="fnRegionSubmit();" class="button" style="float: left; margin-right: 5px; width: 15%;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/save.png) no-repeat !important;"></span><span>Save</span>
+                </div>
+                <div id="btnCancel1" onclick="fnRegionClearAll();" class="button" style="float: left; width: 15%;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/cancel.png) no-repeat !important;"></span><span>Cancel</span>
+                </div>*@
+            </div>
+            <div style="width: 100%; overflow: auto; height: 380px;">
+                <table style="border: none !important; width: 100%;" cellpadding="0" cellspacing="3">
+                    <tr>
+                        <td style="width: 20%;">
+                            Region Name <span style="color: Red">*</span>
+                        </td>
+                        <td style="width: 25%;">
+                            @Html.EditorFor(model => model.Region_Name)
+                            @Html.ValidationMessageFor(model => model.Region_Name)
+                        </td>
+                        <td style="width: 20%; padding-left: 5px;">
+                            Under Region Name <span style="color: Red">*</span>
+                        </td>
+                        <td style="width: 30%;">
+                            <select id="cboUnderRegionCode"></select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Region Type <span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <select id="cboRegionTypeCode"></select>
+                        </td>
+                        <td style="padding-left: 5px;">
+                            Region Classification
+                        </td>
+                        <td>
+                            <select id="cboRegionClassification"></select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Select Location <span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <div id="searchBoxContainer">
+                                <input type="text" id="txtMap" />
+                                <input type="hidden" id="hdnLatVal" />
+                                <input type="hidden" id="hdnLngVal" />
+                                <input type="hidden" id="hdnAddress" />
+                            </div>
+                        </td>
+                        <td style="padding-left: 5px">
+                            Expense Group
+                        </td>
+                        <td>
+                            <select id="cboExpenseGroup"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Country<span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" id="txtCountry" />
+                        </td>
+                        <td style="padding-left: 5px">
+                            State <span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" id="txtState" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            City<span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" id="txtCity" />
+                        </td>
+                        <td style="padding-left: 5px">
+                            Local Area<span style="color: Red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" id="txtLocalArea" maxlength="500" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div style="width: 100%">
+                                <div id="map" style="width: 100% !important; height: 300px !important;">
+                                    <br /><br />
+                                    <h2 style="text-align:center; padding-bottom:250px;">
+                                        Temporarily map is unavailable
+                                    </h2>
+                                </div>
+                            </div>
+                            @*
+                                <div id="map" style="width: 700px !important; height: 300px !important;"></div>
+                            *@
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <br />
+                    @*<div id="btnSave" onclick="fnRegionSubmit();" class="button" style="float: left; margin-right: 5px; width: 15%;">
+                        <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/save.png) no-repeat !important;"></span><span>Save</span>
+                    </div>
+                    <div id="btnCancel" onclick="fnRegionClearAll();" class="button" style="float: left; width: 15%;">
+                        <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/cancel.png) no-repeat !important;"></span><span>Cancel</span>
+                    </div>*@
+                </div>
+            </div>
+            <input type="hidden" id="hdnRegionCode" />
+        </div>
+    </div>
+</div>
+
+
+<ul id="regionConMenu" class="contextMenu">
+    @*<li class="add"><a href="#addregion">Add Child Region</a></li>*@
+    <li class="moveup"><a href="#regionmoveup">Move Up</a></li>
+    <li class="movedown"><a href="#regionmovedown">Move Down</a></li>
+    @*<li class="delete"><a href="#regiondelete">Delete</a></li>*@
+    @*
+        <li class="change"><a href="#changeregion">Change Hierarchy</a></li>
+    *@
+    <li class="addUser separator"><a onclick="fnCreateNewUser('0');" style="cursor:pointer">Add & Map User</a></li>
+    @*<li class="disableUser"><a href="#disableUser">Disable User</a></li>*@
+</ul>
+
+<ul id="userConMenu" class="contextMenu">
+    @*<li class="add"><a href="#adduser">Add Child</a></li>*@
+    @*<li class="add"><a href="#createUser" onclick="fnCreateNewUser('0');" style="cursor:pointer">Add Child</a></li>*@
+    @*<li class="add"><a onclick="fnCreateNewUser()" style="cursor:pointer">Add Child</a></li>*@
+    <li class="moveup"><a href="#usermoveup">Move Up</a></li>
+    <li class="movedown"><a href="#usermovedown">Move Down</a></li>
+    @*<li class="delete"><a href="#deleteuser">Delete</a></li>*@
+    @*
+        <li class="change"><a href="#changeuser">Change Hierarchy</a></li>
+    *@
+</ul>
+<div class="simple_overlay" id="dvRegionHierarchy">
+    <div class="">
+        <div class="popUpTitle">
+            <span>Region Hierarchy Change</span> <a class="popUpTitle-close" style="background: url(../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;"
+                                                    onclick="fnClose(dvRegionHierarchy);"></a>
+        </div>
+        <br />
+        <div style="width: 100%;">
+            <div id="dvErrorRegChange" style="padding-left: 20px; padding-right: 20px;">
+            </div>
+            <div style="float: left; width: 95%; border-right: 1px solid #efefef; padding-left: 10px;">
+                <div id="dvMappedRegion">
+                    Parent Region
+                    <select id="cboParRegion" style="width: 50%"></select>
+                </div>
+            </div>
+            <br />
+            <div style="float: left; width: 90%; border-right: 1px solid #efefef; padding-left: 10px; padding-top: 10px;">
+                Select Regions
+                <div id="dvSelectdRegions" style="height: 350px; overflow: auto;">
+                </div>
+            </div>
+            <br />
+            <div style="width: 95%; text-align: center; clear: both; margin-left: 25%; padding-top: 10px;">
+                <div id="btnAssign" onclick="fnChangeRegionHierarchySubmit();" class="button" style="float: left; width: 15%; margin-right: 5px;">
+                    <span class="buttonicon" style="background: url(../Areas/HiDoctor_Master/Content/images/save.png) no-repeat !important;"></span><span>Save</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvUserHierarchy">
+
+    <div id="dvSelectedUser" style="overflow: auto;">
+    </div>
+
+</div>
+<div class="simple_overlay" id="dvRegionXml" style="min-height: 200px !important;">
+    <div class="">
+        <div class="popUpTitle">
+            <span>XML Refresh</span> <a class="popUpTitle-close" style="background: url(../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;"
+                                        onclick="fnClose(dvRegionXml);"></a>
+        </div>
+        <br />
+        <div style="width: 100%">
+            <div id="dvXMLInfo" style="width: 100%; margin-left: 3%; font-weight: bold; color: green; font-size: 15px;">
+            </div>
+            <br />
+            <div style="width: 100%; margin-left: 3%; cursor: pointer;">
+                <a onclick="fnLoadBody('Organogram.aspx','','Organogram.aspx');" href="#">Do you want to refresh the xml please click this to redirect</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvDisableRegionUser" style="min-height: 300px !important;">
+    <div id="dvDisable">
+    </div>
+</div>
+<div class="simple_overlay" id="dvDisableUser" style="min-height: 300px !important;">
+    <div id="dvDisUsers">
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvAddUser" style="height: 500px !important; min-height: 350px !important; overflow-y: scroll;">
+    <div id="dvNewUser"></div>
+</div>
+
+<div class="simple_overlay" id="dvEditUser" style="height: 500px !important; min-height: 350px !important; overflow-y: scroll;">
+    <div id="dvOldUser"></div>
+</div>
+<div id="dvDisUserCount" title="Disable User alert!!">
+    <div id="dvUserContent"></div>
+</div>
+<div id="dvDisRegUserCount" title="Disable Region alert!!">
+    <div id="dvRegUserContent"></div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Organogram.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    var currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.Cur_User_Code));
+    var currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Cur_Region_Code));
+
+    var autocomplete, map, marker, geocoder, infoWindow, options, myLatlng, infoWindow,pinInfobox;
+    var curLat;
+    var curLng;
+    var currMap="";
+
+
+
+    function fnBindUserTree(id) {
+        debugger;
+        var tblContent = "";
+        tblContent += "<div id='treeNav'>";
+        tblContent += "<div id='dvUserNodeSearch' style='padding-top:1%;'>";
+        tblContent += "<div class='input-group col-xs-8'>";
+        tblContent += "<input type='text' id='txtUserSearchNode' placeholder='Search' class='form-control'/>";
+        tblContent += "<span class='input-group-addon' onclick='fnSearchUsersFromTree();'><i class='fa fa-search'></i></span></div>";
+        tblContent += "<span onclick='fnShowFullUserTreeClick();' id='dvUserFullTree' class='pull-right' style='margin-right: 4%;cursor:pointer;' title='Click here to show all users'><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<span onclick='fnLoadInitialUserTree();' id='dvUserLoadTree' class='pull-right' style='display: none; margin-right: 4%;cursor:pointer;' title='Click here to show all users' ><i class='fa fa-th-list fa-2'></i></span>";
+        tblContent += "<div class='clearfix'></div></div>";
+        tblContent += "<div id='dvUserFilteredNode' class='dvFilteredNode' style='display: none;overflow: scroll;height: 455px;'></div>";
+        tblContent += "<div id='dvUserMainTree'>";
+        tblContent += "<div id='dvUserPreviousNode' class='dvPreviousNode' onclick='fnBindUsersWithOneLevelParentNew();'>";
+        tblContent += "<i class='fa fa-arrow-up '></i></div>";
+        tblContent += "<div id='dvUserTree' class='dvNewUserTree'><img src='../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif'/>Loading tree</div>";
+        tblContent += "<div class='clearfix'></div>";
+        tblContent += "</div></div>";
+        $('#' + id).html(tblContent);
+    }
+
+    function fnSearchUsersFromTree() {
+        debugger;
+        if ($.trim($('#txtUserSearchNode').val()) == '') {
+            fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvUserFilteredNode");
+        }
+        else {
+            fnGetUsersByUserNameEmployeeName($('#txtUserSearchNode').val(), "dvUserTree", "dvUserFilteredNode");
+        }
+    }
+
+    function fnShowFullUserTreeClick() {
+        debugger;
+        $('#dvUserPreviousNode').hide();
+        $('#dvUserFullTree').hide();
+        $('#dvUserLoadTree').show();
+        $('#dvUserLoadTree').attr("title", "Click here to show users");
+        fnShowFullTreeNew(currentUserCode_g, "dvUserTree", "dvUserFilteredNode", "NO");
+    }
+
+    function fnLoadInitialUserTree() {
+        debugger;
+        $('#dvUserFullTree').show();
+        $('#dvUserLoadTree').hide();
+        $('#dvUserFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+    }
+
+    function fnGetRegionTree(regionCode, treeId, filterId) {
+        if (regionCode == "") {
+            regionCode = currentRegionCode_g;
+        }
+        if (regionCode == currentRegionCode_g) {
+            $('#dvPreviousNode').hide();
+        }
+        else {
+            $('#dvPreviousNode').show();
+        }
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/RegionTreeGenerationByRegionCode',
+            data: "regionCode=" + regionCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: false,
+                        ajaxDefaults: {
+                            type: 'POST',
+                            cache: false
+                        },
+                        onClick: function (node, event) {
+                            // Close menu on click
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onCreate: function (node, span) {
+                            bindRegionContextMenu(span);
+                        },
+                        onDblClick: function (node, event) {
+                            fnRegionTreeNodeClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnRegionTreePostInit(node);
+                        },
+                        onExpand: function (select, dtnode) {
+                            fnRegionTreeVacantNodeInit(select, dtnode, id);
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                    });
+
+                    // vacant user background-color change
+                    $("#" + treeId).dynatree("getRoot").visit(function (node) {
+                        debugger;
+                        //if (node.data.title.split('-')[1] == "NOT ASSIGNED" || node.data.title.split('-')[1] == "VACANT") {
+                        //    $(node.span).addClass('tree-node-vacant');
+                        //}
+                        if (node.data.title.split('-')[1] == "NOT ASSIGNED" ) {
+                            $(node.span).addClass('tree-node-assigned');
+                        }
+                        if (node.data.title.split('-')[1] == "VACANT") {
+                            $(node.span).addClass('tree-node-vacant');
+                        }
+                        if (node.data.title.split('-')[1] == "TO BE VACANT") {
+                            $(node.span).addClass('tree-node-tobevacant');
+                        }
+                    });
+
+                    $("#dvAjaxLoad").hide();
+                    $("#divRegion").find("span.childIcon").removeClass("childIcon");
+                    //$("span.childIcon").live("click", function (e) {
+                    //    fnShowChildRegionNodes(e.target);
+                    //});
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                $('#' + treeId).unblock();
+            }
+        });
+    }
+
+    function fnRegionTreeSearch() {
+        if ($.trim($('#txtSearchNode').val()) == '') {
+            fnGetRegionTree(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+        }
+        else {
+            fnGetRegionsByRegionName($('#txtSearchNode').val(), "dvRegionTree", "dvFilteredNode");
+        }
+    }
+
+
+    var fnGetUserTreeByUserNew = function (userCode, treeId, filterId)
+    {
+        debugger;
+        if (userCode == "") {
+            userCode = currentUserCode_g;
+        }
+  
+      
+    
+        if (userCode == curUserCode_g) {
+            $('#dvUserPreviousNode').hide();
+            $(".dynatree-expander").hide();
+            $(".dynatree-icon").hide();
+        }
+        else {
+            $('#dvUserPreviousNode').show();
+            $(".dynatree-expander").show();
+            $(".dynatree-icon").show();
+        }
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode_New',
+            data: "userCode=" + userCode + "&includeOneLevelParent=NO",
+            success: function (jsData) {
+                if (jsData != '') {
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: false,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                  
+                        onClick: function (node, event) {
+                           if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+
+                       
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onDblClick: function (node, event) {
+                            fnUserTreeNodeDblClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+               
+                    $("#dvAjaxLoad").hide();
+                    $("#divUser").find("span.childIcon").removeClass("childIcon");
+                    //$("span.childIcon").unbind("click");
+                    //$("span.childIcon").live("click", function (e) {
+                    //    //alert("Edit " + $.ui.dynatree.getNode(e.target));
+                    //    fnShowChildNodes(e.target);
+                    //});
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+
+    var fnBindUsersWithOneLevelParentNew = function() {
+        debugger;
+        var userCode = $("#dvUserTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        fnGetUserTreeByUserWithOnelevelParentNew(userCode, "dvUserTree", "dvUserFilteredNode");
+    }
+
+    var fnGetUserTreeByUserWithOnelevelParentNew = function (userCode, treeId, filterId) {
+        debugger;
+        $('#' + treeId).block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '1px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: 'Master/UserTreeGenerationByUserCode_New',
+            data: "userCode=" + userCode + "&includeOneLevelParent=YES",
+            success: function (jsData) {
+                debugger;
+                if (jsData != '') {
+                    if (userCode == curUserCode_g) {
+                        $('#dvUserPreviousNode').hide();
+                    
+                    }
+                    else {
+                        $('#dvUserPreviousNode').show();
+                   
+                    }
+                    $('#' + filterId).hide();
+                    $("#" + treeId).show();
+                    var strTree = jsData;
+                    $("#" + treeId).html(' ');
+                    $('#' + treeId).dynatree('destroy');
+                    $('#' + treeId).empty();
+                    $("#" + treeId).html(strTree);
+
+                    $("#" + treeId).dynatree({
+                        checkbox: false,
+                        onActivate: function (node) {
+                            fnUserTreeNodeClick(node);
+                        },
+                        onClick: function (node, event) {
+                            // Close menu on click
+                            //if ($(e.target).hasClass("parent")) {
+                            //    alert("You clicked " + node + ",  url=" + node.url);
+                            //}
+                            if ($(".contextMenu:visible").length > 0) {
+                                $(".contextMenu").hide();
+                            }
+                        },
+                        onCreate: function (node, span) {
+                            bindUserContextMenu(span);
+                        },
+                        onKeydown: function (node, event) {
+                            // Eat keyboard events, when a menu is open
+
+                        },
+                        onDeactivate: function (node) {
+                        },
+                        strings: {
+                            loading: "Loading…",
+                            loadError: "Load error!"
+                        },
+                        onDblClick: function (node, event) {
+                            fnUserTreeNodeDblClick(node);
+                        },
+                        onPostInit: function (node, event) {
+                            fnUserTreePostInit(node);
+                        }
+                    });
+                    $("#dvAjaxLoad").hide();
+                    $("span.parent").live("click", function (e) {
+                        // alert("Edit " + $.ui.dynatree.getNode(e.target));
+                        fnShowChildNodes(e.target);
+                    });
+                    var first_levelusercode = $("#dvUserTree").dynatree("getRoot").getChildren()[0].data.key;
+                    if (first_levelusercode == curUserCode_g) {
+                        $('#dUservPreviousNode').hide();
+                    }
+                    else {
+                        $('#dvUserPreviousNode').show();
+                    }
+                }
+            },
+            error: function () {
+                $('#' + treeId).unblock();
+            },
+            complete: function () {
+                $('#' + treeId).unblock();
+            }
+            //}
+        });
+    }
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $('#btnRefreshRegion').hide();
+        $.blockUI();
+
+
+        curLat = @Html.Raw(Json.Encode(ViewBag.Lat));
+        curLng = @Html.Raw(Json.Encode(ViewBag.Long));
+        if(currMap.toUpperCase()=='GOOGLE')
+        {
+            autocomplete = new google.maps.places.Autocomplete(
+          /** @@ {HTMLInputElement} */(document.getElementById('txtMap')),
+              { types: ['geocode'] });
+            // fnLoadMap();
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                fnLoadMap();
+            });
+            curLat = @Html.Raw(Json.Encode(ViewBag.Lat))
+            curLng = @Html.Raw(Json.Encode(ViewBag.Long))
+            $('#btnRefreshRegion').hide();
+            if (curLat == "NOT_FOUND") {
+                curLat = 28.633349;
+                curLng = 77.222557;
+                options = {
+                    zoom: 6,
+                    center: new google.maps.LatLng(curLat, curLng),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById('map'), options);
+                //var obj = new google.maps.LatLng(parseFloat(curLat), parseFloat(curLng));
+                //getAddress(obj);
+                //// map.resize();
+                map.setCenter(map.center);
+            }
+            else {
+                curLat = 13.0011774;
+                curLng = 80.2564957;
+                options = {
+                    zoom: 12,
+                    center: new google.maps.LatLng(curLat, curLng),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById('map'), options);
+
+
+            }
+
+            //// Creating a new map
+            google.maps.event.addListener(map, 'click', function (e) {
+                debugger;
+                getAddress(e.latLng);
+            });
+        }
+
+        if(currMap.toUpperCase()=='BING')
+        {
+            if (curLat == "NOT_FOUND") {
+                $("#map").css("position", "relative");
+                curLat = 28.633349;
+                curLng = 77.222557;
+                map = new Microsoft.Maps.Map(
+                           document.getElementById("map"),
+                              {
+                                  credentials: "VdT3XM3RpQFPOHCQ252X~7Dgh7zzr8aT2-MB_Vwai2g~AuwOT8eNvsraB6BfV0g2P79XjRZ8ApxEkRgtoh1v5EjGEayfRr3M9Iialwrcud2J",
+                                  center: new Microsoft.Maps.Location(curLat, curLng),
+                                  mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                  zoom: 6
+                              });
+            }
+            else {
+                curLat = 13.0011774;
+                curLng = 80.2564957;
+                $("#map").css("position", "relative");
+                map = new Microsoft.Maps.Map(
+                         document.getElementById("map"),
+                            {
+                                credentials: "VdT3XM3RpQFPOHCQ252X~7Dgh7zzr8aT2-MB_Vwai2g~AuwOT8eNvsraB6BfV0g2P79XjRZ8ApxEkRgtoh1v5EjGEayfRr3M9Iialwrcud2J",
+                                center: new Microsoft.Maps.Location(curLat, curLng),
+                                mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                zoom: 12
+                            });
+            }
+
+            Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', function () {
+                var options = {
+                    maxResults: 4,
+                    map: map
+                };
+                var manager = new Microsoft.Maps.AutosuggestManager(options);
+                manager.attachAutosuggest('#txtMap', '#searchBoxContainer', selectedSuggestion);
+
+            });
+
+            //Wire events for dragging
+            Microsoft.Maps.Events.addHandler(map, 'click', function (e){
+                debugger;
+                if (e.targetType == "map") {
+                    infoWindow = new Microsoft.Maps.Infobox();
+                    infoWindow.setMap(null);
+                    var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+                    var loc = e.target.tryPixelToLocation(point);
+                    //    var location = new Microsoft.Maps.Location(loc.latitude, loc.longitude);
+                    getBingAddress(loc.latitude, loc.longitude);
+                }
+            });
+        }
+
+
+        //fnBindRegionTree("dvRegionTree");
+        fnRegionTreePosition("regiontree");
+        // fnGetRegionTree(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+        fnBindRegionTree("dvRegionTree");
+        $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+        $('#txtSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                fnRegionTreeSearch();
+                return false;
+            }
+        });
+        fnGetData();
+
+
+        // fnBindUserTree("dvUserTree");//--------Newly changes on 24/02/2017
+        //fnBindUserTreeNew("dvUserTree"); // -------Add New function Name for replacement of fnBindUserTree.
+        fnBindUserTree("usertree");
+        fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvUserFilteredNode");
+        $('#dvUserPreviousNode').click(function () { fnBindUsersWithOneLevelParentNew(); });
+        $('#txtUserSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                fnSearchUsersFromTree();
+                return false;
+            }
+        });
+
+        $(".dvNewUserTree").css("height","510px");
+        $(".dvNewUserTree").css("min-height","400px");
+        $(".dvNewUserTree").css("width","100%");
+
+        $($("#dvUserNodeSearch").children(0)[0]).css("position","relative");
+        $($("#dvUserNodeSearch").children(0)[0]).css("width","width")
+        $($("#dvUserNodeSearch").children(0)[0]).css("clear","both");
+        $($("#dvUserNodeSearch").children(0)[0]).css("float","left");
+
+        //$("#txtUserSearchNode").css("position","relative");
+        //$("#txtUserSearchNode").css("float","left");
+        //$("#txtUserSearchNode").css("width","180px");
+
+        $(".dvNewRegionTree").css("width","99%");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("width","400px");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("position","relative");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("float","left");
+        $("#divRegion").find("#dvFilteredNode").css("height","490px");
+        $("#divRegion").find("#dvFilteredNode").css("overflow","scroll");
+
+
+
+        // $("#dvUserAjaxLoad").hide();
+        //   fnGetMasterDataForUserAdd(); //fnValidateUserName
+        $("#Region_Name").blur(function () { fnValidateRegionName() });
+        //    $("#User_Name").blur(function () { fnValidateUserName() });
+        $("#dvAddRegion").overlay({
+            onBeforeLoad: function () {
+                if(currMap.toUpperCase()=='GOOGLE')
+                {
+                    google.maps.event.trigger(map, "resize"); //this fix the problem with not completely map
+                }
+            },
+            onLoad: function () {
+                if(currMap.toUpperCase()=='GOOGLE')
+                {
+                    google.maps.event.trigger(map, "resize");
+                }
+            }
+        });
+        $("#dvRegionHierarchy").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $("#dvRegionXml").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+
+        // $("#User_Pass").blur(function () { fnPasswordValidation() });
+
+        $('#btnRefreshUser').hide();
+
+
+        $("#dvAddUser").overlay({
+            onBeforeLoad: function () {
+                // $("#dvAjaxLoad").show();
+                $("#dvOldUser").html('');
+                var regionTree = $("#dvRegionTree").dynatree("getTree");
+                if (regionTree.getActiveNode() != null) {
+                    var regionCode = regionTree.getActiveNode().data.key;
+                    var regionName = regionTree.getActiveNode().data.title.split('(')[0];
+                    var region = regionCode + "|" + regionName + "_REGION";
+                    $("#dvNewUser").load('../HiDoctor_Master/User/User/?id=' + escape(region));
+                }
+                else {
+                    $("#dvNewUser").load('../HiDoctor_Master/User/User/');
+                }
+            },
+            onLoad: function () {
+                // $("#dvAjaxLoad").show();
+            }
+        });
+        $("#dvEditUser").overlay({
+            onBeforeLoad: function () {
+                debugger;
+                //  $("#dvAjaxLoad").show();
+                $("#dvNewUser").html('');
+                var userTree = $("#dvUserTree").dynatree("getTree");
+                if (userTree.getActiveNode() != null) {
+                    var userCode = userTree.getActiveNode().data.key;
+                    $("#dvOldUser").load('../HiDoctor_Master/User/User/?id=' + escape(userCode + "_USEREDIT"));
+                }
+                else {
+                    $("#dvOldUser").load('../HiDoctor_Master/User/User/');
+                }
+            },
+            onLoad: function () {
+                // $("#dvAjaxLoad").show();
+            }
+        });
+        $("#dvDisableRegionUser").overlay({
+            onBeforeLoad: function () {
+                $("#dvAjaxLoad").show();
+                var regionTree = $("#dvRegionTree").dynatree("getTree");
+                if (regionTree.getActiveNode() != null) {
+                    var regionCode = regionTree.getActiveNode().data.key;
+                    var regionName = regionTree.getActiveNode().data.title.split('(')[0];
+                    var region = regionCode + "_" + regionName;
+                    $("#dvDisable").load('../HiDoctor_Master/User/DisableUser/?id=REGION|' + escape(region));
+                }
+                else {
+                    $("#dvDisable").load('../HiDoctor_Master/User/DisableUser/');
+                }
+            },
+            onLoad: function () {
+                // $("#dvAjaxLoad").show();
+            }
+        });
+        $("#dvDisableUser").overlay({
+            onBeforeLoad: function () {
+                debugger;
+                $("#dvAjaxLoad").show();
+                var userTree = $("#dvUserTree").dynatree("getTree");
+                if (userTree.getActiveNode() != null) {
+                    var userCode = userTree.getActiveNode().data.key;
+                    var userName = userTree.getActiveNode().data.title;
+                    $("#dvDisUsers").load('../HiDoctor_Master/User/DisableUser/?id=USER|' + escape(userCode + "_" + userName));
+                }
+                else {
+                    $("#dvDisUsers").load('../HiDoctor_Master/User/DisableUser/');
+                }
+            },
+            onLoad: function () {
+                //$("#dvAjaxLoad").show();
+            }
+        });
+        //dvUserHierarchy
+        $("#dvUserHierarchy").overlay({
+            onBeforeLoad: function () {
+                debugger;
+                $("#dvAjaxLoad").show();
+                var userTree = $("#dvUserTree").dynatree("getTree");
+                if (userTree.getActiveNode() != null) {
+                    var userCode = userTree.getActiveNode().data.key;
+                    $("#dvSelectedUser").load('../HiDoctor_Master/User/UserHierarchyChange/?id=' + escape(userCode));
+                }
+                else {
+                    $("#dvSelectedUser").load('../HiDoctor_Master/User/UserHierarchyChange/');
+                }
+            },
+            onLoad: function () {
+                $("#dvAjaxLoad").show();
+            }
+        });
+        //$("#dvAddRegion").on('shown', function () {
+        //    google.maps.event.trigger(map, 'resize');
+        //});
+
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnUserTreePostInit() {
+    }
+    function fnRegionTreeActivate() {
+        if(currMap.toUpperCase()=='GOOGLE')
+        {
+            google.maps.event.trigger(map, 'resize');
+            map.setZoom(map.getZoom());
+        }
+    }
+
+    function fnUserTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'usertree');
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    function fnUserTreeNodeClick() {
+    }
+    function selectedSuggestion(suggestionResult) {
+        debugger;
+        $("#hdnLatVal").val('0');
+        $("#hdnLngVal").val('0');
+        infoWindow.setMap(null);
+        map.entities.clear();
+        $(".Infobox").remove();
+        map.setView({ center: suggestionResult.location,zoom: 10 });
+        var pushpin = new Microsoft.Maps.Pushpin(suggestionResult.location);
+        map.entities.push(pushpin);
+        infoWindow = new Microsoft.Maps.Infobox(suggestionResult.location,
+      {
+          title: 'Details',
+          description: '<h3>Position:' + suggestionResult.location.latitude + ',' + suggestionResult.location.longitude + '</h3>' + suggestionResult.formattedSuggestion+ '<br />'
+      });
+        infoWindow.setMap(map);
+        $("#hdnLatVal").val(suggestionResult.location.latitude);
+        $("#hdnLngVal").val(suggestionResult.location.longitude);
+    }
+    function fnGetCurrMap(){
+        $.ajax({
+            type: 'GET',
+            url: '../HiDoctor_Master/Organogram/GetCurrentMapDetails',
+            async:false,
+            success:function(result)
+            {
+                debugger;
+                if(result.length==1)
+                {
+                    currMap=result[0].Map_Provider_Name;
+                }
+                else{
+                    currMap="";
+                }
+            }
+        });
+    }
+</script>

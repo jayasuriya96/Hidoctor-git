@@ -1,0 +1,110 @@
+﻿
+
+.padding{
+    padding-left:0px !important;
+    padding-right:0px !important;
+    padding-top:10px !important;
+}
+.add{
+    font-size:22px;
+    padding-top:4px !important;
+}
+.remove {
+    font-size: 22px;
+    padding-top: 4px !important;
+    color: red;    
+}
+.removeimg{
+    display:none;
+}
+.rmrks{
+    resize:none;
+}
+#btnsubmit{
+    float:right !important;    
+}
+#btncancel{
+    float:right !important;    
+}
+#PRForm{
+    display:block!important;
+}
+/*#OrdersForm{
+      display:block!important;
+}
+#POForm {
+    display: block !important;
+}*/
+#detailsProd{
+    display:none;
+     padding: 40px;
+    background: rgb(241, 241, 241);
+}
+.reftypestyle{
+    font-style:italic;
+}
+
+#dvTab {
+    min-height: 500px;
+   
+}
+
+#RecForm{
+   display:block !important;
+}
+#dispatchform{
+    display:none;
+     padding: 40px;
+    background: rgb(241, 241, 241);
+}
+#RList{
+    padding:20px;
+}
+#DvMainDis{
+    width:99%;
+    padding-bottom:30px;
+}
+.dvSubHeader {
+    width: 98%;    
+    color: #A4A4A4;
+    font-size: 15px;
+    padding: 10px;
+    padding-left:17px;
+}
+#detmain{
+    width:100%;
+}
+
+
+#rdbtnsmain{
+    padding: 15px;
+    margin:15px;
+    background: rgb(241, 241, 241);
+}
+#DateInput{
+    padding-bottom:15px;
+    padding-top:15px;
+}
+#UserTypechkbx{
+    padding-left:31px;
+    padding-right:31px;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+#RDbtnsSelec{
+     padding-left:31px;
+    padding-right:31px;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+.progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.progress {
+    position: relative;
+}

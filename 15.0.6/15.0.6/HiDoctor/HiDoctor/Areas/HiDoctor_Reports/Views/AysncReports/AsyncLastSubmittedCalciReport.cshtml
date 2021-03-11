@@ -1,0 +1,321 @@
+﻿@{
+    ViewBag.Title = "LastSubmittedReportCalci";
+    Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    #divMain {
+        width: 78%;
+        float: left;
+    }
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #LastSubmittedCalciReport td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #LastSubmittedCalciReport th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+</style>
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>  | <span id="spnReportQueueToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleReportQueue('LastSubmittedCalciReport')">Show Report Queue Status</span>         
+        </div>
+        <div id="divInput" style="padding: 5px">
+            <table>
+                <tr>
+                    <td> Month & Year 
+                    </td>
+                    <td colspan="3">
+                        <input type="text" id="txtFromDate" />
+                        <input type="hidden" id="hdnUserCode" />
+                        <input type="hidden" id="hdnDownload" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Unlisted Doctors
+                    </td>
+                    <td>
+                        <input type="radio" id="rdInClude" name="Unlisted" value="INCLUDE" />
+                        Include
+                    </td>
+                    <td colspan="2">
+                        <input type="radio" id="rdExclude" name="Unlisted" value="EXCLUDE" checked="checked" />
+                        Exclude
+                    </td>
+                </tr>
+                <tr>
+                    <td>Include Missed Doctors ?
+                    </td>
+
+                    <td colspan="3">
+                        <input type="checkbox" name="missed" value="MISSED" />
+                    </td>
+                </tr>
+
+                <!--<tr>
+                    <td>Report View Type ?</td>
+                    <td>
+                        <input type="radio" name="rdReportView" value="REPORT" checked="checked" />View in-screen                      
+                    </td>
+                    <td>
+                        <input type="radio" name="rdReportView" value="EXCEL" />Export To excel
+                    </td>
+                </tr>-->
+
+                <tr style="display: none">
+                    <td>DCR Date
+                    </td>
+                    <td>
+                        <input type="radio" id="rdActual" name="UnDCRDate" value="ACTUAL" checked="checked" />
+                        Actual Date
+                    </td>
+                    <td colspan="2">
+                        <input type="radio" id="rdEntered" name="UnDCRDate" value="ENTERED" />
+                        Entered Date
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="button" id="btnShow" name="View" value="View" onclick="fnGetLastSubmittedCalciReport();" />
+                    </td>
+                    <td colspan="2" align="left">
+                        <input type="button" id="btnShowAll" name="View All" value="View All" onclick="fnGetViewAllLastSubmittedCalciReport();" />
+                    </td>
+                </tr>
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div id="dvRptQueuePanel" style="padding:10px; display:none">
+                <div id="dvAsynMsg" style="display:none"></div>
+                <div>
+                    <input type="button" class="btn btn-primary" value="Refresh" onclick="fnRefreshReportQueueStatus('LastSubmittedCalciReport');" /><br />
+                </div>
+                <div>
+                    <div id="dvReportQueue"></div>
+                </div>
+                <br />
+            </div>
+            <div id="dvRptPanel" style="width: 100%; overflow:auto;">
+                 @Html.Hidden("ReportTransactionID")
+                @Html.Hidden("ReportName")   
+                <div id="dvAsynReport" style="width: 100%; overflow:auto;"></div>
+            </div>    
+        <!--<div id="dvTablePrint" style="display: none;">
+            <div style="width: 90%; float: left;"></div>
+            <div style="width: 9%; float: right; padding-right: 1%;">
+                <a onclick="fnDownloadExcel();">
+                    <img src="../Content/DataTable/media/images/xls.png" style='border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer;' /></a>
+                <div id='dvPrint' onclick='fnPrint("divPrint","ifrmPrint");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; display: none;'></div>
+                <a id="lnkExcel" style="display: none;">Download Excel</a>
+            </div>
+        </div>
+        <div id="divReport">
+        </div>
+
+        <form action="../HiDoctor_Reports/Reports/DownloadComprehensiveAnalysisReportExcel" method="post" enctype="multipart/form-data" target="ifrmExcel">
+            <div id="dvExcelPrint" style='float: left; width: 100%; display: none;'>
+                <div style="float: right; width: 65px; padding: 3px; background-color: #efefef; border: 1px solid #d3d3d3; margin-bottom: 10px; margin-right: 4%;">
+                    <input type="submit" id="CA_Excel" value="" />
+                    <div id='dvCompPrint' onclick='fnPrint("divCompPrint","ifrmCompPrint");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'></div>
+                </div>
+                @Html.Hidden("sd")
+                @Html.Hidden("ed")
+                @Html.Hidden("userCode")  
+                @Html.Hidden("reportType") 
+            </div>
+        </form>-->
+        <iframe id="ifrmExcel" style="display: none;" name="ifrmExcel"></iframe>
+
+        <div id="divCompReport">
+        </div>
+
+        <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 800px; height: 500px; overflow: auto">
+            <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+            <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+            <div id="divHeader">
+            </div>
+            <br />
+            <div style="clear: both">
+            </div>
+            <div id="divModel" style="height: 100px;">
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<iframe id="ifrmCompPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divCompPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncReportGeneric.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncLastSubmittedCalci.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var arrUserandChildcount_g =[];
+    $(function () {
+        $('#txtFromDate').monthpicker();
+    });
+    $(document).ready(function () {
+        try {
+            $("#dvTree").show();
+            fnBindUserTreeWithCheckBoxDoubleClick("tree");
+            //  $('#divInput').hide();
+            // $('#divToggle').hide();
+            $('#dvTablePrint').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnUserTreeNodeClick(node) {
+        $("#divReport").html("");
+        $('#divCompReport').html("");
+        //  $("#dvTree").hide();
+        $('#dvTablePrint').hide();
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        // $("#divMain").css('width', '100%');
+    }
+
+    function fnUserTreePostInit() {
+    }
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var isChildUser = "NO";     
+        //var userCodeselect = node.tree.getSelectedNodes();  
+        if(node.childList){
+            isChildUser = "YES";
+        }
+        else{
+            isChildUser = "NO";
+        }
+        arrUserandChildcount_g.push({ User_Code: node.data.key, Child_Count: isChildUser });
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+
+</script>

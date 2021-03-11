@@ -1,0 +1,179 @@
+﻿ h2, h4 {
+        margin: 5px 0px;
+    }
+
+    .headtitle {
+        padding: 0px 15px;
+    }
+
+    .box_inside {
+        padding: 20px 0px !important;
+        /*margin: 27px 0px;*/
+    }
+
+    .icon {
+        padding-right: 6px !important;
+    }
+
+    .box_layout {
+        background-color: #ffffff;
+        height: 125px;
+        box-shadow: 0 0 10px rgba(0,0,0,.18);
+        padding: 0px !important;
+    }
+
+    .box_layoutblue {
+        padding: 0px !important;
+    }
+
+    .landing_box {
+        margin: 15px 0px;
+    }
+
+    .box_layout:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        /*z-index: 100;*/
+        top: 27px;
+        width: 5px;
+        height: 56%;
+    }
+
+    .box_layoutblue:before {
+        background: #288fc9;
+    }
+
+    .box_layoutred:before {
+        background: red;
+    }
+
+    .box_layoutgray:before {
+        background: #7b7b7b;
+    }
+
+    .box {
+        padding: 0px;
+        margin-bottom: 20px;
+    }
+
+    .icon {
+        margin: 13px 0px;
+    }
+
+    .titletext {
+        padding: 20px 15px 0px 0px;
+        text-align: right;
+    }
+
+    .locktitletext {
+        padding: 0px 15px 0px 0px;
+        text-align: right;
+    }
+
+    .title {
+        color: #288fc9;
+    }
+
+    .subtitle {
+        color: #9E9E9E;
+        font-weight: bold;
+    }
+
+    .activities .activitiesBox {
+        padding: 0px;
+    }
+
+    .activities {
+        background-color: #ffffff;
+        padding: 0px;
+        box-shadow: 0 0 10px rgba(0,0,0,.18);
+    }
+
+    .acc_trigger .fa {
+        padding: 0px 15px;
+    }
+
+    .activitytitle {
+        margin-bottom: 20px;
+    }
+
+    .acc_trigger {
+        padding: 20px 0px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 0px;
+    }
+
+        .acc_trigger:last-of-type {
+            border: none;
+        }
+
+        .acc_trigger a {
+            color: #000000;
+        }
+
+    .acc_container {
+        background-color: #e8e8e8;
+    }
+
+    div.box {
+        height: 100% !important;
+        padding: 10px;
+        overflow: auto;
+        border: 1px solid #8080FF;
+        background-color: #E5E5FF;
+    }
+
+    .modal-dialog {
+        -webkit-box-shadow: 0 !important;
+        -moz-box-shadow: 0 4px 16px rgba(0,0,0,.2);
+        box-shadow: none !important;
+        background: none !important;
+        background-clip: unset !important;
+        border: none !important;
+        border: none !important;
+        /* outline: 0; */
+        position: absolute;
+    }
+    .icdcrap{
+        display:block;
+        background:url(/Content/images/ic_dcr_approval.png) no-repeat;
+        width:33px;
+        height:33px; 
+    }
+    .ictpap{
+        display:block;
+        background:url(/Content/images/ic_tour_plan.png) no-repeat;
+        width:33px;
+        height:33px; 
+    } 
+    .icexpap{
+        display:block;
+        background:url(/Content/images/ic_expenses.png) no-repeat;
+        width:33px;
+        height:33px; 
+    }
+    .icmes{
+        display:block;
+        background:url(/Content/images/ic_notification.png) no-repeat;
+        width:33px;
+        height:33px; 
+    } 
+    .icnti{
+        display:block;
+        background:url(/Content/images/ic_notification.png) no-repeat ;
+        width:33px;
+        height:33px; 
+    }
+    .ictas{
+        display:block;
+        background:url(/Content/images/ic_tasks.png) no-repeat;
+        width:33px;
+        height:33px; 
+    }
+    .icinack{
+        display:block;
+        background:url(/Content/images/ic_acknowledgement.png) no-repeat;
+        width:33px;
+        height:33px; 
+    } 

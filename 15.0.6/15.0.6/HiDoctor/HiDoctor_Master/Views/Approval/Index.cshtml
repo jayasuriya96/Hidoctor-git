@@ -1,0 +1,699 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+    #dvMainApproval {
+        width: 100%;
+    }
+
+    /*#dvLeftPanel {
+        width: 30%;
+        float: left;entity
+        border: 1px solid #f2f2f2;
+
+    }*/
+
+    /*#dvRightPanel {
+        width: 68%;
+        float: left;
+        padding-left: 1%;
+    }*/
+
+    #dvStatus {
+        width: 100%;
+        float: left;
+        height: 35px;
+    }
+
+    #dvMode {
+        width: 80%;
+        float: left;
+    }
+
+    #dvRefresh {
+        width: 15%;
+        float: left;
+    }
+
+    #RegionTree {
+        height: 100%;
+        width: 100%;
+        float: left;
+    }
+
+    #tblCustomer {
+        width: 100%;
+        float: left;
+    }
+
+    #dvRegionName {
+        font-size: 15px;
+        font-weight: bold;
+        padding-left: 1%;
+        width: 70%;
+        height: 35px;
+        float: left;
+    }
+
+    #dvDoctors {
+        width: 100%;
+        height: 350px;
+        overflow: auto;
+    }
+
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: #E8F1FF !important; /* reddish */
+    }
+
+    #tblCustomer a {
+        cursor: pointer;
+    }
+
+    #tblValidateDoctorCount {
+        border-collapse: collapse;
+    }
+
+        #tblValidateDoctorCount td, #tblValidateDoctorCount th {
+            border: 1px solid black;
+            padding: 4px;
+        }
+</style>
+
+<div id="dvMainApproval" class='col-xs-12'>
+    <div id="dvLeftPanel" class='col-xs-3 leftNav'>
+        <div id="dvStatus">
+            <div id="dvMode">
+                Select Status
+                <select id="cboMode">
+                    <option value="ALL">ALL</option>
+                    <option value="2" selected>Applied</option>
+                    <option value="1">Approved</option>
+                    <option value="0">UnApproved</option>
+                </select>
+            </div>
+            <div id="dvRefresh">
+                <input type="button" value="Refresh" onclick="fnGetPaintTree();" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <br />
+        <div id="RegionTree" style="float: left; height: auto; width: 100%">
+        </div>
+        <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+        <div style="clear: both;"></div>
+    </div>
+    <div id="dvRightPanel" style="float:left" class='col-xs-9 rghtInputandRpt'>
+        <div>
+            <div id="dvRegionName"></div>
+            <div style="width: 25%; text-align: right; margin-right: 3%; float: left;">
+                <input type="button" class="btn small primary" value="Approve" onclick="fnApprove();" />
+                <input type="button" class="btn small primary" value="UnApprove" onclick="fnCheckUnapproveStatus();" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvDoctors">
+        </div>
+        <div style="clear: both; padding-top: 1%; text-align: right; margin-right: 3%;">
+            <input type="button" class="btn small primary" value="Approve" onclick="fnApprove();" />
+            <input type="button" class="btn small primary" value="UnApprove" onclick="fnCheckUnapproveStatus();" />
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+
+    <!-- Check Doctor Counts PopUp Div -->
+    <div id="dvDocCountPopUp" class="simple_overlay">
+        <a class="overlayclose" onclick="$('#dvDocCountPopUp').overlay().close();"></a>
+        <div>
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Doctor Approval Validate</span>
+            </div>
+            <br />
+            <div id="dvCheckDoctorCounts" style="padding:50px;"></div>
+        </div>
+    </div>
+
+</div>
+<div id="dvDisMDLNumber" title="MDL Numebr Check!!">
+    <div id="dvMDL"></div>
+</div>
+<div class="simple_overlay" id="dvHistoryPopUp">
+    <a class="overlayclose" onclick="$('#dvHistoryPopUp').overlay().close();"></a>
+    @*<div class="col-lg-12 form-group dvTitleHeader">
+            History Details
+        </div>
+    *@
+    <div class="col-lg-12">
+        <div class="col-lg-12" id="dvHistory"></div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<div id="dvDoctorUnapprove" class="simple_overlay" style="width: 665px !important; min-height: 500px !important; overflow: scroll; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+    <a class="overlayclose" style="margin: 10px;" onclick="fnDoctorClose();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span style="font-weight: bold">Doctor Unapproval Details</span>
+        </div>
+        <br />
+        <div style="height: 325px;" class="col-lg-12">
+            <div id="dvDetails" class="col-lg-12">
+            </div>
+            <div class="dvpopfooter">
+                <div>
+                    <input type="button" class='btn btn-primary autoCust' style="padding-right:5px" value="Cancel" onclick="fnDoctorClose();" />
+                    <input type='button' class='btn btn-primary autoCust' style="padding-right: 5px" value='Exclude Selected Doctors' onclick="fnExcludeDoctors();" />
+                    <input type='button' class='btn btn-primary autoCust' value='Unapprove All Doctors' onclick="fnUnapproveAll();" />
+
+                </div>
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/DoctorApproval.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var entity = "";
+    var gcRegionCode="";
+    var currentRegionCode_g="";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        entity=@Html.Raw(Json.Encode(ViewBag.Entity));
+        gcRegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+        currentRegionCode_g=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+
+        $("#dvDoctorUnapprove").overlay().load();
+
+        if(currentRegionCode_g != null && currentRegionCode_g != '')
+        {
+            $("#leftNav").show();
+            fnRegionTreePosition("RegionTree");
+            fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+            $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchRegions();
+                    return false;
+                }
+            });
+            // $("#dvTree").show();
+            //fnBindRegionTree("dvRegionTree");
+            $("#dvHistoryPopUp").overlay().load();
+
+            $("#dvRightPanel").hide();
+            $("#dvAjaxLoad").hide();
+        }
+
+
+        //Check Doctor Count PopUp Overlay
+        $("#dvDocCountPopUp").overlay({
+            onBeforeLoad: function () {
+                //$("#dvCheckDoctorCounts").css('display', 'none');
+            },
+            onLoad: function () {
+            }
+        });
+
+
+    });
+    function fnRegionTreePostInit(node) {
+        fnGetPaintTree();
+    }
+
+    function fnRegionTreeNodeClick(node) {
+        fnGetCustomerData();
+    }
+
+
+
+
+    function fnGetPaintTree() {
+        $("#dvRightPanel").hide();
+        $("#dvAjaxLoad").show();
+        var mode = $("#cboMode").val();
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/GetCustomerRegions/',
+            type: "POST",
+            data: "status=" + mode + "&entity=" + entity + "",
+            success: function (result) {
+                if (result != '') {
+                    result = eval('(' + result + ')');
+                    $("#dvRegionTree").dynatree("getRoot").visit(function (node) {
+                        var regions = jsonPath(result, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                        if (regions.length > 0) {
+                            $(node.span).addClass('tree-node-active');
+                        }
+                        else {
+                            $(node.span).removeClass('tree-node-active');
+                        }
+                        if(node.data.key==gcRegionCode)
+                        {
+                            node.activate= false;
+                        }
+                    });
+                    $("#dvAjaxLoad").hide();
+                }
+                fnGetCustomerData();
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            },
+            complete: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnGetCustomerData() {
+        $("#dvAjaxLoad").show();
+        $("#dvDoctors").html('');
+        if ($("#cboMode").val().toUpperCase() == "MODE") {
+            fnMsgAlert('info', 'Info', 'Please select atleast any one status');
+            return;
+        }
+        var treeobj = $("#dvRegionTree").dynatree("getTree");
+        if(treeobj.getActiveNode()!=null)
+        {
+            var regionCode = treeobj.getActiveNode().data.key;
+            $("#dvRegionName").html("Region Name : " + treeobj.getActiveNode().data.title.split('-')[0]);
+            var mode = "";
+
+            if ($("#cboMode").val().toUpperCase() == "ALL") {
+                mode = "^1^,^0^,^2^";
+            }
+            else {
+                mode = $("#cboMode").val();
+            }
+            $.ajax({
+                url: '../HiDoctor_Master/Approval/GetCustomersForApproval/',
+                type: "POST",
+                data: "regionCode=" + regionCode + "&mode=" + mode + "&entity=" + entity + "",
+                success: function (result) {
+                    if (result == '') {
+                        $("#dvRightPanel").hide();
+                        fnMsgAlert('info', 'Info', 'There is no ' + entity + ' details found for the ' + treeobj.getActiveNode().data.title.split('-')[0] + ' region');
+                        return;
+                    }
+                    else {
+                        $("#dvRightPanel").show();
+                        $("#dvDoctors").html(result);
+                        $('#tblCustomer').dataTable({
+                            "sPaginationType": "full_numbers", "bSort": true, "bPaginate": false
+                        });
+                        $(".chkSelect").click( function() { fnBindAttribute(this); } );
+                    }
+                    $("#dvAjaxLoad").hide();
+                },
+                error: function () {
+                },
+                complete: function () {
+                    $("#dvAjaxLoad").hide();
+                }
+
+            });
+        }
+        $("#dvAjaxLoad").hide();
+    }
+    function fnCheckAll() {
+        if ($("input:checkbox[name=chkSelectAll]").attr("checked") == "checked") {
+            $("input:checkbox[name=chkSelect]").each(function () {
+                // fnBindAttribute(this);
+                this.checked = true;
+                fnBindAttribute(this);
+            });
+        }
+        else {
+            $("input:checkbox[name=chkSelect]").each(function () {
+                //  fnBindAttribute(this);
+                this.checked = false;
+                fnBindAttribute(this);
+            });
+        }
+    }
+
+    function fnApprove() {
+        debugger;
+        $('#tblCustomer tbody tr td').css('background-color','white');
+        var treeobj = $("#dvRegionTree").dynatree("getTree");
+        var regionCode = treeobj.getActiveNode().data.key;
+        var tblContent = "";
+        var count = 0;
+        $("input:checkbox[name=chkSelect]").each(function () {
+            if (this.checked) {
+                count = parseInt(count) + 1;
+                var id = this.id;
+                tblContent += $("#" + id.replace("chkSelect", "hdnCustomerCode")).val() + "^";
+                tblContent += regionCode + "^";
+                tblContent += entity + "^";
+                tblContent += ""+ $("#" + id.replace("chkSelect", "hdnMDLNumber")).html() +"" + "^";
+                tblContent += "1^";
+                tblContent += $("#" + id.replace("chkSelect", "hdnCustomerName")).html() + "^";
+                tblContent += $("#" + id.replace("chkSelect", "hdnCategorycode")).val() + "^~";
+            }
+        });
+        if (count == 0) {
+            if($("#tblCustomer tbody tr").length>1) {
+                fnMsgAlert('info', 'Info', 'Please select atleast any one ' + entity);
+                return;
+            }
+            else{
+                fnMsgAlert('info', 'Info', '' + entity + ' details not found for the selected region');
+                return;
+            }
+        }
+
+        if (fnIsCheckApproveOrUnapprove("APPROVED")) {
+
+            if (entity == "Doctor") {
+                // Check Doctors Counts and  Approved Counts as well as Selected Counts
+                $("#dvAjaxLoad").show();
+                fnDoctorsCountCompare(tblContent,entity,regionCode);
+            }else
+            {
+                fnMDLNumberCheck(tblContent,entity);
+            }
+
+        }
+        else
+        {
+            fnMsgAlert('info', 'Info', 'Please do not select Approved Items');
+            return;
+        }
+
+
+
+
+
+    }
+
+
+    function fnIsCheckApproveOrUnapprove(strStatus)
+    {
+        var chk = true;
+        $("input:checkbox[name=chkSelect]:checked").each(function () {
+
+            if ($(this).closest('tr').find('td').eq(7).text() == strStatus) {
+                chk = false;
+                return false;
+                }
+
+        });
+        return chk;
+    }
+
+
+
+
+    function fnDoctorsCountCompare(tblContent,entity,regionCode)
+    {
+        debugger;
+        var _objDoctorApprovalCountsModel = [];
+        $("input:checkbox[name=chkSelect]").each(function () {
+
+            if (this.checked) {
+                var id = this.id;
+                var _obj = new Object();
+
+                _obj.CategoryName =  "";
+                _obj.CategoryCode =  $("#" + id.replace("chkSelect", "hdnCategorycode")).val();
+                _obj.MaximumDoctorAllowed = 0;
+                _obj.AvaliableApprovedDoctors = 0;
+                _obj.SelectedForApproval = 1;
+                _obj.ExcessDoctor = 0;
+
+                _objDoctorApprovalCountsModel.push(_obj);
+            }
+        });
+        _objDoctorApprovalCountsModel = JSON.stringify(_objDoctorApprovalCountsModel);
+       // _objDoctorApprovalCountsModel = JSON.stringify({ '_objDoctorApprovalCountsModel': _objDoctorApprovalCountsModel });
+        var chk = true ;
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/GetDoctorsCheckCounts/',
+            type: "POST",
+            data: "doctorLst="+_objDoctorApprovalCountsModel+"&regionCode="+regionCode+"",
+            success: function (result) {
+                var content = "";
+                content += "<table id='tblValidateDoctorCount'><thead style='background-color: #4d90fe;font-weight: 700;color: #fff;'><tr><th>Category</th><th>Maximum Doctors Allowed</th><th>Avalible Approved Doctors</th><th>Selected for Approval</th><th>Excess Doctor</th></tr></thead>";
+                content += "<tbody>";
+
+                for (var i = 0; i < result.length; i++) {
+
+                    content += "<tr><td>"+result[i].CategoryName+"</td><td align='center'>"+result[i].MaximumDoctorAllowed+"</td><td align='center'>"+result[i].AvaliableApprovedDoctors+"</td><td align='center'>"+result[i].SelectedForApproval+"</td>";
+
+                    if (result[i].ExcessDoctor >= 0) {
+                        content += "<td align='center'>"+result[i].ExcessDoctor+"</td></tr>";
+                    }
+                    else {
+                        chk=false;
+                        content += "<td style='background: rgba(255, 0, 0, 0.54);' align='center'>"+result[i].ExcessDoctor.toString().replace("-","")+"</td></tr>";
+                    }
+
+                }
+                content += "</tbody></table>";
+                $("#dvCheckDoctorCounts").html(content);
+
+
+            },
+            error: function () {
+            },
+            complete:function(){
+                if (!chk) {
+                    $("#dvAjaxLoad").hide();
+                    $("#dvDocCountPopUp").overlay().load();
+                }
+                else{
+                    debugger;
+                    $("#dvAjaxLoad").hide();
+                    fnDoctorSpecialityCountCompare(tblContent,entity,regionCode);
+                }
+
+            }
+        });
+
+    }
+
+    function fnDoctorSpecialityCountCompare(tblContent,entity,regionCode)
+    {
+        debugger;
+        var _objDocSpecialityCount=[];
+        $("input:checkbox[name=chkSelect]").each(function()
+        {
+            if(this.checked)
+            {
+                var id=this.id;
+                var _obj=new Object();
+                _obj.Speciality="";
+                _obj.SpecialityCode=$("#"+id.replace("chkSelect","hdnSpecialityCode")).val();
+                _obj.Limit=0;
+                _obj.Current=0;
+                _obj.SelectedForApproval=1;
+                _obj.MaxCanApprove=0;
+                _objDocSpecialityCount.push(_obj);
+            }
+        });
+        _objDocSpecialityCount=JSON.stringify(_objDocSpecialityCount);
+        var Chk=true;
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/GetDocSpecialityCounts/',
+            type: "POST",
+            data: "docSpecialityLst="+_objDocSpecialityCount+"&regionCode="+regionCode+"",
+            success: function (result) {
+                var UserName="";
+                UserName=@Html.Raw(Json.Encode(ViewBag.UserName));
+                var content = "";
+                if(result[0].Status=="Disabled")
+                {
+                    Chk=false;
+                    content+="<h3>Dear <b>"+UserName[0].toUpperCase()+UserName.slice(1)+",</b> </h3>"
+                    content+="<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below Speciality is disabled.Check Speciality Status And Approve Doctors</h3><ol>"
+                    for(var k=0;k<result.length;k++)
+                    {
+                        content+="<b><li>"+result[k].Speciality+"</li></b>";
+                    }
+                    content+="</ol><div style='text-align:center'><button type='button' class='btn btn-primary' onclick=$('#dvDocCountPopUp').overlay().close();>OK</button></div>";
+                }
+                else
+                {
+                    content+="<h3>Dear <b>"+UserName[0].toUpperCase()+UserName.slice(1)+",</b> </h3>"
+                    content+="<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You Cannot Approve the  selected Doctors as it makes the limit to exceed the maximum doctor count of following speciality</h3>"
+                    content += "<table id='tblValidateDoctorCount' width='600'><thead style='background-color: #4d90fe;font-weight: 700;color: #fff;'><tr><th rowspan='2'>#</th><th rowspan='2'>Speciality</th><th colspan='4'>Count Of Doctor</th></tr><tr><th>Limit</th><th>Current</th><th>Selected for Approval</th><th>Max. Can Be Approved</th></tr></thead>";
+                    content += "<tbody>";
+
+                    for (var i = 0; i < result.length; i++) {
+                        if((result[i].Current + result[i].SelectedForApproval)>result[i].Limit && result[i].Limit!=0)
+                        {
+                            Chk=false;
+                            content += "<tr><td>"+(i+1)+"</td><td>"+result[i].Speciality+"</td><td align='center'>"+result[i].Limit+"</td><td align='center'>"+result[i].Current+"</td><td align='center'>"+result[i].SelectedForApproval+"</td>";
+                            if(result[i].MaxCanApprove<0)
+                            {
+                                content+="<td align='center'>"+'0'+"</td></tr>";
+                            }
+                            else{
+                                content+="<td align='center'>"+result[i].MaxCanApprove+"</td></tr>";
+                            }
+                        }
+
+                    }
+                    content += "</tbody></table><br><div style='text-align:center'><button type='button' class='btn btn-primary' onclick=$('#dvDocCountPopUp').overlay().close();>OK</button></div>";
+                }
+
+                    $("#dvCheckDoctorCounts").html(content);
+
+
+            },
+            error: function () {
+            },
+            complete:function(){
+                if (!Chk) {
+                    $("#dvAjaxLoad").hide();
+                        $("#dvDocCountPopUp").overlay().load();
+                }
+                else{
+                    $("#dvAjaxLoad").hide();
+                    fnMDLNumberCheck(tblContent,entity);
+                }
+
+            }
+        });
+    }
+
+    function fnMDLNumberCheck(tblContent,entity){
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/CustomerBulkApproval/',
+            type: "POST",
+            data: "tblContent=" + tblContent + "&action=APPROVE&entity="+entity+"",
+            success: function (result) {
+                debugger;
+                if (result.split(":")[0] == "SUCCESS") {
+                    fnMsgAlert('success', 'Success', entity + ' Approval done');
+                    fnGetCustomerData();
+                }
+                else if(result.split(":")[0] == "MESSAGE"){
+                    fnMsgAlert('info', 'Doctor Approval','Invalid Category Name.Please check it.');
+                    fnGetCustomerData();
+                    $('#dvDoctorUnapprove').overlay().close();
+                }
+                else {
+                    if (result.split(":")[0] == "ERROR") {
+                        var ar= result.split(":")[1] .split('~');
+                        for(var i=0;i< ar.length;i++)
+                        {
+                            // $($('td[MDL='+ar[i].replace(/ /g,'|') +']').parent()).find('td').css('background-color','#FFA8A8');
+                            $($('td[MDL="'+ar[i] +'"]').parent()).find('td').css('background-color','#FFA8A8');
+                        }
+                        if(entity.toUpperCase()=="DOCTOR")
+                        {
+                            fnMsgAlert('info','Info','System can not assign same MDL number to more than one doctor. '+
+                                         ' Please check the hightlighted rows and correct the MDL Number of doctors.');
+                        }
+                        else if(entity.toUpperCase()=="CHEMIST")
+                        {
+                            fnMsgAlert('info','Info','System can not assign same MDL number to more than one chemist. '+
+                                                                     ' Please check the hightlighted rows and correct the MDL Number of chemist.');
+                        }
+                        //$("input:checkbox[name=chkSelect]").each(function () {
+                        //    var id = this.id;
+                        //    if( $("#" + id.replace("chkSelect", "hdnMDLNumber")).html() =="
+                        //});
+                    }
+
+                    //if (count == 1) {
+                    //    var name = result.split(":")[1].split('~')[0];
+                    //    $("#dvMDL").html("Dear " + $('#spnUser').html().split(',')[0] + ", <br/>MDL Number should be unique. MDL number of " + name + " is already allocated to some other doctor. Please change this doctor’s MDL Number or request the concern user to modify the Doctor data. ");
+                    //    $("#dvDisMDLNumber").dialog({
+                    //        resizable: true,
+                    //        height: 300,
+                    //        modal: true,
+                    //        buttons: {
+                    //            Cancel: function () {
+                    //                $(this).dialog("close");
+                    //            }
+                    //        }
+                    //    });
+                    //}
+                    //else {
+                    //    var name = "";
+                    //    var ar = result.split(":")[1].split('~');
+                    //    for (var i = 0; i < ar.length -1; i++) {
+                    //        name += parseInt(i + 1) + ". " + ar[i] + " <br/>";
+                    //        $("#dvMDL").html("Dear " + $('#spnUser').html().split(',')[0] + ", <br/>MDL Number should be unique. MDL number of below listed doctor(s) is already allocated to some other doctor(s). Please  change this doctor’s MDL Number or request the concern user to modify the Doctor data.<br/> " + name +" ");
+                    //        $("#dvDisMDLNumber").dialog({
+                    //            resizable: true,
+                    //            height: 300,
+                    //            modal: true,
+                    //            buttons: {
+                    //                Cancel: function () {
+                    //                    $(this).dialog("close");
+                    //                }
+                    //            }
+                    //        });
+                    //    }
+                    //}
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+
+
+
+
+
+    function fnViewHistory(customerCode)
+    {
+        var treeobj = $("#dvRegionTree").dynatree("getTree");
+        var regionCode = treeobj.getActiveNode().data.key;
+        $('#dvMainApproval').block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            url: '../HiDoctor_Master/Approval/GetCustomerHistory/',
+            type: "POST",
+            data: "customerCode=" + customerCode + "&regionCode=" + regionCode + "&entity=" + entity + "",
+            success: function (result) {
+                $('#dvHistory').html(result);
+                $("#dvHistoryPopUp").overlay().load();
+            },
+            error: function () {
+                $('#dvMainApproval').unblock();
+            },
+            complete: function () {
+                $('#dvMainApproval').unblock();
+            }
+        });
+    }
+    function fnBindAttribute(obj)
+    {
+        var id= obj.id;
+        if(obj.checked)
+        {
+            $("#" + id.replace("chkSelect", "hdnMDLNumber")).attr('MDL',""+$("#" + id.replace("chkSelect", "hdnMDLNumber")).html()+"");
+        }
+        else
+        {
+            $("#" + id.replace("chkSelect", "hdnMDLNumber")).removeAttr('MDL');
+        }
+        //chkSelect
+    }
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'dvLeftPanel', 'treeNav', obj,'dvRightPanel', 'RegionTree');
+    }
+
+
+</script>

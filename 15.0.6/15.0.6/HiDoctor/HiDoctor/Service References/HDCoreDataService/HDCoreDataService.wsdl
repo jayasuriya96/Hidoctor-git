@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="HDCoreDataService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:51108/HDCoreDataService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:51108/HDCoreDataService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:51108/HDCoreDataService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:51108/HDCoreDataService.svc?xsd=xsd3" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IHDCoreDataService_ExecuteService_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteService" />
+  </wsdl:message>
+  <wsdl:message name="IHDCoreDataService_ExecuteService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IHDCoreDataService_ExecuteServiceDS_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteServiceDS" />
+  </wsdl:message>
+  <wsdl:message name="IHDCoreDataService_ExecuteServiceDS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteServiceDSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IHDCoreDataService_ExecuteServiceJSON_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteServiceJSON" />
+  </wsdl:message>
+  <wsdl:message name="IHDCoreDataService_ExecuteServiceJSON_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteServiceJSONResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IHDCoreDataService">
+    <wsdl:operation name="ExecuteService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteService" message="tns:IHDCoreDataService_ExecuteService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteServiceResponse" message="tns:IHDCoreDataService_ExecuteService_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteServiceDS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteServiceDS" message="tns:IHDCoreDataService_ExecuteServiceDS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteServiceDSResponse" message="tns:IHDCoreDataService_ExecuteServiceDS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteServiceJSON">
+      <wsdl:input wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteServiceJSON" message="tns:IHDCoreDataService_ExecuteServiceJSON_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IHDCoreDataService/ExecuteServiceJSONResponse" message="tns:IHDCoreDataService_ExecuteServiceJSON_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IHDCoreDataService" type="tns:IHDCoreDataService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ExecuteService">
+      <soap:operation soapAction="http://tempuri.org/IHDCoreDataService/ExecuteService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteServiceDS">
+      <soap:operation soapAction="http://tempuri.org/IHDCoreDataService/ExecuteServiceDS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteServiceJSON">
+      <soap:operation soapAction="http://tempuri.org/IHDCoreDataService/ExecuteServiceJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HDCoreDataService">
+    <wsdl:port name="BasicHttpBinding_IHDCoreDataService" binding="tns:BasicHttpBinding_IHDCoreDataService">
+      <soap:address location="http://localhost:51108/HDCoreDataService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "TPLockManualRelease";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvTpLockReleaseHolidayLst">
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/TourPlanner12.6.11.js?v=@HiDoctor.BuildNumber.BuildNo" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            fnBindTPLockReleaseHolidayList();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnBindTPLockReleaseHolidayList() {
+        $('#main').block({
+            message: '<h3>Processing</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+
+        $.ajax({
+            type: 'POST',
+            data: "a",
+            url: '../HiDoctor_Activity/TourPlanner/BindTPLockReleaseHolidayList',
+            success: function (response) {
+                if (response != "" && response != null) {
+                    if (response.split('^')[0] != "FAIL") {
+                        
+                        $("#dvTpLockReleaseHolidayLst").html(response);
+                    }
+                    else {
+                        fnMsgAlert('info', '', 'Error.' + response.split('^')[1]);
+                        $("#main").unblock();
+                    }
+                }
+                $("#main").unblock();
+            },
+            error: function (e) {
+                fnMsgAlert('info', '', 'Error.' + e.responseText);
+                $("#main").unblock();
+            }
+        });
+    }
+    function fnUpdateTPLockManuelRelease() {
+        if ($("input:radio[name=holidayList]:checked").length <= 0) {
+            fnMsgAlert('info', 'TP Lock Manuel Release', 'Please select any holiday.');
+            return false;
+        }
+        $('#main').block({
+            message: '<h3>Processing</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+
+        var region_Code = $("input:radio[name=holidayList]:checked").val().split('^')[0];
+        var holidayDate = $("input:radio[name=holidayList]:checked").val().split('^')[1];
+        var holidayDates = "";
+        for (var i = 0; i < holidayDate.split(',').length; i++) {
+            
+            hdate = holidayDate.split(',')[i];
+            if (hdate != null && $.trim(hdate).length > 0) {
+                if (hdate.split('/').length == 3) {
+                    holidayDates += hdate.split('/')[2] + '-' + hdate.split('/')[1] + '-' + hdate.split('/')[0] + ",";
+                }
+                else {
+                    alert("Invalid date format in Holiday Date. Please check.");
+                    $('#main').unblock();
+                    return false;
+                }
+            }
+        }
+        
+
+        $.ajax({
+            type: 'POST',
+            data: "holidayDates=" + holidayDates + "&region_Code=" + region_Code,
+            url: '../HiDoctor_Activity/TourPlanner/UpdateTPLockManuelRelease',
+            success: function (response) {
+                if (response != "" && response != null) {
+                    if (response == "SUCCESS") {
+                        fnMsgAlert('success', 'success', 'DCR(TP) lockes unlocked successfully.');
+                        fnBindTPLockReleaseHolidayList();
+                        $("#main").unblock();
+                    }
+                    else if(response.toUpperCase() == "LOCKED")
+                    {
+                        fnMsgAlert('info', 'Info', 'Lock can not release. Because user not enetered TP for some days.');
+                        $("#main").unblock();
+                    }
+                    else {
+                        fnMsgAlert('info', '', 'Error.' + response.split('^')[1]);
+                        $("#main").unblock();
+                    }
+                }
+                $("#main").unblock();
+            },
+            error: function (e) {
+                fnMsgAlert('info', '', 'Error.' + e.responseText);
+                $("#main").unblock();
+            }
+        });
+    }
+</script>

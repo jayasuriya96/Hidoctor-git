@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "DoctorBirthday";
+    Layout = null;
+
+}
+<style>
+    th, td {
+        padding: 8px 16px;
+    }
+
+    table, tr, th, td {
+        border: 1px solid #dddddd;
+        border-collapse: collapse;
+        font-size: 13px;
+        padding: 5px;
+    }
+</style>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="~/Scripts/jquery.mtz.monthpicker.js"></script>
+<script src="~/Scripts/HD/common12.7.0.js"></script>
+
+
+<div class="panel panel-default list" id="reasonlist" style="padding:30px 9px 30px">
+    <div class="panel-body">
+        <div id="dvPinCodeSearch" class="col-xs-12 col-sm-12 clearfix" style="padding:0px;">
+
+            <form>
+                <div class="col-xs-12 col-sm-12 clearfix">
+                    <div class="form-group col-sm-5" id="TypMap">
+                        <div class="form-group col-sm-3">
+                            <label for="">Division Name :</label>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="" id="dvtxtdivisionnName">
+                                <input type="text" class="" id="divisionname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4" id="TypMap">
+                        <div class="form-group col-sm-4">
+                            <label for="">Date</label>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <input type="text" class="form-control" id="effectfrom">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-2"id="btnemail ">
+                        <button type="button" class="btn btn-primary input-sm" id="btnGo" onclick="DoctorBirthday.fnReleasedetails();">GO</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+@*<div style="padding-left:15%">
+    <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+        <div class="col-xs-12 col-sm-6">
+            <label for="">Division Name :</label>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="" id="dvtxtregionName">
+                <input type="text" class="" id="regionname">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <input type="text" class="form-control" id="effectfrom" autocomplete="off" readonly placeholder="Select Date" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <input type="button" class="btn btn-primary" value="Go" style="margin-top: 15px;" onclick="DoctorBirthday.fnReleasedetails();" />
+    </div>
+
+</div>*@
+<div class="container" id="STOSPage" style="display:none;">
+    <div class="col-xs-12 Request_table" id="ViewDoctorDetails" style="height:400px;overflow-y:scroll; margin-top:30px">
+
+    </div>
+    <div class="col-lg-6" id="sendmail">
+        <input type="button" class="btn btn-primary" value="Send Mail" style="margin-left:3%;margin-top: 5%;text-decoration:underline;cursor:pointer;" onclick="fnMailTrigger();"/>
+    </div>
+</div>
+<div id="myModalregion" class="modal" role="dialog" style="opacity: 1; background: lightgray;display:none;">
+    <div class="modal-dialog" style="background: none;border: none;width: 45%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> </h4>
+            </div>
+            <div class="modal-body" style="height:400px;overflow:auto;">
+                <div id="regionTreeNew"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnccsave" onclick="fnSaveCCUsers();">Save</button>
+                <button type="button" class="btn btn-primary" style="display:none" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@*<div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowtmailbtn" style="padding-left:17%;display:none;">
+    <div class="col-xs-1">
+        <input type="checkbox" name="Mailaccess" id="Mailchk" checked="checked" />
+    </div>
+    <div class="col-xs-3">
+        <label>Send Mail</label>
+        <span style="margin-left:20px;cursor:pointer;color:#428bca;text-decoration: underline;" onclick="javascript:return fnGetRegionTree(1);"> Copy Holders </span>
+    </div>
+</div>*@
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/BirthdayMail.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Scripts/CompanyEmail.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Notification.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+         
+            //try {
+
+
+            //    $("#dvAjaxLoad").hide();
+            //}
+            LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+            CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+            LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+            CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+
+            $('#dvAjaxLoad').hide();
+            DoctorBirthday.GetAllDivisions();
+            AjaxGlobalHandler.Initiate();
+            //DoctorBirthday.initialize();
+
+        });
+    $("#effectfrom").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date('01-01-2020')
+    });
+</script>
+
+
+
+
+
+
+
+

@@ -1,0 +1,956 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7885AC06-EDA4-4BAB-944D-882621039488}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HiDoctor_Activity</RootNamespace>
+    <AssemblyName>HiDoctor_Activity</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\HiDoctor\Areas\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet">
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\..\SharedDlls\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="ElmahWrapper">
+      <HintPath>..\..\SharedDlls\ElmahWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\SharedDlls\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="HDQueueService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\HDQueueService.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\SharedDlls\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Management">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\..\SharedDlls\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\..\SharedDlls\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\..\SharedDlls\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\..\SharedDlls\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\..\SharedDlls\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\..\SharedDlls\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>..\..\SharedDlls\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Transactions">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\SharedDlls\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\ISFCFareCalculator.cs" />
+    <Compile Include="App_GlobalResources\Password_Policy_Messages1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Password_Policy_Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivitySummaryController.cs" />
+    <Compile Include="Controllers\AlertsController.cs" />
+    <Compile Include="Controllers\AllowPreviousDayDCRController.cs" />
+    <Compile Include="Controllers\BatchController.cs" />
+    <Compile Include="Controllers\CampaignPlannerController.cs" />
+    <Compile Include="Controllers\ChooseDoctorsSelectionController.cs" />
+    <Compile Include="Controllers\ComplaintformController.cs" />
+    <Compile Include="Controllers\CPDController.cs" />
+    <Compile Include="Controllers\DailyCallPlannerController.cs" />
+    <Compile Include="Controllers\DailyReportingController.cs" />
+    <Compile Include="Controllers\DCRApprovalController.cs" />
+    <Compile Include="Controllers\DCRCalendarController.cs" />
+    <Compile Include="Controllers\DCRDoctorVisitController.cs" />
+    <Compile Include="Controllers\DCRExpense.cs" />
+    <Compile Include="Controllers\DCRHeaderController.cs" />
+    <Compile Include="Controllers\DCRLeaveEntryController.cs" />
+    <Compile Include="Controllers\DCRLockController.cs" />
+    <Compile Include="Controllers\DCRReportController.cs" />
+    <Compile Include="Controllers\DCRStockiestExpenseController.cs" />
+    <Compile Include="Controllers\DCRV4ChemistVisitController.cs" />
+    <Compile Include="Controllers\DCRV4ChooseDoctorsSelectionController.cs" />
+    <Compile Include="Controllers\DCRV4DailyCallPlannerController.cs" />
+    <Compile Include="Controllers\DCRV4DoctorVisitController.cs" />
+    <Compile Include="Controllers\DCRV4HeaderController.cs" />
+    <Compile Include="Controllers\DCRV4HospitalVisitController.cs" />
+    <Compile Include="Controllers\DCRV4InstantReportController.cs" />
+    <Compile Include="Controllers\DCRV4KYDController.cs" />
+    <Compile Include="Controllers\DCRV4MobileHomeController.cs" />
+    <Compile Include="Controllers\DCRV4ReportController.cs" />
+    <Compile Include="Controllers\DCRV4StockiestExpenseController.cs" />
+    <Compile Include="Controllers\DepotController.cs" />
+    <Compile Include="Controllers\DetailedfeedbackController.cs" />
+    <Compile Include="Controllers\DieticianReportingController.cs" />
+    <Compile Include="Controllers\ExpenseClaimController.cs" />
+    <Compile Include="Controllers\ForgotPasswordController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstantReportController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\MigrationController.cs" />
+    <Compile Include="Controllers\MobileHomeController.cs" />
+    <Compile Include="Controllers\MobileMenuController.cs" />
+    <Compile Include="Controllers\MobileNotificationController.cs" />
+    <Compile Include="Controllers\MobileReportsController.cs" />
+    <Compile Include="Controllers\MTOController.cs" />
+    <Compile Include="Controllers\NewDCRLeaveController.cs" />
+    <Compile Include="Controllers\NoticeBoardController.cs" />
+    <Compile Include="Controllers\OrderFulfillmentController.cs" />
+    <Compile Include="Controllers\OTCController.cs" />
+    <Compile Include="Controllers\PrimarySalesController.cs" />
+    <Compile Include="Controllers\PromotionalInputsController.cs" />
+    <Compile Include="Controllers\RCPACompetatorController.cs" />
+    <Compile Include="Controllers\RegionMasterController.cs" />
+    <Compile Include="Controllers\SecondarySalesController.cs" />
+    <Compile Include="Controllers\ShieldRCPAController.cs" />
+    <Compile Include="Controllers\SMSController.cs" />
+    <Compile Include="Controllers\StosController.cs" />
+    <Compile Include="Controllers\TargetController.cs" />
+    <Compile Include="Controllers\TourPlannerController.cs" />
+    <Compile Include="Controllers\ViewSwitcherController.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HiDoctor_ActivityAreaRegistration.cs" />
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\DCRModel.cs" />
+    <Compile Include="Models\DownloadExcel.cs" />
+    <Compile Include="Models\ExcelImport.cs" />
+    <Compile Include="Models\MasterModel.cs" />
+    <Compile Include="Models\ParameterMode.cs" />
+    <Compile Include="Models\RegionMigration.cs" />
+    <Compile Include="Models\Reports.cs" />
+    <Compile Include="Models\SecondarySales.cs" />
+    <Compile Include="Models\TargetModal.cs" />
+    <Compile Include="Models\TourPlannerModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SFCFareCalcStrategy\DFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\DFlatFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\DSFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\DSFlatFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\DSlabFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\DSSlabFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\EFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\SDFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\SDFlatFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\SDSlabFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\SFareCalcStrategy.cs" />
+    <Compile Include="SFCFareCalcStrategy\SFCFareCalculationFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Activity.css" />
+    <Content Include="Content\Batch\Batch.css" />
+    <Content Include="Content\calendar.css" />
+    <Content Include="Content\ErrorLog\2013-01-30_Trace.txt" />
+    <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\ajax-loader.png" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
+    <Content Include="Content\images\Mobile\Alert.png" />
+    <Content Include="Content\images\Mobile\approval.png" />
+    <Content Include="Content\images\Mobile\calendar.png" />
+    <Content Include="Content\images\Mobile\Delete.gif" />
+    <Content Include="Content\images\Mobile\hi-doctor-logo.png" />
+    <Content Include="Content\images\Mobile\key.png" />
+    <Content Include="Content\images\Mobile\logout.png" />
+    <Content Include="Content\images\Mobile\loudspeaker-16.png" />
+    <Content Include="Content\images\Mobile\mail-16.png" />
+    <Content Include="Content\images\Mobile\menu-alerts.png" />
+    <Content Include="Content\images\Mobile\menu-approval.png" />
+    <Content Include="Content\images\Mobile\menu-key.png" />
+    <Content Include="Content\images\Mobile\menu-Notification.png" />
+    <Content Include="Content\images\Mobile\menu-reports.png" />
+    <Content Include="Content\images\Mobile\menu-search.png" />
+    <Content Include="Content\images\Mobile\Notification.png" />
+    <Content Include="Content\images\Mobile\Report.png" />
+    <Content Include="Content\images\Mobile\search.png" />
+    <Content Include="Content\images\Mobile\tick-icon.png" />
+    <Content Include="Content\images\Mobile\UnLock.png" />
+    <Content Include="Content\images\Web\Calendar\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Content\images\Web\Calendar\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Content\images\Web\Calendar\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\images\Web\Calendar\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\images\Web\Calendar\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Content\images\Web\Calendar\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Content\images\Web\hd\acc.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\images\Web\hd\accordion\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\images\Web\hd\add_user.png" />
+    <Content Include="Content\images\Web\hd\alert.png" />
+    <Content Include="Content\images\Web\hd\arrow.png" />
+    <Content Include="Content\images\Web\hd\arrow1.png" />
+    <Content Include="Content\images\Web\hd\attachment.png" />
+    <Content Include="Content\images\Web\hd\background.png" />
+    <Content Include="Content\images\Web\hd\bg-normal.png" />
+    <Content Include="Content\images\Web\hd\bg.png" />
+    <Content Include="Content\images\Web\hd\btnbg.PNG" />
+    <Content Include="Content\images\Web\hd\btnSave.jpg" />
+    <Content Include="Content\images\Web\hd\btnSE.jpg" />
+    <Content Include="Content\images\Web\hd\btn_centre.png" />
+    <Content Include="Content\images\Web\hd\btn_left.png" />
+    <Content Include="Content\images\Web\hd\btn_right.png" />
+    <Content Include="Content\images\Web\hd\Calendar.jpg" />
+    <Content Include="Content\images\Web\hd\Calendar.png" />
+    <Content Include="Content\images\Web\hd\Calendar1.png" />
+    <Content Include="Content\images\Web\hd\Calendar3.jpg" />
+    <Content Include="Content\images\Web\hd\calendar_left.jpg" />
+    <Content Include="Content\images\Web\hd\Cal_Blue_1px.png" />
+    <Content Include="Content\images\Web\hd\Cal_Gray_1px.png" />
+    <Content Include="Content\images\Web\hd\Cal_Green_1px.png" />
+    <Content Include="Content\images\Web\hd\Cal_Pink_1px.png" />
+    <Content Include="Content\images\Web\hd\Cal_Red_1px.png" />
+    <Content Include="Content\images\Web\hd\Cal_TD.jpg" />
+    <Content Include="Content\images\Web\hd\Cal_TD_Selected.jpg" />
+    <Content Include="Content\images\Web\hd\Cal_Yellow_1px.png" />
+    <Content Include="Content\images\Web\hd\capsule.png" />
+    <Content Include="Content\images\Web\hd\capsule16x16.png" />
+    <Content Include="Content\images\Web\hd\chemis16x16.png" />
+    <Content Include="Content\images\Web\hd\close.png" />
+    <Content Include="Content\images\Web\hd\cross.png" />
+    <Content Include="Content\images\Web\hd\delete_cross.gif" />
+    <Content Include="Content\images\Web\hd\detail.png" />
+    <Content Include="Content\images\Web\hd\detailed.png" />
+    <Content Include="Content\images\Web\hd\eggs.jpg" />
+    <Content Include="Content\images\Web\hd\error.png" />
+    <Content Include="Content\images\Web\hd\expand1.png" />
+    <Content Include="Content\images\Web\hd\expand2.png" />
+    <Content Include="Content\images\Web\hd\follow-up.png" />
+    <Content Include="Content\images\Web\hd\Gnome-Go-Next-32.png" />
+    <Content Include="Content\images\Web\hd\gr.png" />
+    <Content Include="Content\images\Web\hd\Green-Capsule16.png" />
+    <Content Include="Content\images\Web\hd\greentick.png" />
+    <Content Include="Content\images\Web\hd\group_screen.png" />
+    <Content Include="Content\images\Web\hd\header-bg.png" />
+    <Content Include="Content\images\Web\hd\headerrow1.jpg" />
+    <Content Include="Content\images\Web\hd\help_icon.jpg" />
+    <Content Include="Content\images\Web\hd\info.png" />
+    <Content Include="Content\images\Web\hd\less.png" />
+    <Content Include="Content\images\Web\hd\load.gif" />
+    <Content Include="Content\images\Web\hd\loader.gif" />
+    <Content Include="Content\images\Web\hd\loader1.gif" />
+    <Content Include="Content\images\Web\hd\loader_old.gif" />
+    <Content Include="Content\images\Web\hd\lock.png" />
+    <Content Include="Content\images\Web\hd\mba\ajax-loader.gif" />
+    <Content Include="Content\images\Web\hd\mba\guidely-number.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_button_bg.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_close.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_error.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_header.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_info.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_success.png" />
+    <Content Include="Content\images\Web\hd\mba\msgAlert_warning.png" />
+    <Content Include="Content\images\Web\hd\mba\msgBar_error.png" />
+    <Content Include="Content\images\Web\hd\mba\msgBar_header.png" />
+    <Content Include="Content\images\Web\hd\mba\msgBar_info.png" />
+    <Content Include="Content\images\Web\hd\mba\msgBar_success.png" />
+    <Content Include="Content\images\Web\hd\mba\msgBar_warning.png" />
+    <Content Include="Content\images\Web\hd\mba\msgGrowl_close.png" />
+    <Content Include="Content\images\Web\hd\mba\msgGrowl_error.png" />
+    <Content Include="Content\images\Web\hd\mba\msgGrowl_info.png" />
+    <Content Include="Content\images\Web\hd\mba\msgGrowl_success.png" />
+    <Content Include="Content\images\Web\hd\mba\msgGrowl_warning.png" />
+    <Content Include="Content\images\Web\hd\mba\msg_alert.png" />
+    <Content Include="Content\images\Web\hd\mba\msg_bar.png" />
+    <Content Include="Content\images\Web\hd\mba\msg_growl.png" />
+    <Content Include="Content\images\Web\hd\Minus.gif" />
+    <Content Include="Content\images\Web\hd\Money-icon.png" />
+    <Content Include="Content\images\Web\hd\Parcel-icon1.png" />
+    <Content Include="Content\images\Web\hd\Plus.gif" />
+    <Content Include="Content\images\Web\hd\pob.png" />
+    <Content Include="Content\images\Web\hd\rcpa.png" />
+    <Content Include="Content\images\Web\hd\right.png" />
+    <Content Include="Content\images\Web\hd\shadow.png" />
+    <Content Include="Content\images\Web\hd\step_1-gray.png" />
+    <Content Include="Content\images\Web\hd\step_1-green.png" />
+    <Content Include="Content\images\Web\hd\step_2-gray.png" />
+    <Content Include="Content\images\Web\hd\step_2-green.png" />
+    <Content Include="Content\images\Web\hd\step_3-gray.png" />
+    <Content Include="Content\images\Web\hd\step_3-green.png" />
+    <Content Include="Content\images\Web\hd\tablet-16.png" />
+    <Content Include="Content\images\Web\hd\thead.png" />
+    <Content Include="Content\images\Web\hd\tick.png" />
+    <Content Include="Content\images\Web\hd\tickIcon.png" />
+    <Content Include="Content\images\Web\hd\Titlebar.jpeg" />
+    <Content Include="Content\images\Web\hd\titlebg.png" />
+    <Content Include="Content\images\Web\hd\tpAccessdenied.png" />
+    <Content Include="Content\images\Web\hd\tpapplied.png" />
+    <Content Include="Content\images\Web\hd\tpapp_approve.png" />
+    <Content Include="Content\images\Web\hd\tpapp_unapprove.png" />
+    <Content Include="Content\images\Web\hd\tpCross.png" />
+    <Content Include="Content\images\Web\hd\tpDraft.png" />
+    <Content Include="Content\images\Web\hd\tptick.png" />
+    <Content Include="Content\images\Web\hd\trash1_16x16.gif" />
+    <Content Include="Content\images\Web\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\Web\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\Web\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\Web\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\Web\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\Web\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\Web\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\Web\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\Web\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\Web\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\Web\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\Web\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\Web\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\Mobile\css\Mobile.css" />
+    <Content Include="Content\Mobile\css\Site.Mobile.css" />
+    <Content Include="Content\Mobile\images\ajax-loader.gif" />
+    <Content Include="Content\Mobile\images\ajax-loader.png" />
+    <Content Include="Content\Mobile\images\datebox.png" />
+    <Content Include="Content\Mobile\images\icons-18-black.png" />
+    <Content Include="Content\Mobile\images\icons-18-white.png" />
+    <Content Include="Content\Mobile\images\icons-36-black.png" />
+    <Content Include="Content\Mobile\images\icons-36-white.png" />
+    <Content Include="Content\Mobile\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\Mobile\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\Mobile\jquery.mobile.structure-1.2.0.css" />
+    <Content Include="Content\Mobile\jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="Content\Mobile\jquery.mobile.theme-1.2.0.css" />
+    <Content Include="Content\Mobile\jquery.mobile.theme-1.2.0.min.css" />
+    <Content Include="Content\Stos.css" />
+    <Content Include="Content\ZeroClipboard.swf" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\dataTables.scroller.js" />
+    <Content Include="Scripts\ej2\ej2.min.js" />
+    <Content Include="Scripts\fullcalendar.js" />
+    <Content Include="Scripts\HD\Batch.js" />
+    <Content Include="Scripts\HD\BatchMobile.js" />
+    <Content Include="Scripts\HD\calendar.min.js" />
+    <Content Include="Scripts\HD\CampaignPlanner.js" />
+    <Content Include="Scripts\HD\ComplaintForm.js" />
+    <Content Include="Scripts\HD\CPD.js" />
+    <Content Include="Scripts\HD\CPDCalendar.js" />
+    <Content Include="Scripts\HD\CPDDeleteReports.js" />
+    <Content Include="Scripts\HD\CPDReports.js" />
+    <Content Include="Scripts\HD\DailyCallPlanner.js" />
+    <Content Include="Scripts\HD\DailyReporting\DailyAPPLanding.js" />
+    <Content Include="Scripts\HD\DailyReporting\DailyAPPReporting.js" />
+    <Content Include="Scripts\HD\DailyReporting\DailyReporting.js" />
+    <Content Include="Scripts\HD\DCRCalendar.js" />
+    <Content Include="Scripts\HD\DCRDoctorVisit.js" />
+    <Content Include="Scripts\HD\DCRLock.js" />
+    <Content Include="Scripts\HD\DCRManualLock.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRAllowedSpecialCharacters.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4AttendanceDoctor.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistAccomplishment.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistAttachments.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistContactdetails.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistDetailProduct.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistFollowUps.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistPOB.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistProduct.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistRCPA.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4ChemistVisit.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4Customervisitdetails.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4DailyCallPlanner.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4DoctorVisit12.7.0.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4Header12.7.0.1.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4HospitalVisit.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4InstantReport.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4KYD.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4StokcistExpense.js" />
+    <Content Include="Scripts\HD\DCRV4\DCRV4StokcistExpense12.7.0.1.js" />
+    <Content Include="Scripts\HD\DepotMaster.js" />
+    <Content Include="Scripts\HD\DetailedFeedback\Detailedfeedbackscreen.js" />
+    <Content Include="Scripts\HD\DieticianReporting\DieticianAPPLanding.js" />
+    <Content Include="Scripts\HD\DieticianReporting\DieticianAPPReporting.js" />
+    <Content Include="Scripts\HD\DieticianReporting\DieticianReporting.js" />
+    <Content Include="Scripts\HD\Doctor360.js" />
+    <Content Include="Scripts\HD\EntitySales.js" />
+    <Content Include="Scripts\HD\EntitySalesMobile.js" />
+    <Content Include="Scripts\HD\ExpenseClaim.js" />
+    <Content Include="Scripts\HD\ExpenseClaimforMonth.js" />
+    <Content Include="Scripts\HD\ExpenseClaimReport.js" />
+    <Content Include="Scripts\HD\GroupCreation.js" />
+    <Content Include="Scripts\HD\Header.js" />
+    <Content Include="Scripts\HD\InstantReport.js" />
+    <Content Include="Scripts\HD\LeaveEntry.js" />
+    <Content Include="Scripts\HD\MTO.js" />
+    <Content Include="Scripts\HD\MTOCalendar.js" />
+    <Content Include="Scripts\HD\MTODeleteReports.js" />
+    <Content Include="Scripts\HD\MTOReports.js" />
+    <Content Include="Scripts\HD\MTOTracking.js" />
+    <Content Include="Scripts\HD\MTOTrackReports.js" />
+    <Content Include="Scripts\HD\NewLeaveEntry\NewLeaveEntry.js" />
+    <Content Include="Scripts\HD\NoticeBoard.js" />
+    <Content Include="Scripts\HD\OrderCreation.js" />
+    <Content Include="Scripts\HD\OrderMaintenance.js" />
+    <Content Include="Scripts\HD\OrderShipment.js" />
+    <Content Include="Scripts\HD\OrderShipmentSummary.js" />
+    <Content Include="Scripts\HD\promotionalInputApproval.js" />
+    <Content Include="Scripts\HD\PromotionalInputTransfer.js" />
+    <Content Include="Scripts\HD\RCPAExcel.js" />
+    <Content Include="Scripts\HD\RegionMaster.js" />
+    <Content Include="Scripts\HD\SecondarySales12.7.1.js" />
+    <Content Include="Scripts\HD\SecondarySalesDelete.js" />
+    <Content Include="Scripts\HD\SecondarySalesEntry.js" />
+    <Content Include="Scripts\HD\SecondarySalesEntryRevamp.js" />
+    <Content Include="Scripts\HD\SecondarySalesEntryRevampLock.js" />
+    <Content Include="Scripts\HD\ShieldRCPA.js" />
+    <Content Include="Scripts\HD\SMSAlert.js" />
+    <Content Include="Scripts\HD\StockiestExpense.js" />
+    <Content Include="Scripts\HD\Target.js" />
+    <Content Include="Scripts\HD\TourPlanner12.6.11.js" />
+    <Content Include="Scripts\HD\TPApproval12.6.11.js" />
+    <Content Include="Scripts\HiDOCTOR.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\mdtimepicker.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRAllowedSpecialCharacters.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4ChemistVisitEntry.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4DetailedProductsEntry.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4DoctorAccompanistEntry.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4DoctorSelection.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4DoctorVisit12.7.0.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4Header12.7.0.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mDCRV4StockistExpense12.7.0.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mHome.js" />
+    <Content Include="Scripts\Mobile\DCRV4\mKYD.js" />
+    <Content Include="Scripts\Mobile\mDCRApproval12.6.11.js" />
+    <Content Include="Scripts\Mobile\mDCRCalendar.js" />
+    <Content Include="Scripts\Mobile\mDCRDoctorVisit.js" />
+    <Content Include="Scripts\Mobile\mDCRHeader.js" />
+    <Content Include="Scripts\Mobile\mDoctorSelection.js" />
+    <Content Include="Scripts\Mobile\mHome.js" />
+    <Content Include="Scripts\Mobile\mLeaveEntry.js" />
+    <Content Include="Scripts\Mobile\mNotification.js" />
+    <Content Include="Scripts\Mobile\mOTC.js" />
+    <Content Include="Scripts\Mobile\mReports12.6.11.js" />
+    <Content Include="Scripts\Mobile\mStockiestExpense.js" />
+    <Content Include="Scripts\Notification.js" />
+    <Content Include="Scripts\Stos\FileUpload.js" />
+    <Content Include="Scripts\Stos\Inwardallocation.js" />
+    <Content Include="Scripts\Stos\Stos.js" />
+    <Content Include="Scripts\Stos\STOSApproval.js" />
+    <Content Include="Scripts\Stos\StosEmailTrigger.js" />
+    <Content Include="Scripts\Stos\STOSReassign.js" />
+    <Content Include="Scripts\Stos\STOSService.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\ActivitySummary\Index.cshtml" />
+    <Content Include="Views\ChooseDoctorsSelection\Index.Mobile.cshtml" />
+    <Content Include="Views\DailyCallPlanner\Create.cshtml" />
+    <Content Include="Views\DailyCallPlanner\Index.cshtml" />
+    <Content Include="Views\DCRApproval\Index.cshtml" />
+    <Content Include="Views\DCRApproval\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRCalendar\Index.cshtml" />
+    <Content Include="Views\DCRCalendar\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRDoctorVisit\Create.cshtml" />
+    <Content Include="Views\DCRDoctorVisit\Create.Mobile.cshtml" />
+    <Content Include="Views\DCRHeader\Create.cshtml" />
+    <Content Include="Views\DCRHeader\Create.Mobile.cshtml" />
+    <Content Include="Views\DCRLeaveEntry\Create.cshtml" />
+    <Content Include="Views\DCRLeaveEntry\Create.Mobile.cshtml" />
+    <Content Include="Views\DCRReport\Index.cshtml" />
+    <Content Include="Views\DCRStockiestExpense\Create.cshtml" />
+    <Content Include="Views\DCRStockiestExpense\Create.Mobile.cshtml" />
+    <Content Include="Views\ForgotPassword\Index.cshtml" />
+    <Content Include="Views\ForgotPassword\Index.Mobile.cshtml" />
+    <Content Include="Views\Home\Index.Mobile.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\Index.Mobile.cshtml" />
+    <Content Include="Views\Migration\Create.cshtml" />
+    <Content Include="Views\Migration\Index.cshtml" />
+    <Content Include="Views\MobileHome\Index.cshtml" />
+    <Content Include="Views\MobileHome\Index.Mobile.cshtml" />
+    <Content Include="Views\MobileMenu\Index.cshtml" />
+    <Content Include="Views\MobileMenu\Index.Mobile.cshtml" />
+    <Content Include="Views\MobileNotification\Index.cshtml" />
+    <Content Include="Views\MobileNotification\Index.Mobile.cshtml" />
+    <Content Include="Views\SecondarySales\Create.cshtml" />
+    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
+    <Content Include="Views\Shared\_ViewSwitcher.cshtml" />
+    <Content Include="Views\Target\Create.cshtml" />
+    <Content Include="Views\Target\Index.cshtml" />
+    <Content Include="Views\TourPlanner\Index.cshtml" />
+    <Content Include="Views\TourPlanner\TPApproval.cshtml" />
+    <Content Include="Views\NoticeBoard\Create.cshtml" />
+    <Content Include="Views\NoticeBoard\NoticeBoardRead.cshtml" />
+    <Content Include="Views\DCRV4Header\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRV4StockiestExpense\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRV4MobileHome\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRV4DoctorVisit\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRV4ChooseDoctorsSelection\Index.Mobile.cshtml" />
+    <Content Include="Views\DCRV4DoctorVisit\ChemistVisitEntry.cshtml" />
+    <Content Include="Views\DCRV4DoctorVisit\DetailedProductsEntry.Mobile.cshtml" />
+    <Content Include="Views\DCRV4DoctorVisit\DoctorAccompanistEntry.Mobile.cshtml" />
+    <Content Include="Views\MobileNotification\Announcements.Mobile.cshtml" />
+    <Content Include="Views\MobileNotification\Messages.Mobile.cshtml" />
+    <Content Include="Views\TourPlanner\TPLockManualRelease.cshtml" />
+    <Content Include="Views\DCRLock\DCRManualLock.cshtml" />
+    <Content Include="Views\DCRCalendar\PendingApprovalScreen.cshtml" />
+    <Content Include="Views\DCRCalendar\PendingApprovalScreen.Mobile.cshtml" />
+    <Content Include="Views\DCRV4KYD\KYD.cshtml" />
+    <Content Include="Views\DCRV4KYD\KYD.Mobile.cshtml" />
+    <Content Include="Views\MobileNotification\DCRLockDetail.Mobile.cshtml" />
+    <Content Include="Views\MobileNotification\DCRLockRelease.Mobile.cshtml" />
+    <Content Include="Views\ExpenseClaim\ExpenseClaimMonthRequest.cshtml" />
+    <Content Include="Views\PrimarySales\Index.cshtml" />
+    <Content Include="Views\NoticeBoard\NoticeauthorMovement.cshtml" />
+    <Content Include="Views\SecondarySales\DeleteSecondarySales.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\SecondarySales\SecondarySalesCustomer.cshtml" />
+    <Content Include="Views\Stos\Index.cshtml" />
+    <Content Include="Views\Stos\InwardAllocation.cshtml" />
+    <Content Include="Views\Stos\Request.cshtml" />
+    <Content Include="Views\Stos\STOS_Approval.cshtml" />
+    <Content Include="Views\Stos\STOS_Reassign.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\Attachments.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\ChemistDetails.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistAccomplishmentDetails.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistDetailProduct.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistPOB.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistRCPA.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistSampleProduct.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\FollowUps.cshtml" />
+    <Content Include="Views\Alerts\Index.cshtml" />
+    <Content Include="Views\NoticeBoard\GroupCreation.cshtml" />
+    <Content Include="Views\Complaintform\ComplaintForm.cshtml" />
+    <Content Include="Views\Batch\BatchCreation.cshtml" />
+    <Content Include="Views\RCPACompetator\Index.cshtml" />
+    <Content Include="Views\Batch\BatchCreationMoblie.cshtml" />
+    <Content Include="Views\ShieldRCPA\Index.cshtml" />
+    <Content Include="Views\ShieldRCPA\RCPAExcelBulkAddResult.cshtml" />
+    <Content Include="Views\PromotionalInputs\PromotionalInputApproval.cshtml" />
+    <Content Include="Views\PromotionalInputs\PromotionalInputTransfer.cshtml" />
+    <Content Include="Views\CPD\CPDAttendance.cshtml" />
+    <Content Include="Views\CPD\CPDDates.cshtml" />
+    <Content Include="Views\CPD\CPDDetails.cshtml" />
+    <Content Include="Views\CPD\CPDField.cshtml" />
+    <Content Include="Views\CPD\CPDLeave.cshtml" />
+    <Content Include="Views\CPD\CPDMobile.cshtml" />
+    <Content Include="Views\CPD\CPDReports.cshtml" />
+    <Content Include="Views\CPD\CPDDashboard.cshtml" />
+    <Content Include="Views\CPD\CPDDelDates.cshtml" />
+    <Content Include="Views\CPD\CPDDeleteReports.cshtml" />
+    <Content Include="Views\CPD\CPDProducts.cshtml" />
+    <Content Include="Views\MTO\MTOAttendance.cshtml" />
+    <Content Include="Views\MTO\MTODates.cshtml" />
+    <Content Include="Views\MTO\MTODelDates.cshtml" />
+    <Content Include="Views\MTO\MTODeleteReports.cshtml" />
+    <Content Include="Views\MTO\MTODetails.cshtml" />
+    <Content Include="Views\MTO\MTOErrorPage.cshtml" />
+    <Content Include="Views\MTO\MTOField.cshtml" />
+    <Content Include="Views\MTO\MTOLeave.cshtml" />
+    <Content Include="Views\MTO\MTOMobile.cshtml" />
+    <Content Include="Views\MTO\MTOReports.cshtml" />
+    <Content Include="Views\MTO\MTOTracking.cshtml" />
+    <Content Include="Views\MTO\MTOTrackingReport.cshtml" />
+    <Content Include="Views\Batch\EntitySales.cshtml" />
+    <Content Include="Views\Batch\EntitySalesRelease.cshtml" />
+    <Content Include="Views\Batch\EntitySalesMobile.cshtml" />
+    <Content Include="Scripts\ej2\ej2.min.js.map" />
+    <Content Include="Views\SMS\Index.cshtml" />
+    <Content Include="web.config" />
+    <Content Include="Views\DCRV4HospitalVisit\HospitalDetails.cshtml" />
+    <Content Include="Views\DCRV4ChemistVisit\DCRV4ChemistContactDetails.cshtml" />
+    <Content Include="Views\SecondarySales\SecondarySalesEntryRevamp.cshtml" />
+    <Content Include="Views\OrderFulfillment\OrderCreation.cshtml" />
+    <Content Include="Views\OrderFulfillment\OrderProcessing.cshtml" />
+    <Content Include="Views\OrderFulfillment\OrderShipment - Copy.cshtml" />
+    <Content Include="Views\OrderFulfillment\OrderShipment.cshtml" />
+    <Content Include="Views\OrderFulfillment\OrderShipmentSummary.cshtml" />
+    <Content Include="Views\DieticianReporting\DieticianReporting.cshtml" />
+    <Content Include="Views\DieticianReporting\DieticianAPPLanding.cshtml" />
+    <Content Include="Views\DieticianReporting\DieticianAPPReporting.cshtml" />
+    <Content Include="Views\DetailedFeedback\DetailedfeedbackScreen.cshtml" />
+    <Content Include="Views\NewDCRLeave\NewLeaveEntry.cshtml" />
+    <Content Include="Views\AllowPreviousDayDCR\Index.cshtml" />
+    <Content Include="Views\Depot\Index.cshtml" />
+    <Content Include="Views\DailyReporting\DailyAPPLanding.cshtml" />
+    <Content Include="Views\DailyReporting\DailyAPPReporting.cshtml" />
+    <Content Include="Views\DailyReporting\DailyAPPReportingView.cshtml" />
+    <Content Include="Views\DailyReporting\DailyReporting.cshtml" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Password_Policy_Messages.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Password_Policy_Messages1.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\InstantReport\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\MobileReports\ActivitySummaryDetail.Mobile.cshtml" />
+    <Content Include="Views\MobileReports\ActivitySummaryHeader.Mobile.cshtml" />
+    <Content Include="Views\MobileReports\Doctor360.Mobile.cshtml" />
+    <Content Include="Views\MobileReports\ReportsHome.Mobile.cshtml" />
+    <Content Include="Views\MobileReports\TPDetails.Mobile.cshtml" />
+    <Content Include="Views\MobileReports\TPHeader.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ForgotPassword\Forgotpassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\Index.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrder.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrder.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderEntry.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderEntry.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SOAddProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SOAddProduct.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\OrderHistory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\OrderHistory.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\OrderHistoryDetailView.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderCustomerList.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\OrderStatusEdit.cshtml" />
+    <Content Include="Views\OTC\OrderStatusEdit.Mobile.cshtml" />
+    <Content Include="Views\OTC\SalesOrderStatus.cshtml" />
+    <Content Include="Views\OTC\SalesOrderStatus.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\ApproveOrder.cshtml" />
+    <Content Include="Views\OTC\ApproveOrder.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderBulkApproval.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderBulkApproval.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderSingleApproval.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OTC\SalesOrderSingleApproval.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRLock\DCRActivityLockRelease.cshtml" />
+    <Content Include="Views\DCRLock\Index.cshtml" />
+    <Content Include="Views\MobileReports\UserPerDayReort.Mobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4Header\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4DoctorVisit\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4StockiestExpense\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4Report\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4DailyCallPlanner\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4DailyCallPlanner\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DCRV4InstantReport\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CampaignPlanner\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ExpenseClaim\ExpenseClaimRequest.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataControl\DataControl.csproj">
+      <Project>{ccc44559-d1ac-4246-b469-e03e0dda91e9}</Project>
+      <Name>DataControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVCModels\MVCModels.csproj">
+      <Project>{7f1d03a7-4c34-4368-83ae-039f1795d700}</Project>
+      <Name>MVCModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50608</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49858/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)\Views" "$(TargetDir)\HiDoctor_Activity\Views\" /s /i /y
+xcopy "$(ProjectDir)\Content" "$(TargetDir)\HiDoctor_Activity\Content\" /s /i /y
+xcopy "$(ProjectDir)\Scripts" "$(TargetDir)\HiDoctor_Activity\Scripts\" /s /i /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

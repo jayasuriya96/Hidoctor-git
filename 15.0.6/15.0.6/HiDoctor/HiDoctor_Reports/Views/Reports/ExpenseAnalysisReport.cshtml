@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "ExpenseAnalysisReport";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">
+    #dvLoadingExpense {
+        background-color: #E8F1FF;
+        border: 3px solid #d3d3d3;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+</style>
+<div id="dvLoadingExpense" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingExpense');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+    <div style="width: auto;">
+        <div id="dvNonDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+</div>
+
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="dvTree" style="width: 100%; float: left">
+            <div id="tree" style="float: left; height: auto; width: 100%">
+            </div>
+        </div>
+        <span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>
+
+    <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+
+        <div id="divInput" style="display: none; padding: 5px">
+            <table>
+                <tr class="trHeight">
+                    <td>Start Date & End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnUserCode" />
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="2">
+                            Approved</label>
+                        <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="1">
+                            Applied</label>
+                        <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadio();" />
+                        <label for="0">
+                            Unapproved</label>
+
+                        <input type="checkbox" id="rbAll" name="all" value="0,1,2" onclick="fnChangeCheck();" /><label
+                            for="0">
+                            All</label>
+                    </td>
+                </tr>
+                <tr class="trHeight">
+                    <td></td>
+                    <td>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnExpenseAnalysisReport();" />
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+
+        <div id="divReport">
+            <div id="divSubReport"></div>
+        </div>
+    </div>
+</div>
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+            $("#leftNav").show();
+            var leftNav = $("#tree");
+            fnTreePosiition("tree");
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.cur_UserCode));
+            fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");    
+            var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+
+            $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {                       
+                    fnSearchUsers();
+                    return false;
+                }
+            });
+
+            if (userCode == null) {
+                $("#dvTree").show();
+                var dvTree = $("#tree");
+             //   fnBindUserTree("tree");
+                $('#divInput').hide();
+                $('#divReport').hide();
+                $('#divToggle').hide();           
+            }
+            else {
+                var dvTree = $("#tree");
+                fnBindUserTree("tree");
+                $("#txtFromDate").val(@Html.Raw(Json.Encode(ViewBag.fromDate)));
+                $("#txtToDate").val(@Html.Raw(Json.Encode(ViewBag.toDate)));
+                $("#hdnUserCode").val(@Html.Raw(Json.Encode(ViewBag.userCode)));
+
+                var status = @Html.Raw(Json.Encode(ViewBag.status));
+
+                if (status == '0,1,2') {
+                    $('input:checkbox[name=dcrStatus]').each(function () {
+                        $(this).removeAttr('checked');
+                    });
+                    $("input:checkbox[name=all]").attr('checked', 'checked');
+                }
+                else {
+                    $("input:checkbox[name=all]").removeAttr('checked');
+                    $('input:checkbox[name=dcrStatus]').each(function () {                    
+                        if (status.indexOf($(this).val()) != -1) {
+                            $(this).attr('checked', 'checked');
+                        }
+                    });
+                }           
+                $('#divInput').show();
+                $("#dvTree").hide();
+                $('#divReport').hide();
+                $("#divMain").css('width', '100%');
+                $("#spnTreeToggle").html('Show Tree');
+                $('#divToggle').show();
+                fnExpenseAnalysisReport();
+                $("#dvAjaxLoad").hide();
+            }
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    //function fnUserTreeNodeClick(node) {
+    //    $('#hdnUserCode').val(node.data.key);
+    //    $('#divInput').show();
+    //    $("#dvTree").hide();
+    //    $("#divMain").css('width', '100%');
+    //    $("#spnTreeToggle").html('Show Tree');
+    //    $('#divToggle').show();
+    //    fnClearExpenseAnalysisReport();
+    //    $("#divSubReport").empty();
+    //    $('#divReport').hide();
+    //}
+
+    function fnUserTreeNodeClick(node) {
+        
+        $('#hdnUserCode').val(node.data.key);
+        // selKeys = [];
+        //selKeys.push(node.data.key);
+        //  $('#userCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Hide Tree');
+        $('#divToggle').show();
+        $("#divMain").addClass('col-xs-9')
+        //  $("#dvTree").hide();
+        //   $("#spnTreeToggle").html('Show Tree');
+        //   $('#divToggle').show();
+        // $("#divMain").css('width', '100%');
+        fnClearExpenseAnalysisReport();
+        $("#divSubReport").empty();
+        $('#divReport').hide();
+
+        // $("#spnTreeToggle").html('Hide Tree');
+        //$('#divToggle').show();
+        //  $("#divMain").css('width', '100%');
+        //   $("#divMain").addClass('col-xs-9')
+
+        $('#dvTablePrint').hide();  
+        $('#spnPeriodDetail').html("");
+        $("#leftNav").show();
+    }
+   
+    function fnUserTreePostInit() {
+    }
+    function fnToggleTree() {
+        
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            // $('#tree').hide();
+            // $("#leftNav").hide();
+            $('#dvTree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {                    
+            $('#dvTree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');            
+            $("#spnTreeToggle").html('Hide Tree');           
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+
+        }
+    }
+
+    function fnTreeResize(obj) {
+        
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'dvTree');
+    }
+</script>

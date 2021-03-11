@@ -1,0 +1,28 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnApproveHeader"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div data-theme="b" data-mini="true" data-role="header">
+    <a id="CLHome" data-role="button" data-theme="b" href="#page1" data-icon="home"
+        data-iconpos="notext" class="ui-btn-right" onclick="fnGoToOTC()"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Approve Order
+        </h5>
+    </div>
+</div>
+<div role="main" class="ui-content ui-body-d" data-theme="d" data-role="content">
+    <div id="dvCLApproveOreerList">
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var underUser = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnApproveHeader').html(loginUserName_g);
+        fnBindApproveOrderList();
+    });
+</script>

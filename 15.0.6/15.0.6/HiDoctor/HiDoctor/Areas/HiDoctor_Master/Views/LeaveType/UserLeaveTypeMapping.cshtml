@@ -1,0 +1,312 @@
+﻿@{
+    ViewBag.Title = "UserLeaveTypeMapping";
+    Layout = null;
+}
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    .mandatory {
+        color: red;
+    }
+
+    #dvInsert.col-lg-9.form-group {
+        clear: both;
+    }
+
+    #dvInsert.col-lg-12 {
+        min-height: 15px;
+        overflow: auto;
+    }
+
+    #dvUserLeaveTypeMapping {
+        height: 400px;
+        overflow: scroll;
+    }
+
+    #dvEdit a {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+    }
+
+        #dvEdit a:hover {
+            text-decoration: underline;
+        }
+
+    #dvEdit .collapseHeader {
+        text-align: left;
+        font-weight: bold;
+    }
+</style>
+<div class="col-lg-12 form-group" id="dvMainUserLeaveType">
+    <div id="dvTabs">
+        <ul class="nav nav-pills">
+            <li><a href="#dvInsert">User Leave Type Mapping</a></li>
+            <li><a href="#dvEdit">Edit User Leave Type Mapping </a></li>
+        </ul>
+        <div id="dvInsert" style="overflow: auto;">
+            <div class="row col-xs-6 form-group">
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>User Type</label>
+                        <span class="mandatory">*</span>
+                    </div>
+                    <div class="col-xs-6">
+                        <select id="cboUserType" onchange="fnGetUsers();" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>User</label><span class="mandatory">*</span>
+                    </div>
+                    <div class="col-xs-6">
+                        <select id="cboUsers" class="form-control">
+                            <option value="">-Select User-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Leave Type</label><span class="mandatory">*</span>
+                    </div>
+                    <div class="col-xs-6">
+                        <select id="cboLeaveType" class="form-control"></select>
+                    </div>
+
+                </div>
+
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Min Leave</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtMinLeave" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Max Leave</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtMaxLeave" />
+                    </div>
+
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Leave eligible for calender year</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtleaveeligible" onkeypress="return isNumber(event)"/>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>On confirmation</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="checkbox">
+                            <input type="checkbox" name="leaveconfirmation" value="Y">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Oncompletion of</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="checkbox">
+                            <input type="checkbox" name="leaveoncompletion" value="Y" onclick="fnshowtxt();">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix" id="noofdays" style="display:none;">
+                    <div class="col-xs-4">
+                        <label>No of days</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="days" onkeypress="return isNumber(event)"/>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Prior leave application days</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="applicdays" onkeypress="return isNumber(event)"/>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Clubbing of leave can be done with</label>
+                    </div>
+                    <div class="col-xs-6" id="dvClubLeaveCntrl">
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Include Weekend</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio">
+                            <input type="radio" name="rdWeekEnd" value="Y">
+                            Yes
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="rdWeekEnd" value="N" checked>
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Include Holiday</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio">
+                            <input type="radio" name="rdHoliday" value="Y">
+                            Yes
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="rdHoliday" value="N" checked>
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Validation Mode</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio">
+                            <input type="radio" name="rdValMode" value="1">
+                            Monthly
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="rdValMode" value="2">
+                            Yearly
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="rdValMode" value="0" checked>
+                            No Validation 
+                        </label>
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Leave Occurence Count</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtLOC" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Leave Max Count</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtLMC" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Consecutive Leaves Allowed</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtCLA" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Document Upload Days</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control clsDecimal" id="txtDoc" />
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Effective From</label><span class="mandatory">*</span>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="txtEffectiveFrom" class="form-control datepicker" />
+                    </div>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <div class="col-xs-4">
+                        <label>Effective To</label><span class="mandatory">*</span>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="txtEffectiveTo" class="form-control datepicker" />
+                    </div>
+                </div>
+
+                <div class="col-lg-12 form-group" style="clear: both;">
+                    <input type="button" class="btn btn-primary" value="Save" id="btnULTypeSubmit" onclick="fnSubmit();" />
+                    <input type="button" class="btn btn-primary" value="Cancel" id="btnULTypeClear" onclick="fnClearAll();" />
+                </div>
+            </div>
+
+        </div>
+        <div id="dvEdit" class="col-lg-12">
+            <div class="row col-lg-12 form-group clearfix" style="text-align: right;">
+                <div class="row form-group clearfix">
+                    <a onclick="fnDownloadExcel();" href="#">Click here to generate Excel</a>
+                </div>
+                <div class="row col-lg-12 form-group clearfix">
+                    <a id="lnkExcel" href="#" title="Excel Download"></a>
+                </div>
+            </div>
+            <div id="dvUserLeaveTypeMapping" class="table-responsive form-group col-lg-12"></div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnUserLeaveTypeCode" />
+<input type="hidden" id="hdnMode" value="INSERT" />
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/LeaveType.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvTabs").tabs();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#dvInsert input').blur(function () { $(this).removeClass('errorIndicator'); $(this).removeAttr('title'); })
+        $(".clsDecimal").keypress(function () { return fnIsNumeric(event) });
+        $(".clsDecimal").blur(function () { fnCheckNumeric(this) });
+
+        fnGetuserTypes();
+        fnGetUserLeaveType();
+        $("#dvAjaxLoad").hide();
+      
+    });
+    function fnshowtxt()
+    {
+        debugger;
+        if ($('input:checkbox[name=leaveoncompletion]:checked').val() == "Y") {
+            debugger;
+            $("#noofdays").show();
+        }
+        else {
+            $("#noofdays").hide();
+        }
+    }
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+</script>

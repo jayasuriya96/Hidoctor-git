@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "BulkInwardUpload";
+    Layout=null;
+}
+<style>
+    .header {
+        width: 80%;
+        height: 35px;
+        background-color: #446CB3;
+        color: white;
+    }
+
+    .panel {
+        width: 80%;
+        height: 100px;
+        border: 1px solid skyblue;
+    }
+
+    .instructions {
+        width: 70%;
+        height: 20px;
+    }
+
+    .bulkuploadheader {
+        height: 30px;
+        background-color: #0866C6;
+        color: white;
+        padding-left: 2px;
+        font-size: 15px;
+    }
+
+    .uploadBtn {
+        background-color: #86D628;
+        color: #fff;
+        width: 94px;
+        height: 29px;
+        font-size: 14px;
+        margin: 5px;
+        border: 1px solid #6DB814;
+    }
+
+        .uploadBtn:hover {
+            background-color: #EDAE03;
+            border: 1px solid #DAA004;
+            cursor:pointer;
+        }
+
+    .submitbtn, #fileUpload {
+        background-color: blue;
+        border: 1px solid #0A6BCE;
+        color:white;
+        height: 25px;
+        margin-bottom: 19px;
+        margin-top: 10px;
+    }
+
+    .submitbtn:hover, #fileUpload:hover {
+        background-color: #0044CC;
+        border: 1px solid #0A6BCE;
+        color: #fff;
+        cursor:pointer
+    }
+    .step1contanier {
+        float: left; 
+        width: 49%; 
+        height: 450px; 
+        border: 2px solid #0866C6;
+    }
+    .step2container {
+        float: left; 
+        width: 49%; 
+        height: 450px; 
+        border: 2px solid #0866C6; 
+        background-color: #fff
+    }
+    .margintop5 {
+        margin-top: 5px;
+    }
+    .margintop10 {
+        margin-top: 5px;
+    }
+    .centeralign {
+        margin: 0px auto; 
+        width: 95%;
+    }
+    .steps, .instruction {
+        border: 1px solid #ddd; 
+        padding: 5px;
+    }
+    .stepHeader, .instructionHeader {
+        font-weight:bold;
+    }
+</style>
+<form class="frmAlign" method="post" id="frm1" onsubmit="return fnvalidateFile()" enctype="multipart/form-data" action="../HiDoctor_Master/Inward/InwardUploadExcelFile" target="ifrmExcel" style="width: 100%; min-height: 400px;">
+    <div class="step1contanier">
+        <div class="bulkuploadheader">Step1: Download File</div>
+        <div class="centeralign">
+            <div class="margintop5">
+@Html.ActionLink("Download Excel Template", "DownloadInwardExcelTemplate", "Inward", routeValues: null, htmlAttributes: new { id = "registerLink", @class="btn btn-info btn-link" })
+                <div id="lnkExcelFile" style="display: none;">
+                    <a id="fileLink"  href="#">Download</a>
+                    <br />
+                    <a id="refersheetlink" href="#"></a>
+                </div>
+            </div>
+            <span id="spndownload" style="display: none">Generating the excel file...</span>
+            <div id="dvInstruction" class="Instruction">
+                <span class="instructionHeader" >Instructions:</span>
+            </div>
+            <div id="dvInsts" class="instruction">                
+                         <table>
+                            <tr>
+                                   <td>1)Please @Html.ActionLink("Download", "GetActiveProducts", "Inward", new { }, null) the Product Master Data's</td>
+                            </tr>
+                            <tr>
+                                <td>2)"Click the Download Excel Template" button to download and save the template</td>
+                            </tr>
+                            <tr>
+                                <td>3)Do not alter the file structure(i.e Adding or Removing the column).</td>
+                            </tr>                  
+                            <tr>
+                                <td>4)Do not rename the excel file name and the sheet name.</td>
+                            </tr>
+                            <tr>
+                                <td>5)Do not rename the columns</td>                          
+                            </tr>
+                            <tr>
+                                <td>6)Please save the file in .xlsx Format only.</td>
+                            </tr>
+                            <tr>
+                                <td>7)Click on the choose file button to get get the file.</td>
+                            </tr>
+                            <tr>
+                                <td>8)Click on the upload button to upload the data.</td>
+                            </tr>                                            
+                        </table>
+            </div>
+            <span id="spndownload" style="display: none">Preparing and Downloading the excel file...</span>
+            <div id="dvErrMsg" class="ErrorMSg" style="display: none">
+            </div>
+        </div>
+    </div>
+    <div class="step2container">
+        <div class="bulkuploadheader">Step2: Upload File</div>
+        <div class="centeralign margintop10">
+            <label>File Upload</label>&nbsp;&nbsp;&nbsp;<input type="file" id="fileUpload" name="fileUpload" /><br />
+            <label>Inward Date</label> &nbsp;&nbsp;&nbsp;<input type="text"  readonly="readonly" id="txtInwardDate" name="InwardDate" class="datepicker" />
+            <div style="margin: 5px;">
+                <input type="submit" id="Inwardupload" class="uploadBtn" value="Upload" />
+            </div>
+            <div id="dvErrMsgFileUpload" class="ErrorMSg" style="display: none">
+            </div>
+            <br />
+            
+            <iframe style="width:100%;" id="ifrmExcel" name="ifrmExcel"></iframe>
+            <a href="#" class="btn btn-primary" id="dvRedirect" style="display: none; float: left; margin-left: 12px;" onclick="fnRedirectToBatchProcessing()">Check my upload status.</a>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+    });
+    $(function () {
+        var currentYear = (new Date).getFullYear();
+        $(".datepicker").datepicker({
+            dateFormat: 'mm/dd/yy',
+            numberOfMonths: 1,
+            maxDate: 0
+            //showButtonPanel: true
+            //    maxDate: new Date(currentDate),
+            //yearRange: (parseInt(currentDate.split('-')[0]) - 150) + ':' + (parseInt(currentDate.split('-')[0]) + 0)
+        });
+    });
+    function fnvalidateFile() {
+        debugger;
+        $(".uploadBtn").prop("disabled", true);
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        $("#dvMsgError").html('');
+        $("#dvMsgSuccess").html('');
+        var fileName = $('#fileUpload').val();
+        var InwardDate = $('#txtInwardDate').val();
+        //var inDate = new Date(InwardDate.split('/')[2], (parseInt(InwardDate.split('/')[1]) - 1 ),InwardDate.split('/')[0]);
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            $(".uploadBtn").prop("disabled", false);
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xlsx") {
+                if (InwardDate != "") {
+                    return true;
+                }
+                else {
+                    fnMsgAlert('info', 'Info', 'Please select Inward Date');
+                    $(".uploadBtn").prop("disabled", false);
+                    return false;
+                }
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xlsx file only');
+                $(".uploadBtn").prop("disabled", false);
+                return false;
+            }
+        }
+    }
+
+    function fnRedirectToBatchProcessing() {
+            $('#main').load('../BatchProcessing/Index?bpType=INWARD_BULK_UPLOAD');
+    }
+   
+</script>

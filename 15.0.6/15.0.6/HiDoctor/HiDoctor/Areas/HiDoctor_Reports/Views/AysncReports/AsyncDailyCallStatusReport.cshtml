@@ -1,0 +1,270 @@
+﻿@model MVCModels.HiDoctor_Reports.DocotorCallcountHeaderModel
+
+@{
+    ViewBag.Title = "Asynchronous Daily Call Status Report";
+    Layout = null;
+}
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="~/Scripts/tooltip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="~/Scripts/wz_tooltip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<div id="dvDailycallstatus">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-xs-12" style="min-height: 260px; overflow: auto;">
+        <div class='col-xs-3 leftNav' id='leftNav'>
+            <div id="regiontree" style="float: left; height: auto; width: 100%">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+            <div style="width: 1px;"></div>
+        </div>
+
+        <div class='col-xs-9 rghtInputandRpt' style="float:left;width:75%" id="divMainDCR">
+            <div style="display: none;" id="divToggle">
+                <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleInput()">Hide Input</span> | <span id="spnReportQueueToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleReportQueue('DailyCallStatusReport')">Show Report Queue Status</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="divInput" style="display: none; padding: 5px;" class="dvRptInput"  >
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('DAILY_CALL_STATUS_REPORT','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-9">
+                    <div class="col-lg-3">
+                        Month and Year:
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="text" id="txtFrom" class="form-control" />
+                        <input type="hidden" id="hdnRegionCode" />
+                        <input type="hidden" id="hdnUseractivity" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-9">
+                    <div class="col-lg-3">
+                        DCR Status:
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkApplied" value="1" tabindex="2" onclick="chkAllChecked();" /><label for="chkApplied">Applied</label>
+                        <br />
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkApproved" value="2" checked="checked" onclick="chkAllChecked();" /><label for="chkApproved">Approved</label>
+                        <br />
+                        <input type="checkbox" name="chkstatus" class="clsCheck" id="chkUnapproved" value="0" onclick="chkAllChecked();" /><label for="chkUnapproved">Unapproved</label>
+                        <br />
+                        <input type="checkbox" name="chkstatus" id="chkAll" value="1,2,0" onclick="checkAll();" /><label for="chkAll">All</label>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                   <!--<div style="margin-left: 20%;">
+                       <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>-->
+                    <input type="button" style="margin-left: 20%;" class="btn btn-primary" value="Show Report" onclick="fnGetshowDailycallstatusRept()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="dvRptQueuePanel" style="padding:10px; display:none">
+                <div id="dvAsynMsg" style="display:none"></div>
+                <div>
+                    <input type="button" class="btn btn-primary" value="Refresh" onclick="fnRefreshReportQueueStatus('DailyCallStatusReport');" /><br />
+                </div>
+                <div>
+                    <div id="dvReportQueue"></div>
+                </div>
+                <br />
+            </div>
+            <div id="dvRptPanel" style="width: 100%; overflow:auto;">
+                <form action="../HiDoctor_Reports/AysncReports/DownloadAsyncReportExcel" method="post" enctype="multipart/form-data" target="ifrmExcel">
+                    <div id="dvExcelPrint" style='float: left; width: 100%; display: none;'>
+                        <div style="float: right; width: 30px; padding: 3px; background-color: #efefef; border: 1px solid #d3d3d3; margin-bottom: 10px; margin-right: 4%;">
+                            <!--<div id='dvPrint' onclick='fnPrint("dvAsynReport","ifrmCompPrint");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'></div>-->
+                            <input type="submit" id="CA_Excel" value="" />
+                        </div>
+                        @Html.Hidden("ReportTransactionID")
+                        @Html.Hidden("ReportName")
+                    </div>
+                </form>   
+                <div id="dvAsynReport" style="width: 100%; overflow:auto;"></div>
+            </div>
+            <!--<div id="divDailycallstatusrpt" style="width: 100%; overflow:auto;">-->
+            </div>
+            <div id="dvTooltip"></div>
+        </div>
+        <div style="clear: both"></div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncReportGeneric.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvDailycallstatus').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.RegionCode)); 
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {               
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').show();
+                $('#divToggle').show();
+                $("#divMainDCR").addClass('col-xs-9');                
+                $('#dvAjaxLoad').hide()
+            }            
+        }
+        catch (err) {
+            $("#dvDailycallstatus").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(function () {
+        $('#txtFrom').monthpicker();
+    });
+
+    function fnRegionTreePostInit() {
+        $("#dvDailycallstatus").unblock();
+    }
+    
+    function fnRegionTreeNodeClick(node) {   
+        $("#divDailycallstatusrpt").html(""); 
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnUseractivity').val(node.data.title); 
+        var regionType = $('#hdnUseractivity').val().split('-')[1];
+        $('#divInput').show();
+        $("#leftNav").show();       
+        $('#divToggle').show();      
+        $("#divMainDCR").addClass('col-xs-9');    
+    }
+
+
+    function fnRegionTreeActivate(node) {       
+        $("#divDailycallstatusrpt").html(""); 
+        $('#hdnRegionCode').val(node.data.key);      
+        $('#hdnUseractivity').val(node.data.title);
+        var regionType = $('#hdnUseractivity').val().split('-')[1];
+        $('#divInput').show();
+        $("#leftNav").show();       
+        $('#divToggle').show();      
+        $("#divMainDCR").addClass('col-xs-9');
+    }
+
+
+    function fnRegionTreeSelect(node) {
+    }
+
+    
+    function fnToggleTree() {
+        debugger;       
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide(); 
+            $("#divMainDCR").css('width', '99%');
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMainDCR").removeClass('col-xs-9');
+            $("#divMainDCR").removeClass('col-xs-8');
+            $("#divMainDCR").removeClass('col-xs-7');
+            $("#divMainDCR").addClass('col-xs-12');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();
+            $('#leftNav').show();
+            $("#dvAsynReport").html = "";
+            $("#divMainDCR").css('width', '75%');        
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMainDCR').removeClass('col-xs-7'); 
+            $('#divMainDCR').removeClass('col-xs-8'); 
+            $('#divMainDCR').removeClass('col-xs-9');   
+            $("#divMainDCR").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+            $("#dvReportQueue").hide();
+        }
+    }
+
+    function fnToggleInput() {       
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMainDCR', 'regiontree');
+    }
+
+</script>

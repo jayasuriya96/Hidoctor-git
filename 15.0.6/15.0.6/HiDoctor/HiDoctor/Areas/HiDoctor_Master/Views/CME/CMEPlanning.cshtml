@@ -1,0 +1,450 @@
+﻿@{
+    ViewBag.Title = "CMEPlanning";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+    .paddingzero {
+        padding: 0px;
+        margin-top: 10px;
+    }
+    /*.inputs{
+            width: 200%;
+    }*/
+    .buttons {
+        text-align: right;
+        margin-top: 10px;
+    }
+
+    .form-control[readonly] {
+        background-color: white !important;
+        opacity: 1;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #007bff !important;
+        border-top-color: #e0e0e0 !important;
+        color: white !important;
+    }
+
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-dialog {
+        max-width: 850px !important;
+    }
+
+    .modal-content {
+        border: none;
+    }
+</style>
+
+<ul class="nav nav-tabs" style="margin-top: 12px;">
+    <li class="nav-item">
+        <a class="nav-link def active" href="#" onclick="CME.fnCMEPlanning();">CME Planning</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link sum" href="#" onclick="CME.fnCMESummary();">CME Planning Summary</a>
+    </li>
+</ul>
+
+<div id="planning" style="margin-top: 2%;">
+    <form>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Region Name</label>
+                <div id="regions"><input class="form-control" type='text' tabindex='1' id='Region' /></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">User Name(Designation)</label>
+                <input class="form-control cancel" type="text" id='UserName' readonly>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">CME Name</label>
+                <div id="cmeinput"><input class="form-control" type='text' tabindex='1' id='CMEName' /></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Doctor Name</label>
+                <div id="multiselect"><input class="form-control cancel" type="text" id='Doctors'></div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Planned Date</label>
+                <input class="form-control cancel" type="text" id='SDate' readonly>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Plan Applicable Till</label>
+                <input class="form-control cancel" type="text" id='UDate' readonly>
+            </div>
+            @*<div class="form-group col-md-6">
+                    <label for="inputPassword4">Date</label>
+                    <input class="form-control cancel" type="text" id='Dates' readonly>
+                </div>*@
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">No of doctors participation</label>
+                <input class="form-control cancel" type="number" id='NoofDoctor' onkeypress="return fnValidateBudget(this,event);">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">No of Month</label>
+                <input class="form-control cancel" type="number" id='NoofMonth' onkeypress="return fnValidateBudget(this,event);">
+            </div>
+        </div>
+    </form>
+    <div class="card  productMapping">
+        <div class="card-header bg-primary text-white">Product Mapping:</div>
+        <div class="card-body">
+            <div id="mapping"></div>
+        </div>
+    </div>
+    <div class="card paddingzero">
+        <div class="card-header bg-primary text-white">Expense</div>
+        <div class="card-body row" style="padding-left: 7%;">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail4">Doctor Expense</label>
+                        <input class="form-control cancel" type='number' tabindex='1' id='Edoctor' onblur="fnaddvalue()" onkeypress="return fnValidateBudget(this,event);" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Venue Expense</label>
+                        <input class="form-control cancel" type="number" id='Evenu' onblur="fnaddvalue()" onkeypress="return fnValidateBudget(this,event);">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Marketing Expense </label>
+                        <input class="form-control cancel" type="number" id='EMarketing' onblur="fnaddvalue()" onkeypress="return fnValidateBudget(this,event);">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Travel Expense</label>
+                        <input class="form-control cancel" type="number" id='ETravel' onblur="fnaddvalue()" onkeypress="return fnValidateBudget(this,event);">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Other Expense</label>
+                        <input class="form-control cancel" type="number" id='EOther' onblur="fnaddvalue()" onkeypress="return fnValidateBudget(this,event);">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Total Expense</label>
+                        <input class="form-control cancel" type="number" id='ETotal' value="0.00" readonly>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="form-row mt-2">
+        <div class="form-group col-md-12">
+            <label for="comment">Remarks</label>
+            <textarea class="form-control" rows="2" id="Remark"></textarea>
+        </div>
+    </div>
+    <div class="buttons">
+        <button id="submit" value="Save" class="btn btn-primary" type="button">Submit</button>
+        <button id="Cancel" value="Cancel" class="btn btn-primary" type="button">Cancel</button>
+    </div>
+</div>
+
+<div id="edit" style="margin-top: 2%;">
+    <form>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Planned Date</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="CMEStartDate">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Plan Applicable Till</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="CMEEndDate">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="Status">
+                    <option value="1" selected>Applied</option>
+                    <option value="2">Approved</option>
+                    <option value="0">UnApproved</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-offset-2 col-md-8" style="margin-top:33px;">
+            <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="CME.getAllCMEPlanningDetails();">Go</button>
+        </div>
+    </form>
+    <div id="Summary"></div>
+</div>
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding:0px">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height:600px;overflow-y: auto; overflow-x: hidden;">
+                <div>
+                    <form>
+                        <div>
+
+                            <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Expense Details</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor Expense</th>
+                                        <th>Venue Expense</th>
+                                        <th>Marketing Expense</th>
+                                        <th>Travel Expense</th>
+                                        <th>Other Expense</th>
+                                        <th>Total Expense</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CMEBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Mapping Product Details</label>
+                            <div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Product Name</th>
+                                            <th>Current Sales</th>
+                                            <th>Potential Sales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="CMEProd"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Action Details</label>
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Action By</th>
+                                        <th>Action Date </th>
+                                        <th>Action Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CMEAction"></tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/CME/CMEPlanning.js"></script>
+<script>
+    var dropDownListObj='';
+    var docdropDownListObj ='';
+    var regionDownListObj='';
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        $('#edit').hide();
+        $('.cmename').hide();
+        $('.productMapping').hide();
+        CME.Init();
+        CME.defaults.CompanyCode= @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        CME.defaults.CompanyId= @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        CME.defaults.RegionCode= @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        CME.defaults.UserCode= @Html.Raw(Json.Encode(ViewBag.User_Code));
+        CME.defaults.UserTypeCode=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+        getAllCMERegion()
+        CME.getAllCMEPlanningDetails();
+
+        //getAllCME();
+        $("#SDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            //numberOfMonths: 1,
+            //maxDate: 0,
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date(),
+            onSelect: function (selected) {
+                var dates = $('#SDate').val();
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate());
+                $("#Dates").datepicker("option", "minDate", dt);
+                CME.getAllCurrentDateCMEPlanning();
+            }
+        });
+        $("#UDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            //numberOfMonths: 1,
+            //maxDate: 0,
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date(),
+            onSelect: function (selected) {
+                var dates = $('#UDate').val();
+                var dt = new Date(dates);
+                dt.setDate(dt.getDate());
+                $("#Dates").datepicker("option", "maxDate", dt);
+            }
+        });
+        $("#Dates").datepicker({
+            dateFormat: 'yy-mm-dd',
+            //numberOfMonths: 1,
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date()
+        });
+
+    });
+    $("#CMEStartDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+    });
+    $("#CMEEndDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+    });
+    function getAllCMERegion()
+    {
+        debugger;
+
+        Method_params = ["CMEApi/GetCMERegionNameDetails", CME.defaults.CompanyCode, CME.defaults.RegionCode];
+        CoreREST.get(null, Method_params, null, getAllCMERegionSuccess,getAllCMERegionSuccessFailure);
+    }
+    function getAllCMERegionSuccess(response)
+    {
+        debugger;
+        regionDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a Region Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Region_Name', value: 'Region_Code' },
+            popupHeight: '250px',
+            change:getAllCME,
+            allowFiltering: true,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Region_Name', 'contains', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        $('#regions').html('');
+        $('#regions').html('<input class="form-control" type"text" tabindex="1" id="Region" />');
+        regionDownListObj.appendTo('#Region');
+    }
+    function getAllCMERegionSuccessFailure(response)
+    {
+
+    }
+    function getAllCME(args)
+    {
+        if(args.itemData.User_Name==null)
+        {
+            $('#UserName').val('Vacant');
+        }
+        else{
+            var name=  args.itemData.User_Name+'('+args.itemData.User_Type_Name+')'
+            $('#UserName').val(name);
+        }
+        var region=$('#Region_hidden').val()
+        debugger;
+        Method_params = ["CMEApi/GetCMENameDetails", CME.defaults.CompanyCode,region];
+        CoreREST.getsync(null, Method_params, null, getAllCMESuccess,getAllCMESuccessFailure);
+    }
+    function getAllCMESuccess(response)
+    {
+        debugger;
+        CME.defaults.CMEName=response.list;
+        dropDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a CME Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Name', value: 'Code' },
+            popupHeight: '250px',
+            allowFiltering: true,
+            change:getDoctorandProduct,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Name', 'contains', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        $('.cmename').show();
+        $('#cmeinput').html('');
+        $('#cmeinput').html("<input type='text' tabindex='1' id='CMEName' />");
+        dropDownListObj.appendTo('#CMEName');
+
+        if(CME.defaults.Edit_CME!='')
+        {
+            dropDownListObj.value = "" + CME.defaults.Edit_CME + "";
+            CME.defaults.Edit_CME='';
+        }
+
+
+    }
+    function getAllCMESuccessFailure(response)
+    {
+
+    }
+    function getDoctorandProduct()
+    {
+        getDoctorName();
+        CME.GetProductDetails();
+    }
+    function getDoctorName()
+    {
+        debugger;
+        var CME_ID = $('#CMEName_hidden').val();
+        var region=$('#Region_hidden').val();
+        var LoginRegion =CME.defaults.RegionCode;
+        Method_params = ["CMEApi/GetCMEDoctorDetails", CME.defaults.CompanyCode,region,CME_ID,LoginRegion];
+        CoreREST.get(null, Method_params, null, getAllCMEDoctorSuccess,getAllCMEDoctorSuccessFailure);
+    }
+    function getAllCMEDoctorSuccess(response)
+    {
+        $("#multiselect").empty();
+        $("#multiselect").html('<input class="form-control" type="text" id="Doctors">');
+        var lst = [];
+        lst=response.list;
+        if (lst.length > 0) {
+            docdropDownListObj = new ej.dropdowns.DropDownList({
+                placeholder: 'Select  Doctor Name',
+                filterBarPlaceholder: 'Search',
+                dataSource: lst,
+                fields: { text: 'Name', value: 'Code' },
+                popupHeight: '250px',
+                allowFiltering: true,
+                filtering: function (e) {
+                    var dropdown_query = new ej.data.Query();
+                    dropdown_query = (e.text !== '') ? dropdown_query.where('Name', 'contains', e.text, true) : dropdown_query;
+                    e.updateData(response.list, dropdown_query);
+                }
+            });
+            $('#multiselect').html('');
+            $('#multiselect').html("<input class='form-control' type='text' id='Doctors'>");
+            docdropDownListObj.appendTo('#Doctors');
+            if(CME.defaults.Edit_Doctor !='')
+            {
+                docdropDownListObj.value = "" + CME.defaults.Edit_Doctor + ""
+                CME.defaults.Edit_Doctor='';
+            }
+        }
+    }
+    function getAllCMEDoctorSuccessFailure(response)
+    {
+
+    }
+    function fnaddvalue()
+    {
+        debugger;
+        var Value=0;
+        Value=($('#Edoctor').val()== '' ? 0:parseFloat($('#Edoctor').val())) + ($('#Evenu').val()== '' ? 0:parseFloat($('#Evenu').val())) + ($('#EMarketing').val()== '' ? 0:parseFloat($('#EMarketing').val()))
+        +($('#ETravel').val()== '' ? 0:parseFloat($('#ETravel').val())) +($('#EOther').val()== '' ? 0:parseFloat($('#EOther').val()))
+        Value=Value.toFixed(2);
+        $('#ETotal').val(Value);
+    }
+</script>

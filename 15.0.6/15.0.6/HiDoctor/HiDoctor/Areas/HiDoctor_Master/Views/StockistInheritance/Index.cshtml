@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style type="text/css">
+  #tblDoctor thead th
+    {
+    text-align: center !important;
+    border-right: 1px solid #DDD !important;
+    min-width: 100px !important;
+    background-color: #292bc7;
+    color: white;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    font-weight: bolder;
+    }
+
+    #tdMain
+    {
+        min-width: 20px !important;
+    }
+
+    #tblDoctor td
+    {
+        border: none !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        background-color: #fff;
+        min-height: 30px;
+    }
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div class="col-lg-12">
+    <div id="dvSourceTree" class='col-lg-3'>
+            <div id="SourceTree" class="col-xs-3" style="background-color: #292bc7;  color: white;    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;font-weight: bolder;float: left;height: auto;width: 94%;">Source Region</div>
+           <div id="SourceRegionTree" class="col-xs-3" style="float: left; height: 500px; width: 100%">
+            </div>
+            <div style="width: 1px;"></div>
+            <div style="clear: both;"></div>
+        <div style="clear: both;"></div>
+    </div>
+    <div  class="col-lg-6">
+    <div id="dvGrid" style="overflow:scroll;height:470px"">
+    </div>
+<br />
+    <div>
+        <input type="button" id="btnShift" value="SHIFT SELECTED STOCKIEST" style="font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;background-color: #292bc7;color: white; height:27px" onclick="fnShiftStockiest()" />
+        &nbsp &nbsp
+        <input type="button" id="btnInherit" value="INHERIT SELECTED STOCKIEST" style="font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;background-color: #292bc7;color: white; height:27px" onclick="fnInheritStockiest()" />
+    </div>
+</div>
+<div id="dvTargetTree"  class="col-lg-3">
+<div id="TargetTree" class="col-xs-3" style="background-color: #292bc7;color: white;font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;font-weight: bolder;float: left;height: auto;width: 94%;">Target Region</div>
+    <div id="TargetRegionTree" class="col-xs-3" style="float: left; height: 500px; width: 100%">
+    </div>
+    <div style="width: 1px;"></div>
+    <div style="clear: both;"></div>
+</div>
+</div>
+<div id="dvLoading" style="display: none">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+        </div>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/StockistInheritance.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var entity = "";
+    var gcRegionCode="";
+    var currentRegionCode_g="";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        gcRegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+        currentRegionCode_g=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+
+        if(currentRegionCode_g != null && currentRegionCode_g != '')
+        {               
+            $("#leftNav").show();
+            fnRegionTreePosition("SourceRegionTree");     
+            fnTreeWithChkBoxChildSelction("TargetRegionTree");                                    
+            fnGetRegionTreeByRegion(currentRegionCode_g, "SourceRegionTree", "dvFilteredNode");       
+            $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+            // $("#dvTree").show();
+            //fnBindRegionTree("dvRegionTree");
+            $("#dvHistoryPopUp").overlay().load();
+            $('#dvTargetTree').show();
+            $("#dvRightPanel").hide();
+            $("#dvAjaxLoad").hide();
+            $('#btnShift').hide();
+            $('#btnInherit').hide();
+        } 
+    });
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnRegionTreeNodeClick(node) {
+        debugger;
+        debugger;
+        var treeobj = $("#SourceRegionTree").dynatree("getTree");
+        if (treeobj.getActiveNode() != null) {
+            ShowModalPopup("dvloading");
+            var regionCode = treeobj.getActiveNode().data.key;
+            $.ajax({
+                url: '../HiDoctor_Master/StockistInheritance/GetCustomers/',
+                type: "POST",
+                data: "Mode=" + "^1^" + "&DateTime=" + new Date().getTime() + "&RegionCode=" + regionCode + "&EntityName=" + "STOCKIEST" + "&PageName=SINGLE",
+                success: function (jsData) {              
+                    $('#dvGrid').html(jsData);
+                    $('#dvGrid').show();
+                    $('#dvStockiest').show();
+                    $('#btnShift').show();
+                    $('#btnInherit').show();
+                    HideModalPopup("dvloading");
+                }
+            });
+        }
+    }
+
+    
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'dvLeftPanel', 'treeNav', obj,'dvRightPanel', 'RegionTree');
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvregionTree").slideDown();
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-sm-12')
+        $('#dvdata').addClass('col-sm-9')
+    }
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvregionTree").slideUp();
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-sm-12')
+        $('#dvdata').removeClass('col-sm-9')
+    }
+
+    function fnRegionTreeActivate(node) {
+        $('#hdnRegionCode').val(node.data.key);
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#divsfcReport').html('');
+    }
+
+    var selKeys = "";
+    function fnRegionTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnRegionTreePostInit() {
+        //Tree Post Init
+    }
+
+
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnUserCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnSSselectall() {
+        if ($('#bulkSScheck').is(":checked")) {
+            $("input:checkbox[name=chkSelect]").attr('checked', 'checked');
+        }
+        else {
+            $("input:checkbox[name=chkSelect]").removeAttr('checked');
+        }
+    }
+
+</script>

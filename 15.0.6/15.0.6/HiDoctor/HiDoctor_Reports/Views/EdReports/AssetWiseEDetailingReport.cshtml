@@ -1,0 +1,470 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .dropdown-menu {
+        margin-left: 198px !important;
+    }
+
+    #content {
+        margin-top: 5px;
+    }
+
+    .jumbotron {
+        line-height: 5%;
+    }
+
+    #txtFromDate {
+        margin-right: 8px;
+    }
+
+    .form-group {
+        padding-top: 10px;
+    }
+
+    .modal-backdrop {
+        display: none;
+    }
+
+    #modal {
+        left: 15% !important;
+    }
+
+    .truncate {
+        width: 45%;
+        word-wrap: break-word;
+    }
+
+    .errorMsg {
+        font-size: x-large;
+        margin-left: 37%;
+        margin-top: 5%;
+    }
+</style>
+<hr style="margin: 0px;" />
+<div id="Assetrpt">
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div>
+            <div style="text-align: center; height: 13em; width: 45em; margin-left: 300px; background-color: #efefef; display: none; box-shadow: 8px 8px 5px grey;" id="rptInputs" class="col-lg-5 dvRptInput">
+                <div>
+                    <div style="padding-top: 0.2cm;" class="form-group">
+                        <label for="txtMonth">Select Month:</label>
+                        <input type="text" id="txtMonth" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="AssetCheck" onclick="fnChangeststatus()" value="0">Include Reporting regions</label>
+                        <input type="hidden" id="hdnRegionCode" />
+                        <input type="hidden" id="hdnRegionName" />
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="col-lg-13" style="padding-left: 16px;">
+                        <div style="margin-left: 7%">
+                        </div>
+                        <button id="btnSave" type="button" class="btn btn-primary" onclick="fnGetAssetAnalyticsReport()">Show Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divReport" style="margin-left: 5%; margin-right: 5%; padding-top: 15%;">
+                <div>
+                </div>
+            </div>
+            <div id="modal" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: 5%; width: 800px; height: 500px; overflow: hidden">
+                <span style="float: right; cursor: pointer" onclick="HideModalPopup('modal');">X</span>
+                <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">DETAILS:</h2>
+                <div id="divHeader">
+                </div>
+                <div id="divModel" style="height: 100px; overflow-x: auto; height: 400px">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+    <div id="divPrint" style="display: none;"></div>
+
+
+    <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(function () {
+            debugger;
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var currYear = new Date();
+            var MonthName = months[currYear.getMonth()];
+            var year = currYear.getFullYear();
+            var month = currYear.getMonth();
+            var mmyy = month + "-" + year;
+            var mm = MonthName + "-" + currYear.getFullYear();
+            $('#txtMonth').monthpicker({
+                finalYear: currYear.getFullYear()
+            });
+            $('#txtMonth').val(mm);
+     
+        });
+        $(document).ready(function () {
+            debugger;
+            AjaxGlobalHandler.Initiate();
+            try {
+                //$("#divMain").block();
+                $("#dvPageHeader").html("SpecialityWise-eDetailing");
+                fnBindRegionTree("tree");
+                fnGetSpeciality();
+                $("#dvTree").show();
+                $('#rptInputs').hide();
+                $('#divToggle').hide();
+                $("#dvAjaxLoad").hide();
+            }
+            catch (err) {
+                // $("#divMain").unblock();
+            }
+
+            // $("#divMain").unblock();
+        });
+
+
+        function fnRegionTreeActivate(node) {
+            debugger;
+            $("#divReport").html("");
+            $("#dvTree").hide();
+            $('#hdnRegionCode').val(node.data.key);
+            $('#rptInputs').show();
+            $("#spnTreeToggle").html('Show Tree');
+            $('#divToggle').show();
+            $("#divMain").css('width', '100%');
+            $("#hdnRegionName").val(node.data.title);
+        }
+        function fnRegionTreePostInit() {
+
+        }
+        function fnToggleTree() {
+            if ($("#spnTreeToggle").html() == "Hide Tree") {
+                $("#dvTree").hide();
+                $("#divMain").css('width', '100%');
+                $("#spnTreeToggle").html('Show Tree');
+            }
+            else if ($("#spnTreeToggle").html() == "Show Tree") {
+                $("#dvTree").show();
+                $("#divMain").css('width', '80%');
+                $("#spnTreeToggle").html('Hide Tree');
+            }
+        }
+        function fnToggleInput() {
+            if ($("#spnInputToggle").html() == "Hide Input") {
+                $("#rptInputs").slideUp();
+                $("#spnInputToggle").html("Show Input");
+            }
+            else if ($("#spnInputToggle").html() == "Show Input") {
+                $("#rptInputs").slideDown();
+                $("#spnInputToggle").html("Hide Input");
+            }
+        }
+
+        function fnGetAssetAnalyticsReport() {
+            debugger;
+            //$('#divMain').block({
+            //    message: '<h3>Processing</h3>',
+            //    css: { border: '2px solid #ddd' }
+            //});
+            $("#divReport").empty();
+            var SpecialityReport = "";
+            var nodeVal = $('#hdnRegionCode').val();
+            //  var Spl_Date = $("#txtMonth").val();
+            var spl_Name = $("#splName").html();
+            var Spl_Month = fnGetMonthNum($("#txtMonth").val().split("-")[0]);
+            var Spl_Year = $("#txtMonth").val().split("-")[1];
+            var currYear = new Date();
+            var year = currYear.getFullYear();
+            var month = currYear.getMonth() + 1;
+            var mmyy = year + "-" + month;
+            var MMYYYY = Spl_Year + "-" + Spl_Month;
+            if (new Date(MMYYYY) > new Date(mmyy)) {
+                //if (mmyy > MMYYYY) {
+                fnMsgAlert('info', 'Asset Analytics Report', 'You Can not select Future Month');
+                return false;
+            }
+            
+            var IsSubRegionNeeded = $("#AssetCheck").val();
+            $.ajax({
+                type: 'POST',
+                url: '../EdReports/GetAssetWiseEdetailing',
+                data: 'RegionCode=' + nodeVal + '&Spl_Month=' + Spl_Month + '&Spl_Year=' + Spl_Year + '&IsTeam=' + IsSubRegionNeeded,
+                success: function (Result) {
+                    debugger;
+                    $("#divReport").html('');
+                    var table = eval('(' + Result + ')');
+                    if (table.Tables.length > 0) {
+
+                        Call_Avg = table.Tables[0].Rows;
+                        if (Call_Avg.length > 0) {
+                            // Header Column Name 
+                            var call_objects = Call_Avg[0];
+                            var tempValue = Object.keys(call_objects);
+                            var value = tempValue;
+                            if (value[0] == 'No Record Found') {
+                                $("#divReport").html('<div  class="errorMsg">No Record Found</div>');
+                            }
+                            else {
+                                var table = "";
+                                var dynamic = "";
+                                table += "<div style='border: 6px solid #E5E5E3; padding: 12px;width: 85%;'>";
+                                table += "<div style='padding-right: 33px;font-size: 17px;font-weight: 500;color: #32ac54;'>Asset Category wise Visit Report</div>";
+                                table += "<div><span style='padding-right: 33px;font-size: 14px;font-weight: inherit;color: blue;'>Month </span><span style='font-size: 14px;font-weight: inherit;color: blue;'>: " + $("#txtMonth").val() + "</span></div>";
+                                table += "<div><span style='padding-right: 14px;font-size: 14px;font-weight: inherit;color: blue;'>Username </span><span style='font-size: 14px;font-weight: inherit;color: blue;'>: " + $("#hdnRegionName").val();
+                                if (IsSubRegionNeeded == '1') {
+                                    table += "[Include Reporting regions]";
+                                }
+                                table += "</span></div>";
+                                table += "</div><table id='tblAsset' class='table table-striped AssetInfotbl'>";
+                                table += "<thead>";
+                                table += "<tr>";
+                                for (var j = 0; j < value.length ; j++) {
+                                    var category_code = (value[j]).split('~');
+                                    if (j == 0)
+                                        dynamic += "<th style='text-align:center;'>" + value[j].toUpperCase() + "</th>";
+                                    else if (j == 1)
+                                        dynamic += "<th>Asset Type</th>";
+                                        //End of the table add regionCode
+                                    else if ((value.length - 1) == j)
+                                        dynamic += "<th style='text-align:center;display:none;'></th>";
+                                    else
+                                        dynamic += "<th style='text-align:center;'> <input type='hidden' id=divcategoryId_" + j + " value=" + category_code[0] + ">  " + category_code[1] + "</th>";
+
+                                }
+                                table += dynamic + "</tr>";
+                                table += "</thead>";
+                                table += "<tbody>";
+                                for (var call_avg_count = 0; call_avg_count < Call_Avg.length; call_avg_count++) {
+                                    debugger;
+                                    table += "<tr>";
+                                    for (var i = 0; i < value.length  ; i++) {
+                                        if ((Call_Avg[call_avg_count][value[i]]) == null)
+                                            table += "<td style='text-align:left;'>0</td>";
+                                        else {
+                                            if (i == 0) {
+                                                var speciality_code = (Call_Avg[call_avg_count][value[i]]).split('~');
+                                                table += "<td style='text-align:left;'><input type='hidden' id=divspecialityName_" + call_avg_count + " value=" + speciality_code[1] + "> <input type='hidden' id=divspecialityId_" + call_avg_count + " value=" + speciality_code[0] + ">  " + speciality_code[1] + "</td>";
+                                            } else if (i == 1) {
+                                                table += "<td>" + (Call_Avg[call_avg_count][value[i]]) + "</td>";
+                                            }
+                                                //End of the table add regionCode
+                                            else if ((value.length - 1) == i) {
+                                                table += "<td style='text-align:left;display:none;'><input type='hidden' id='divRegionCode_" + call_avg_count + "' value=" + (Call_Avg[call_avg_count][value[i]]) + "> </td>";
+                                            }
+                                            else {
+                                                var a = i + "_" + call_avg_count;
+                                                table += "<td style='text-align:left;'> <a id=" + a + "  href='#' onclick='fnBindAssertDetails(this);'>" + (Call_Avg[call_avg_count][value[i]]) + "</a></td>";
+                                            }
+                                        }
+                                    }
+                                    table += "</tr>";
+                                }
+                                table += "</tbody>";
+                                $("#divReport").html(table + "</table><div style='display:none;' id='divMonthStartDate'>" + Spl_Year + "-" + Spl_Month + "-01<div>");
+                            }
+
+                            // $(table).appendTo("#TableCont");
+                            //$("#divReport").html(SpecialityReport);
+                            $("#divPrint").html($("#divReport").html());
+                            if ($.fn.dataTable) {
+                                $('#tblAsset').dataTable({
+                                    "oLanguage": {
+                                        "sEmptyTable": "No Data Available"
+                                    },
+                                    "sPaginationType": "full_numbers", "bSort": false, "bDestroy": true, "sDom": 'T<"clear">lfrtip'
+                                });
+                                $(".dataTables_filter").hide();
+                                $(".TableTools_button.TableTools_clipboard").hide();
+                                $(".TableTools_button.TableTools_csv").hide();
+                                $(".TableTools_button.TableTools_print").hide();
+                                $("#dvPrint").hide();
+                                //$(".TableTools_xls").hide();
+
+                            };
+                            fninializePrint("divPrint", "ifrmPrint", "divReport");
+                        }
+                        else
+                            $("#divReport").html('<div  class="errorMsg">No Record Found</div>');
+                    }
+                    $("#divMain").unblock();
+                },
+                error: function () {
+                    $("#divMain").unblock();
+                },
+                complete: function () {
+                    $("#divMain").unblock();
+                }
+
+            });
+        }
+        function fnChangeststatus() {
+            debugger;
+            if ($("#AssetCheck").val() == "1") {
+                $("#AssetCheck").val("0");
+            }
+            else {
+                $("#AssetCheck").val("1");
+            }
+        }
+        function fninializePrint(divId, iFrameId, mainDiv) {
+            $('#' + mainDiv + ' #dvPrint').remove();
+            $("#" + mainDiv + " .TableTools").append("<div id='dvPrint' onclick='fnPrint(\"" + divId + "\",\"" + iFrameId + "\");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center;border: 1px solid #f0f0f0;height: 30px; width: 30px;cursor:pointer;'></div>");
+        }
+        function fnPrint(divId, iFrameId) {
+            try {
+                var oIframe = document.getElementById(iFrameId);
+                var oContent = document.getElementById(divId).innerHTML;
+                var oDoc = (oIframe.contentWindow || oIframe.contentDocument);
+                if (oDoc.document) oDoc = oDoc.document;
+                oDoc.write("<html><head> <style media='all'>th, td{border-left:1px solid #000;border-top:1px solid #000;} table{border:1px solid #111;font-family:Arial;font-size:10px} </style> </head><body  onload='this.print();' this.print();'><center>");
+                oDoc.write(oContent + "</center></body></html>");
+                // oDoc.write("<html><head></head><body  onload='this.print();'><center>");
+                // oDoc.write(oContent + "</center></body></html>");
+                oDoc.close();
+            }
+            catch (e) {
+                self.print();
+            }
+        }
+        function fnChangeSpeciality(speciality) {
+            debugger;
+            $("#splName").html(decodeURIComponent(speciality));
+        }
+        function fnGetMonthNum(spl_Month) {
+            debugger;
+            if (spl_Month.toUpperCase() == "JAN") {
+                return 1;
+            }
+            if (spl_Month.toUpperCase() == "FEB") {
+                return 2;
+            }
+            if (spl_Month.toUpperCase() == "MAR") {
+                return 3;
+            }
+            if (spl_Month.toUpperCase() == "APR") {
+                return 4;
+            }
+            if (spl_Month.toUpperCase() == "MAY") {
+                return 5;
+            }
+            if (spl_Month.toUpperCase() == "JUN") {
+                return 6;
+            }
+            if (spl_Month.toUpperCase() == "JUL") {
+                return 7;
+            }
+            if (spl_Month.toUpperCase() == "AUG") {
+                return 8;
+            }
+            if (spl_Month.toUpperCase() == "SEP") {
+                return 9;
+            }
+            if (spl_Month.toUpperCase() == "OCT") {
+                return 10;
+            }
+            if (spl_Month.toUpperCase() == "NOV") {
+                return 11;
+            }
+            if (spl_Month.toUpperCase() == "DEC") {
+                return 12;
+            }
+        }
+        function fnBindAssertDetails(obj) {
+            debugger;
+            var id = obj.id.split('_');
+            var speciality_Code = $("#divspecialityId_" + id[1]).val();
+            var category_Code = $("#divcategoryId_" + id[0]).val();
+            //var region_code = $('#hdnRegionCode').val();
+            var region_code = $('#divRegionCode_' + id[1]).val();
+            var period = $("#divMonthStartDate").text();
+            $.ajax({
+                type: "post",
+                url: "../EdReports/GetDoctorDetails",
+                data: "regionCode=" + region_code + "&speciality_Code=" + speciality_Code + "&category_Code=" + category_Code + "&period=" + period,
+                success: function (result) {
+                    var table = eval('(' + result + ')');
+                    // Header Column Name 
+                    Call_Avg = table.Tables[0].Rows;
+                    var call_objects = Call_Avg[0];
+                    var tempValue = Object.keys(call_objects);
+                    var value = tempValue;
+                    var table = "";
+                    var dynamic = "";
+                    table += "<div style='padding: 4px;font-weight: 800;'><span>Asset Name :</span><span>" + $("#divspecialityName_" + id[1]).val() + "</span></div>";
+                    table += "<table id='' class='table table-striped AssetInfotbl'>";
+                    table += "<thead>";
+                    table += "<tr>";
+                    for (var j = 0; j < 5; j++) {
+                        if (j == 1)
+                            dynamic += "<th style=text-align:center class='truncate' >" + value[j].toUpperCase() + "</th>";
+
+                        else
+                            dynamic += "<th style=text-align:center>" + value[j].toUpperCase() + "</th>";
+                    }
+                    table += dynamic + "</tr>";
+                    table += "</thead>";
+                    table += "<tbody>";
+                    for (var call_avg_count = 0; call_avg_count < Call_Avg.length; call_avg_count++) {
+                        debugger;
+                        table += "<tr>";
+                        for (var i = 0; i < 5 ; i++) {
+                            if (i == 1)
+                                table += "<td style='text-align:left;' class='truncate'> " + (Call_Avg[call_avg_count][value[i]]) + "</td>";
+                            else if (i == 3) {
+                                debugger;
+                                var min = Call_Avg[call_avg_count][value[i]];
+                                var hours = SecondsTohhmmss(min);
+                                var time = hours.split('-');
+                                var finalTime = time[2] + "(SS)";
+                                if (parseInt(time[1]) > 0) {
+                                    finalTime = time[1] + "(MM)" + finalTime;
+                                }
+                                if (parseInt(time[0]) > 0) {
+                                    finalTime = time[2] + "(HH)" + finalTime;
+                                }
+                                table += "<td style='text-align:left;'> " + (finalTime) + "</td>";
+                            }
+                            else
+                                table += "<td style='text-align:left;'> " + (Call_Avg[call_avg_count][value[i]]) + "</td>";
+                        }
+                        table += "</tr>";
+                    }
+                    table += "</tbody>";
+                    $("#divModel").html('');
+                    $("#divModel").html(table);
+                    $('#modal').modal('show');
+
+                }
+
+            });
+        }
+
+        function HideModalPopup(id) {
+            $('#modal').modal('hide');
+        }
+        function SecondsTohhmmss(totalSeconds) {
+            var hours = Math.floor(totalSeconds / 3600);
+            var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+            var seconds = totalSeconds - (hours * 3600) - (minutes * 60);
+
+            // round seconds
+            seconds = Math.round(seconds * 100) / 100
+
+            var result = (hours < 10 ? "0" + hours : hours);
+            result += "-" + (minutes < 10 ? "0" + minutes : minutes);
+            result += "-" + (seconds < 10 ? "0" + seconds : seconds);
+            return result;
+        }       
+    </script>

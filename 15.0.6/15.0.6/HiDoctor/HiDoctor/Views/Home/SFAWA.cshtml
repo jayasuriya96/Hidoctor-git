@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "SFAWA";
+    Layout = null;
+}
+ <script src="~/Scripts/jquery.ba-postmessage.js"></script>
+<div style="width: 100%;">
+    <iframe id="sfawaIframe" height="600" style="width: 100%; height: 700px;"></iframe>
+
+</div>
+<script lang="ja">
+    $(document).ready(function () {
+
+      
+
+        AjaxGlobalHandler.Initiate();
+        try
+        {
+            var menuid=@Html.Raw(Json.Encode(ViewBag.MenuId));
+            var companyCode=@Html.Raw(Json.Encode(ViewBag.CompCode));
+            var userCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+            var sessionId=@Html.Raw(Json.Encode(ViewBag.SessionId));
+            var sfawaUrl=@Html.Raw(Json.Encode(ViewBag.SFAWAURL));
+            //var src = sfawaUrl+"/LandingPage.aspx?CC="+companyCode+"&UC="+userCode+"&SID="+ escape(sessionId)+"&MID="+menuid+'#'+ encodeURIComponent(document.location.href);
+            $("#sfawaIframe").attr('src',sfawaUrl+"/LandingPage.aspx?CC="+companyCode+"&UC="+userCode+"&SID="+ escape(sessionId)+"&MID="+menuid+"&parentURL="+escape(document.location.href));
+            //(function($) {
+            //    var if_height,
+            //   src = srcURL,
+            //   iframe = $('<iframe " src="' + src + '" width="100%" height="auto" scrolling="no" frameborder="0"><\/iframe>').appendTo('#sfawaIframe');
+
+            //    setInterval(function getHeight() {
+            //        $.receiveMessage(function(e) {
+            //            var h = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
+            //            if (!isNaN(h) && h > 0 && h !== if_height) {
+            //                // Height has changed, update the iframe.
+            //                iframe.height(if_height = h + 100);
+            //               // document.getElementById('loadicon').style.display = 'none';
+            //            }
+            //        });
+            //    }, 500);
+            //})(jQuery);
+            $("#dvAjaxLoad").hide();
+        }
+        catch(err)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

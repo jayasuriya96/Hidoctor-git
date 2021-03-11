@@ -1,0 +1,136 @@
+﻿@Scripts.Render("~/bundles/dcrhomejs");
+<script>
+    var dcrDate_g="";
+    var dcrStatus_g = "";
+    var isRCPA_g="";
+    var source_g="";
+    var sourceFromStockist_g="";
+    var flag_g="";
+    var travelKm=0.0;
+    $(document).ready(function () {
+        try{
+            AjaxGlobalHandler.Initiate();            
+            $.mobile.loading('show');
+            $("#homeUserName").html(loginUserName_g);
+            var homeData= @Html.Raw(Json.Encode(ViewBag.Data));
+            dcrDate_g=homeData.split('^')[0];
+            dcrStatus_g=homeData.split('^')[1];
+            isRCPA_g=homeData.split('^')[2];
+            source_g=homeData.split('^')[3].split('_')[0];
+            if(sourceFromStockist_g=="" && homeData.split('^')[3]=="TAB_STOCKIEST" )
+            {
+                sourceFromStockist_g=homeData.split('^')[3];
+            }
+            flag_g=homeData.split('^')[4];
+            travelKm=homeData.split('^')[5];
+            $('#dcrHeadercaption').html('DCR - '+dcrDate_g.split('-')[2]+'-'+dcrDate_g.split('-')[1] +'-'+dcrDate_g.split('-')[0]+" Click the content to Edit details.");
+            if(flag_g.toUpperCase() == "A")
+            {
+                $('#dvDoctorVisit').css('display','none');
+                $('#dvStockist').css('display','none');
+            }
+            else
+            {
+                $('#dvActivity1').css('display','none');
+                $('#dvActivity1').trigger('refresh');
+            }
+
+            fnGetHeaderDetails();
+            //fnCreateDocList();
+        }
+        catch(e)
+        {
+            $.mobile.loading('hide');
+            fnMsgAlert('info', screenTitle, e.message);
+        }
+    });
+</script>
+<div style="float: right; margin-right: 19px; margin-top: 5px;">
+    <span id="homeUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div style="clear: both">&nbsp;</div>
+<div data-role="content" id="dvmobileHome">
+
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToCalendar()">Calendar
+    </a>
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-inset="false" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true">
+            <h3 id="dcrHeadercaption">DCR Header</h3>
+            <div>
+                <ul data-role="listview" id="listHeader" data-divider-theme="b" data-inset="false"></ul>
+            </div>
+        </div>
+    </div>
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-inset="false" id="dvActivity1" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true">
+            <h3>Activity
+            </h3>
+            <div style="width: 100%; font-size: 12px; font-weight: normal">
+                <ol data-role="listview" id="actlist" data-divider-theme="b" data-inset="false">
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-inset="false" id="dvDoctorVisit" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true">
+            <h3>Doctor Visit 
+            </h3>
+            <div style="width: 100%; font-size: 12px; font-weight: normal">
+                <ol data-role="listview" id="doclist" data-divider-theme="b" data-inset="false">
+                </ol>
+                <br />
+                <br />
+                <a href="#" onclick="fnGoToDoctorsSelection()">Add Doctor</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-inset="false" style="cursor: pointer" id="dvStockist" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true">
+            <h3>Stockiest
+            </h3>
+            <div style="width: 100%; font-size: 12px; font-weight: normal">
+                <ol data-role="listview" id="stocklist" data-divider-theme="b" data-inset="false">
+                </ol>
+                <br />
+                <br />
+                <a href="#" style="margin-top: 3px" onclick="fnGotoStockistExpense()">Add Stockiest</a>
+            </div>
+        </div>
+    </div>
+    <div data-role="collapsible-set" data-theme="b" data-content-theme="c" id="dvExpense" data-inset="false" data-mini="true">
+        <div data-role="collapsible" data-collapsed="false" data-mini="true">
+            <h3>Expense
+            </h3>
+            <div>
+                <ol data-role="listview" id="explist" data-divider-theme="b" data-inset="false">
+                </ol>
+                <br />
+                <br />
+                <a href="#" onclick="fnGotoStockistExpense()" style="margin-top: 5px;">Add Expense</a>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+
+    <div data-role="content" style="display:none;">
+        <a href="#" onclick="fnOpenDCROldRemarks()">Show Old Remarks</a>
+        <div data-role="fieldcontain">
+            <label for="txtDCRCommonRmrks">
+                Common Remarks
+           
+            </label>
+            <textarea name="" id="txtDCRCommonRmrks" placeholder=""></textarea>
+        </div>
+    </div>
+    <div>
+        <a id="btnSaveDCRHome" data-role="button" data-theme="b" href="#" onclick="$(this).hide();fnSaveExpenseFromHome();">Submit For Approval
+        </a>
+    </div>
+</div>
+
+<div id="dvOpenDCROldRemarksMain" style="display: none;" data-options='{"mode":"blank","headerText":"General Remarks","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div data-role="content" id="dvOpenDCROldRemarks">
+    </div>
+</div>

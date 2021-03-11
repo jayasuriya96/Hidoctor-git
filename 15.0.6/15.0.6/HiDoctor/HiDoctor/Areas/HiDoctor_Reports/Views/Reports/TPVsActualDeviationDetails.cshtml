@@ -1,0 +1,206 @@
+﻿@{
+    ViewBag.Title = "TPVsActualDeviationDetails";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style>
+    .spnstar {
+        font-weight: bold;
+        font-size: 20px;
+        color: red;
+    }
+
+    .spndev {
+    font-weight: bold;       
+        color: red;
+    }
+</style>
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="regiontree" style="float: left; height: auto; width: 100%">
+        </div>
+        <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>   
+    <div class='col-xs-9 rghtInputandRpt' float: left" id="divMain">
+       <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 20px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 20px">
+            <input type="hidden" id="hdnRegionCode" />
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('TP_VS_ACTUAL_DETAILS','PAGE_HEADER')" />
+                </div>
+            <table>
+                <tr>
+                    <td>Month and Year
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+ @*<input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetTPvsActualDeviationDetails();" />*@
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetWeekendDetails();" />
+                    </td>
+                </tr>
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div id="divHeader">
+        </div>
+        <div id="divReport">
+            <div id="divSubReport"></div>
+        </div>    
+<div style="clear: both">
+        </div>
+        <div id="divImport" style="width: 100%;"></div>
+    </div>    
+</div>
+<input type="hidden" id="hdnVacant" />
+
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divsubPrint" style="display: none;"></div>
+
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MissedCallRecovery.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    var c_g;
+    var weekenddays_g;
+    $(function () {
+        $('#txtFromDate').monthpicker();
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {               
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $('#txtFrom').monthpicker();
+                $('#txtTo').monthpicker();
+                $('#dvAjaxLoad').hide()
+            } 
+            //fnBindRegionTree("tree");
+            //$("#dvTree").show();
+            //$('#divInput').hide();
+            //$('#divToggle').hide();
+            //$("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnRegionTreeNodeClick(node){         
+        $("#divHeader").html(""); 
+        $("#divSubReport").html("");      
+        $('#hdnRegionCode').val(node.data.key);
+        $('#hdnVacant').val(node.data.title);
+        var regionNamealert = ($('#hdnVacant').val()).split('-')[1];
+        if(regionNamealert.toUpperCase() == "VACANT"){
+            $('#divInput').hide();                 
+            $('#divToggle').hide(); 
+            $('#divImport').html('');               
+            fnMsgAlert('info', 'Tp vs Actual Details Report','The selected Region currently does not have a user. Please check the TP Alumni Report of resigned users, for details during the selected period.');           
+            return;
+        }
+        else if(regionNamealert.toUpperCase() == "NOT ASSIGNED"){
+            $('#divInput').hide();         
+            $('#divToggle').hide();
+            $('#divImport').html('');   
+            fnMsgAlert('info', 'Tp vs Actual Details Report','There is no user assigned to this region and hence the report cannot be generated.');           
+            return;
+        }
+        else
+        {
+            $('#divInput').show();
+            $("#leftNav").show();          
+            $('#divToggle').show();
+            $('#divImport').html('');      
+            $("#divMain").addClass('col-xs-9');
+        }
+    }
+
+    function fnRegionTreeActivate(node) {        
+    }
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-12');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    }
+</script>

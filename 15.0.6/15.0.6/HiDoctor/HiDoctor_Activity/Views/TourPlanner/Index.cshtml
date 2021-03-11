@@ -1,0 +1,1472 @@
+﻿@model HiDoctor_Activity.Models.TourPlannerModel
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<style type="text/css">
+    #divReport {
+        width: 900px !important;
+    }
+
+    divCategoryBreakUp .fc-event-hori {
+        margin-bottom: 0px !important;
+        border-top-width: 0px !important;
+        border-right-width: 0px !important;
+        border-bottom-width: 0px !important;
+        border-left-width: 0px !important;
+    }
+
+    #dvDatePicker .ui-widget {
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+        font-size: 1.1em;
+        width: 96%;
+    }
+
+    .table table-striped- table th {
+        padding: 6px 5px;
+        text-align: left;
+        background-color: #78b6dd;
+        border: solid 1px #e8eef4;
+    }
+
+    #linkforbatch {
+        width: 180px;
+        float: right;
+        color: #06C;
+        cursor: pointer;
+    }
+
+    #divCampaign {
+        width: 200px;
+        float: left;
+        color: #06C;
+        cursor: pointer;
+    }
+
+    .thcolor {
+        text-align: center;
+        background-color: #78b6dd !important;
+        color: white;
+    }
+
+    .linkclick {
+        color: blue;
+        cursor: pointer;
+    }
+
+    .ullist {
+        width: 51%;
+        /* padding: 9px; */
+        margin-top: 20px;
+        margin-left: 110px;
+    }
+
+    .modal-dialog {
+        box-shadow: none !important;
+        background: none !important;
+        border: none !important;
+    }
+
+    .close {
+        z-index: 4000000;
+        color: black !important;
+        position: absolute;
+        top: 0px;
+        right: 1px;
+        font-size: 24px !important;
+        opacity: inherit !important;
+        /* font-size: 16px; */
+        width: 30px;
+        height: 51px;
+    }
+
+    #batchdetails {
+        width: 790px !important;
+    }
+    #batchdetailss {
+        width: 795px !important;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+        .clickable .glyphicon {
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+    .panel-heading span {
+        font-size: 13px;
+        margin-right: 2px;
+    }
+</style>
+
+<style type="text/css" id="styleCampaignCheckbox">
+    .customcheck {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+        .customcheck input {
+            position: relative;
+            opacity: 0;
+            cursor: pointer;
+            margin-left: -15px;
+        }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        left: 38px;
+        height: 20px;
+        width: 20px;
+        background-color: #eee;
+        border-radius: 5px;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .customcheck:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .customcheck input:checked ~ .checkmark {
+        background-color: #02cf32;
+        border-radius: 5px;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .customcheck input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .customcheck .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+<style id="dynamicStyle" >
+    #dvFilteredNode > div.list-group{
+        position:absolute;
+    }
+</style>
+
+<link href="../../Areas/HiDoctor_Activity/Content/jquery-ui.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" type="text/css" />
+<link href="../../Areas/HiDoctor_Activity/Content/calendar.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style>
+    .dvNewUserTree {
+        min-height: 400px;
+        height: 500px;
+        padding-top: 2%;
+        float: left;
+        width: 99%;
+    }
+
+    .btn-close {
+        float: right;
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 1;
+        color: #000000;
+        text-shadow: 0 1px 0 #ffffff;
+        padding: 0;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        -webkit-appearance: none;
+        margin-top: -20px;
+    }
+    #fafaworkplace{
+            font-size: 25px;
+    margin: 10px;
+    }
+</style>
+
+<div>
+    <div id="dvMain" class="col-sm-12 main-div" style="padding:0px;">
+        <div style="width: 189px;z-index:10;position: absolute;clear: both;" class="sidenav" id="divleft">
+            @*<img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+                onclick="fnOpenTree()" />*@
+            <div style="width:100%;background-color:#efefef;">
+                <span id="spanExpand" style="cursor:pointer;float:right;" onclick="openNav()"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+                <span id="spanCollapse" style="cursor:pointer;float:right;display:none;" onclick="closeNav()"><i class="fa fa-chevron-circle-left fa-lg"></i></span>
+                <div style="clear:both;"></div>
+            </div>
+            @*<img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+                     style="cursor: pointer" />
+                <div id='dvTPMonth' class="dv-tp-month">
+                    TP Month
+                    <input id="txtTPMonth" style="width: 50%" />
+                </div>*@
+
+            <div class='leftNav' style="float: left;width:100%;">
+                <div id="tree">
+                </div>
+                @*<span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>*@
+                <div style="width: 1px;"></div>
+            </div>
+
+        </div>
+        <div class="col-sm-12 clearfix" style="padding:0px;">
+            <div style="width: 59%;margin-left:188px;position: relative;" class="inner-div" id="divCenter">
+                <div id="dvInProgress" class="tpInprogress" style="display: none">
+                    <div>
+                        <div id="dvinprogtext" style="width: 75%; float: left">
+                        </div>
+                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="float: left; margin-top: 5px;" />
+                        <div style="clear: both">
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div id="divHeader" class="divHeadertp">
+                        <span id="spnName"></span></br>
+                        <span id="UnapprovalRemarks" style="font-size: small; color: red"></span>
+                        <div style="float: right; margin-top: -4px; margin-right: 5px;">
+                            @*<span class="spnBlack-Insights" id="spndashBoard" onclick="fnDashBoardClick()">Insight</span><br />*@
+                            <span id="spnDay" class="spnBlack" onclick="fnDayClick()">Day</span><span class="spnBlack"
+                                                                                                      id="spnWeek" onclick="fnWeekClick()">Week</span><span class="spnBlack" id="spnMonth"
+                                                                                                                                                            onclick="fnMonthClick()">Month</span>
+                        </div>
+                        <div style="clear: both">
+                        </div>
+                    </div>
+                </div>
+                <div id="dvAccessDenied" style="display: none; height: 660px">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/tpAccessdenied.png" id="imgTPaccess" />
+                    <span id="spnUserName" style="font-size: 14px; font-weight: bold"></span>- don't
+                    have permission to enter tour planner
+                </div>
+                <div id="dvtopAlert" class="div-tp-joint-accompanist" style="display: none">
+                </div>
+                <div id="dvCalendar">
+                </div>
+                <div id="dvDashBoard" style="display: none">
+                    <br />
+                    <div class="div-inner-dashboard">
+                        <div class="div-dashboard">
+                            <span name="spnDoctorLabel">Doctor</span> Coverage
+                        </div>
+                        <br />
+                        <div id="dvDoctorCoverage">
+                        </div>
+                    </div>
+                    <div class="div-inner-dashboard" style="margin-left: 5px">
+                        <div class="div-dashboard">
+                            Product Vs <span name="spnDoctorLabel">Doctor</span>s
+                        </div>
+                        <div id="dvProdDoctor">
+                        </div>
+                    </div>
+                    <div class="div-inner-dashboard" style="margin-left: 5px">
+                        <div class="div-dashboard">
+                            Missed <span name="spnDoctorLabel">Doctor</span>s
+                        </div>
+                        <br />
+                        <div id="dvMissedDoctor">
+                            <table>
+                                <tr>
+                                    <td>
+                                        3 Months
+                                    </td>
+                                    <td>
+                                        <span id="spn3Mnth" class="td-dashboard"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        6 Months
+                                    </td>
+                                    <td>
+                                        <span id="spn6Mnth" class="td-dashboard"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        9 Months
+                                    </td>
+                                    <td>
+                                        <span id="spn9Mnth" class="td-dashboard"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        12 Months
+                                    </td>
+                                    <td>
+                                        <span id="spn12Mnth" class="td-dashboard"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div style="clear: both"></div>
+                    <div>
+                        Tour Planner Reports
+                        <br />
+                        <a href="#" onclick="fnTPReport()">Tour Planner Report</a>
+                    </div>
+                </div>
+                <table style="width: 100%; display: none" id="tblTP" class="tblTP">
+                    <tr>
+                        <td colspan="3">
+                            <div>
+                                <div id="dvLockIntimate" class="div-tp-joint-accompanist" style="display: none">
+                                </div>
+                                <div id="dvJointAccompanist">
+                                    <div>
+                                        <span onclick="fnGetTPMoreInfo();" style="float:right;cursor:pointer;color: #06C;" href="" id="btnShowAccomp" class="" data-toggle="modal" data-target="#accompModal">
+                                            More Info
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;">
+                            Tour Plan Date
+                        </td>
+                        <td style="width: 45%">
+                            <div id="dvTPDate" style="font-size: 15px; display: none">
+                            </div>
+                            <input id="txtTpDate" type="text" readonly />
+                            <span style="color: #C63828" id="spnTpDateError"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Call Objective
+                        </td>
+                        <td>
+                            <select id="drpCallObj" onchange="fnCallObjChange()"></select>
+                        </td>
+                    </tr>
+                    <tr id="trAccompanist">
+                        <td style="vertical-align: top">
+                            Accompanist
+                        </td>
+                        <td style="vertical-align: top">
+                            <input type="text" id="txtAccompaninst" value="+Add accompanist" style="width: 400px !important; height: 40px !important; color: #999 !important"
+                                   class="accompanist-input-token" />
+                            Plan your TP based on your accompanist TP - <a style="cursor: pointer;" id="aAddSFC" data-transition="fade" onclick="fnGetAccompanistDetails()"
+                                                                           data-mini="true">Click here to see details</a>
+                        </td>
+                        <td style="vertical-align: top">
+                            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/add_user.png" rel="#mies1" id="outsideAccompanist" style="display:none;" onclick="fnOpenOverlay()"
+                                 style="cursor: pointer" title="Click to add accompanist" />
+                        </td>
+                    </tr>
+                    <tr id="trMeetingPoint">
+                        <td>Meeting Point</td>
+                        <td>
+                            <input id="txtMeetingPoint" />
+                        </td>
+                    </tr>
+
+                    <tr id="trMeetingTime">
+                        <td>Meeting Time</td>
+                        <td>
+                            <input id="txtMeetingTime" />
+                        </td>
+                    </tr>
+                    @*<tr>
+                        <td colspan="3">
+                            <hr />
+                        </td>
+                    </tr>*@
+                    <tr>
+                        <td id="tdCPName">
+                            Beat / Patch Plan Name
+                        </td>
+                        <td>
+                            <select id="drpActivity" style="display: none"></select>
+                            <input id="txtCPName" class="cpauto" onblur="fnGetCPDoctors(this)" onkeypress="fnHighlightCPN(this)"
+                                   onkeydown="fnHighlightCPN(this)" onkeyup="fnHighlightCPN(this)" />
+                            <input type="hidden" id="hdnCPCode" />
+                            <select id="drpLeaveTypes" style="display: none"></select>
+                            <span style="color: #C63828" id="spnCPError"></span>
+                        </td>
+                    </tr>
+                    <tr id="trCategory">
+                        <td>
+                            Category
+                        </td>
+                        <td>
+                            <select id="drpCategory" onchange="fnCategoryChange()"></select><span style="color: #C63828" id="spnCategoryError"></span>
+                        </td>
+                    </tr>
+                    <tr id="trWorkPlace">
+                        <td>
+                            Work Place
+                            <br />
+                        </td>
+                        <td>
+                            <input type="text" id="txtWorkPlace" value="" style="width: 400px !important; height: 40px !important; color: #999 !important"
+                                   class="doctor-input-token sfcWorkplace" />
+                           
+                            @*<input id="txtWorkPlace" class='sfcauto sfcWorkplace' />*@
+                        </td>
+                        <td style="vertical-align: top" id="tdworkplace">
+                            <i class="fa fa-suitcase" aria-hidden="true" id="fafaworkplace" title="Click to add Work Place" onclick="AddWorkPlace();"></i>
+                        </td>
+                    </tr>
+                    <tr id="trFTPlace">
+                        <td>
+                            SFC Details
+                        </td>
+                        <td style="padding: 0px">
+                            <div style="column-count:3"><div>From Place</div><div>To Place</div><div>Travel Mode</div></div>
+                            <div id="dvSFCHOP">
+                            </div>
+                            <span style="color: #C63828" id="spnSFCError"></span>
+                        </td>
+                    </tr>
+                    <tr id="trhr1">
+                        <td colspan="3">
+                            @*<hr />*@
+                            <div id="divCampaign">
+                                <span style="cursor:pointer;color: #06C;" onclick="fngetCampaignDocs();" href="" id="btnShowCampaign" class="" data-toggle="modal" data-target="#campaignModal">
+                                    View Campaign <span name="spnDoctorLabel">Doctor</span>s
+                                </span>
+                            </div>
+                            <div id="linkforbatch"></div>
+                        </td>
+                    </tr>
+                    <tr id="trDoctor">
+                        <td style="vertical-align: top">
+                            <span name="spnDoctorLabel">Doctor</span>s to Inputs
+                        </td>
+                        <td style="vertical-align: top">
+                            <input type="text" id="txtDoctor" value="+Add doctors" style="width: 400px !important; height: 40px !important; color: #999 !important"
+                                   class="doctor-input-token" />
+                        </td>
+                        <td style="vertical-align: top">
+                            <img id="imgDoctorAdd" src="../Areas/HiDoctor_Activity/Content/images/Web/hd/add_user.png" style="cursor: pointer"
+                                 rel="#dvDoctors" onclick="fnDoctorOverLay()" title="Click to add doctors" />
+                            <div id="imageTP" style="display:none"></div>
+
+
+                        </td>
+                    </tr>
+                    @*<tr id="trhr2">
+                        <td colspan="3">
+                            <hr />
+                        </td>
+                    </tr>*@
+                    <tr>
+                        <td>
+                            Remarks
+                        </td>
+                        <td>
+                            <input id="txtRemarks" value="Remarks" style="width: 400px !important; height: 40px !important; font-style: italic" /><br />
+                            <span style="color: #C63828" id="spnRemarksError"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="button" class="btn small primary" id="btnSaveTP" value="Submit" onclick="fnSaveTP('2')" />
+                            <input type="button" class="btn small primary" id="btnSaveasDraft" value="Save as draft" onclick="fnSaveTP('3')" />
+                            <input type="hidden" id="hdnRegionCode" />
+                            <input type="hidden" id="hdnRegionName" />
+                            <input type="hidden" id="hdnUserCode" />
+                            <input type="hidden" id="hdnUserName" />
+                            <input type="hidden" id="hdnTPDate" />
+                            <input type="hidden" id="hdnSessUserCode" />
+                            <br />
+                            <span style="font-style:italic;font-size:12px; font-weight:bold;display:none;"
+                                  id="spnInfo">
+                                Note : SFC Validation is configured by your administrator,
+                                Please save draft and perform global submit from calendar page
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                @*<div id="dvTPExcelExport">
+                        <a id="aTPExcelExport" onclick="fnGetTPExcelLink();">TP Excel Export</a>
+                        <a id="aTPExcelExportLink" style="display: none;">Click here to Download TP Excel</a>
+                    </div>*@
+                <div id="dvGlobalSubmit" style="display:none;text-align:center;">
+                    <input type="button" class="btn small primary" id="btnGlobalSubmit" value="Global Submit" onclick="fnGlobalSubmit()" />
+                    <br /><span id="GlobalSubmitError" style="color:red;"></span>
+                </div>
+                <span id="GlobalSubmitInfo" style="font-weight:bold;font-style:italic;font-size:12px;display:none;">Note : Please complete all Tour Plan's for this month to perform Global Submit.</span>
+            </div>
+            <div style="height: 700px;position:relative;" class="col-sm-3 clearfix inner-divTp" id="divLeft">
+                <div id="dvDatePicker" style="margin-top: 5px; display: inline; width: 100%">
+                </div>
+                <div style="border: 1px solid #efefef;margin-top: 5px">
+                    <div class="dv-ref-header">
+                        SFC Reference
+                        <input id="txtSFCRefSearch" style="float: right; width: 45%" />
+                    </div>
+                    <div class="dv-reference-load" id="dvloadsfcref" style="display: none">
+                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                        Loading SFC Reference
+                    </div>
+                    <div id="dvSFCRef" style="height:195px;overflow-x:auto;overflow-y:hidden">
+                    </div>
+                </div>
+                <div style="border: 1px solid #efefef;margin-top: 5px;">
+                    <div class="dv-ref-header">
+                        Beat/Patch Reference
+                        <input id="txtCPRefSearch" style="float: right; width: 45%" />
+                    </div>
+                    <div class="dv-reference-load" id="dvloadcpref" style="display: none">
+                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                        Loading Beat/Patch Reference
+                    </div>
+                    <div id="dvCPRef" class="dv-ref" style="overflow-x:auto;overflow-y:hidden;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <div class="simple_overlay" id="mies1">
+            <!-- image details -->
+            <div class="details">
+                <div style="font-size: 20px">
+                    Accompanist Selection
+                </div>
+                <hr />
+                <div>
+                    (Enter minimum of 3 characters of user name/region name)
+                </div>
+                <table style="width: 98%">
+                    <tr>
+                        <td>
+                            Enter here
+                            <input id="txtAccSearch" />
+                            <img id="imgAccSearch" src="../Areas/HiDoctor_Activity/Content/images/Web/hd/Gnome-Go-Next-32.png"
+                                 style="vertical-align: middle; margin-left: 0px !important" onclick="fnAccompanistSearch()" />
+                            <span style="color: #C63828" id="spnError"></span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <input type="hidden" id="hdnAccomp" />
+                        <td colspan="2">
+                            <div id="dvAccompaninstPopUp" style="height: 400px; overflow: auto;">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="simple_overlay" id="dvDoctors">
+            <!-- image details -->
+            <div class="details">
+                <div style="font-size: 20px">
+                    <span name="spnDoctorLabel">Doctor</span> Selection
+                </div>
+                <hr />
+                <span style="color: #C63828" id="spnDocOverLayError"></span>
+                <div style="font-size: 14px; color: #3C81EF">
+                    Filter Option<br />
+                    By <span id="spnCPName" style="text-decoration: underline; cursor: pointer" onclick="fnFilterDoctor('CP')"></span>| <span style="text-decoration: underline; cursor: pointer" onclick="fnFilterDoctor('OT')">Others</span>
+                </div>
+                <hr />
+                <div id="dvdoctorSelection" style="height: 300px; overflow: auto;">
+                </div>
+                <br />
+                <input type="button" id="btnAddDoctor" value="Include Doctor" class="btn small primary" onclick="fnAddDoctorTokens()" />
+            </div>
+        </div>
+        <div class="simple_overlay_doc_proc" id="dvDoctorProduct" style="display:none">
+        <!-- image details -->
+        <div style="font-size: 22px; padding: 5px">
+            Sample Planning
+        </div>
+        <div class="details">
+            <span style="color: #C63828" id="spnDocDuplicateError"></span><br />
+            <div>
+                <div id="dvDoc" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; width: 35%">
+                </div>
+                <div id="divProc" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; padding: 5px; display: none; width: 27%">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="display: none" id='imgProc' />
+                    <div id="dvProc">
+                    </div>
+                </div>
+                <div id="dvDocHistory" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; width: 35%; padding: 5px; display: none">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="display: none" id='imgDocHis' />
+                    <div style="font-size: 20px;padding: 5px; background: #efefef" id="historydoc">
+                        <span name="spnDoctorLabel">Doctor</span> Visit History
+                    </div>
+                    <div id="dvDocDetails" class='doc-detail-head-overlay'>
+                    </div>
+                    <div id="dvLastVisit">
+                    </div>
+                    <div id="dvSamples">
+                    </div>
+                    <div id="dvRemarks">
+                    </div>
+                    <div id="dvDocProc">
+                    </div>
+                    <div id="batchdetails" style="padding-left:5px;"></div>
+                </div>
+            </div>
+            <div style="clear: both">
+            </div>
+            <input type='button' value="Save" class="btn primary" onclick="$('#dvDoctorProduct').overlay().close();" />
+        </div>
+    </div>
+    <div class="modal fade" id="accompModal" tabindex="-1" role="dialog" aria-labelledby="accompModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="height: 520px; overflow: scroll; padding-bottom: 20px;">
+                <div class="modal-header">
+                    @*<h5 class="modal-title" id="accompModalLabel">Users Planned TP With You On This day.</h5>*@
+                        <button type="button" style="margin-top: -10px;" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="dvJointAccompContent">
+                            <div class="col-md-12">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" style="padding:5px;">
+                                        Joint User Details
+                                        <span class="panel-title"></span>
+                                        <span class="pull-right clickable" style="position:relative;height:-15px;"><i class="glyphicon glyphicon-minus" style="padding:3px;"></i></span>
+                                    </div>
+                                    <div class="panel-body">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dvBirthdayContent">
+                            <div class="col-md-12">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" style="padding:5px;">
+                                        Birthday / Anniversary Details
+                                        <span class="panel-title"></span>
+                                        <span class="pull-right clickable" style="position:relative;height:-15px;"><i class="glyphicon glyphicon-minus" style="padding:3px;"></i></span>
+                                    </div>
+                                    <div class="panel-body">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dvFollowUpContent">
+                            <div class="col-md-12">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" style="padding:5px;">
+                                        Follow Up Task Details
+                                        <span class="panel-title"></span>
+                                        <span class="pull-right clickable" style="position:relative;height:-15px;"><i class="glyphicon glyphicon-minus" style="padding:3px;"></i></span>
+                                    </div>
+                                    <div class="panel-body">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="campaignModal" tabindex="-1" role="dialog" aria-labelledby="campaignModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="height: 520px; overflow: scroll; padding-bottom: 20px;">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="campaignModalLabel">Campaign <span name="spnDoctorLabel">Doctor</span>s</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="overflow:auto;">
+                        <div id="dvCampaignContent">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" onclick="fnSetCampaignDoctor()" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvSFCPopUp" class="simple_overlay">
+    <a class="sfcoverlayclose" onclick="$('#dvSFCPopUp').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>SFC</span>
+        </div>
+        <br />
+        <div style="height: 325px; overflow: auto; padding-left:10px;" class="col-lg-12">
+            <div id="dvAllSFC" class="col-lg-12 table-responsive">
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+                <button type="button" onclick="fnBindSelectedSFCCode();" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dvAccomppopup" class="simple_overlay" style="width: 50%; min-height: 475px;">
+    <a class="overlayclose" onclick="$('#dvAccomppopup').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>Accompanist Data</span>
+        </div>
+        <div style="font-size: 13px; margin-left: 16px;">
+            Please select one accompanist to fill the TP details
+        </div>
+        <br />
+        <div style="height: 325px;" class="col-lg-12">
+            <div id="dvAccompData" style="margin-right: 0px; width: 95%; margin: 0 auto; width: 94%;" class="col-lg-12 table-responsive">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dvMinVCpopup" class="simple_overlay" style="width: 50%; min-height: 475px;">
+    <a class="overlayclose" onclick="$('#dvMinVCpopup').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>SFC Minimum Visit Count detail</span>
+        </div>
+        <br />
+        <div style="height: 325px;" class="col-lg-12">
+            <div id="dvSFCData" style="margin-right: 0px; width: 95%; margin: 0 auto; width: 94%;" class="col-lg-12 table-responsive">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Flxworkplace" class="simple_overlay" style="width: 40%; min-height: 375px;">
+    <a class="overlayclose" onclick="$('#Flxworkplace').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 30px;">
+            <span>Work Place</span>
+        </div>
+        <br />
+        <div style="height: 325px;padding:7px;">
+            <form>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Work Place</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="flexWP">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="btn btn-primary" value="Add" onclick="fnaddworkpalces()" style="color: white;width: 71%;" />
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+@*<div id="dvBatchInfo" class="simple_overlay" style="width: 55%; min-height: 475px;overflow:scroll;">
+        <a class="overlayclose" onclick="$('#dvBatchInfo').overlay().close();"></a>
+        <div style="padding: 15px;">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Batch Information</span>
+            </div>
+
+            <h4>Current Batch</h4>
+            <div id="tblBatchInfo"></div>
+            <h4>Previous</h4>
+            <div id="tblBatchInfoPre"></div>
+            <center>
+                <div style="margin-top:10px;">
+                    <input type="button" style="text-align:center" id="BatchSelect" value="Submit" onclick="fnFillBatchDoctor('submit');">
+                    <input type="button" style="text-align:center" id="BatchCancle" value="Cancel" onclick="fnFillBatchDoctor('cancel');">
+                </div>
+            </center>
+
+        </div>
+    </div>*@
+
+<!-- The Modal -->
+<div class="modal" id="batchmodel">
+    <div class="modal-dialog" id="batchdetailss">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Batch Information</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<a href="#" style="text-decoration:none;color:black;" data-dismiss="modal">&times; </a>*@
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#uploadTab" aria-controls="uploadTab" class="tab" role="tab" data-toggle="tab">Aging Batch</a>
+
+                        </li>
+                        <li role="presentation">
+                            <a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab" class="clsbrowseTab">As per Tourplanner</a>
+
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="uploadTab">
+                           <br />
+                            <input id="myInput" class="search" type="text" placeholder="Search.." style="float:right;">
+                            <h4>Prevailing Batch</h4>
+                            <div id="tblBatchInfo" style="max-height: 240px;overflow-y: scroll;"></div>
+                            <h3 class="norecords" style="display:none;"></h3>
+                            <br />
+                            <h4>Upcoming Batch</h4>
+                            <div id="tblFutureBatchInfo" style="max-height: 240px;overflow-y: scroll;"></div>
+                            <h3 class="norecords" style="display:none;"></h3>
+                            <br />
+                            <h4>Sculled Batch</h4>
+
+                            <div id="tblBatchInfoPre" style="max-height: 240px;overflow-y: scroll;"></div>
+                            <h3 class="norecords" style="display:none;"></h3>
+                        </div>
+                        <div role="tabpanel" class="tab-pane col-sm-12" id="browseTab" style="min-height:320px">                            
+                            
+                                <span style="color: #C63828" id="spnDocDuplicateError"></span><br />
+                                @*<div>*@
+                                    <div id="dvDocs" class="col-sm-4" style="float: left; border: 1px solid #EFEFEF; min-height: 250px; overflow: auto; width: 34%">
+                                    </div>
+                                    <div id="divProcs" class="col-sm-4" style="float: left; border: 1px solid #EFEFEF; min-height: 250px; overflow: auto; padding: 5px; display: none; width: 36% !important">
+                                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="display: none" id='imgProc' />
+                                        <div id="dvProcs">
+                                        </div>
+                                    </div>
+                                    <div id="dvDocHistorys" class="col-sm-4" style="float: left; border: 1px solid #EFEFEF;height: 275px; overflow: auto; width: 30% !important; padding: 5px; display: none">
+                                        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="display: none" id='imgDocHis' />
+                                        <div style="font-size: 20px;padding: 5px; background: #efefef" id="historydocs">
+                                            <span>Batch Details</span>
+                                        </div>
+                                        <div id="dvDocDetailss" class='doc-detail-head-overlay'>
+                                        </div>
+                                        <div id="dvLastVisits">
+                                        </div>
+                                        <div id="dvSampless">
+                                        </div>
+                                        <div id="dvRemarkss">
+                                        </div>
+                                        <div id="dvDocProcs">
+                                        </div>
+                                        <div id="batchdetail" style="padding-left:5px;"></div>
+                                    </div>
+                               
+                                @*<div style="clear: both">
+                                </div>
+                                </div>*@
+
+
+                            </div>
+                    </div>
+                    
+                </div>
+                </div>
+            <div class="modal-footer">
+                <input type="button" style="text-align:center;" id="BatchCancle" value="Clear" onclick="fnFillBatchDoctor('cancel');">
+                <input type="button" style="text-align:center;" id="BatchSelect" value="Submit" onclick="fnFillBatchDoctor('submit');">
+                <input type='button' value="Save" class="btn primary clssave" id="Savebtn" style="display:none;" onclick="fnBindSelectedDoctors();" />
+            
+            </div>
+        </div>
+    </div>
+</div>
+<div class="simple_overlay_doc_proc" id="dvBatchdocProduct">
+    <!-- image details -->
+    <div style="font-size: 22px; padding: 5px">
+        Batch Sample Planning
+    </div>
+    <span style="color: #C63828" id="spnDocDuplicateError"></span><br />
+    <div class="details">
+        <div>
+            <div id="dvBacth" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; width: 35%">
+            </div>
+            <div id="dvBacthDetails" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; padding: 5px; display: none; width: 27%">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" style="display: none" id='imgProc' />
+                <div id="dvBacthProcDetails">
+                </div>
+            </div>
+            <div id="dvProductDetails" style="float: left; border: 1px solid #EFEFEF; height: 300px; overflow: auto; width: 35%; padding: 5px; display: none">
+
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <input type='button' value="Save" class="btn primary" onclick="$('#dvBatchdocProduct').overlay().close();" />
+    </div>
+</div>
+<div class="modal" id="dvBatchProductInfo">
+    <div class="modal-dialog" id="batchProductdetails">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Product Information</h4>
+                <span class="btn-close" onclick="new function(){$('#dvBatchProductInfo').click();}" style="text-decoration:none;color:black;">&times; </span>
+                @*<button type="button" class="btn-close"  onclick="new function(){$('#dvBatchProductInfo').click();}">&times;</button>*@
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="tblProductBatchInfo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/TourPlanner12.6.11.js?v=@HiDoctor.BuildNumber.BuildNo" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+    var sfcValidation = new Array();
+    var categoryCheckNeededTP="";
+    var currentRegion="";
+    var currRegionName="";
+    var currentUserCode_g="";
+    var selectedUserCode = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#tdworkplace').hide();
+        $("#dvAjaxLoad").hide();
+        try
+        {
+
+            /// Time picker
+            $('#txtMeetingTime').timepicker({
+                showPeriod: true,
+                showLeadingZero: true
+            });
+            $(".tab").click(function () {
+                debugger;
+                $("#BatchCancle").show();
+                $("#BatchSelect").show(); 
+                $("#tblProduct").hide();
+                $("#dvDocHistorys").hide();
+                $(".clssave").hide();
+            });
+
+            
+            $(".clsbrowseTab").click(function () {
+                debugger;
+                $("#BatchCancle").hide();
+                $("#BatchSelect").hide(); 
+                $(".clssave").show();
+            });
+
+
+            $("#txtMeetingTime").addClass("time");
+            $("#txtMeetingTime").keypress(function () { return false; });
+
+            // END Time Picker
+            $(document).ajaxStop($.unblockUI);
+
+            var curDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate));
+            var userCod = @Html.Raw(Json.Encode(ViewBag.UserCode));
+            var userName = @Html.Raw(Json.Encode(ViewBag.UserName));
+            $("#hdnUserCode").val(userCod);
+            currentUserCode_g=userCod;
+            $("#hdnSessUserCode").val(userCod);
+            curdate_g = curDate;
+            var curmonth = new Date(curDate).getMonth();
+            var curyear = new Date(curDate).getFullYear();
+            var aft3year = parseInt(curyear) + 3;
+
+            var options = {
+                selectedYear: curyear,
+                startYear: curyear,
+                finalYear: aft3year
+                // pattern: 'mm-yyyy'
+            };
+
+            $('#txtTPMonth').monthpicker(options);
+            $('.close').click(function()
+            {
+                $("#batchmodel").hide();
+            });
+            fngetBatchInformation();
+            $('#txtTPMonth').monthpicker().bind('monthpicker-click-month', function (e, month) {
+                var month =$('#txtTPMonth').val().split('-')[0];
+                var Year =$('#txtTPMonth').val().split('-')[1];
+                $('#dvDatePicker').datepicker('setDate', new Date(Year, (month-1), "1"));
+                $('#txtTpDate').datepicker('setDate', new Date(Year, (month-1), "1"));
+            });
+            $(".clsbrowsetab").click(function (e) {
+                debugger;
+                fnBindSelectedDoctors();
+            });
+            //bind user tree
+            //fnBindUserTree("usertree");
+            $("#leftNav").show();
+            var leftNav = $("#tree");
+            fnTreePosiitionNew("tree");
+            fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    fnSearchUsersNew();
+                    return false;
+                }
+            });
+            $("#tree").dynatree({
+                checkbox: false,
+                onActivate: function (node) {
+                    fnUserTreeNodeClick(node);
+                }});
+            $('#dvPreviousNode').remove();
+            $($("#dvNodeSearch").children()[0]).removeClass("col-xs-8").addClass("col-xs-10");
+            $($("#dvNodeSearch").children()[0]).css("padding","0px");
+            $("#dvFilteredNode").css("position","relative");
+            $("#dvFilteredNode").css("overflow","scroll");
+            $("#dvFilteredNode").css("height","480px");
+
+            var tbval = $('#txtAccompaninst').val();
+            $('#txtAccompaninst').focus(function () { if ($(this).val() == "+Add accompanist") { $(this).val(''); } });
+            $('#txtAccompaninst').blur(function () { if ($(this).val() != "") { } else { $(this).val(tbval); } });
+            var tbval1 = $('#txtDoctor').val();
+            $('#txtDoctor').focus(function () { if ($(this).val() == "+Add " + DoctorLabel ) { $(this).val(''); } });
+            $('#txtDoctor').blur(function () { if ($(this).val() != "") { } else { $(this).val(tbval1); } });
+            //
+            var tbval3 = $('#txtWorkPlace').val();
+            $('#txtWorkPlace').focus(function () { if ($(this).val() == "+Add Work Place" ) { $(this).val(''); } });
+            $('#txtWorkPlace').blur(function () { if ($(this).val() != "") { } else { $(this).val(tbval3); } });
+
+            var tbval2 = $('#txtRemarks').val();
+            $('#txtRemarks').focus(function () { if ($(this).val() == "Remarks") { $(this).val(''); } });
+            $('#txtRemarks').blur(function () { if ($(this).val() != "") { } else { $(this).val(tbval2); } });
+
+
+
+            //For tp date pick
+            $("#txtTpDate").datepicker({ firstDay: 1, dateFormat: 'dd/mm/yy', onSelect: function (dateText, inst) {
+                //check if tree node is selected
+                if($("#hdnUserCode").val() == ""){
+                    fnMsgAlert('error','Error','Please select the user to enter tour plan');
+                    return;
+                }
+
+                fnClearAll();
+
+
+                var date1 = fnConvertDateFormat(dateText, 'dd/mm/yyyy');
+                if (fnGetDateDifference(new Date(HiDoctorStartDate_g), new Date(date1)) < 0) {
+                    alert("Dear User you can't allowed enter TP before joining date.");
+                    $('#btnSaveMyPlan').css('display','none');
+                    return false;
+                }
+                else
+                {
+                    $('#btnSaveMyPlan').css('display','');
+                }
+                var theDate = new Date(Date.parse($(this).datepicker('getDate')));
+
+                //to validate the selected date
+                $.ajax({
+                    type: 'POST',
+                    async: false,
+                    url: 'TourPlanner/GetTPDaysByMonth',
+                    data: "UserCode=" + $("#hdnUserCode").val() + "&Month=" + $.datepicker.formatDate('mm', theDate) + "&Year=" + $.datepicker.formatDate('yy', theDate) + "",
+                    success: function (response1) {
+                        response1 = eval('(' + response1 + ')');
+                        if (response1 != "" && response1 !== undefined) {
+                            weekend = response1.Tables[0];
+                        }
+                        else {
+                            weekend = "";
+                        }
+
+                        if(fnfetchTPDays($.datepicker.formatDate('yy', theDate), $.datepicker.formatDate('mm', theDate),$.datepicker.formatDate('dd', theDate),response1))
+                        {
+                            $("#hdnTPDate").val($.datepicker.formatDate('yy-mm-dd', theDate));
+                            fnGetSFCAutoFillData();
+                        }
+
+                        else{
+                            $("#txtTpDate").val("");
+                        }
+                    },
+                    error: function (e) {
+                    }});
+
+            },
+                beforeShowDay: highlightDays//,
+                //onChangeMonthYear: fetchTPDaysTpCalendar
+            });
+
+
+
+
+            $("#dvDatePicker").datepicker({ firstDay: 1, onSelect: function (dateText, inst) {
+                //check if tree node is selected
+                //debugger;
+                if($("#hdnUserCode").val() == ""){
+                    fnMsgAlert('error','Error','Please select the user to enter tour plan');
+                    return;
+                }
+                // side calendar
+
+                var date1 = fnConvertDateFormat(dateText, 'mm/dd/yyyy');
+                if (fnGetDateDifference(new Date(HiDoctorStartDate_g), new Date(date1)) < 0) {
+                    alert("Dear User you can't allowed enter TP before joining date.");
+                    $('#btnSaveMyPlan').css('display','none');
+                    return false;
+                }
+                else
+                {
+                    $('#btnSaveMyPlan').css('display','');
+                }
+
+                $("#spnDay").removeClass('spn-deep-Black');
+                $("#spnWeek").removeClass('spn-deep-Black');
+                $("#spnMonth").removeClass('spn-deep-Black');
+                $("#spndashBoard").removeClass('spn-deep-Black');
+                $("#spnDay").addClass('spn-deep-Black');
+
+                $("#dvinprogtext").html('fetching tour planner information');
+                $("#dvInProgress").css('display', '');
+                $("#divHeader").show();
+                var theDate = new Date(Date.parse($(this).datepicker('getDate')));
+                var dateFormatted = $.datepicker.formatDate('D, MM d, yy', theDate);
+                $("#dvTPDate").html(dateFormatted);
+                $("#txtTpDate").val($.datepicker.formatDate('dd/mm/yy', theDate));//to bind the selected date to the control
+                //tp date
+                $("#hdnTPDate").val($.datepicker.formatDate('yy-mm-dd', theDate));
+                $("#dvBigDate").html($.datepicker.formatDate('d', theDate));
+                $("#dvday").html($.datepicker.formatDate('D, MM, yy', theDate));
+
+                //clear all
+                fnClearAll();
+                //To Get the prefill data for the day
+
+                $("#tblTP").hide();
+                $("#dvCalendar").hide();
+                $("#dvDashBoard").hide();
+                $("#GlobalSubmitError").html("");
+                $("#dvGlobalSubmit").hide();
+                $("#GlobalSubmitInfo").hide();
+                if(fnValidateDate($.datepicker.formatDate('yy', theDate), $.datepicker.formatDate('mm', theDate),$.datepicker.formatDate('dd', theDate)))
+                {
+                    fnPrefillTP($("#hdnTPDate").val());
+                    $("#tblTP").show();
+
+                }
+                else{
+                    $("#dvCalendar").show();
+                    $('#dvCalendar').fullCalendar('gotoDate', inst.currentYear, inst.currentMonth);
+                    $("#dvInProgress").css('display', 'none');
+                    if(privVisitCount == "YES")
+                    {
+                        //if all the Tour plan's are completed for the month. show Global Submit button, Else show message to complete plan.
+                        IsMonthlyTPCompleted = fnCheckTPComplete();
+                        if (IsMonthlyTPCompleted == true) {
+                            $("#dvGlobalSubmit").show();
+                            $("#GlobalSubmitInfo").hide();
+                            $("#spnInfo").hide();
+                        }
+                        else {
+                            $("#GlobalSubmitInfo").show();
+                            $("#dvGlobalSubmit").hide();
+                            $("#spnInfo").show();
+                        }
+                    }
+                    else{
+                        $("#dvGlobalSubmit").hide();
+                        $("#GlobalSubmitInfo").hide();
+                        $("#spnInfo").hide();
+                    }
+                    $("#GlobalSubmitError").html("");
+                }
+                if(privVisitCount == "YES")
+                {
+                    $("#btnSaveTP").hide();
+                }
+                else{
+                    $("#btnSaveTP").show();
+                }
+                var batchPrivellage = fnGetPrivilegeVal("TP_BATCH_AVAILABILITY", "NO");
+
+                if (batchPrivellage == 'YES') {
+                    //$("#dvBatchInfo").overlay().load();
+                    $('#linkforbatch').html('<span onclick="fngetBatchOverlay();">Click Here To View Batch Details</span>');
+                 //   $('#imageTP').html('<img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/eggs.jpg" style="cursor: pointer;width: 22px;"onclick="fnDoctorBatchOverLay()" title="Click To Enter Batch" />');
+                    $('#tblBatchOverlay').html('');
+                    $("#dvDoctorProduct").hide();
+                    $("#imageTP").hide();
+                    fngetBatchInformation();
+                    
+                }
+                else {
+                 //   $("#dvDoctorProduct").show();
+                    $('#linkforbatch').html('');
+                    $("#imageTP").show();
+                    $('#imageTP').html('<img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/capsule.png" style="cursor: pointer"onclick="fnDoctorProductOverLay()" title="Click To Enter Product" />');
+                }
+            },
+
+                beforeShowDay: highlightDays,
+                onChangeMonthYear: fetchTPDays
+
+            });
+
+            //Function to bind Category
+            fnBindCategory()
+
+            //to enable overlay to the div
+            $("#mies1").overlay({
+                onLoad: function () {
+                    $("#dvAccompaninstPopUp").html('');
+                    $("#txtAccSearch").val('');
+                    $("#spnError").html('');
+                    $("#txtAccSearch").focus();
+                }
+            });
+            $("#dvDoctors").overlay({
+                onBeforeLoad: function () {
+                    $("#spnCPName").html($("#txtCPName").val());
+                    fnBindDoctors();
+                },
+                onLoad: function () {
+                }
+            });
+            $("#dvDoctorProduct").overlay({
+                onBeforeLoad: function () {
+                    $("#dvProc").css('display', 'none');
+                    $("#dvDocHistory").css('display', 'none');
+                    $("#dvDocHistorys").css('display', 'none');
+                    fnBindSelectedDoctors();
+                },
+                onLoad: function () {
+                }
+            });
+            $('#Flxworkplace').overlay().load();
+            $("#Savebtn").click(function () {
+                debugger;
+                $("#dvProc").css('display', 'none');
+                $("#dvDocHistory").css('display', 'none');
+                $("#dvDocHistorys").css('display', 'none');
+                $('#divProcs').css('display', 'none');
+                $("#batchmodel").hide();
+                fnBindSelectedDoctors();
+})
+
+            $("[name='spnDoctorLabel']").html(DoctorLabel);
+
+            //enter key press event
+            $(document).keypress(function (e) {
+                if (e.keyCode == 13) {
+                    $("#imgAccSearch").click();
+                }
+            });
+
+            //Enable Full calendar
+            fnFullCalendar();
+
+            //bind all calendars to server date
+
+            var nextMonthYear = new Date(new Date(curdate_g).setMonth(new Date(curdate_g).getMonth() + 1));
+            var month = new Date(curdate_g).getMonth();
+            var year = new Date(curdate_g).getFullYear();
+
+
+            $('#txtTPMonth').val((month+1)+"-"+year);
+            $('#dvDatePicker').datepicker('setDate', new Date(year, month, "1"));
+            $('#dvCalendar').fullCalendar( 'gotoDate', year , month);
+        }
+        catch(err)
+        {
+            alert(err.message);
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    $("#dvSFCPopUp").overlay().load();
+    $('#dvAccomppopup').overlay().load();
+    //$('#dvBatchInfo').overlay().load();
+
+    function fnUserTreePostInit(){
+        debugger;
+        $("#dvUserTree").dynatree("getTree").activateKey($("#hdnSessUserCode").val());
+        //to hide entire tree
+        var treeobj = $("#dvUserTree").dynatree("getTree")
+        var childCount = treeobj.tnRoot.countChildren();
+        if(childCount == 1){
+            //$("#divleft").hide();
+            //$("#divCenter").css('width', '70%');
+            // set privileges
+            var categoryCheck = "", sfcValid = "";
+            var categoryArr = new Array();
+
+            categoryCheck = fnGetPrivilegeValue("SFC_CATEGORY_DONT_CHECK", "");
+            sfcValid = fnGetPrivilegeValue("SFC_VALIDATION", "");
+            categoryArr = categoryCheck.split(',');
+            sfcValidation = sfcValid.split(',');
+
+            if ($.inArray("TP", categoryArr) > -1) { // don check the sfc data with category, if it is mapped with DCR.
+                categoryCheckNeededTP = "NO";
+            }
+            else {
+                categoryCheckNeededTP = "YES";
+            }
+            $("#dvUserTree").dynatree("getTree").activateKey($("#hdnSessUserCode").val());
+        }
+    }
+    function fnUserTreeNodeClick(node) {
+        //debugger;
+        $("#dvJointAccompContent").hide();
+        $("#dvtopAlert").hide();
+        $("#UnapprovalRemarks").hide();
+        $("#GlobalSubmitError").html("");
+
+        $("#spnDay").removeClass('spn-deep-Black');
+        $("#spnWeek").removeClass('spn-deep-Black');
+        $("#spnMonth").removeClass('spn-deep-Black');
+        $("#spndashBoard").removeClass('spn-deep-Black');
+        $("#spnMonth").addClass('spn-deep-Black');
+        $("#hdnUserCode").val(node.data.key);
+        $("#hdnUserName").val(node.data.title);
+        $("#spnName").html(node.data.title);
+
+        tokendoctor_g = "";
+        IsMonthlyTPCompleted = fnCheckTPComplete();
+        $("#spnMonth").addClass('spn-deep-Black');
+        $("#txtDoctor").prev().detach();
+        $("#txtWorkPlace").prev().detach();
+        $(".accompanist-input-token").prev().detach();
+        $("#txtMeetingTime").val('')
+        $("#txtMeetingPoint").val('')
+        //function to get all the user type privilege
+        fnGetAllPrivileges(node.data.key);
+        selectedUserCode = node.data.key;
+        privVisitCount = fnGetPrivilegeVal(SFC_COUNTVALID_IN_TP,"NO")
+        DoctorLabel = fnGetPrivilegeVal(DOCTOR_CAPTION_DISPLAY_NAME,"Doctor");
+        DoctorLabel = DoctorLabel.substring(0,1).toUpperCase() + DoctorLabel.substring(1,DoctorLabel.length).toLowerCase();
+        $("#btnAddDoctor").val("Include " + DoctorLabel);
+        $("[name='spnDoctorLabel']").html(DoctorLabel);
+        $("#dvGlobalSubmit").hide();
+        $("#GlobalSubmitInfo").hide();
+        if(privVisitCount == "YES")
+        {
+            $("#btnSaveTP").hide();
+            $("#spnInfo").show();
+            //if all the Tour plan's are completed for the month. show Global Submit button, Else show message to complete plan.
+            if (IsMonthlyTPCompleted == true) {
+                $("#dvGlobalSubmit").show();
+                $("#GlobalSubmitInfo").hide();
+            }
+            else {
+                $("#GlobalSubmitInfo").show();
+                $("#dvGlobalSubmit").hide();
+            }
+        }
+        else{
+            $("#btnSaveTP").show();
+            $("#dvGlobalSubmit").hide();
+            $("#GlobalSubmitInfo").hide();
+            $("#spnInfo").hide();
+        }
+        $("#GlobalSubmitError").html("");
+
+
+        var year = $.datepicker.formatDate('yy', $("#dvDatePicker").datepicker('getDate'));
+        var month = $.datepicker.formatDate('m', $("#dvDatePicker").datepicker('getDate'));
+
+        // set privileges
+        var categoryCheck = "", sfcValid = "";
+        var categoryArr = new Array();
+
+        categoryCheck = fnGetPrivilegeVal("SFC_CATEGORY_DONT_CHECK", "");
+        sfcValid = fnGetPrivilegeVal("SFC_VALIDATION", "");
+        categoryArr = categoryCheck.split(',');
+        sfcValidation = sfcValid.split(',');
+
+        if ($.inArray("TP", categoryArr) > -1) { // don check the sfc data with category, if it is mapped with DCR.
+            categoryCheckNeededTP = "NO";
+        }
+        else {
+            categoryCheckNeededTP = "YES";
+        }
+
+        fetchTPDays(year, month);
+        $("#dvDatePicker").datepicker("refresh");
+        $("#txtTpDate").datepicker("refresh");
+
+        $('#dvCalendar').fullCalendar('changeView', 'month')
+        $('#dvCalendar').fullCalendar('refetchEvents');
+        $("#dvDashBoard").css('display', 'none');
+
+        //unselect the selected date while change the user name
+        //$('#dvDatePicker').datepicker('setDate', null);
+
+        $("#dvTPDate").html('');
+        $("#dvBigDate").html('');
+        $("#dvday").html('');
+        //$("#imgDoctorAdd")[0].title("click to add "+ DoctorLabel);
+        $('#imgDoctorAdd').attr('title',"click to add "+ DoctorLabel);
+
+    }
+    function fnOpenOverlay() {
+        $("#mies1").overlay().load();
+    }
+    function fnDoctorOverLay() {
+        $("#dvDoctors").overlay().load();
+
+    }
+    function fnDoctorProductOverLay() {
+        $("#dvDoctorProduct").overlay().load();
+        $("[name='spnDoctorLabel']").html(DoctorLabel);
+
+
+    }
+    function fnTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'tree');
+    }
+    function openNav() {
+        document.getElementById("divleft").style.width = "300px";
+        $("#spanExpand").css("display","none");
+        $("#spanCollapse").css("display","block");
+    }
+
+    function closeNav() {
+        document.getElementById("divleft").style.width = "189px";
+        $("#spanExpand").css("display","block");
+        $("#spanCollapse").css("display","none");
+    }
+
+</script>

@@ -1,0 +1,10 @@
+﻿body {
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+
+}
+.logo
+{
+    background:url(../Content/images/Mobile/hi-doctor-logo.png) no-repeat left top;
+    width:48px;
+    height:34px;
+}

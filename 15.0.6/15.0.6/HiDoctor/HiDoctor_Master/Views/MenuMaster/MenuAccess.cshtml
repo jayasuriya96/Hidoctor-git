@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "MenuAccess";
+    Layout = null;
+}
+<style>
+    #ulMenu {
+        background: #EAF4FD !important;
+        border: none !important;
+        color: #1D5987 !important;
+    }
+
+    li ul, li ol {
+        margin-top: 1em;
+    }
+
+    ul, ol {
+        margin-left: 20px;
+        margin-bottom: 2.5em;
+    }
+
+    li {
+        margin-bottom: .5em;
+    }
+
+    #dvMenus {
+        background: #EAF4FD;
+        border: 1px solid #79B7E7;
+        color: #1D5987;
+        width: 100% !important;
+    }
+
+    #dvMenuMain div {
+        float: left;
+    }
+
+    .dvTitleHeader {
+        height: 50px;
+        border-bottom: 1px solid gray;
+        text-align: left;
+        font-weight: bold;
+        font-size: 18px;
+        padding-top: 2%;
+        padding-left: 2%;
+        background-color: #ddd;
+    }
+
+    #dvMainCopy {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        float: right !important;
+    }
+
+    #dvCopyPopUp {
+        min-height: 200px;
+        width: 500px;
+    }
+</style>
+<script src="~/Scripts/jquery.checkboxtree.min.js"></script>
+<link href="~/Content/jquery.checkboxtree.min.css" rel="stylesheet" />
+<div style="width: 100%;" id="dvMenuMain">
+    <div style="width: 100%;">
+        <div style="width: 15%; font-size: 13px;">Select User Type</div>
+        <div style="width: 30%;" id="dvUserTypes">
+            <select id="cboUserTypeCode" style="width: 100%;" onchange="fnGetUserTypeMenuAccess();"></select>
+        </div>
+    </div>
+    <div style="width: 100%; padding-top: 1%;" class="btnSave">
+        <div style="width: 15%;">&nbsp;</div>
+        <div style="width: 80%;">
+            <input type="button" class="btn btn small primary" value="Submit" onclick="fnSubmitMapping();" />
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 1%;">
+        <div style="width: 15%; font-size: 13px;">Menus</div>
+        <div style="width: 30%">
+            <div id="dvMainCopy"><a onclick="fnOpenCopy();">Copy Menu Access</a></div>
+            <br />
+            <div id="dvMenus">
+            </div>
+        </div>
+
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 1%;" class="btnSave">
+        <div style="width: 15%;">&nbsp;</div>
+        <div style="width: 80%;">
+            <input type="button" class="btn btn small primary" value="Submit" onclick="fnSubmitMapping();" />
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvCopyPopUp">
+    <a class="overlayclose" onclick="$('#dvCopyPopUp').overlay().close();"></a>
+    <div style="width: 98%" class="dvTitleHeader">
+        Copy Menu Access 
+    </div>
+    <div style="width: 98%; padding: 2%;">
+        <div style="width: 100%">
+            <div style="width: 30%; float: left;">Source User Type</div>
+            <div style="width: 70%; float: left;">
+                <select id="cboSourceUserType" style="width: 225px;"></select>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="width: 100%">
+            <div style="width: 30%; float: left;">Destination User Type</div>
+            <div style="width: 70%; float: left;" id="dvUType">
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div style="width: 100%">
+            <input type="button" class="btn btn-primary btn-xs" onclick="fnCopyMenuAccess();" value="Copy" />
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MenuMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $('.btnSave').hide();
+        fnFillUserType();
+        fnGetMenuAccess();
+        GetActiveUserTypes();
+        fnGetMenuMappedUserTypes();
+        $("#dvCopyPopUp").overlay().load();
+        $("#dvAjaxLoad").hide();
+    });
+
+
+</script>
+

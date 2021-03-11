@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "GroupCreation";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #btnSubmit {
+        color: white;
+        background-color: #428bca;
+    }
+    th {
+        background-color: blue;
+        color: white;
+        font-style:Bold;
+    }
+     .modal-dialog {
+        width: 700px;
+        padding: 0px 0px !important;
+    }
+    .ColorTxt {
+    color: #fff;
+    font-weight: bold;
+    background-color: blue;
+    }
+    .InactiveUser {
+     background-color: #d5f4e6;
+    }
+</style>
+
+<div id="tabGroup" class="container">
+    <ul class="nav nav-tabs">
+        <li class="active" id="liNew">
+            <a href="#New1" id="NewClk" data-toggle="tab">New Group</a>
+        </li>
+        <li id="liEdit">
+            <a href="#Edit2" id="EditClk" data-toggle="tab">Manage Group</a>
+        </li>
+    </ul>
+
+    <div class="tab-content ">
+        <div class="tab-pane active" id="New1">
+            <div id="dvMainGroup" class="col-lg-12 form-group">
+                <div id="dvUserTree" class="col-lg-5" style="min-height: 300px; overflow: auto;">
+                    <div style="clear: both"></div>
+                    <div id="dvusertree" style="height: 630px;">
+                        <div class="dv-controls-load">
+                            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                            Loading tree
+                        </div>
+                    </div>
+                    <input type="hidden" value="" id="hdnUserCode" />
+                    <div style="clear: both"></div>
+                </div>
+
+                <div style="float: Left; margin-top: 12px;">
+                    <table>
+                        <tr>
+                            <td class="tdleftWidth" style="text-align:left;">
+                                <label><b>Group Name</b></label>
+                            </td>
+                            <td style="text-align:left;">
+                                <input type="text" id="txtGroupName" maxlength="50" />
+                                <br><br />
+                                <input type="button" id="btnSubmit"style="margin-left: 12px;" class="btn small primary" value="Submit" onclick="fnSaveGroupName();" />
+                                <input type="button" id="btnUpdate" style="margin-left: 12px;" class="btn small primary" value="Update" onclick="fnUpdateGroupDetails();" />
+                                <span id="lnkEdit" style="padding-left: 10px;color: blue;text-decoration: underline;cursor: pointer;">Back to Edit</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane" id="Edit2">
+            <div id="dvEditGroup">
+                <div class="col-lg-6" style="float: right;">
+                    <div style="width: 13%; float: left;">
+                        <b>Search</b>
+                    </div>
+                    <div style="width: 70%; float: left;">
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                        <input type="hidden" id="GrpID">
+                    </div>
+                </div>
+                <div style="margin-top: 25px">
+            </div>
+                <div id="tblGrpRecords" style="width: 900px;padding-top: 20px;"></div>
+        </div>
+      </div>
+</div>
+
+</div><hr></hr>
+
+ <!-- Modal -->
+    <div class="modal fade" id="myGrpModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Group Name : <span id="spnGroupName"></span></h4>
+                        </br>
+                        <h4>Group Members</h4>
+                    </div>
+                    <div class="modal-body" style="height:400px;overflow-y:scroll;">
+                        <div id="ModalGrpMembers"></div>
+                        <div>
+                            <h4><b>Group History</b></h4>
+                            <div id="ModalGrpMembersHistory"></div>
+
+                            <div id="ModalHistoryGrpMembers" style="display:none"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+<script src="../Areas/HiDoctor_Activity/Scripts/HD/GroupCreation.js"></script>
+<script>
+    var UserCodes = '';
+    var selKeys = "";
+    var entityDetails_g = "";
+    $(document).ready(function () {
+        $.blockUI({ message: '<h3> Just a moment...</h3>' });
+        fnBindUserTreeWithCheckBoxDoubleClick("dvusertree");
+        $("#dvTree").show();
+        $("#dvAjaxLoad").hide();
+        $("#dvGrpTab").tabs();
+        $("#btnUpdate").hide();
+        $("#lnkEdit").hide();
+        fnEditGroupDetails();
+        $.unblockUI();
+    });
+
+
+    function fnUserTreeNodeClick(node) {
+    }
+    selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        debugger;
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreePostInit(node) {
+        if (entityDetails_g != '' && entityDetails_g != undefined) {
+            $("#dvusertree").dynatree("getRoot").visit(function (node) {
+                var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                if (disJson != false && disJson != undefined) {
+                    node.select(true);
+                }
+
+            });
+        }
+    }
+
+    function CheckedUser() {
+        debugger;
+            if (entityDetails_g != '' && entityDetails_g != undefined) {
+                $("#dvusertree").dynatree("getRoot").visit(function (node) {
+                    var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                    if (disJson != false && disJson != undefined) {
+                        node.select(false);
+                        node.select(true);
+                    }
+                    else {
+                        node.select(false);
+                    }
+                });
+            }
+            else {
+                $("#dvusertree").dynatree("getRoot").visit(function (node) {
+                        node.select(false);
+                });
+            }
+        }
+    $("#ModalGrpMembersHistory").click(function () {
+        //$("#spnHisUpdDate").toggle();
+        $("#ModalHistoryGrpMembers").slideToggle();
+    });
+</script>
+
+
+
+
+

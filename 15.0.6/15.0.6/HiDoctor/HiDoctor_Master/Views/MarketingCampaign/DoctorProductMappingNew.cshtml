@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "DoctorProductMappingNew";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style type="text/css">
+    #DocProdLst{
+        max-height:550px;
+        min-height:10px;
+        overflow:auto;
+    }
+    .txtYldCls,.txtPotCls{
+        width:70px;
+        height:28px;
+    }
+    #dvRegionTree {
+        height: 450px;
+    }
+
+    #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+    #spnTree {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .floating-box {
+        float: left;
+        width: 248px;
+        height: 40px;
+        margin: 11px;
+    }
+
+    .modal-dialog {
+        padding: 0px 0px !important;
+    }
+</style>
+<div class="container">
+    <div class="col-lg-12 form-group">
+        <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()">Hide Tree</span></div>
+        <div class="col-lg-12">
+            <div class="col-lg-3 form-group" id="dvLeftPanel">
+                <div id="dvRegionTree">
+
+                </div>
+            </div>
+            <div class="col-lg-9 form-group" id="dvRightPanel">
+                <div class="DocLstDv">
+                    <div class="col-lg-12 clearfix" id="SelRegion">
+                        <div class="col-lg-12 clearfix">
+                            <label class="control-label col-lg-2">Selected Region:</label>
+                            <div class="col-lg-8">
+                                <p class="form-control-static" id="RegionName"></p>
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                        <div class="col-lg-12 clearfix">
+                            <label class="control-label col-lg-2">Mapping Type:</label>
+                            <div class="col-lg-3" id="SelfRadCheck">
+                                <span><input type="radio" class="SelfRadio" onclick="fnGetDoctorProdLst();" value="self" name="optRegRadio">Self Mapping</span>
+                            </div>
+                            <div class="col-lg-3" id="OthersRadCheck">
+                                <span><input type="radio" class="OthersRadio" onclick="fnGetDoctorProdLst();" value="others" name="optRegRadio">Region Mapping</span>
+                            </div>
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                    </div>
+                    <div class="table-responsive clearfix" id="DocProdLst">
+
+                    </div>
+                    <div style="display:none;" id="dvSubmit" class="col-lg-12">
+                        <div class="col-lg-5"></div>
+                        <div class="col-lg-2"><button type='button' onclick="fnInsertDocProd();" class='btn btn-primary'>Submit</button></div>
+                        <div class="col-lg-5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/DoctorProductMappingNew.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var userName = "";
+    var RegionName = "";
+    var userRegionCode="";
+    var regionCode="";
+    $(document).ready(function () {
+        $("#userNameTxt").html(@Html.Raw(Json.Encode(ViewBag.UserName)));
+        $("#RegionName").html(@Html.Raw(Json.Encode(ViewBag.UserRegion)));
+        $("#DesignationTxt").html(@Html.Raw(Json.Encode(ViewBag.Designation)));
+        userRegionCode = @Html.Raw(Json.Encode(ViewBag.userRegionCode));
+        $(".datepickerFrom").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1
+        });
+        $(".datepickerTo").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1
+        });
+        $("#SelRegion").tabs();
+        $("#DocDetail").tabs();
+        fnIsParentRegion();
+        fnBindRegionTree("dvRegionTree");
+        $("#dvRightPanel").hide();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRegionTreeActivate(node) {
+        debugger;
+        $('#main').block({
+            message: '<h3>Processing</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        //$("#spnSelectedRegion").html(node.data.title);
+        var regionTree = $("#dvRegionTree").dynatree("getTree");
+        if (regionTree.getActiveNode() != null) {
+            $("#RegionName").html(regionTree.getActiveNode().data.title);
+            regionCode = regionTree.getActiveNode().data.key;
+            $("#DocProdLst").html('');
+            $(".SelfRadio").attr('checked', true);
+            fnGetDoctorProdLst();
+            $("#dvSubmit").hide();
+        }
+        $("#dvRightPanel").show();
+        $("#dvLeftPanel").hide();
+        $("#dvRightPanel").removeClass('col-lg-9');
+        $("#dvRightPanel").addClass('col-lg-12');
+        $("#SelfRadCheck").removeClass('col-lg-3');
+        $("#OthersRadCheck").removeClass('col-lg-3');//
+        $("#SelfRadCheck").addClass('col-lg-2');
+        $("#OthersRadCheck").addClass('col-lg-2');
+        $("#spnTree").html('Show Tree');
+        $('#main').unblock();
+    }
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-9');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#SelfRadCheck").removeClass('col-lg-3');
+            $("#OthersRadCheck").removeClass('col-lg-3');//
+            $("#SelfRadCheck").addClass('col-lg-2');
+            $("#OthersRadCheck").addClass('col-lg-2');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-9');
+            $("#SelfRadCheck").removeClass('col-lg-2');
+            $("#OthersRadCheck").removeClass('col-lg-2');//
+            $("#SelfRadCheck").addClass('col-lg-3');
+            $("#OthersRadCheck").addClass('col-lg-3');
+            $("#spnTree").html('Hide Tree');
+        }
+    }
+    function fnRegionTreePostInit() {
+    }
+    function fnIsParentRegion() {
+        $.ajax({
+            type:'GET',
+            url:'../MarketingCampaign/IsParentRegion',
+            success:function (result) {
+                if(result==1){
+                    $("#OthersRadCheck").hide();
+                }
+                else{
+                    $("#OthersRadCheck").show();
+                }
+            },
+            error:function (xhr,textStatus) {
+                alert(textStatus);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Migration";
+    Layout = null;
+}
+<div>
+    <div style="width: 98%; border: 1px solid #EFEFEF; background-color: #EFEFEF; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; font-size: 15px; height: 30px; margin-top: 10px; margin-left: 10px; padding-left: 15px; padding-top: 5px;">
+        Organogram Migration
+    </div>
+    @*
+    <div id="dvRegionTree" style="width: 25%; height: 500px; float: left; display: none;">
+    </div>
+    <div id="dvUserTree" style="width: 25%; height: 500px; float: left; display: none;">
+    </div>
+    *@
+    <div style="float: left; width: 50%; padding-left: 5px;">
+        <br />
+        <input type="button" value="Region Migration" id="btnSubmit" onclick="fnMigrate();"
+            class="btn small primary" />
+        <input type="button" value="User Migration" id="btnUserSubmit" onclick="fnUserMigrate();"
+            class="btn small primary" />
+    </div>
+</div>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvAjaxLoad").hide();
+        //fnDrawRegionTree();
+        // fnDrawUserTree();
+    });
+    var data = "";
+    var tree = "";
+
+    function fnTreeNodeClick(node) {
+    }
+
+    function fnMigrate() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/Migration/UpdateRegion',
+            data: "Domain=" + domainName_g + "",
+            success: function (result) {
+                if (result.split(':')[0].toUpperCase() == "SUCCESS") {
+                    alert('Region Migration Done');
+                    // $("#dvRegionTree").show();
+                    //  fnDrawRegionTree();
+                }
+                else {
+                    alert(result.split(':')[1]);
+                }
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnUserMigrate() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/Migration/UpdateUser',
+            data: "Domain=" + domainName_g + "",
+            success: function (result) {
+                if (result.split(':')[0].toUpperCase() == "SUCCESS") {
+                    alert('User Migration Done');
+                    //$("#dvUserTree").show();
+                    // fnDrawUserTree();
+                }
+                else {
+                    alert(result.split(':')[1]);
+                }
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+</script>

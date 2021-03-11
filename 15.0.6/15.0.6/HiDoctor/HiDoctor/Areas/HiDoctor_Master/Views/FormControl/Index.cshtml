@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "FormControl";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style>
+    .modal-footer {
+        display: none;
+    }
+
+    .bootbox-close-button {
+        display: none;
+    }
+
+    .panel-heading {
+        background-color: #c1ecc0 !important;
+    }
+
+    .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+        border: 2px solid #fff !important;
+    }
+</style>
+<div class="panel panel-default" id="divpanel" style="width: 71%; margin-left: 16%; margin-top: 1%;">
+    <div class="panel-heading">
+        <div id="divheader" style="font-weight: bold;">Form Names</div>
+    </div>
+    <div id="divFormHeader" style="font-weight: bold;padding: 5px;margin-left: 3%;margin-top: 2%;">Please Select Any One Form Name</div>
+    <div id="divFormName" class="panel-body">
+        <div class="col-xs-6 col-sm-6 cusPanel" id="divFormMaster">
+        </div>
+        <div class="col-xs-12 col-sm-8" style="margin-top: 20px">
+            <div class="col-xs-12 col-sm-12">
+                <div class="col-xs-12 col-sm-4 font-weight-bold" style="font-weight: bold;">
+                    Form Name
+                </div>
+                <div class="col-xs-12 col-sm-8 font-weight-bold" style="font-weight: bold;">
+                    Form Prefix Name
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" name="name" value=" " id="txtformName" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" name="name" value=" " id="txtformCusName" maxlength="5" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <input type="button" name="Add" value="Add" class="btn btn-primary" onclick="FormControls.SaveFormName();" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cusPanel panel-body" style="display: none;" id="divFormControl">
+        <div style="margin-left: 96%; padding-bottom: 8px;">
+            <input type="button" data='2_0' name="name" value="Back" id="btnBack" class="btn btn-info" onclick="fnShowPanel(this);" />
+        </div>
+        <div>
+            <table id="tblControl" class="table table-bordered" style="background-color: #c1ecc0;">
+                <thead>
+                    <tr>
+                        <th>Label Name</th>
+                        <th>Control Type</th>
+                        <th>Input Type/Control Values</th>
+                        <th>Validation</th>
+                        <th>Display Order</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+            <div style="margin-left: 90%;">
+                <input type='button' value='Add New' class="btn btn-primary" onclick='FormControls.FormControlCreation();' />
+            </div>
+            <div style="text-align: center;">
+                <input type="button" name="name" class="btn btn-success" value="Save" id="btnSave" onclick="FormControls.SaveFormDetails();" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/FromControls.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        FormControls.initialize();
+        $("#dvAjaxLoad").hide();
+
+
+    });
+    function fnShowPanel(id) {
+        debugger;
+        id = id.attributes.data.nodeValue;
+        if (id.split('_').length > 0) {
+            var form_ID = id.split('_')[1];
+            FormControls.defaults.form_ID_g = form_ID;
+        }
+        id = id.split('_')[0];
+
+        if (id == '1') {
+            $("#divFormName").hide();
+            $("#divFormControl").show();
+            // $(".divFormName").show();
+            //$(".divFormControl").hide();
+            $("#divFormHeader").hide();
+            $("#divheader").text('Form Control Definition');
+            $("#divpanel").css({ "margin-left": "" })
+            $("#divpanel").css({ "width": "" });
+            FormControls.ResetControls();
+            FormControls.BindFormControls();
+        }
+        else {
+            $("#divFormHeader").show();
+            $("#divFormControl").hide();
+            $("#divFormName").show();
+            //$(".divFormControl").show();
+            //$(".divFormName").hide();
+            $("#divheader").text('Form Name List');
+
+            $("#divpanel").css({ "margin-top": "1%" })
+            $("#divpanel").css({ "margin-left": "16%" })
+            $("#divpanel").css({ "width": "71%" })
+            FormControls.ResetControls();
+        }
+    }
+
+</script>

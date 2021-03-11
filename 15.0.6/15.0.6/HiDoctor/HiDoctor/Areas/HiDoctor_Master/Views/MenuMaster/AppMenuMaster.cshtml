@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "AppMenuMaster";
+    Layout = null;
+}
+
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    #dvMenuItems a {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .expandMenu {
+        cursor: pointer !important;
+        font-weight: bold !important;
+    }
+
+    .collapseHeader {
+        cursor: pointer !important;
+        font-weight: bold !important;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvInsertMenu">Add Menu</a></li>
+            <li><a href="#dvEditMenu">Edit Menu</a></li>
+        </ul>
+        <div id="dvInsertMenu" class="form-group">
+            <div class="col-lg-12 form-group">
+                <div class="col-xs-2 form-group">
+                    Menu Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="text" id="txtMenuText" class="form-control" maxlength="100" autocomplete="off" />
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Menu Level
+                </div>
+                <div class="col-xs-4 form-group">
+               
+                    <input type="radio" value="P" name="rdprojopt" checked="checked" />
+                    Parent
+                    <input type="radio" value="C" name="rdprojopt" />
+                    Child
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="Parent" style="clear: both; display:none;">
+                <div class="col-xs-2 form-group">
+                    Parent Menu Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboParentMenu" class="form-control"></select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="Type" style="clear: both; display:none;">
+                <div class="col-xs-2 form-group">
+                    Type
+                </div>
+                <div class="col-xs-4 form-group">
+             
+                    @*<input type="radio" value="N" name="rdType" checked="checked" />
+                    Native*@
+                    <input type="radio" value="NR" name="rdType" checked="checked"  />
+                    Native and Responsive
+                    <input type="radio" value="R" name="rdType"/>
+                    Responsive
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="Category" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Menu Category
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboCategory" class="form-control">
+                        <option value="">-Select Category-</option>
+                        <option value="Responsive">Responsive</option>                        
+                        <option value="Reports">Reports</option>
+                        </select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="Moduletype" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                   Type Of Module
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboModuleType" class="form-control">
+                        <option value="0">-Select Type Of Module-</option>
+                        <option value="1">Hidoctor</option>
+                        <option value="3">CCM/MDM</option>
+                        <option value="4">24/7 Problem Solver</option>
+                    </select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="Params" style="clear: both; display:none;">
+                <div class="col-xs-2 form-group">
+                    Query String Parameters
+                </div>
+                <div class="col-xs-5 form-group">
+                    <div id="subdomn">
+                    </div>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="MenuUrl" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Redirect URL
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="text" id="txtMenuURL" class="form-control" maxlength="500" />
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+           
+            <div class="col-lg-12" style="clear: both;">
+                <div class="col-xs-2 form-group"></div>
+                <div class="col-xs-4 form-group">
+                    <input type="button" class="btn small primary" id="btnSave" value="Save" onclick="fnSubmit();" />
+                    <input type="button" class="btn small primary" value="Reset" onclick="fnClearAll();" />
+                </div>
+                <div class="col-xs-6" style="clear: both;"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div id="dvEditMenu" class="col-lg-12 form-group" style="overflow: auto;">
+            <div id="dvMenuItems" class="table-responsive"></div>
+        </div>
+
+    </div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<input type="hidden" id="hdnMenuId" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/AppMenuMaster.js"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvPanel").tabs();
+        fnFillAppParentMenuNew();
+        fnFillAppMenuDetails();
+        GetAppMenuMasterParams();
+        //txtMMOrder
+        $("#dvAjaxLoad").hide();
+        if ($('input[name="rdprojopt"]:checked').val() == 'C') {
+            $("#MenuUrl").show();
+            $("#Moduletype").show();
+            $("#Category").show();
+        }
+
+        if ($('input[name="rdprojopt"]:checked').val() == 'P') {
+            $("#MenuUrl").hide();
+            $("#Moduletype").hide();
+            $("#Category").hide();
+            $("#cboModuleType").val(0);
+            $("#Params").hide();
+        }
+        
+        $("#Moduletype").change(function () {
+            debugger;
+            if ($("#cboModuleType").val() == "0") {
+                $("#Params").hide();
+            }
+            if ($("#cboModuleType").val() == "1") {
+                $("#Params #subdomn [id=" + 1 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 2 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 3 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 4 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 5 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 6 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 7 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 8 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 9 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 10 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 11 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 12 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 13 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 14 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 15 + "]").prop("checked", false);
+                $("#Params").show();
+            }
+            if ($("#cboModuleType").val() == "3") {
+                $("#Params #subdomn [id=" + 1 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 2 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 3 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 4 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 5 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 6 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 7 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 8 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 9 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 10 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 11 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 12 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 13 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 14 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 15 + "]").prop("checked", false);
+                $("#Params").show();
+            }
+            if ($("#cboModuleType").val() == "4") {
+                $("#Params #subdomn [id=" + 1 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 2 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 3 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 4 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 5 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 6 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 7 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 8 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 9 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 10 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 11 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 12 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 13 + "]").prop("checked", true);
+                $("#Params #subdomn [id=" + 14 + "]").prop("checked", false);
+                $("#Params #subdomn [id=" + 15 + "]").prop("checked", false);
+                $("#Params").show();
+            }
+        });
+    });
+    function GetAppMenuMasterParams() {
+        $("#subdomn").val('');
+        $.ajax({
+            async: false,
+            type: 'GET',
+            data: null,
+            async: false,
+            url: '../../HiDoctor_Master/MenuMaster/GetAppParams',
+            success: function (response) {
+                var content = "";
+                if (response != null && response.length > 0) {
+                    var str = "";
+                    for (var i = 0; i < response.length; i++) {
+                        str += '<p class="col-xs-4" style="padding-left: 3px;padding-right: 3px;">' + '<input type="checkbox" class="check" style="margin-right: 5px;" value="' + response[i].Query_String_Params + '" name="' + response[i].Query_String_Params + '" id="' + response[i].ID + '">' + response[i].Query_String_Params + '</p>';
+                     }
+                    
+                    $('#subdomn').html(str);
+                }
+                
+            },
+            error: function () {
+
+            }
+        });
+                //$("#Bname option[value=" + CampId + "]").attr("selected", "selected");
+                //$("#Bname").attr("disabled", "disabled");
+            
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

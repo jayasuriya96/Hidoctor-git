@@ -1,0 +1,609 @@
+﻿@{
+    string IsResponsive = Convert.ToString(HttpContext.Current.Session["IsResponsive"]);
+    switch (IsResponsive)
+    {
+        case "Yes":
+            Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+            break;
+    }
+}
+<style>
+   
+
+    
+       .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-dialog {
+        max-width: 850px !important;
+    }
+
+    .modal-content {
+        border: none;
+    }
+
+    label {
+        font-weight: normal !important;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .col-form-label {
+        font-size: small !important;
+    }
+
+    table {
+        font-size: 10px !important;
+    }
+
+    .link {
+        color: #007bff !important;
+        cursor: pointer;
+        text-decoration: underline !important;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #007bff !important;
+        border-top-color: #e0e0e0 !important;
+        color: white !important;
+    }
+    .e-grid .e-gridheader tr:first-child th {
+    vertical-align: middle;
+    border-top: 0 none;
+}
+    .e-grid.e-default tr td:first-child, .e-grid.e-default tr th.e-headercell:first-child:not(.e-firstcell), .e-grid.e-default tr th.e-detailheadercell:first-child, .e-grid.e-default tr th.e-filterbarcell:first-child {
+    border-left-width: 0;
+    vertical-align: middle;
+}
+    .e-grid .e-headercell, .e-grid .e-detailheadercell {
+    padding:0;
+    }
+</style>
+<div class="startcss">
+    <div class="p-2" id="seconddiv" style="">
+
+        <div class="row p-2 mt-3">
+            <div class="container">
+                <div class="tab-content" id="nav-tabContent">
+                    <nav>
+                        <div class="nav nav-tabs mt-2" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><b>Release Lock</b></a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><b>View History</b></a>
+                        </div>
+                    </nav>
+                    <div class="tab-pane show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div id="home" style="margin-top: 18px;">
+                            <form>
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationDefault01"><b>Choose Option</b></label>
+
+                                        <div class="radio">
+                                            <label><input type="radio" id="UserLevel" name="Useroptradio" value="1" style="margin-right: 4px;">Search By User</label>
+                                        </div>
+                                        <div class="radio">
+                                            @*<input type="hidden" name="check[0]" value="0" />*@
+                                            <label><input type="radio" id="Guidlevel" name="Guidoptradio" value="2" style="margin-right: 4px;">Search By GUID</label>
+                                        </div>
+
+                                        @*<span class="text-danger" id="curlerror"></span>*@
+                                    </div>
+                                </div>
+                                <div class="form-row clearfix" id="Userdrop" style="display:none;">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4"><b>Select User :</b></label>
+                                        <input type="hidden" id="CompnyCode" />
+                                        <input type="hidden" id="Subdomain" />
+                                        <div id="users"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row clearfix" id="Guiddrop" style="display:none;">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4"><b>Select GUID :</b></label>
+                                        @*<div id="guid"></div>*@
+                                        <div id='NatList'>
+                                            @*<input type="text" id="txtnat"/>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<a href="#" onclick="fnGetSingleDeviceLoginReleaseHistory();">View History</a>*@
+
+                                <div class="container">
+                                    @*<input type="button" class="btn btn-primary" id="Approvalgo" value="Go" />*@
+                                    <button type="button" class="btn btn-primary" id="btnAccess" onclick="fnGetSingleDeviceLockentries();">Go</button>
+                                    @*<button type="button" class="btn btn-sm btn-outline-info" onclick="fnCancel();">Cancel</button>*@
+
+                                </div>
+                                <div>
+
+                                    <div id="Approval" style="margin-top:1%">
+
+                                    </div>
+                                    <div style="margin-top:2%" id="AButton">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   
+                    <div class="tab-pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div>
+
+                            <div id="Approvalhist" style="margin-top:1%">
+
+                            </div>
+                            @*<div style="margin-top:2%" id="AButton">
+
+                            </div>*@
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Areas/HiDoctor_Activity/Scripts/HD/OrderCreation.js?v=@HiDoctor.BuildNumber.BuildNo"></script>*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />
+@*<link href="http://localhost:52194/Content/Bootstrap/bootstrap.css" rel="stylesheet" />*@
+@*<script src="~/Scripts/HD/CommonDateDetails.js?v=@HiDoctor.BuildNo.Build_No"></script>*@
+@*<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />*@
+<link href="~/Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script>
+
+
+    $('#dvAjaxLoad').hide();
+
+    var CompanyCode='';
+    var isResponsive='';
+    var subDomainName='';
+    var LoginUserCode='';
+    var Company_Code;
+    var NatList=[];
+    var result="";
+    $(document).ready(function () {
+        debugger;
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        isResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+        fnGetUserList();
+        fnGetGUID();
+        fnGetSingleDeviceLoginReleaseHistory();
+        //fnddUserOnChange();
+        $("#UserLevel").click(function () {
+            $("#UserLevel").prop("checked", true);
+            $("#Guidlevel").prop("checked", false);
+            $('#Approvaltable').html('');
+            $('#AButton').html('');
+            fnGetUserList();
+            $("#NatList option:selected").text('');
+            $("#NatList option:selected").val('');
+            $("#Userdrop").show();
+            $("#users").show();
+            $("#Guiddrop").hide();
+           });
+        $("#Guidlevel").click(function () {
+            $("#Guidlevel").prop("checked", true);
+            $("#UserLevel").prop("checked", false);
+            $("#Userdrop").hide();
+            $('#Uname').val('');
+            $("#users option:selected").val('');
+            fnGetGUID();
+            $("#Guiddrop").show();
+            $('#Approvaltable').html('');
+            $('#AButton').html('');
+            
+        });
+
+    });
+    
+    CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    Company_Code=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    function fnGetUserList() {
+        debugger;
+        $("#Uname").val('');
+        $("#CompnyCode").val(CompanyCode);
+        $("#Subdomain").val(subDomainName);
+        var param = "LoginUserCode=" + LoginUserCode;
+       Ajax.requestInvoke("OrderFulfillment", "GetUsers", param, "GET", fnUserSucessCallBack, fnUserErrorCallBack, '', '');
+
+    }
+
+    function fnUserSucessCallBack (response) {
+        debugger;
+       var lstRegions = [];
+        $('#users').html('');
+        $('#users').html('<input id="Uname" style="width:100%;text-align:left;" />');
+        atcObj3 = new ej.dropdowns.DropDownList({
+            fields: { text: 'label', value: 'value' },
+            popupHeight: '150px',
+            allowFiltering: true,
+            placeholder: 'Select User',
+            showClearButton: true,
+                    //index: indexDet,
+                    filtering: function (e) {
+                        var dropdown_query = new ej.data.Query();
+                        dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                        e.updateData(lstRegions, dropdown_query);
+                    },
+        });
+        if (response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+                _objUserData = {};
+                _objUserData.value = response[i].User_Code;
+                _objUserData.label = response[i].User_Name;
+                lstRegions.push(_objUserData);
+            }
+            atcObj3.dataSource = lstRegions;
+        } else {
+            atcObj3.dataSource = [];
+        }
+        atcObj3.appendTo('#Uname');
+
+
+    }
+    function fnUserErrorCallBack() {
+
+    }
+
+    //Search By GUID
+    function fnGetGUID() {
+        debugger;
+        $("#CompnyCode").val(CompanyCode);
+        $("#Subdomain").val(subDomainName);
+        //var param = "CompanyCode=" +  $("#CompnyCode").val() + "&LoginUserCode=" + LoginUserCode;
+        var param = "LoginUserCode=" + LoginUserCode;
+        Ajax.requestInvoke("OrderFulfillment", "GetSingleDeviceEntriesByGuid", param, "GET", fnGuidSucessCallBack, fnGuidErrorCallBack, '', '');
+
+    }
+
+    function fnGuidSucessCallBack (response) {
+        debugger;
+        var lstnat = [];
+        $('#NatList').html('');
+        $('#NatList').html('<input id="txtnat" style="width:100%;text-align:left;" />');
+        atcObj2 = new ej.dropdowns.DropDownList({
+            fields: { text: 'label', value: 'value' },
+            popupHeight: '150px',
+            allowFiltering: true,
+            showClearButton: true,
+                    placeholder: 'Select Guid',
+                    //index: indexDet,
+                    filtering: function (e) {
+                        var dropdown_query = new ej.data.Query();
+                        dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                        e.updateData(lstnat, dropdown_query);
+                    },
+        });
+        if (response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+                _objGuidData = {};
+                _objGuidData.value = response[i].UserName;
+                _objGuidData.label = response[i].Device_GUID;
+                lstnat.push(_objGuidData);
+            }
+            atcObj2.dataSource = lstnat;
+        } else {
+            atcObj2.dataSource = [];
+        }
+        atcObj2.appendTo('#txtnat');
+        }
+
+    function fnGuidErrorCallBack() {
+
+    }
+
+    //new
+    function fnGetSingleDeviceLockentries()
+    {
+        debugger;
+       // $('#Approvalhist').html('');
+        var user=$("#users option:selected").text();
+        var GUID=$("#NatList option:selected").text();
+        if(user=="" || user==undefined){
+            user=$("#NatList option:selected").val();
+        }
+
+        debugger;
+        if($('input[type=radio]:checked').size() == 0)
+        {
+            swal("Please Choose atleast one Option.", "", "info");
+            return;
+        }
+        else if($('form input[type=radio]:checked').val()==1){
+            if ($("#users option:selected").val()==undefined) {
+                swal("Please select User.", "", "info");
+                return;
+            }
+            if(GUID=="" || GUID==undefined){
+                GUID="null";
+            }
+        }
+        else if($('form input[type=radio]:checked').val()==2){
+            if ($("#txtnat").val()=="") {
+                swal("Please select GUID.", "", "info");
+                return;
+            }
+        }
+            var b=user.split("-");
+            var UserName=b[0];
+            var subdomain=$("#Subdomain").val();
+            var param = "UserName=" + UserName + "&DeviceGuid=" + GUID+ "&subDomainName=" + subdomain;
+            Ajax.requestInvoke("OrderFulfillment", "GetSingleDeviceLockEntries", param, "GET", getDataSuccess, getDataFailure, '', '');
+        }
+    function getDataSuccess(response) {
+        debugger;
+       result = response;
+        if(response.length==0)
+        {
+            $("#CompnyCode").val(response.Company_Code);
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            $('#Approvaltable').html('<label>No Record Found</label>');
+            $('#AButton').html('');
+        }
+        else{
+            Details = response;
+           // $('#Summary').html('');
+            grid = new ej.grids.Grid({
+                dataSource: response,
+                toolbar: ['Search'],
+                showColumnChooser: true,
+                allowTextWrap: true,
+                allowResizing: true,
+                enableHover: true,
+                gridLines:"Both",
+                allowSorting: true,
+                allowPaging: true,
+                allowGrouping: true,
+                allowScrolling: true,
+                enableHover: true,
+                scrollSettings: { width: '100%', height: 300, allowVirtualScrolling: true },
+                //selectionSettings: { checkboxOnly: true },
+                pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                height: 200,
+                columns: [
+                      { headerText: 'Remark', width: 150, textAlign: 'center' },
+                     { field: 'Device_Platform', headerText: 'Device Platform', textAlign: 'center',width:120},
+                     { field: 'Device_Os_Version', headerText: 'Device Os Version ', textAlign: 'center',width:120 },
+                         { field: 'App_Version_Name', headerText: 'App Version Name ', textAlign: 'center',width:120 },
+                          { field: 'App_Version_Code', headerText: 'App Version Code ', textAlign: 'center',width:120 },
+                      { field: 'Device_Model', headerText: 'Device Model ', textAlign: 'center' },
+                      { field: 'Device_Name', headerText: 'Device Name', textAlign: 'center' },
+                       //{ field: 'Device_Release_Version', headerText: 'Device Release Version', textAlign: 'center',width:120 },
+                       { field: 'Device_GUID', headerText: 'Device GUID', textAlign: 'center' },
+                       { field: 'GUID_GeneratedDateTime', headerText: 'GUID GeneratedDateTime', textAlign: 'center' },
+                    
+                ],
+             queryCellInfo: fnQueryCellInfo,
+            });
+            $('#Approval').html('');
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            grid.appendTo('#Approvaltable');
+            $('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction()">Release</button>');
+
+        }
+
+    }
+    function getDataFailure(response)
+    {
+
+    }
+    function fnQueryCellInfo(args) {
+        if (args.column.headerText == 'Remark') {
+            args.cell.innerHTML = '<textarea class="form-control" rows="1" maxlength="500" style="width: 137%;margin-left: -20px;padding: 20px;" id="remark_'+args.data.User_Code+'" ></textarea>';
+        }
+
+        if(args.column.headerText == 'Device GUID')
+        {
+
+            var Guid=args.data.Device_GUID;
+          
+        }
+
+    }
+    function fnAction()
+    {
+        debugger;
+        var Message='';
+        //if(Action==2)
+        //{
+        //    debugger;
+            var response=result;
+            var arr=[];
+            var error=true;
+           
+               for (var i=0;i<response.length;i++)
+                {
+                    if($('#remark_'+response[i].User_Code+'').val()=='')
+                    {
+                        swal("Please Enter Remark.", "", "info");
+                        error=false;
+                        return false;
+                    }
+                    var Value=regExforAlphaNumericSpecificRemarks($('#remark_'+response[i].User_Code+'').val());
+                    if(Value==false)
+                    {
+                        swal("Only (a-z A-Z 0-9 (){}[]\/.,-_:;!?) special characters are allowed in the Remark.", "", "info");
+                        error=false;
+                        return false;
+                    }
+                  var obj = {
+                        "UserCode": response[0].UserCode,
+                        "LoginUserCode":LoginUserCode,
+                        "Reason":$('#remark_'+response[i].User_Code+'').val(),
+                        "Device_GUID":response[0].Device_GUID,
+                        "subDomainName":$("#Subdomain").val(),
+                    }
+                    arr.push(obj);
+                    var params = [];
+                    var p = {};
+                    p.value = obj;
+                    params.push(p);
+
+                }
+
+                if(error=true)
+                {
+                    if(arr.length >=1)
+                    {
+                        swal({
+                            text: "Are you Sure? Do you want to Release the Lock  ",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        //Ajax.requestInvoke("OrderFulfillment", "ReleaseSingleDeviceLock", obj, "POST", fnStatusChangeSuccessCallback, fnStatusChangeFailureCallback, null, 'JSON');
+                        Ajax.requestInvoke("OrderFulfillment", "ReleaseSingleDeviceLock", params, "POST", fnStatusChangeSuccessCallback, fnStatusChangeFailureCallback, null, 'JSON');
+                    }
+                });
+                    }
+                    
+                }
+            //}
+        }
+    
+    function fnStatusChangeSuccessCallback(response)
+    {
+        if(response==1)
+        {
+            swal('Success', 'Released sucessfully', 'success');
+            $('#Uname').val('');
+            $("#NatList option:selected").text('');
+            $("#NatList option:selected").val('');
+            fnGetGUID();
+            fnGetSingleDeviceLockentries();
+            fnGetSingleDeviceLoginReleaseHistory();
+             $("#txtnat").val('');
+             fnGetUserList();
+        }
+        else {
+            swal('Error', 'Something Went Wrong', 'error');
+        }
+    }
+    function fnStatusChangeFailureCallback(response)
+    {
+
+    }
+    function  regExforAlphaNumericSpecificRemarks(value) {
+        var specialCharregex = new RegExp(/[*&%$^#<>+=~`""|]/g);
+        if (specialCharregex.test(value) == true) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function fnGetSingleDeviceLoginReleaseHistory()
+    {
+        debugger;
+        //$('#Uname').val('');
+        //$("#NatList option:selected").text('');
+        //$("#NatList option:selected").val('');
+        //fnGetGUID();
+        ////fnGetSingleDeviceLockentries();
+        //$("#txtnat").val('');
+        //fnGetUserList();
+        //$('#Uname').val('');
+        //$("#NatList option:selected").text('');
+        //$("#NatList option:selected").val('');
+        //$("#txtnat").val('');
+        var subdomain=$("#Subdomain").val();
+        var param = "UserCode=" + LoginUserCode;
+        Ajax.requestInvoke("OrderFulfillment", "GetSingleDeviceLoginReleaseHistory", param, "GET", getguidDataSuccess, getguidDataFailure, '', '');
+    }
+    function getguidDataSuccess(response) {
+        debugger;
+        result = response;
+        $('#Approvalhist').html('');
+        if(response.length==0)
+        {
+            $("#CompnyCode").val(response.Company_Code);
+            $('#Approvalhist').html('<div id="Approvalhisttable"></div>');
+            $('#Approvalhisttable').html('<label>No Record Found</label>');
+            //$('#AButton').html('');
+        }
+        else{
+            Details = response;
+            // $('#Summary').html('');
+            grid = new ej.grids.Grid({
+                dataSource: response,
+                toolbar: ['Search'],
+                showColumnChooser: true,
+                allowTextWrap: true,
+                allowResizing: true,
+                enableHover: true,
+                gridLines:"Both",
+                allowSorting: true,
+                allowPaging: true,
+                allowGrouping: true,
+                allowScrolling: true,
+                enableHover: true,
+                scrollSettings: { width: '100%', height: 300, allowVirtualScrolling: true },
+                //selectionSettings: { checkboxOnly: true },
+                pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                height: 300,
+                columns: [
+                       //{ headerText: 'Remark', width: 150, textAlign: 'center' },
+                      { field: 'Device_Platform', headerText: 'Device Platform', textAlign: 'center',width:120},
+                      { field: 'Device_Os_Version', headerText: 'Device Os Version ', textAlign: 'center',width:120 },
+                          { field: 'App_Version_Name', headerText: 'App Version Name ', textAlign: 'center',width:120 },
+                           { field: 'App_Version_Code', headerText: 'App Version Code ', textAlign: 'center',width:120 },
+                       { field: 'Device_Model', headerText: 'Device Model ', textAlign: 'center' },
+                       { field: 'Device_Name', headerText: 'Device Name', textAlign: 'center' },
+                        //{ field: 'Device_Release_Version', headerText: 'Device Release Version', textAlign: 'center',width:120 },
+                        { field: 'Device_GUID', headerText: 'Device GUID', textAlign: 'center' },
+                        { field: 'GUID_GeneratedDateTime', headerText: 'GUID GeneratedDateTime', textAlign: 'center' },
+                        { field: 'Remarks', headerText: 'Remarks', textAlign: 'center' },
+                        { field: 'GUID_DeactivatedBy', headerText: 'GUID DeactivatedBy', textAlign: 'center' },
+                        { field: 'GUID_DeactivatedDateTime', headerText: 'GUID DeactivatedDateTime', textAlign: 'center' },
+                ],
+                //  queryCellInfo: fnQueryCellInfo,
+            });
+            $('#Approvalhist').html('');
+            $('#Approvalhist').html('<div id="Approvalhisttable"></div>');
+            grid.appendTo('#Approvalhisttable');
+            //$('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction()">Close</button>');
+        }
+
+    }
+
+    function getguidDataFailure(response)
+    {
+
+    }
+    //function fnAction(){
+    //    $("#Approval").html("");
+    //    $('#AButton').html('');
+    //    //$('#Uname').val('');
+    //    //$("#NatList option:selected").text('');
+    //    //$("#NatList option:selected").val('');
+    //    //$("#txtnat").val('');
+    //}
+    $("#nav-profile-tab").click(function(){
+        debugger;
+        $('#home').hide();
+        //$('#Uname').val('');
+        //$("#NatList option:selected").text('');
+        //$("#NatList option:selected").val('');
+        //fnGetGUID();
+        fnGetSingleDeviceLoginReleaseHistory();
+        //$("#txtnat").val('');
+        //fnGetUserList();
+       // $('#nav-profile-tab').show();
+    });
+    $("#nav-home-tab").click(function(){
+        $('#home').show();
+      //  $('#nav-profile-tab').hide();
+    });
+</script>

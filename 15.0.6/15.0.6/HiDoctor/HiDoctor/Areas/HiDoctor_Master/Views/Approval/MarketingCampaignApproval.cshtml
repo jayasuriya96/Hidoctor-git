@@ -1,0 +1,353 @@
+﻿@{
+    ViewBag.Title = "MarketingCampaignApproval";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link href="~/Areas/HiDoctor_Master/Content/MarketingCampaign.css" rel="stylesheet" />
+<style>
+    .selectboxWidth {
+        width: 99%;
+    }
+
+    #tblMarketingApproval {
+        border: 1px solid #76787A;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: rgb(150, 150, 246) !important; /* reddish */
+        text-decoration-color: #f00;
+    }
+</style>
+
+@*<div>*@
+    @*<div>
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+                onclick="fnOpenTree()" />
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+                style="cursor: pointer" />
+            <span>Show / Hide Tree</span>
+        </div>*@
+    @*<div
+        <div id="dvTree" class="col-lg-4 table-responsive" class="treebg">
+            <div id="ddlmode" class="col-lg-12">
+                <table id="tblMarketingApproval" class="table table-bordered">
+                    <tr>
+                        <td>
+                            <span style="float: right">Status</span>
+                        </td>
+                        <td>
+                            <select id="ddlStatus" class="selectboxWidth form-control">
+                                <option value="SM">-Select Mode-</option>
+                                <option value="2">Applied</option>
+                                <option value="1">Approved</option>
+                                <option value="0">Unapproved</option>
+                                <option value="2,1,0">All</option>
+                            </select>
+                            <input type="hidden" id="hdnRegionCode" />
+                        </td>
+                    </tr>
+                </table>
+            </div>*@
+    @*<div id="tree" style="height: 530px;" class="col-lg-12">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>*@
+@*</div>*@
+<div id="MCAprrovalMain" class="col-lg-12">
+    <div class="col-lg-12" id="MCfilter">
+        <div class="col-lg-8"></div>
+        <div class="col-lg-4">
+            <div class="col-lg-12">
+                <div class="col-lg-4">
+                    <b>Status Filter:</b>
+                </div>
+                <div class="col-lg-8">
+                    <select id="ddlStatus" class="selectboxWidth form-control" onchange="fnGetDetails(this.value);">
+                        <option value="SM">-Select Mode-</option>
+                        <option value="2">Applied</option>
+                        <option value="1">Approved</option>
+                        <option value="0">Unapproved</option>
+                        <option value="2,1,0">All</option>
+                    </select>
+                    <input type="hidden" id="hdnRegionCode" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+    <div id="dvdata" class="col-lg-12 table-responsive">
+        <div id="lbllable" class="col-lg-12">
+            <lable id="lblmessage" style="font-size: 15px; color: red; text-align: center"></lable>
+        </div>
+        <div id="dvMarketingcampaignApproval" class="col-lg-12">
+        </div>
+        <div class="col-lg-12" style="" id="formhdn">
+            <p><b style="font-size:15px;">No Data Found</b></p>
+        </div>
+        <div id="button" class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                        <button id="btnApprove" style="display: none" type="button" class="btn btn-primary" onclick="fnMarketingcampaignApprove()">Approve</button>
+                    </td>
+                    <td>
+                        <button id="btnUnapprove" style="display: none; margin-left: 3%" type="button" class="btn btn-primary" onclick="fnMarketingcampaignUnapprove()">Unapprove</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Campaign Detail View Modal -->
+<div id="dvOverLay" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="height:575px;margin-top:20px;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;width:60%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Marketing Campaign Details</h4>
+            </div>
+            <div class="modal-body clearfix" id="DetailsBody" style="height:400px;overflow-y:scroll;">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Name</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p><span id="MCName" style="white-space: normal;word-break: break-all;word-wrap: break-word;"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Description</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="MCDescrp"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;white-space: normal;word-break: break-all;word-wrap: break-word;">Budget Of the Campaign</span></p>
+                        </div>
+                        <div class="col-xs-6" style="white-space: normal;word-break: break-all;word-wrap: break-word;"><p><span id="BudgetofCamppop"></span></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Mapped Customer Category</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Category Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCCatCode" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Mapped Customer Speciality</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Speciality Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCSpecCode" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Campaign Driven By</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Driven By Region Type Name(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCRegType" style="text-align:center;"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p><span style="font-weight:bold;">Participating Region(s)</span></p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-responsive maintable">
+                                <thead style="text-align:center;">
+                                    <tr>
+                                        <th style="min-width:100px;">S.No</th>
+                                        <th style="min-width:168px">Participating Region Name(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MCParReg" style="text-align:center;"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="popUpTitle" style="height: 45px;">
+                    <span>Sale & Sample Products/Activity</span>
+                </div>
+                <div id="divMCProdDetail">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnRemoveClass();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="RemarksHstry" class="modal fade " role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-left:150px;">
+        <div class="modal-content" style="width:1055px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <span id="campname"></span>
+            </div>
+            <div class="modal-body" id="rmrkshstry">
+                <textarea rows="4" maxlength="500" id="unapprvrmrks"></textarea>
+            </div>
+            <div class="modal-footer col-xs-12" style="padding: 5px 20px 20px;margin-top: 0px; "id="btnsupld">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6">
+                    <div class="col-xs-3" id="apprvlbtns">
+
+                    </div>
+                    <div class="col-xs-3">
+                        <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<script src="~/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>*@
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#ddlStatus').val("2");
+        $("#dvAjaxLoad").hide();
+        fnMarketingCampaignApprovalFillGrid("2");
+    });
+    function fnRegionTreePostInit() {
+        debugger;
+        //get the all users from tree
+        var regionCodes = "";
+        $("#tree").dynatree("getRoot").visit(function (node) {
+            regionCodes += "'" + node.data.key + "',";
+        });
+        regionCodes = regionCodes.slice(0, -1) + "";
+        //get the applied users
+
+        $.ajax({
+            type: "POST",
+            url: '../HiDoctor_Master/Approval/GetAppliedChildUserforMarketCampaign',
+            data: { 'RegionCodes': regionCodes },
+            success: function (jsData) {
+                var data = eval('(' + jsData + ')');
+                $("#tree").dynatree("getRoot").visit(function (node) {
+                    var regions = jsonPath(data, "$.[?(@@.Region_Code=='" + node.data.key + "')]");
+                    if (regions.length > 0) {
+                        $(node.span).addClass('tree-node-active');
+                    }
+                });
+            }
+        });
+
+    }
+
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-8')
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-8')
+    }
+
+    function fnRegionTreeActivate(node) {
+        debugger;
+        $('#hdnRegionCode').val(node.data.key);
+        if ($('#ddlStatus option:selected').val() == "") {
+            fnMsgAlert('info', 'Marketing Campaign APPROVAL', 'Please Select Status.');
+            return false;
+        }
+        fnMarketingCampaignApprovalFillGrid();
+        $('#lblmessage').html("");
+    }
+
+    function fnRegionTreeNodeClick() {
+    }
+
+    function fnRemoveClass() {
+        debugger;
+        $('#MCDescrp').removeClass('descrpcss');
+        $('#BudgetofCamppop').removeClass('descrpcss');
+    }
+    $('#dvOverlay').overlay().load();
+    $('#dvProdOverLay').overlay().load();
+</script>
+
+
+
+     
+
+
+
+
+
+
+

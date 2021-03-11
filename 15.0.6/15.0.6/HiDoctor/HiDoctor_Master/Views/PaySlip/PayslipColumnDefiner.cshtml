@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "PayslipColumnDefiner";
+    Layout = null;
+}
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #dvPaySlipMain #dvUserTypeTree {
+        height: 450px;
+    }
+
+    #dvPaySlipMain #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+</style>
+<form action="../HiDoctor_Master/PaySlip/ExcellPayslipDefiner" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="col-lg-12 form-group" id="dvPaySlipMain">
+        <div class="col-lg-12">
+            <div class="col-sm-4 form-group" id="dvLeftPanel">
+                <div id="dvUserTypeTree"></div>
+            </div>
+            <div class="col-lg-8  form-group" id="dvRightPanel">
+                <div class="col-lg-12 form-group">
+                    <u><b>Instructions :</b></u><br />
+                    1. Column name length should have minimum 2 characters and not exceed 30 characters.
+                    <br />
+                    2. It should not have any special characters other than alphanumerics.<br />
+                    3. Please upload the Payslip data in a fresh excel sheet.
+
+                </div>
+                <div class="col-lg-12 form-group">
+                    <input type="file" id="file" name="file" accept=".xls" />
+                    <br />
+                    <input type="submit" id="btnUp" value="Upload" class="btn btn-primary" />
+                </div>
+                <div id="dvFrame" class="form-group col-lg-12">
+                    <iframe name="ifrmExcel"></iframe>
+                </div>
+                <div id="dvRedirect" class="form-group col-lg-12" style="display: none">
+                    <br />
+                    <a href="#" onclick="fnRedirectToBP('Payslip_UPLOAD');">>>Go to Batch processing</a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+    @Html.Hidden("userTypeCode")
+</form>
+<script src="../Areas/HiDoctor_Activity/Scripts/HD/PaySlip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        //    $("#dvRightPanel").hide();
+        fnBindUserTypeTreeWithCheckbox("dvUserTypeTree");
+        $("#dvAjaxLoad").hide();
+    });
+    function fnUserTypeTreeNodeClick(node) {
+    }
+
+    function fnUserTypeTreePostInit() {
+    }
+
+    var selKeys = "";
+    function fnUserTypeTreeSelect(select, node) {
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key + ",";
+        });
+    }
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnValidateUploadedFile() {
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        if (selKeys == "") {
+            fnMsgAlert('info', 'Info', 'Please select atleast one user type');
+            return false;
+        }
+        $("#userTypeCode").val(selKeys);
+        var fileName = $('#file').val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xls") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xls file only');
+                return false;
+            }
+        }
+    }
+
+</script>
+

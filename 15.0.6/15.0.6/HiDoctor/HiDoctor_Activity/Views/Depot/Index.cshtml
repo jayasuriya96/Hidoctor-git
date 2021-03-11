@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.title = "Depot Master";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div id="dvdata" class="col-lg-11" style="min-height: 350px; overflow: auto;border:1px solid lightgrey;">
+    <form class="form-horizontal formClass" enctype="multipart/form-data" method="post" role="form" autocomplete="off">
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Depot Name</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtDepotName" class="form-control" maxlength="50" autofocus />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Depot Short Name</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtDepotShortName" class="form-control" maxlength="50" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Address1</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtAddress1" class="form-control" maxlength="255" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Address2</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtAddress2" class="form-control" maxlength="255" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Phone number</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtPhone" class="form-control" maxlength="20" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Mobile number</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtMobile" class="form-control" maxlength="20" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Drug License Number1</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtDrugLicense1" class="form-control" maxlength="40" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Drug License Number2</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtDrugLicense2" class="form-control" maxlength="40" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">GST Number</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtGSTNumber" class="form-control" maxlength="40" />
+            </div>
+        </div>
+        <div class="col-sm-6 form-group formtextboxfocus" style="height: 31px;">
+            <div class="col-sm-4 form-group">Reference Key</div>
+            <div class="col-sm-5 form-group">
+                <input type="text" id="txtRefKey1" class="form-control" maxlength="50" />
+            </div>
+        </div>
+        <div class="col-lg-11 form-group formtextboxfocus" style="height: 31px;">
+            <div style="margin-left:600px;">
+                <input type="button" id="btnSave" class="btn btn-primary" value="Submit" onclick="DepotMaster.fnSave()" />
+                <input type="button" id="btnClear" class="btn btn-danger" value="Clear" onclick="DepotMaster.fnClear()" />
+            </div>
+        </div>
+        <input type="hidden" id="hdndepotcode" />
+    </form>
+    <div class="table-responsive" style="margin-top:270px;">
+        <div class="table-responsive" id="dvDepotTable" style="width: 100%; margin-left: 5px; overflow:auto;"></div>
+    </div>
+    <br />
+    <div style="clear: both"></div>
+</div>
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/DepotMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<style>
+    .formClass {
+        margin-left: 200px;
+        margin-top: 25px;
+    }
+</style>
+
+<script type="text/javascript">
+    debugger;
+    var currentUserCode_g = '';
+    var companycode_g = "";
+    var selKeys = "";
+
+
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        companycode_g = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        DepotMaster.defaults.currentUserCode_g=currentUserCode_g;
+        DepotMaster.defaults.companycode_g=companycode_g;
+
+        try {
+            DepotMaster.fnGetDepotMasterDetails();
+            AjaxGlobalHandler.Initiate();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        $('#dvAjaxLoad').hide();
+
+    });
+</script>

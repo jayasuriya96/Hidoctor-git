@@ -1,0 +1,2674 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style type="text/css">
+    .EmpExcTP {
+        margin-left: 3% !important;
+    }
+
+    .HomemodalEmp {
+        margin-left: 30% !important;
+    }
+
+    .Dashboard {
+        margin-left: 26% !important;
+    }
+
+    .NewDash {
+        margin-left: 2% !important;
+    }
+
+    .Task {
+        margin-left: 2% !important;
+    }
+
+    #dvTabs_Emp span {
+        display: block !important;
+        margin-left: 10px;
+        /*margin-left: 15px!important;*/
+    }
+
+    #modalEmployee {
+        left: 5% !important;
+        top: 10% !important;
+        margin-top: 0px !important;
+        /*margin-left: 0px !important;*/
+    }
+
+        #modalEmployee.modal-dialog {
+            width: 600px !important;
+            padding: 0px !important;
+            height: 500px;
+            /*left: 28% !important;*/
+            top: 10% !important;
+        }
+
+        #modalEmployee .modal-header {
+            border-bottom: 0px !important;
+        }
+
+    #modalNoticeBoard .modal-header {
+        border-bottom: 0px !important;
+    }
+
+    #modalNoticeBoard .modal-dialog {
+        width: 600px !important;
+        padding: 0px !important;
+        max-height: 500px;
+        /*left: 28% !important;*/
+        top: 10% !important;
+    }
+
+    #divEmployee .bx-viewport {
+        min-height: 330px !important;
+        max-height: 375px !important;
+        overflow: auto !important;
+    }
+
+    #divEmployee .bx-wrapper .bx-pager {
+        padding-top: 0px !important;
+    }
+
+    #divEmployee .bxslider li {
+        width: 100% !important;
+    }
+
+    .Mandatory {
+        color: red;
+    }
+
+    .Prof {
+        /*font-size: 16px;*/
+        text-align: center;
+        background-color: #4682B4;
+        font-size: 14.0pt;
+        color: #c5d9f1;
+        padding: 5px;
+        border: 1px solid #000000;
+    }
+
+    .AddProf {
+        text-align: center;
+        background-color: #00B050;
+        font-size: 10.0pt;
+        color: white;
+        padding: 5px;
+        border: 1px solid #000000;
+    }
+
+
+
+
+    /*New Css*/
+
+    .Label_3 {
+        width: 50%;
+        float: left;
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .LabelTxt {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .Div_12 {
+        width: 100%;
+        float: left;
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    #PassNotifyModal {
+        left: 30% !important;
+        top: 28% !important;
+    }
+
+    /*#modalEmployee {
+        left: 0% !important;
+    }*/
+
+    .NoticeBoardModal {
+        left: 5% !important;
+        top: 10% !important;
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .DCRNoticeBoardModal {
+        /*margin-left: 26% !important;*/
+        top: 30% !important;
+    }
+
+
+    .col_12AddProf {
+        float: left;
+        width: 100%;
+    }
+
+    div.col_12 {
+        float: left;
+        margin-left: 4px;
+        width: 100%;
+    }
+
+    div.col_10 {
+        float: left;
+        width: 83.33333333%;
+    }
+
+    div.col_8 {
+        float: left;
+        width: 66.66666667%;
+    }
+
+    div.col_6 {
+        float: left;
+        width: 50%;
+    }
+
+    div.col_4 {
+        float: left;
+        width: 33.33333333%;
+    }
+
+    div.col_2 {
+        float: left;
+        width: 16.66666667%;
+    }
+
+    /*#dvTabs_Emp span {
+        display: block !important;
+        /*margin-left: 15px!important;*/
+    /*}*/
+
+    .dvAjaxLoad {
+        width: 100%;
+        text-align: center;
+        margin-top: 25px;
+        display: block;
+        position: fixed;
+        top: 30%;
+        opacity: 4;
+        display: none;
+    }
+
+    .quickLinks {
+        padding: 0.5rem;
+        /*width: 32px;
+        height: 32px;
+        float: left;*/
+        border-right: 1px solid #f2f2f2;
+        /*margin-left: 5px;
+        margin-top: 3px;*/
+        cursor: pointer;
+    }
+
+    #dvQLText {
+        display: inline-block;
+        font-style: normal;
+        background: gray;
+        color: #FFF;
+        font-weight: bold;
+        width: 15%;
+        float: left;
+        height: 40px !important;
+        white-space: nowrap;
+    }
+    /*#dvQuickLinks:before {
+        content: "Quick Links";
+        display: inline-block;
+        font-style: normal;
+        background: gray;
+        padding: 0.6%;
+        color: #FFF;
+        font-weight: bold;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }*/
+
+    .dvQuickImgs {
+        display: flex;
+        /*min-height: 40px;
+        position: relative;
+        top: 5px;
+        width: 100%;*/
+    }
+
+    .dvTicker {
+        font-family: Arial, sans-serif;
+        /*margin: 50px 0;*/
+        min-height: 40px;
+        float: left;
+        /*cursor: pointer;*/
+        font-weight: bold;
+        width: 85%;
+    }
+
+    .spnTick {
+        cursor: pointer;
+    }
+
+    #dvTickerText {
+        display: inline-block;
+        font-style: normal;
+        background: gray;
+        color: #FFF;
+        font-weight: bold;
+        height: 40px !important;
+        padding-left: 1%;
+    }
+
+    #menu1 {
+        font-family: Segoe UI;
+        font-size: 11px;
+        color: #4e5c6d;
+        /*float: left;*/
+        width: 100%;
+        height: 30px;
+        text-transform: capitalize;
+        border-bottom: 2px solid #aaa;
+        background-color: #f3f3f3;
+        /*margin-left: 5px;*/
+    }
+
+    #divGenieReportMain {
+        border: 5px solid #676A72;
+        background: #fff;
+        padding: 5px;
+        font-size: 13px;
+        display: none;
+        margin-left: 5%;
+        left: 5%;
+        width: 80%;
+        height: 500px;
+        overflow: auto;
+    }
+
+    #dvQuickLinks {
+        width: 85%;
+        float: left;
+    }
+
+    /*#modalSplash {
+        top: 1px !important;
+        left: 0px !important;
+        margin-left: 18% !important;
+        margin-top: 0px !important;
+        height: 1500px !important;
+        overflow: hidden;
+    }*/
+
+
+    /*#modalEmployee {
+        top: 1px !important;
+        left: 0px !important;
+        margin-left: 0px !important;
+        margin-top: 0px !important;
+    }
+
+        #modalEmployee.modal-dialog {
+            width: 600px !important;
+            padding: 0px !important;
+            height: 500px;
+        }*/
+
+
+
+    /*#modalSplash #divSplash {
+            min-height: 200px;
+            max-height: 400px;
+            overflow: auto;
+        }*/
+    bx-pager bx-default-pager {
+        display: none !important;
+    }
+
+    .bx-wrapper .bx-next {
+        right: -38px !important;
+    }
+
+    .bx-wrapper .bx-prev {
+        left: -38px !important;
+    }
+
+    .bx-wrapper {
+        border: 0px !important;
+    }
+
+    .Mandatory {
+        color: red;
+    }
+
+    /*.NoticeBoardModal {
+
+        top: 10% !important;
+    }*/
+
+    #lbltext {
+        position: relative;
+        top: 475px;
+        left: 50%;
+        color: #000;
+        font-size: 34px !important;
+        cursor: pointer;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.6784313725490196);
+    }
+    /*.Prof {*/
+    /*font-size: 16px;
+        /*text-align: center;
+        background-color: #4682B4;
+        font-size: 14.0pt;
+        color: #c5d9f1;
+        padding: 5px;
+        border: 1px solid #000000;
+    }*/
+
+    /*.AddProf {
+        text-align: center;
+        background-color: #00B050;
+        font-size: 10.0pt;
+        color: white;
+        padding: 5px;
+        border: 1px solid #000000;*/
+    /*}*/
+
+    .test {
+        width: 100% !important;
+    }
+
+    .bx-viewport {
+        height: 545px !important;
+    }
+
+    #CCOverlay {
+        top: 30.2px !important;
+    }
+
+    .Bfragree {
+        border: 1px solid #999999;
+        background-color: #cccccc;
+        color: #666666;
+    }
+
+        .Bfragree:hover {
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+        }
+
+    div#hometopimage img {
+        width: 25px;
+        cursor: pointer;
+    }
+</style>
+<link href="~/Content/Splashscreen.css" rel="stylesheet" />
+@*<link href="~/Content/EmployeeProfilePopup/EmployeeProfilePopup.css" rel="stylesheet" />*@
+<script src="~/Scripts/jquery.tablePagination.0.5.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/gs.nav.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" media="screen" />
+<link href="~/Content/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" media="screen" />
+<link href="~/Content/HiDoctorGenie.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/gistfile1.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/HD/gsAll.js"></script>
+<script src="~/Scripts/HD/HiDoctorGenie.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<form id="frmHomeIndexForm" action="/" method="post">
+    <div id="wrapperbody" class="show">
+        <div class="clearfix" id="dvTopHeader">
+            <div style="width: 30%; height: 100px; float: left">
+                <img id="imgIndexClientLogo" onerror="imgError(this)" style="display: inline;" />
+            </div>
+            <div id="hometopimage" style="width: 38%; height: 100px; float: left;text-align:center;">
+                <br />
+                <a id="aFAQ" onclick="fnGetFAQ();" style="display: none;">
+                    <img src="~/Images/FAQ.jpg" alt="FAQ" title="FAQ" /><span>|</span>
+                </a>
+                <a id="lnkUserDash">
+                    <img src="~/Images/home.png" alt="Home" title="Home" /><span>|</span>
+                </a>
+                @* <a onclick="fnLoadBody('DashBoard/Index',this,'DashBoard');">
+                        <img src="~/Images/dashboard.png" alt="HiDoctor" title="Dashboard" style="cursor: pointer;" /><span>|</span>
+                    </a>*@
+                <a onclick="fnLoadBody('HiDoctor_Master/MyProfile/MyProfile',this,'MyProfile');">
+                    <img src="~/Images/Profile.png" alt="HiDoctor" title="My Profile" /><span>|</span>
+                </a>
+                <a style="display: none;" id="aSalesDrive">
+                    <img src="~/Images/salesdrive.png" title="Sales Drive" alt="SalesDrive" onclick="fnLoadSalesDrive()" /><span id="imgSalesDrive" style="display: none">|</span>
+                </a>
+                <a style="display: none;" id="aWA">
+                    <img src="~/Images/circle.png" title="WideAngle" alt="WideAngle" id="imgWideAngle" style="display: none;" onclick="fnGetWideAngleURL()" /><span>|</span>
+                </a>
+                <a style="display: none" id="aKangle" onclick="fnGetKangleURL()">
+                    <img src="~/Images/Kangle_Simple_Logo.png" alt="Kangle" title="Kangle" /><span>|</span>
+                </a>
+                <a style="display: none" id="form_Management" onclick="fnGetFormManagement()">
+                    <img src="~/Images/FormMange.png" style="margin-left: 2px;" title="Form Management"><span></span>
+                    @*<span style="background-image: url(/Images/FormMange.png); width: 18px; height: 18px; position: absolute; margin-top: 4px; margin-left: 2px; cursor: pointer;" title="Form Management">|</span>*@
+                </a>
+                <a style="display: none" id="aEDetailing" onclick="fnGetEDetailingURL();">
+                    <img src="~/Images/E-Detailing.png" alt="EDetailing" title="E-Detailing" /><span>|</span>
+                </a>
+                <a id="aHRMS" style="display: none;" onclick="fnGetHRMSAccess();">
+                    <img src="~/Images/hrms_24.png" alt="HRMS" title="HRMS" /><span>|</span>
+                </a>
+                @*
+                    <a id="aKRA" style="display: none;" onclick="fnGetKRAAccess();">
+                        <img src="~/Images/KRARating.png" alt="KRA" title="KRA" style="width:25px;height:18px;cursor:pointer;" /><span>|</span>
+                    </a>*@
+            </div>
+
+            <div style="float: left; width: 32%; font-size: 12px; color: #265685;">
+                <div style="width: 100%; float: right;">
+                    <div style="width: 100%;" class="clearfix">
+                        <div style="display: flex;justify-content: flex-end;">
+                            <div style="padding: 5px 0px;">
+                                <p style="margin: 0px;"><span style='margin-right:0.5em'>Welcome</span><b><span id="spnUser" style="float: right;">administrator,(admin)</span></b></p>
+                                @*<p style="margin: 0px;"><span>01.10.2019</span>*@
+                                <p style="margin: 0px;text-align: right;"><span id="spnUserdate" style="float: left;">01.10.2019</span><a href="#" onclick="fnLogOut()">Logout</a></p>
+                            </div>
+                            <div style="padding: 5px 15px 0px 15px;">
+                                <img src="/Images/user.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 100%;" class="clearfix">
+                        <div style="padding: 0px 10px;text-align: right;">
+                            <img src="/Content/images/HiDOCTOR_Genie_200x50.png" onclick="fnOpenHiDoctorGenie()" id="dvGenieHelp">
+                            <input type="hidden" id="hdnHomeDocCode">
+                            <input type="hidden" id="hdnEmailId">
+                        </div>
+                    </div>
+                    <div style="width: 100%;text-align: right;" class="clearfix">
+                        <span style="padding: 0px 15px;">SwaaS Help: +91 90254-07475 (or) <a href="mailto:support@swaas.net">support@swaas.net</a></span>
+                    </div>
+                </div>
+                @*<div style="width: 100%; float: right;">
+                    <div style="width: 100%; float: right;">
+                        <div style="width: 83%; float: left;">
+                            <div style="width: 100%;"></div>
+                            <div style="float: right;">
+                                <span>Welcome</span><b><span id="spnUser" style="float: right;"></span></b>
+                                <br />
+                                <a href="#" style="float: right; padding-right: 1px" onclick="fnLogOut()">Logout</a>
+                            </div>
+
+                        </div>
+                        <div style="width: 15%; float: right;">
+                            <img src="~/Images/user.png" />
+                        </div>
+                    </div>
+
+                    <div style="width: 100%;">
+                        <div style="width: 100%; float: left;">
+                            <img src="~/Content/images/HiDOCTOR_Genie_200x50.png" onclick="fnOpenHiDoctorGenie()" id="dvGenieHelp" />
+                            @*<a onclick="fnOpenHiDoctorGenie()" style="cursor: pointer;">HiDoctor Genie</a>*@
+                @*<input type="text" id="txtHomeSearch" onkeypress="fnGeneSearch(event);" class="autoDoctor" style="background: #FFFFFF url(../Content/images/search.png) no-repeat 4px 4px; padding: 4px 4px 4px 22px; border: 1px solid #CCCCCC; width: 200px; height: 18px; float: right; margin-right: 14px; cursor: pointer;" />
+                                    <input type="hidden" id="hdnHomeDocCode" />
+                                <input type="hidden" id="hdnHomeDocCode" />
+                                <input type="hidden" id="hdnEmailId" />
+                            </div>
+                        </div>
+                        <div style="width: 100%;">
+                            <span style="float: right; margin-right: 14px;">SwaaS Help: +91 90254-07475 (or) <a href="mailto:support@swaas.net">support@swaas.net</a></span>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+        <div id="dvHeader">
+            <div class="container1">
+                <div class="col-sm-12 clearfix" id="menu1">
+                </div>
+                <div style="width: 100%; border-bottom: 1px solid #ddd;">
+                    <div style="width: 35%; float: left;">
+                        <div style="width: 100%;">
+                            <div id="dvQLText">
+                                <div style='padding-top: 10%;'>Quick Links</div>
+                            </div>
+                            <div id="dvQuickLinks"></div>
+                        </div>
+                    </div>
+                    <div style="width: 63%; float: left;">
+                        <div style="width: 12%; float: left;" id="dvTickerText">
+                            Latest Notifications
+                        </div>
+                        <div class="dvTicker" id="dvTicker">
+                        </div>
+                        @*   <div id="dvTicker" class="dvTicker">
+                            </div>*@
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div id='divGeniemain' class='simple_overlayGeneie'>
+    </div>
+    <div id='divGenieReportMain'>
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+             onclick="$('#divGenieReport').html('');HideModalPopup('divGenieReportMain');" />
+        <div id="divGenieReport" style="overflow: auto">
+        </div>
+    </div>
+    <div id='divhelpImg' class='simple_overlayGeneie_Help'>
+        <div class='close' onclick='$("#divhelpImg").overlay().close()'></div>
+        <img src="../Content/images/GenieHelp.png" style="float: right; cursor: pointer; margin-right: 0px;" />
+    </div>
+
+    <div style="clear: both;">
+        <div id="page-header" class="" style="display: none; height: 25px;">
+            <div id="divPageHeader" style="margin-left: 1%; padding-top: 5px; color: #265685; font-size: 20px;">
+            </div>
+        </div>
+        <div id="idFullSize" style="width: 100%;">
+            <div class="clearfix" id="main" style="padding:0px 15px; margin-top: 1px; min-height: 800px;">
+            </div>
+        </div>
+        <div id="dvAjaxLoad" class="dvAjaxLoad">
+            <img alt='' src="../../Content/images/process.gif" />
+            <img alt='' src="../../Content/images/loading.gif" />
+        </div>
+        <div id="dvLoading" style="width: 100%; text-align: center; margin-top: 25px; display: none">
+            <img src="@Url.Content(" ~/")Content/images/mba/ajax-loader.gif" alt='' />
+        </div>
+        <div id="dvSubmitLoad" style="border: 2px solid #676A72 !important; padding: 5px; font-size: 13px; display: none; margin-left: 3%; width: auto !important; -webkit-border-radius: 3px !important; background-color: #fff !important; left: 40% !important;">
+            <div id="dvLoadText" style="float: left">
+            </div>
+            <div style="float: right">
+                <img src="../../Images/loader.gif" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal EmpExcTP" id="modalEmployee" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm" style="position:relative;">
+            <div class="modal-content clearfix" style="width: 600px; height: 582px; overflow: hidden; overflow-y:scroll;">
+                <div class="modal-header" style="padding: 0px; min-height: 0px;">
+                    @*<button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('modalEmployee');"><span aria-hidden="true">&times;</span></button>*@
+                    <h4 class="modal-title Prof">My Profile</h4>
+                </div>
+                <div class="modal-body" style="padding: 15px 0px;">
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">User Name :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvEmployeeName'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">Designation :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvusrdesg'></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">HQ :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvhqname'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">Date Of Joining :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvDoj'></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">HQ Name (HQ Type) :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvRegionTypeName'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col_6'>
+                            <div class='col_12'>
+                                <div class='col_6'>
+                                    <label class="LabelTxt">Employee Code :</label>
+                                </div>
+                                <div class="col_6">
+                                    <span id='dvemployeeNumber'></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class='col_12AddProf'>
+                        <h4 class="modal-title AddProf">My Postal address where courier delivery is assured</h4>
+                    </div>
+
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Address Line 1 (House no, Locality) :<label class="Mandatory" id="star" style="display:none">*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <textarea id="dvAddress" class="form-control" style="margin-top: 5px; height: auto !important;resize:none" value="" rows="3" cols="42"></textarea>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Address Line 2  (Street name, Landmark):<label class="Mandatory" id="Add2star" style="display:none">*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <textarea id='dvAddress2' class="form-control" style='margin-top: 5px; height: auto !important;resize:none' value='' rows='3' cols='42'></textarea>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Address Line 3 (District) :<label class="Mandatory" id="Add3star" style="display:none">*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <textarea id='dvAddress3' class="form-control" style='margin-top: 5px; height: auto !important;resize:none' value='' rows='3' cols='42'></textarea>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">State :<label class='Mandatory' id='Statestar' style='display:none'>*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <select id='dvState' style='width: 200px;margin-top: 5px;' class='form-control' onchange='fnGetCitiesDetails(this.value);'></select>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">City :<label class='Mandatory' id='Citystar' style='display:none'>*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <select id='dvCity' style='width: 200px;margin-top: 5px;' class='form-control' onchange='fnGetPincodesDetails(this.value);'></select>
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Pincode :<label class='Mandatory' id='Pinstar' style='display:none'>*</label></label>
+                        </div>
+                        <div class="col_6">
+                            <select id='dvPincode' style='width: 200px;margin-top: 5px;' class='form-control'></select>
+                        </div>
+                    </div>
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label>Blood Group :</label>
+                        </div>
+                        <div class="col_6" id="dvbldgroup">
+                            <input id="blooddgrp" style='margin-top: 5px;width:188px' placeholder="Choose a Blood Group" class='form-control' />
+                        </div>
+                    </div>
+
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label>Employee Photo :</label>
+                        </div>
+                        <div class="col_6">
+                            <input type="file" style='margin-top: 5px;width:188px' name="fileupload" id="fileupload" class="form-control" />
+                            <span id="fileUrl"></span>
+                        </div>
+                    </div>
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Phone :</label>
+                        </div>
+                        <div class="col_6">
+                            <input type='text' style='margin-top: 5px;width:188px' class='form-control' value='' id='dvPhone' />
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Mobile :<label class='Mandatory' id='Mobstar' style='display:none'>*</label></label></br>
+                        </div>
+                        <div class="col_6">
+                            <input type='text' style='margin-top: 5px;width:188px' class='form-control' maxlength="10" id='dvMobile' />
+                        </div>
+                    </div>
+
+                    <div class='col_12'>
+                        <div class='col_6'>
+                            <label class="LabelTxt">Email :<label class='Mandatory' id='Emailstar' style='display:none'>*</label></label></br>
+                        </div>
+                        <div class="col_6">
+                            <input type='text' style='margin-top: 5px;width:188px' class='form-control' id='dvmail' />
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div class='col_12 clearfix'>
+                        <div class="col_12 clearfix" style="text-align: center;">
+                            <button type='button' id='btnupd' style='margin-right: 40px;margin-top: 5px; background-color: #0070c0; font-size: 14.0pt; color: yellow' class='btn btn-primary' onclick='updateprofile();'>Update and Close</button>
+                            @*<button type='button' id='btnclose' style='font-size:14.0pt;background-color:#990033;color:yellow' class='btn btn-primary' onclick="HideModalPopup('modalEmployee');">No Change and Close</button>*@
+                            <button type='button' id='btnclose' style='font-size: 14.0pt;margin-top: 5px; background-color: #990033; color: yellow' class='btn btn-primary' onclick="fnHideEmpPopup();">No Change and Close</button>
+                            @*<button type='button' id='btnLogout' class='btn btn-danger' onclick="fnLogOut()">Logout</button>*@
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal NoticeBoardModal" id="modalNoticeBoard" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm" style="position:relative;">
+            <div class="modal-content clearfix" style="max-height:600px; width:600px; overflow: hidden; overflow-y: scroll;">
+                <div class="modal-header" style="padding: 10px; min-height: 0px;">
+                    <h4 class="modal-title Prof">Notice Board</h4>
+                </div>
+                <div class="modal-body" id="divNoticeBoardMandatoryRead" style="padding: 20px;">
+                </div>
+                <div id="dvNoticepop" style="display: none; background-color: #fff; width: 980px; height: 350px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+                    <div style="position: absolute; font-size: 13px; width: 98%; padding: 10px;">
+                        <span style="float: right; cursor: pointer; color: white" onclick="fnClosePopup();">
+                            <img src="~/Images/close.png" />
+                        </span>
+                        <h2 id="popheader" class="popheader"></h2>
+                        <div id="divModel">
+                        </div>
+                        <div style="clear: both">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="btnClose" style="display:none;">
+                    <button type='button' id='btnNoticeBoardClose' style='font-size: 12.0pt;float: right;margin-right: 10px;margin-bottom: 10px;margin-top: 5px;' class='btn btn-primary' onclick="fnHideNoticeBoardPopup();">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal SplashExcTP" id="modalSplash" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 600px; height: 582px;position: initial !important;">
+            <div class="modal-content clearfix" style="width: 600px; height: 582px; overflow: hidden;">
+                <div class="modal-body" style="padding: 0px;">
+                    <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="fnsplashNoticepopup();"><span aria-hidden="true">&times;</span></button>
+                    <div class="slideitem" id="myCarousel">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="simple_overlay" id="PassNotifyModal" style="min-height: 170px;width: 535px;display: none;">
+        <div class="popUpTitle" style="height: 45px;">
+            <span>Password Notification Alert</span>
+        </div>
+        <div id="OverlayPassNotify">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div>
+                        <div style="font-weight: bold;text-align:center;font-size: 14px;margin-top: 10px;" id="dvNotify"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6" style="margin-top: 15px;text-align:center">
+                <button type="button" class="btn btn-success" href='#' onclick='fnChangePassword()'> Yes </button>
+                <button type="button" class="btn btn-danger" style="margin-left: 15%;" data-dismiss="modal" onclick="fnHidePopup();">No</button>
+                @*<input type="button" id="btnSaveReceipt" style="margin:10px;float:right;" class="btn btn-success" value="Save" onclick="PlaceOrder.fnSaveReceipt();" />
+                    <input type="button" id="btncancelRecpt" style="margin:10px;float:right;" class="btn btn-danger" value="Cancel" onclick="$('#dvReceiptOverLay').overlay().close(); PlaceOrder.fnClearReceiptForm();" />*@
+            </div>
+        </div>
+    </div>
+
+    <div class="simple_overlay" id="CCOverlay" style="min-height: 312px;width: 600px;display: none;">
+        <a class="ccclose" style="display:none"></a>
+        <div class="modal-header" style="padding: 0px; min-height: 0px;">
+            <div class="popUpTitle" style="text-align: center;">
+                <h3>
+                    <span id="CCTitle"></span> </br>
+                    <span style="font-weight: 400;">(You must accept this form to proceed with the HiDoctor Login)</span>
+                </h3>
+            </div>
+        </div>
+
+        <div id="CCContent" style="height: 466px;">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div>
+                        <iframe src="" alt="" name="dvCCcontent" id="dvCCcontent" style="margin-left: 15px;width: 571px;height:455px"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="padding:0px; min-height: 0px;margin-bottom: 10px;">
+            <label style="margin-left: 12px;"><input type="checkbox" id="chkAgree" value="" onclick="fnchkAcknowledgement();" style="font-size: 15px;"><span id="spnAckoption"></span></label>
+            @*<div style="margin-left: 67%;">
+            *@
+            <button type="button" id="btnaccept" class="btn btn-success Bfragree" style="margin-left: 58%;" onclick="fnProceedLogin()" disabled>Accept</button>
+            <button type='button' id='btnlogout' class='btn btn-danger' style="margin-left: 21px;" onclick="fnLogOut()">Logout</button>
+            @*
+                </div>*@
+        </div>
+
+    </div>
+
+    @*DCR approval pending quick link*@
+    <div id="divuserperday" class="clsdivuserperday" style="padding-bottom: 5px; display: none">
+        <div id="divPageHeader">
+            <div id="dvLoading" class="dcrQuickLoad" style="display: none;">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading ....
+            </div>
+            <div id="dvUserPerDayCont" style="width: 100%; margin: 0px auto; padding-left: 5px; padding-right: -5px;">
+            </div>
+            <div id="divRating" style="margin-left: 0px"></div>
+            <div style="clear: both">
+            </div>
+            <div style="margin-left: 40%">
+                <div>
+                    <textarea id="txtRatingRemarks" style="height: 50px; width: 250px" placeholder="Type the Rating remarks here.." maxlength='500' onblur='return fnCheckRemarksSpecialCharforDCRinBlurfun(this);'></textarea>
+                </div>
+                <div>
+                    <textarea class="clstxtReason" id="txtReason" style="height: 50px; width: 250px ;margin-top: 10px;" maxlength='500' placeholder="Remarks is Mandatory, in case of Unapproval" onblur='return fnCheckRemarksSpecialCharforDCRinBlurfun(this);'></textarea>
+                    <input type="hidden" id="hdnSingle" />
+                </div>
+                <div style="clear: both">
+                </div>
+                <br />
+                <div id="dv-buttonsTwo">
+                </div>
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <div class="simple_overlay" id="udvOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Accompanist Visit Details</span>
+            </div>
+
+            <div id="udivAccDocDetail" style="height: 500px; overflow: scroll;margin-left: 8px;">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td>User Name</td>
+                        <td><span id="spnuserName"></span></td>
+                        <td>Employee Name</td>
+                        <td><span id="spnpEmpName"></span></td>
+                        <td>Region Name</td>
+                        <td><span id="spnRegionName"></span></td>
+                    </tr>
+                    <tr>
+                        <td>DCR Date</td>
+                        <td><span id="spnDCRDate"></span></td>
+                        <td>DCR Type</td>
+                        <td><span id="spnDCRType"></span></td>
+                        <td>DCR Status</td>
+                        <td><span id="uspnpDCRStatus"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Work Place</td>
+                        <td><span id="spnWorkPlace"></span></td>
+                        <td>Division Name</td>
+                        <td id="tddivisionName"></td>
+                        <td>Entered Date</td>
+                        <td><span id="spnDCRentedDate"></span></td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="simple_overlay" id="dvDetailedProductOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Detailed Products</span>
+            </div>
+            <div id="divDetailPrdDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td>User Name</td>
+                        <td><span id="spnduserName"></span></td>
+                        <td>Employee Name</td>
+                        <td><span id="spndEmpName"></span></td>
+                        <td>Region Name</td>
+                        <td><span id="spndRegionName"></span></td>
+                    </tr>
+                    <br />
+                    <tr>
+                        <td>Doctor Name</td>
+                        <td><span id="spndDocName"></span></td>
+                        <td>MDL No</td>
+                        <td><span id="spndMDL"></span></td>
+                        <td>Specialty</td>
+                        <td><span id="spndSpeciality"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td><span id="spndCategory"></span></td>
+                        <td>Division Name</td>
+                        <td><span id="spnDivisionname"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="simple_overlay" id="dvAccOverLay">
+            <div class="popUpTitle" style="height: 45px; text-align: center;">
+                <span id="doc_details" style="font-size: 13px;"></span>
+            </div>
+
+            <div id="divAccDocDetail_Call" style="height: 500px; overflow: scroll">
+            </div>
+        </div>
+    </div>
+    <div class="simple_overlay" id="dvPopupLeave">
+        <div id="tblleavepopup" style="width: 98%; height: 420px">
+        </div>
+    </div>
+    <div id="footer" class="clearfix">
+        <div style="float: left">
+            <img src="~/Images/Logo_SwaaS.gif" />
+        </div>
+        <div style="float: left; margin-top: 6px;">
+            @HiDoctor.LatestBuildVersion.LatestVersion Copyrights Reserved ® SwaaS 2019
+        </div>
+        <div style="float: right">
+            <img src="~/Images/hi-doctor-logo.png" />
+        </div>
+    </div>
+    @Html.Hidden("IsLogOut")
+</form>
+<link href="~/Content/PluginCss/jquery.bxslider.css" rel="stylesheet" />
+<link href="~/Content/PluginCss/muslider_style.css" rel="stylesheet" />
+
+<script type="text/javascript" lang="ja">
+    var curdate ="";
+    var curUserCode_g="";
+    var HDNG_gCompanyId = "";
+    var HDNG_gSubdomain = "";
+    var HDNG_gUserId = "";
+    var HDNG_gEmpName = "";
+    var HDNG_gRegionCode = "";
+    var HDNG_gProPhoto = "";
+    var HDNG_gLogoUrl = "";
+    var HDNG_userCategory="";
+    var faqUrl_g="http://faq.hidoctor.me";
+    var dashboard_g="";
+    var stateID="";
+    var cityID="";
+    var Empmodal="";
+    var NewDashB="";
+    var Taskcount =0;
+    var Alert = "" ;
+    var CCFileId="";
+    var Blood_Group_Name='';
+    var GrievanceEncodingURL='';
+    var Company_Code='';
+    var lstAttachementArr ='';
+    var gobfile='';
+    var jsonResult1='';
+    var MandatoryFields="";
+
+
+
+
+    $(document).ready(function () {
+        debugger;
+        fnIskangleAvailable();
+        fnIsformManagementAvailable();
+        fnIsHRMSAvailable();
+        fnIsKRAAvailable();
+        // $(document).idleTimeout();
+        AjaxGlobalHandler.Initiate();
+        FreshWidget.init();
+
+        var userName=@Html.Raw(Json.Encode(ViewBag.User_Name));
+        var EmployeeName=@Html.Raw(Json.Encode(ViewBag.Employee_Name));
+        curdate = @Html.Raw(Json.Encode(ViewBag.CurDate));
+        curUserCode_g = @Html.Raw(Json.Encode(ViewBag.UserCode));
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+
+        // faqUrl_g = @Html.Raw(Json.Encode(ViewBag.FAQ_Url));
+        var currentLoginEmail = @Html.Raw(Json.Encode(ViewBag.Cur_User_Email));
+        //dashboard_g=@Html.Raw(Json.Encode(ViewBag.DashboardV2));
+        $("#dvNoticepop").overlay().load();
+        if (userName == '') {
+            $("#wrapperbody").css('display', 'none');
+            $("#page-header").hide();
+            $("#main").load("Home/Create");
+            // HideModalPopup("modalEmployee");
+            // $('#modalEmployee').hide();
+            //$("#modalEmployee").attr('style', 'display:none !important');
+        }
+        else {
+            debugger;
+            //$("#spnUser").html(userName);
+            var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+            curUserCode_g = @Html.Raw(Json.Encode(ViewBag.UserCode));
+            var isMenuShow = @Html.Raw(Json.Encode(ViewBag.IsMenuShow));
+            var curPage = @Html.Raw(Json.Encode(ViewBag.CurPage));
+            var IsPasswordNotify = @Html.Raw(Json.Encode(ViewBag.IsPasswordNotify));
+            HDNG_userCategory= @Html.Raw(Json.Encode(ViewBag.User_Type_Category));
+
+
+            $("#hdnEmailId").val(currentLoginEmail);
+            $("#spnUser").html(userName)
+            $("#spnUserdate").html(curdate);
+
+            fnLogo(curUserCode_g);
+            //$("#imgIndexClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+            $("#modal").overlay().load();
+            fnGetAllPrivileges();
+            //fnShowSplashScreen();
+            fnGetMenuContent();
+            fnCheckIsEDAvailable();
+            fnIsOneLibAvailable();
+            fnGetGrievanceAccess();
+            fnCheckEdetailing_Access();
+            fnShowSDIcon();
+
+            $("#modalEmployee").attr('style', 'display:none !important');
+            //  fnLoadSalesDrive();
+            $("#wrapperbody").css('display', '');
+            $("#page-header").show();
+            $("#footer").show()
+            if(IsPasswordNotify == "YES"){
+                debugger;
+                PassNotify='yes';
+                $("#wrapperbody").css('display', 'none');
+                $("#page-header").hide();
+                $("#main").load("Home/Create");
+                $('#dvNotify').html(Alert);
+                //ShowModalPopup('PassNotifyModal');
+                return false;
+            }
+            if(isMenuShow == "NO")
+            {
+                //$("#wrapperbody").attr('style', 'display:none !important');
+            }
+            debugger;
+            if(curPage =="CHANGEPASSWORD/CHANGEPASSWORD/R")
+            {
+                debugger;
+                //$('#dvNotify').html(Alert);
+                //ShowModalPopup('PassNotifyModal');
+                //$('#page-header').hide();
+                $('#divPageHeader').hide()
+                var titleObj=$("<div></div>");
+                titleObj.html("Change Password");
+                var mode="FirstpassChange";
+                fnLoadBody('ChangePassword/Changepassword?id=0&mode='+mode+'',titleObj);
+            }
+            if(curPage =="CHANGEPASSWORD/CHANGEPASSWORD")
+            {
+                var titleObj=$("<div></div>");
+                titleObj.html("Change Password");
+                fnLoadBody(curPage,titleObj,curPage);
+            }
+            dashboard_g=fnGetPrivilegeValue("DASHBOARDV2_AS_HOMEPAGE","NO");
+
+            $("#lnkUserDash").unbind('click').bind('click',function(){
+                if(dashboard_g == "YES") {
+
+                    fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+
+                    //fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                    //fnLoadBody('Home/OnBoardingPage',this,'Home');
+                    // fnLoadBody('DashBoardV2/DashBoardV2',this,'Home');
+                }
+                else{
+                    fnLoadBody('DashboardLandingPage/Index',this,'Home')
+                    //fnLoadBody('Home/OnBoardingPage',this,'Home');
+                    $('#dvAjaxLoad').hide();
+                }
+            })
+        }
+        if($('#spnUser').html() !="")
+        {
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&disable[custom_field][user_name_13621]=true&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] +  $('#spnUserdate').html().split('(')[1] + "&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        }
+        else{
+            FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val() + "&disable[custom_field][company_url_13621]=true&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + $('#spnUserdate').html().split('(')[1] +"&disable[custom_field][information_to_user_13621]=true&helpdesk_ticket[custom_field][information_to_user_13621]=Take Screenshot option not available for IE 8 users. Please upload your screenshot using the File Attach option itself.&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        }
+        if(faqUrl_g != null && faqUrl_g != "" && faqUrl_g != undefined){
+            $('#aFAQ').show();
+        }
+        //  FreshWidget.init("", { "queryString": "&widgetType=popup&widgetView=no&helpdesk_ticket[requester]=" + $("#hdnEmailId").val()  + "&helpdesk_ticket[custom_field][company_url_13621]=" + window.location.host + "&helpdesk_ticket[custom_field][user_name_13621]=" + $('#spnUser').html().split('(')[0] + "&searchArea=no", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#004902", "alignment": "2", "offset": "235px", "formHeight": "500px", "url": "http://support.swaas.net" });
+        $("#divGeniemain").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+
+        $("#divhelpImg").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $('#btnaccept').attr('disabled', true)
+        $("#udvOverLay").overlay().load();
+
+        //fnShowMyProfileScreen();
+    });
+
+    function imgError(image)
+    {
+        debugger;
+        var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+        image.onerror = "";
+        image.src = 'Images/Company_Logo/'+subDomain+'.jpg';
+        return true;
+    }
+
+    function fnLogo(curUserCode_g){
+        debugger;
+        var subDomain = @Html.Raw(Json.Encode(ViewBag.SubDomain));
+        var divisionCode = "";
+        $.ajax({
+            type:"GET",
+            url:"../Home/GetLogo",
+            data: "userCode=" + curUserCode_g,
+            success: function(result){
+                debugger;
+                if(result.length>0 && result.length<2){
+                    divisionCode = result[0].Division_Code;
+                    $("#imgIndexClientLogo").attr('src','Images/Company_Logo/'+subDomain+ "_" + divisionCode +'.jpg' );
+                    $("#imgClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                }
+                else
+                {
+                    $("#imgClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                    $("#imgIndexClientLogo").attr('src','Images/Company_Logo/'+subDomain+'.jpg' );
+                }
+            }
+        });
+    }
+    function fnLogOut()
+    {
+        $("#IsLogOut").val("LOGOUT")
+        $('#frmHomeIndexForm').submit();
+    }
+    function fnShowSDIcon()
+    {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/Home/CheckSalesDrive/',
+            type: "POST",
+            data: "A",
+            success: function (isSD) {
+                if(isSD != "" && isSD != "NO" && isSD !="YES"){
+                    $("#imgSalesDrive").show();
+                    $("#aSalesDrive").show();
+                    //  window.location.href = isSD;
+                }
+                else if(isSD == "YES")
+                {
+                    $("#aSalesDrive").show();
+                    $("#imgSalesDrive").show();
+                }
+                else
+                {
+                    $("#aSalesDrive").hide();
+                    $("#imgSalesDrive").hide();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnLoadSalesDrive(){
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/Home/GetSalesDriveUrl/',
+            type: "POST",
+            data: "A",
+            success: function (isSD) {
+                if(isSD != "" && isSD != "NO" && isSD !="YES"){
+                    $("#imgSalesDrive").show();
+                    $("#aSalesDrive").show();
+                    window.location.href = isSD;
+                }
+                else if(isSD == "YES")
+                {
+                    $("#aSalesDrive").show();
+                    $("#imgSalesDrive").show();
+                }
+                else
+                {
+                    $("#aSalesDrive").hide();
+                    $("#imgSalesDrive").hide();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnGetWideAngleURL(){
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/WideAngle/GetWideAngleURL/',
+            type: "POST",
+            data: "A",
+            success: function (waURL) {
+                if(waURL == ""){
+                    fnMsgAlert('info','WideAngle','WideAngle can not be load');
+                }
+                else
+                {
+                    window.location.href = waURL;
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnLoadMenu(){
+        $("#dvAjaxLoad").hide();
+        fnLoadBody("../Home/Menu");
+
+    }
+
+    function fnGoToNotificationScreen() {
+        var count = 0;
+        for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+            if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                var menuUrl = menuContent_g.Tables[0].Rows[i].Menu_URL;
+                if (menuUrl.toUpperCase() == 'HIDOCTOR_ACTIVITY/NOTICEBOARD/NOTICEBOARDREAD') {
+                    count++;
+                    $("#main").load('HiDoctor_Activity/NoticeBoard/NoticeBoardRead');
+                    $('#dvPageHeader').html('Notice board Master');
+                    return;
+                }
+            }
+        }
+        if (count == 0) {
+            fnMsgAlert('info', 'Info', 'You do not have access to this page');
+            return;
+        }
+    }
+
+    function fnGetOneLibURL(){
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/OneLib/GetOneLibURL/',
+            type: "POST",
+            data: "A",
+            success: function (OneLibUrl) {
+                if(OneLibUrl == ""){
+                    fnMsgAlert('info','OneLin','OneLib can\'t be loaded right now, please contact administrator');
+                }
+                else
+                {
+                    windows.location.href = OneLibUrl;
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnIskangleAvailable() {
+        $.ajax({
+            url: '/OneLib/IsKangleAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (isAvailable) {
+                if (isAvailable == "1") {
+                    $("#aKangle").show();
+                }
+                else{
+                    $("#aKangle").hide();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnGetKangleURL(){
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/OneLib/GetKangleURL/',
+            type: "POST",
+            data: "A",
+            success: function (KanglrUrl) {
+                if(KanglrUrl == ""){
+                    fnMsgAlert('info','OneLin','OneLib can\'t be loaded right now, please contact administrator');
+                }
+                else
+                {
+                    window.open(KanglrUrl,'_blank');
+                    // window.open(KanglrUrl);
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+
+    function fnIsOneLibAvailable() {
+        debugger;
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/OneLib/IsOneLibAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (isWLAvailable) {
+                if (isWLAvailable == "1") {
+                    $("#aOneLib").show();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnIsformManagementAvailable() {
+        $.ajax({
+            url: '/OneLib/IsFormManagementAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (fmstatus) {
+                if(fmstatus == "1")
+                {
+                    $("#form_Management").show();
+                }
+                else
+                {
+                    $('#form_Management').hide();
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error','Form Management',e.responseText);
+            }
+        });
+    }
+
+    function fnGetFormManagement(){
+
+        $.ajax({
+            url: '/OneLib/GetFormManagementURL/',
+            type: "POST",
+            data: "A",
+            success: function (formManagementURL) {
+                if(formManagementURL != null && formManagementURL != "" && formManagementURL.length > 0)
+                {
+                    window.open(formManagementURL,'_blank');
+                }
+                //else
+                //{
+                //    fnMsgAlert('info','Form Management','Form Management can\'t be loaded right now, please contact administrator');
+                //}
+            },
+            error: function (e) {
+                fnMsgAlert('error','Form Management',e.responseText);
+            }
+        });
+    }
+    // HRMS Integration Start
+    function fnIsHRMSAvailable() {
+        $.ajax({
+            url: '/OneLib/IsHRMSAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (fmstatus) {
+                if(fmstatus == "1")
+                {
+                    $("#aHRMS").show();
+                }
+                else
+                {
+                    $('#aHRMS').hide();
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error','Form Management',e.responseText);
+            }
+        });
+    }
+    function fnGetHRMSAccess(){
+        $.ajax({
+            url: '/OneLib/GetHrmsURL/',
+            type: "POST",
+            data: "A",
+            success: function (HRMS_Url) {
+                if(HRMS_Url != null && HRMS_Url != "" && HRMS_Url.length > 0)
+                {
+                    window.open(HRMS_Url,'_blank');
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error','KRA',e.responseText);
+            }
+        });
+    }
+
+    // HRMS Integration Start
+    function fnIsKRAAvailable() {
+        $.ajax({
+            url: '/OneLib/IsKRAAvailable/',
+            type: "POST",
+            data: "A",
+            success: function (fmstatus) {
+                if(fmstatus == "1")
+                {
+                    $("#aKRA").show();
+                }
+                else
+                {
+                    $('#aKRA').hide();
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error','KRA',e.responseText);
+            }
+        });
+    }
+    function fnGetKRAAccess(){
+        $.ajax({
+            url: '/OneLib/GetKRAURL/',
+            type: "POST",
+            data: "A",
+            success: function (kraURL) {
+                if(kraURL != null && kraURL != "" && kraURL.length > 0)
+                {
+                    window.open(kraURL,'_blank');
+                }
+            },
+            error: function (e) {
+                fnMsgAlert('error','KRA',e.responseText);
+            }
+        });
+    }
+    // KRA Integration end
+
+    function fnGetFAQ(){
+        if(faqUrl_g != null && faqUrl_g != "" && faqUrl_g.length>0){
+            window.open(faqUrl_g,'_blank');
+        }
+    }
+    // HRMS Integration End
+    function fnCheckEdetailing_Access()
+    {
+        debugger;
+        var CheckAccess=fnGetPrivilegeValue("IS_EDETAILING_UPLOAD_ACCESS_ENABLED","NO");
+        if(CheckAccess.toUpperCase()=="YES")
+        {
+            $("#aEDetailing").show();
+        }
+    }
+
+    function fnGetEDetailingURL(){
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            url: '/OneLib/E_DetailingURL/',
+            type: "POST",
+            data: "A",
+            success: function (E_DetailingURL) {
+                debugger;
+                if(E_DetailingURL == ""){
+                    fnMsgAlert('info','OneLin','OneLib can\'t be loaded right now, please contact administrator');
+                    $("#dvAjaxLoad").hide();
+                }
+                else
+                {
+                    $("#dvAjaxLoad").hide();
+                    window.open(E_DetailingURL,'_blank');
+                    // window.open(KanglrUrl);
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+
+    function fnShowMyProfileScreen(){
+        debugger;
+        var Myprofile=fnGetPrivilegeValue("POPUP_EMPLOYEE_PROFILE","NO");
+        var MyprofileView=fnGetPrivilegeValue("POPUP_PROFILE_COUNT","30");
+
+        if(Myprofile=='YES'&&MyprofileView !=0)
+        {
+            fnShowMyProfileScreenPriv();
+        }
+        else{
+            HideModalPopup("modalEmployee");
+        }
+    }
+
+    function fnShowMyProfileScreenPriv()
+    {
+        var MyprofileView=fnGetPrivilegeValue("POPUP_PROFILE_COUNT","30");
+        debugger;
+        var NumOfDays = MyprofileView;
+        $.ajax({
+            url: '../Home/GetprofilePopupAccess/',
+            type: "GET",
+            data: "NumberOfDays="+ NumOfDays,
+            async:'false',
+            success: function (Result) {
+                debugger;
+                if(Result[0].Result == '0'){
+                    fnShowEmployeeDetail();
+                    $(".modal-dialog").css('padding','0px');
+                }
+                else{
+                    HideModalPopup('modalSplash');
+                    HideModalPopup("modalEmployee");
+                    HideModalPopup('dvloading');
+                }
+            }
+        });
+    }
+
+    var Is_Read_Count = 0;
+    function fnNoticeBoardMandatoryRead(){
+        var NoticeBoardMandatordRead = fnGetPrivilegeValue("ALERT_LANDING_PAGE_REDIRECT","NO");
+        $.blockUI();
+        if(NoticeBoardMandatordRead == "NOTICEBOARD"){
+            $.ajax({
+                url: '../HiDoctor_Activity/NoticeBoard/GetNoticeBoardIsRead',
+                type: "GET",
+                success: function (response) {
+                    debugger;
+                    var content = "";
+                    if (response.length>0) {
+                        for(var i = 0; i < response.length; i++){
+                            if(response[i].Is_Read == "No"){
+                                Is_Read_Count = Is_Read_Count + 1;
+                            }
+                        }
+                        if(Is_Read_Count > 0){
+                            fnNoticeBoardDisplay(Is_Read_Count);
+                            $(".modal-dialog").css('padding','0px');
+                        }
+                        else{
+                            fnHideNoticeBoardPopup();
+                        }
+                    }
+                    else{
+                        fnHideNoticeBoardPopup();
+                    }
+                },
+                error: function () {
+                    fnMsgAlert('error', 'Notice Board', 'Sorry. Unable to get your notice board details');
+                }
+            });
+        }
+        else{
+            fnHideNoticeBoardPopup();
+        }
+    }
+
+    function fnNoticeBoardDisplay(Is_Read_Count){
+        debugger;
+        $.ajax({
+            async:false,
+            url: '../HiDoctor_Activity/NoticeBoard/GetAllNoticeMandatoryDetail',
+            type: "POST",
+            success: function (response) {
+                debugger;
+                if(Is_Read_Count != 0){
+                    if (response != "") {
+                        if(DcrEntry != ''){
+                            debugger;
+                            $("#modalNoticeBoard").removeClass("NoticeBoardModal");
+                            $("#modalNoticeBoard").addClass("DCRNoticeBoardModal");
+                        }
+                        ShowModalPopup('modalNoticeBoard');
+                        $("#divNoticeBoardMandatoryRead").html(response);
+                    }
+                    else {
+                        fnHideNoticeBoardPopup();
+                    }
+                }
+                else{
+                    $("#divNoticeBoardMandatoryRead").html("Note: No unread records found");
+                    $("#divNoticeBoardMandatoryRead").css("font-size","14px");
+                    $('#btnClose').show();
+                }
+            },
+            error: function () {
+                fnHideNoticeBoardPopup();
+            }
+        });
+    }
+
+    function GetNoticepopup(val) {
+        debugger;
+        var mesgCode = val;
+        $.ajax({
+            async:false,
+            url: '../HiDoctor_Activity/NoticeBoard/GetAllNoticesReadPopup',
+            data: "mesgCode=" + mesgCode,
+            type: "POST",
+            success: function (response) {
+                if (response != "") {
+                    $("#divModel").html(response);
+                    $("#dvNoticepop").overlay().load();
+                    debugger;
+                    fnShowNoticeTicker();
+                    Is_Read_Count = Is_Read_Count - 1;
+                    fnNoticeBoardDisplay(Is_Read_Count);
+                }
+                else {
+                    fnMsgAlert('error', 'Notice Board', 'Sorry. Unable to get your notice board details');
+                }
+            },
+            error: function () {
+                fnMsgAlert('error', 'Notice Board', 'Sorry. Unable to get your notice board details');
+            }
+        });
+    }
+
+    function fnClosePopup(){
+        HideModalPopup('modalSplash');
+        $('#dvNoticepop').overlay().close();;
+    }
+
+    function fnHideNoticeBoardPopup(){
+        HideModalPopup('modalNoticeBoard');
+        $.unblockUI();
+        //HideModalPopup('modalNoticeBoard');
+        fnShowMyProfileScreen();
+    }
+    function fnShowEmployeeDetail()
+    {
+        $.blockUI();
+        debugger;
+        var privilegeformandatoryfields = fnGetPrivilegeValue("POPUP_PROFILE_MANDATORY_FIELDS", "");
+
+        var DoctorProductOptionsArr  = privilegeformandatoryfields + ',';
+        MandatoryFields = privilegeformandatoryfields.split(',');
+        fnGetStateDetails();
+        fngetABloodgroupnames();
+
+        $.ajax({
+            url: '../MyProfile/GetProfileDetails/',
+            type: "POST",
+            success: function(jsonResult) {
+                debugger;
+                jsonResult=eval(jsonResult);
+                if (jsonResult != null && jsonResult !='' && jsonResult != false) {
+                    var content="";
+                    $.each(jsonResult,function(index,value){
+                        // fngetABloodgroup(jsonResult[0].Blood_Group_Name);
+                        fnGetCitiesDetails(jsonResult[0].State_ID);
+                        fnGetPincodesDetails(jsonResult[0].City_ID);
+
+                        $("#dvRegionTypeName").html(jsonResult[0].Region_Name + " " + "(" + jsonResult[0].Region_Type_Name + ")");
+                        $("#dvEmployeeName").html(jsonResult[0].Employee_Name);
+
+                        if(jsonResult[0].Employee_Number != 0 && jsonResult[0].Employee_Number != null)
+                        {
+                            $("#dvemployeeNumber").html(jsonResult[0].Employee_Number );
+                        }
+                        else{
+                            $("#dvemployeeNumber").html('');
+                        }
+                        $("#dvusrdesg").html(jsonResult[0].User_Type_Name);
+                        //$("#dvHidocstartDate").html(jsonResult[0].HiDOCTOR_Start_Date);
+                        //$("#dvdept").html(jsonResult[0].Department_Name);
+                        if(jsonResult[0].Ref_Key1 != '' && jsonResult[0].Ref_Key1 != null)
+                        {
+                            $("#dvhqname").text(jsonResult[0].Ref_Key1);
+                        }
+                        else{
+                            $("#dvhqname").text('');
+                        }
+
+                        //$("#dvGender").html(jsonResult[0].Gender);
+
+                        $("#dvDoj").html(jsonResult[0].Date_of_Joining);
+
+                        //if(jsonResult[0].Confirmation_Date != 0)
+                        //{
+                        //    $("#dvDOC").html(jsonResult[0].Confirmation_Date);
+                        //}
+                        //else{
+                        //    $("#dvDOC").html('');
+                        //}
+
+                        if(jsonResult[0].Email_Id != 0 && jsonResult[0].Email_Id != null)
+                        {
+                            $("#dvmail").val(jsonResult[0].Email_Id);
+                        }
+                        else{
+                            $("#dvmail").val('');
+                        }
+
+                        if(jsonResult[0].Phone != 0 && jsonResult[0].Phone != null)
+                        {
+                            $("#dvPhone").val(jsonResult[0].Phone);
+                        }
+                        else{
+                            $("#dvPhone").val('');
+                        }
+
+                        if(jsonResult[0].Mobile != 0 && jsonResult[0].Mobile != null)
+                        {
+                            $("#dvMobile").val(jsonResult[0].Mobile);
+                        }
+                        else{
+                            $("#dvMobile").val('');
+                        }
+
+                        if(jsonResult[0].Address != 0 && jsonResult[0].Address != null)
+                        {
+                            $("#dvAddress").val(jsonResult[0].Address);
+                        }
+                        else{
+                            $("#dvAddress").val('');
+                        }
+
+                        if(jsonResult[0].Address2 != 0 && jsonResult[0].Address2 != null)
+                        {
+                            $("#dvAddress2").val(jsonResult[0].Address2);
+                        }
+                        else{
+                            $("#dvAddress2").val('');
+                        }
+
+                        if(jsonResult[0].Address3 != 0 && jsonResult[0].Address3 != null)
+                        {
+                            $("#dvAddress3").val(jsonResult[0].Address3);
+                        }
+                        else{
+                            $("#dvAddress3").val('');
+                        }
+
+                        if(jsonResult[0].State_ID != 0 && jsonResult[0].State_ID != null)
+                        {
+                            $("#dvState").val(jsonResult[0].State_ID);
+                        }
+                        else{
+                            $("#dvState").val(0);
+                        }
+
+                        if(jsonResult[0].City_ID != 0 && jsonResult[0].City_ID != null)
+                        {
+
+                            $("#dvCity").val(jsonResult[0].City_ID);
+                        }
+                        else{
+                            $("#dvCity").val(0);
+                        }
+
+                        if(jsonResult[0].Pincode_Id != 0 && jsonResult[0].Pincode_Id != null)
+                        {
+
+                            $("#dvPincode").val(jsonResult[0].Pincode_Id);
+                        }
+                        else{
+                            $("#dvPincode").val(0);
+                        }
+
+
+                        //// Employee profile pop up prefil//
+                        if (jsonResult[0].Blood_Group_Name != 0 && jsonResult[0].Blood_Group_Name != null) {
+
+                            var doctcode = jsonResult[0].Blood_Group_Id;
+                            var msObject = document.getElementById("blooddgrp").ej2_instances[0];
+                            msObject.value = doctcode;
+
+                        }
+                        else {
+                            function fngetABloodgroupnames() {
+                                debugger;
+                                ////var Company_code = Company_Code;
+                                //Company_Code;
+                                $.ajax({
+                                    async: false,
+                                    url: '../HiDoctor_Master/User/GetBloodgroupName',
+                                    data: '',
+                                    type: "GET",
+                                    async: false,
+                                    success: function (resp) {
+                                        debugger;
+                                        $('#dvbldgroup').empty();
+                                        $('#dvbldgroup').html('<input type="text" id="blooddgrp">');
+                                        var lstUser = [];
+                                        for (var i = 0; i < resp.length; i++) {
+                                            _objData = {};
+                                            _objData.id = resp[i].Blood_Group_Id;
+                                            _objData.label = resp[i].Blood_Group_Name;
+                                            lstUser.push(_objData);
+                                        }
+                                        // if (lstUser.length > 0) {
+                                        var UserDetails = lstUser;
+                                        var atcObj = new ej.dropdowns.DropDownList({
+                                            //set the data to dataSource property
+                                            dataSource: lstUser,
+                                            fields: { text: 'label', value: 'id' },
+                                            filterBarPlaceholder: 'Search',
+                                            showClearButton: true,
+                                            allowFiltering: true,
+                                            placeholder: 'Select Blood Group',
+                                            filtering: function (e) {
+                                                var dropdown_query = new ej.data.Query();
+                                                dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                                                e.updateData(lstUser, dropdown_query);
+                                            }
+                                        });
+                                        atcObj.appendTo('#blooddgrp');
+                                        //}
+                                        // }
+
+
+
+
+
+
+
+
+                                    },
+                                    error: function (e) {
+                                        fnMsgAlert('info', '', 'Error.' + e.Message);
+                                    }
+                                });
+                            }
+                        }
+                        if (jsonResult[0].Employee_Photo != null) {
+                            gobfile = '';
+                            gobfile = jsonResult[0].Employee_Photo;
+                            $("#fileUrl").html(jsonResult[0].Employee_Photo.split('/').reverse()[0]);
+                        }
+
+
+                    });
+
+                }
+                closehide(jsonResult);
+                jsonResult1=jsonResult;
+
+                //ShowModalPopup('modalEmployee');
+
+                //$("#dvAjaxLoad").hide();
+            },
+            error:function(){
+                $("#dvAjaxLoad").hide();
+                $.unblockUI();
+
+            },
+            complete:function(){
+                debugger;
+                $.unblockUI();
+                if(DcrEntry != ''){
+                    debugger;
+                    $("#modalEmployee").removeClass("EmpExcTP");
+                    $("#modalEmployee").addClass("HomemodalEmp");
+                }
+                if(Empmodal !="")
+                {
+                    $("#modalEmployee").removeClass("EmpExcTP");
+                    $("#modalEmployee").addClass("HomemodalEmp");
+                }
+                if( NewDashB !='')
+                {
+                    debugger;
+                    $("#modalEmployee").removeClass("EmpExcTP");
+                    $("#modalEmployee").addClass("NewDash");
+                }
+                if(Taskcount>0)
+                {
+                    $("#modalEmployee").removeClass("NewDash");
+                    $("#modalEmployee").addClass("Task");
+                }
+
+                setTimeout(function() {
+                    ShowModalPopup('modalEmployee');
+                }, 1300);
+
+            }
+
+
+        });
+        $.unblockUI();
+    }
+
+
+
+    @*function fnProfEmailCheck(id) {
+            emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            if (!emailReg.test(email) || email == '') {
+                $(id).val('');
+                return false;
+            }
+            else {
+                return true;
+            }*@
+
+    ///In profile pop up every  columns has privilege value and validation
+    function closehide(jsonResult)
+    {
+        if (MandatoryFields.length > 0) {
+            for (var i = 0; i < MandatoryFields.length; i++) {
+
+                debugger;
+
+                if(MandatoryFields[i]=="ADDRESS" ) {
+                    $("#star").show();
+                    if($("#dvAddress").val() ==""){
+                        $('#btnclose').hide();
+                    }
+                }
+
+                if(MandatoryFields[i]=="ADDRESS2" ) {
+                    $("#Add2star").show();
+                    if($("#dvAddress2").val() ==""){
+                        $('#btnclose').hide();
+                    }
+                }
+
+                if(MandatoryFields[i]=="ADDRESS3" ) {
+                    $("#Add3star").show();
+                    if($("#dvAddress3").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+                if(MandatoryFields[i]=="STATE" ) {
+                    $("#Statestar").show();
+                    if($("#dvState").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+                if(MandatoryFields[i]=="CITY" ) {
+                    $("#Citystar").show();
+                    if($("#dvCity").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+                if(MandatoryFields[i]=="PINCODE" ) {
+                    $("#Pinstar").show();
+                    if($("#dvPincode").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+
+                if(MandatoryFields[i]=="MAIL" ) {
+                    $("#Mailstar").show();
+                    if($("#dvmail").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+
+                if(MandatoryFields[i]=="MOBILE" ) {
+                    $("#Mobstar").show();
+                    if($("#dvMobile").val() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+
+                if(MandatoryFields[i]=="BLOOD_GROUP" ) {
+                    $("#star").show();
+                    if(jsonResult[0].Blood_Group_Name == "NULL"){
+                        $('#btnclose').hide();
+                    }
+
+                }
+
+                if(MandatoryFields[i]=="EMPLOYEE_PHOTO" ) {
+                    $("#star").show();
+                    if($("#fileUrl").text() ==""){
+                        $('#btnclose').hide();
+                    }
+
+                }
+
+            }
+        }
+
+
+        else{
+            $('#btnclose').show();
+            $('#btnLogout').hide()
+
+        }
+
+    }
+
+    function fnHideEmpPopup()
+    {
+        HideModalPopup('modalSplash');
+        HideModalPopup('modalEmployee');
+        HideModalPopup('dvloading');
+    }
+
+
+    function fnValidateMobileNumber(obj, device) {
+        if ($.trim($(obj).val()) != '') {
+            if (device.toUpperCase() == "MOBILE") {
+                ////+919840011514 , 919840011514,9840011514
+                //var mobilePattern = /^((\+){0,1}91(\s){0,1}(\-){0,1}(\s){0,1}){0,1}9[0-9](\s){0,1}(\-){0,1}(\s){0,1}[1-9]{1}[0-9]{7}$/;
+                //return mobilePattern.test($.trim($(obj).val()));
+                var phoneNumberPattern = /^\d+$/
+                return phoneNumberPattern.test($.trim($(obj).val()));
+            }
+            else {
+                var phoneNumberPattern = /^\d+$/
+                return phoneNumberPattern.test($.trim($(obj).val()));
+            }
+
+
+        }
+        return true;
+    }
+
+
+    function updateprofile()
+    {
+        debugger;
+        /// Mandatory columns validation while updating
+
+
+        if (MandatoryFields.length > 0) {
+            for (var i = 0; i < MandatoryFields.length; i++) {
+
+
+
+                if(MandatoryFields[i]=="ADDRESS" ){
+                    if($.trim($("#dvAddress").val()) == null || $.trim($("#dvAddress").val()) =="")
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The Address Line1');
+                        return false;
+                    }
+                
+                else if ($("#dvAddress").val().length > 40)
+                {
+                    fnMsgAlert('info', 'Info', 'Only 40 characters are allowed in Address Line 1 field');
+                    return false;
+                }
+                }
+
+                if(MandatoryFields[i]=="ADDRESS2" ){
+                    if( $.trim($("#dvAddress2").val()) == null || $.trim($("#dvAddress2").val()) =="")
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The Address Line2');
+                        return false;
+                    }
+                    else if( $("#dvAddress2").val().length > 40)
+                    {
+                        fnMsgAlert('info', 'Info', 'Only 40 characters are allowed in Address Line 2 field');
+                        return false;
+                    }
+
+                }
+
+
+                if(MandatoryFields[i]=="ADDRESS3" ){
+                    if( $.trim($("#dvAddress3").val()) == null || $.trim($("#dvAddress3").val()) =="")
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The Address Line3');
+                        return false;
+                    }
+                    else if($("#dvAddress3").val().length > 40)
+                    {
+                        fnMsgAlert('info', 'Info', 'Only 40 characters are allowed in Address Line 3 field');
+                        return false;
+                    }
+                }
+                if(MandatoryFields[i]=="STATE"){
+                    if($("#dvState").val() == null || $("#dvState").val() =="" || $("#dvState").val() ==0)
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The State');
+                        return false;
+                    }
+                }
+
+                if(MandatoryFields[i]=="CITY"){
+                    if($("#dvCity").val() == null || $("#dvCity").val() =="" || $("#dvCity").val() ==0)
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The City');
+                        return false;
+                    }
+                }
+
+                    if(MandatoryFields[i]=="PINCODE"){
+                        if($("#dvPincode").val() == null || $("#dvPincode").val() =="" || $("#dvPincode").val() ==0)
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The Pincode');
+                        return false;
+                    }
+                }
+                    if(MandatoryFields[i]=="EMAIL"){
+                        if($.trim($("#dvmail").val()) == null || $.trim($("#dvmail").val()) =="")
+                        {
+                            fnMsgAlert('info', 'Info', 'Please Enter The Email');
+                            return false;
+                        }
+                    }
+
+                if(MandatoryFields[i]=="MOBILE" ){
+                    if($.trim($("#dvMobile").val()) == null || $.trim($("#dvMobile").val()) =="")
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Enter The Mobile');
+                        return false;
+                    }
+                }
+                if (MandatoryFields[i]=="BLOOD_GROUP" ){
+                    if($('select[name="blooddgrp"]').text()==null ||$('select[name="blooddgrp"]').text()=='')
+                    {
+
+                        fnMsgAlert('info', 'Validate', 'Please Select Blood Group');
+                        return false;
+                    }
+
+                }
+
+
+                if(MandatoryFields[i]=="EMPLOYEE_PHOTO"){
+                    if($("#fileupload").val()=="" &&($("#fileUrl").text()==""))
+                    {
+                        fnMsgAlert('info', 'Info', 'Please Select Employee Photo');
+                        return false;
+                    }
+                }
+            }
+
+        }
+            // if column has no privilege value then it is not mandatory column so alerts removed
+        else
+        {
+            if($.trim($("#dvAddress").val()) == null || $.trim($("#dvAddress").val()) =="")
+            {
+                //fnMsgAlert('info', 'Info', 'Please Enter The Address Line1');
+                //return false;
+            }
+
+            if($("#dvAddress").val().length > 300)
+            {
+                //fnMsgAlert('info', 'Info', 'Only 300 characters are allowed in Address Line 1 field');
+                // return false;
+            }
+
+            if($.trim($("#dvAddress2").val()) == null || $.trim($("#dvAddress2").val()) =="")
+            {
+                //fnMsgAlert('info', 'Info', 'Please Enter The Address Line2');
+                //return false;
+            }
+
+            if($("#dvAddress2").val().length > 300)
+            {
+                //fnMsgAlert('info', 'Info', 'Only 300 characters are allowed in Address Line 2 field');
+                //return false;
+            }
+
+            if($.trim($("#dvAddress3").val()) == null || $.trim($("#dvAddress3").val()) =="")
+            {
+                //fnMsgAlert('info', 'Info', 'Please Enter The Address Line3');
+                // return false;
+            }
+
+            if($("#dvAddress3").val().length > 300)
+            {
+                //fnMsgAlert('info', 'Info', 'Only 300 characters are allowed in Address Line 3 field');
+                //return false;
+            }
+        }
+
+        if($("#dvState").val() == null || $("#dvState").val() =="" || $("#dvState").val() ==0)
+        {
+            //fnMsgAlert('info', 'Info', 'Please Enter The State');
+            //return false;
+        }
+
+        if($("#dvCity").val() == null || $("#dvCity").val() =="" || $("#dvCity").val() ==0)
+        {
+            //fnMsgAlert('info', 'Info', 'Please Enter The City');
+            //return false;
+        }
+
+        if($("#dvPincode").val() == null || $("#dvPincode").val() =="" || $("#dvPincode").val() ==0)
+        {
+            //fnMsgAlert('info', 'Info', 'Please Enter The Pincode');
+            //return false;
+        }
+
+
+        if($.trim($("#dvMobile").val()) == null || $.trim($("#dvMobile").val()) =="")
+        {
+            //fnMsgAlert('info', 'Info', 'Please Enter The Mobile');
+            // return false;
+        }
+
+        if($.trim($("#dvmail").val()) == null || $.trim($("#dvmail").val()) =="")
+        {
+            //fnMsgAlert('info', 'Info', 'Please Enter The Email');
+            //return false;
+        }
+        if(($("#dvmail").val()).length>50)
+        {
+            fnMsgAlert('info', 'Info', 'Email Id should not contain more than 50 characters');
+            return false;
+        }
+
+        var flag = true;
+
+        var result = fnValidateMobileNumber($("#dvMobile"), "MOBILE");
+        if (!result) {
+            fnMsgAlert('info', 'Validate', 'Please validate the mobile number');
+            flag = false;
+            return;
+        }
+
+
+        //// updating Employee photo///
+        $("#blooddgrp").val();
+        if ($('#fileupload').val() != "" ) {
+            debugger;
+            var fileData = $("#fileupload").get(0);
+        }
+        var formdata = new FormData();
+        if ($('#fileupload').val() != "" ) {
+            formdata.append('File_Name', fileData.files[0].name);
+            formdata.append('File_Data', fileData.files[0]);
+
+            var data = getFileExtension(fileData.files[0].name);
+            if (data == 'jpg' || data == 'png' || data == 'JPG' || data == 'PNG') {
+
+                fnUpload(formdata);
+
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please Choose JPG,PNG Files only');
+                return false;
+            }
+
+            function fnUpload(formdata) {
+                debugger;
+
+                $.ajax({
+                    type: 'post',
+                    url: '../HiDoctor_Master/User/BlopUpload',
+                    data: formdata,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    success: function (response) {
+                        debugger;
+                        lstAttachementArr = response;
+
+
+
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        }
+        else{
+            lstAttachementArr=gobfile;
+
+        }
+
+
+
+
+        //var result = fnValidateMobileNumber($("#dvPhone"), "PHONE");
+        //if (!result) {
+        //    fnMsgAlert('info', 'Validate', 'Please validate the phone number');
+        //    flag = false;
+        //    return;
+        //}
+
+        var Mail = $("#dvmail").val();
+        var Mobile = $("#dvMobile").val();
+        var Phn = $("#dvPhone").val();
+        var Add1 = $("#dvAddress").val();
+        var Add2 = $("#dvAddress2").val();
+        var Add3 = $("#dvAddress3").val();
+        var City = $("#dvCity").val();
+        var State = $("#dvState").val();
+        var Pincode = $("#dvPincode").val();
+        var Bloodgroup=  $("#blooddgrp").val();
+        var Employeephoto=   lstAttachementArr;
+        var obj= {
+            Mail :$("#dvmail").val(),
+            Mobile: $("#dvMobile").val(),
+            Phn : $("#dvPhone").val(),
+            Add1:$("#dvAddress").val(),
+            Add2 :$("#dvAddress2").val(),
+            Add3 :$("#dvAddress3").val(),
+            City :$("#dvCity").val(),
+            State :$("#dvState").val(),
+            Pincode : $("#dvPincode").val(),
+            Bloodgroup: $("#blooddgrp").val(),
+            Employeephoto:  lstAttachementArr,
+
+
+        }
+
+        debugger;
+        $.ajax({
+            url: '../Hidoctor_Master/MyProfile/UpdateProfileDetails',
+            type: "POST",
+            data: JSON.stringify({ "objEmpdata": obj}),
+            contentType: 'application/json; charset=utf-8',
+            // data:"&Mail=" +Mail+ "&Mobile=" + Mobile + "&Phone=" +Phn+ "&Add1=" +Add1+ "&Add2=" +Add2+ "&Add3=" +Add3+ "&City=" +City+ "&State=" +State+ "&Pincode=" +Pincode + "&Bloodgroup=" +Bloodgroup + "&Employeephoto=" +Employeephoto,
+            success: function(jsonResult) {
+                debugger;
+                if(jsonResult[i] = 1){
+                    HideModalPopup("modalEmployee");
+                    fnMsgAlert("success","Employee Profile","Successfully Updated");
+                }
+            }
+        });
+        HideModalPopup('modalEmployee');
+    }
+    function getFileExtension(filename) {
+        return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+    }
+    //else
+    //{
+    //    //document.getElementById("#btnclose").disabled = false;
+    //    fnMsgAlert('info', 'Info', 'Updated Successfully');
+    //    return true;
+    //}
+    function fnGetDepartmentDetails() {
+        debugger;
+        $.ajax({
+            type: "Get",
+            url: '../Hidoctor_Master/User/GetDepartmentDetails',
+            data: '',
+            success: function (resp) {
+                debugger;
+                // Deptlst = resp;
+                DepartmentsuccesscallbackBindHTML(resp);
+            }
+        });
+    }
+    function DepartmentsuccesscallbackBindHTML(resp) {
+        debugger;
+        var deptdrpdwn = '';
+        deptdrpdwn += '<option maxlength="25" style="text-align:left;"value="0">Please Select Department</option>';
+        if (resp != null && resp != '' && resp.length > 0) {
+            for (i = 0; i < resp.length; i++) {
+                deptdrpdwn += '<option maxlength="25" value="' + resp[i].Department_Id + '" style="text-align:left;">' + resp[i].Department_Name + '</option>';
+            }
+        }
+        $('#dvdept').html(deptdrpdwn);
+    }
+
+
+    function fnGetStateDetails() {
+        debugger;
+
+        $.ajax({
+            type: "Get",
+            url: '../Hidoctor_Master/User/GetEmpStateDetails',
+            data: '',
+            async: false,
+            success: function (resp) {
+                debugger;
+                //Statelst = resp;
+                StatesuccesscallbackBindHTML(resp);
+
+
+            }
+        });
+    }
+
+    function StatesuccesscallbackBindHTML(resp) {
+        debugger;
+        console.log(resp);
+        var drpdwnCont = '';
+        drpdwnCont += '<option maxlength="25" style="text-align:left;" value="0">Please Select State</option>';
+        if (resp != null && resp != '' & resp.length > 0) {
+            for (i = 0; i < resp.length; i++) {
+                drpdwnCont += '<option maxlength="25" value="' + resp[i].State_ID + '" style="text-align:left;">' + resp[i].State_Name + '</option>';
+
+            }
+        }
+        $('#dvState').html(drpdwnCont);
+    }
+
+    function fnGetCitiesDetails(State_Id) {
+
+
+        debugger;
+        if (State_Id != stateID) {
+            $('#dvPincode').val(0);
+        }
+        if (State_Id != undefined && State_Id != "") {
+            stateID = State_Id;
+        }
+
+
+        $.ajax({
+            type: 'Get',
+            url: '../Hidoctor_Master/User/GetEmpCitiesDetails',
+            data: "State_Id=" + stateID + "",
+            async:false,
+            success: function (resp) {
+                //  citylst = resp;
+                CitysuccesscallbackBindHTML(resp);
+            }
+        });
+    }
+
+    function CitysuccesscallbackBindHTML(resp)
+    {
+        debugger;
+        console.log(resp);
+        var citydrpdwn = '';
+        citydrpdwn += '<option maxlength="25" style="text-align:left;"value="0">Please Select City</option>';
+        if (resp != null && resp != '' && resp.length > 0)
+        {
+            for (i = 0; i < resp.length; i++) {
+                citydrpdwn += '<option maxlength="25" value="' + resp[i].City_ID + '" style="text-align:left;">' + resp[i].City_Name + '</option>';
+            }
+        }
+        $('#dvCity').html(citydrpdwn);
+    }
+    function fnGetPincodesDetails(City_Id) {
+        debugger;
+        if (City_Id != undefined && City_Id != "") {
+            cityID = City_Id;
+        }
+
+        $.ajax({
+            type: 'Get',
+            url: '../Hidoctor_Master/User/GetPincodeDetails',
+            data: "State_Id=" + stateID + "&City_Id=" + cityID,
+            async: false,
+            success: function (resp) {
+                //  pincodelst = resp;
+                PincodesuccesscallbackBindHTML(resp);
+            }
+        });
+
+    }
+
+
+    function fngetABloodgroupnames() {
+        debugger;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: '../HiDoctor_Master/User/GetBloodgroupName',
+            data: '',
+
+            async: false,
+            success: function (resp) {
+                debugger;
+                //Company_code=resp[0].Company_code;
+                $('#dvbldgroup').empty();
+                $('#dvbldgroup').html('<input type="text" id="blooddgrp">');
+                var lstUser = [];
+                for (var i = 0; i < resp.length; i++) {
+                    _objData = {};
+                    _objData.id = resp[i].Blood_Group_Id;
+                    _objData.label = resp[i].Blood_Group_Name;
+                    lstUser.push(_objData);
+                }
+                // if (lstUser.length > 0) {
+                var UserDetails = lstUser;
+                var atcObj = new ej.dropdowns.DropDownList({
+                    //set the data to dataSource property
+                    dataSource: lstUser,
+                    fields: { text: 'label', value: 'id' },
+                    filterBarPlaceholder: 'Search',
+                    showClearButton: true,
+                    allowFiltering: true,
+                    placeholder: 'Select Blood Group',
+
+                    filtering: function (e) {
+                        var dropdown_query = new ej.data.Query();
+                        dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                        e.updateData(lstUser, dropdown_query);
+                    }
+                });
+                atcObj.appendTo('#blooddgrp');
+
+
+
+
+
+
+
+            },
+            error: function (e) {
+                fnMsgAlert('info', '', 'Error.' + e.Message);
+            }
+        });
+
+    }
+
+    function PincodesuccesscallbackBindHTML(resp) {
+        debugger;
+        var pincodedrpdwn = '';
+        pincodedrpdwn += '<option maxlength="25" style="text-align:left;"value="0">Please Select Pincode</option>';
+        if (resp != null && resp != '' && resp.length > 0) {
+            for (i = 0; i < resp.length; i++) {
+                pincodedrpdwn += '<option maxlength="25" value="' + resp[i].Pincode_Id + '" style="text-align:left;">' + resp[i].Pincode + '</option>';
+            }
+        }
+        $('#dvPincode').html(pincodedrpdwn);
+    }
+
+    $("#lbltext").click(function () {
+        debugger
+        $('.splashImg').slideUp("normal").promise().done(function () {
+            $('.splashContent').show();
+            $('#splashShowHideBtn').show();
+        });
+    });
+    $("#splashShowHideBtn").click(function () {
+        $('.splashImg').slideDown();
+        $('.splashContent').hide();
+        $('#splashShowHideBtn').hide();
+
+    });
+
+    //function fnsplashEmppopup()
+    //{
+    //    debugger;
+    //    HideModalPopup('modalSplash');
+    //    fnShowMyProfileScreen();
+    //}
+
+
+
+    function fnchkAcknowledgement()
+    {
+        if ($('#chkAgree').attr('checked'))
+        {
+            //$('#btnaccept').show();
+            $('#btnaccept').attr('disabled', false)
+            $('#btnaccept').removeClass('Bfragree');
+
+        }
+        else
+        {
+            //$('#btnaccept').hide();
+            $('#btnaccept').attr('disabled', true);
+            $('#btnaccept').addClass('Bfragree');
+        }
+
+    }
+
+    function fnProceedLogin()
+    {
+        $('#CCOverlay').hide();
+        $.blockUI();
+        fnSaveAcknowledgement();
+    }
+
+    function fnSaveAcknowledgement(){
+        debugger
+        $.ajax({
+            type: 'Post',
+            url: '../Home/SaveAcknowledgement/',
+            data: "FileId=" +CCFileId,
+            async: false,
+            success: function (resp) {
+                debugger
+                $.blockUI();
+                fnHidePopup();
+                $.unblockUI();
+            }
+        });
+        //fnHidePopup();
+    }
+</script>

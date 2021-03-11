@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "Home Page"; 
+}
+<style type="text/css">
+    .first-letter {
+        font-size: 17px;
+        color: black;
+    }
+
+    .a-underline {
+        text-decoration: underline;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+<div style="clear: both">
+</div>
+<div>
+    <div style="width: 98%; background-color: #F8F8F8; height: 35px; margin-top: 15px; border: 1px solid #F2F2F2;">
+    </div>
+    <div id="divRportHeader" class="div-reports" style="width: 98%; height: 178px;">
+        <div style="width: 98%; height: 150px; padding-left: 10%;">
+            <div class="report-icon-bg dvImgMain" onclick="fnExpandAndCollapse('dvMainAdmin');" style="cursor: pointer;">
+                <div class="dvImgLayout">
+                    <img src="../Areas/HiDoctor_Reports/Content/images/Administration-HD.png" /><div class="first-letter">
+                        Administration<div id="divreportCount"> </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="report-icon-bg dvImgMain">
+                <div class="dvImgLayout" onclick="fnExpandAndCollapse('dvMainComp');" style="cursor: pointer;">
+                    <img src="../Areas/HiDoctor_Reports/Content/images/compliance-HD.png" /><div class="first-letter">
+		    Compliance<div id="divreportCount_1"> </div>
+		    </div>
+                </div>
+            </div>
+            <div class="report-icon-bg dvImgMain" onclick="fnExpandAndCollapse('dvMainField');" style="cursor: pointer;">
+                <div class="dvImgLayout">
+                    <img src="../Areas/HiDoctor_Reports/Content/images/FieldAnalysis-HD.png" /><div class="first-letter">
+                        Field
+                        Analysis<div id="divreportCount_3"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="report-icon-bg dvImgMain" onclick="fnExpandAndCollapse('dvMainMarketing');" style="cursor: pointer;">
+                <div class="dvImgLayout">
+                    <img src="../Areas/HiDoctor_Reports/Content/images/Marketing-HD.png" /><div class="first-letter">
+                        Marketing
+                        Analysis<div id="divreportCount_2"> </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+    </div>
+    <div style="width: 98%; background-color: #F8F8F8; height: 20px; margin-top: 5px; border: 1px solid #F2F2F2;">
+    </div>
+    <div style="width: 98%" id="dvDescription">
+        <table style="width: 100%">
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div style="width: 100%" id="dvMainAdmin" class="hide">
+                        <div style="width: 100%">
+                            <div style="width: 9%; float: left;">
+                                <img src="../Areas/HiDoctor_Reports/Content/images/Administration-small.png">
+                            </div>
+                            <div class="div-report-header" style="float: left; padding-top: 40px;">
+                                Administration
+                            </div>
+                        </div>
+                        <div style="width: 100%; margin-left: 8%; padding-left: 15px; clear: both;" id="divAdmin">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div style="width: 100%" id="dvMainComp" class="hide">
+                        <div style="width: 100%">
+                            <div style="width: 9%; float: left;">
+                                <img src="../Areas/HiDoctor_Reports/Content/images/compliance-small.png" />
+                            </div>
+                            <div class="div-report-header" style="float: left; padding-top: 40px;">
+                                Compliance
+                            </div>
+                        </div>
+                        <div style="width: 100%; margin-left: 8%; padding-left: 15px; clear: both;" id="divComp">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div style="width: 100%" id="dvMainField" class="hide">
+                        <div style="width: 100%">
+                            <div style="width: 9%; float: left;">
+                                <img src="../Areas/HiDoctor_Reports/Content/images/FieldAnalysis-small.png" />
+                            </div>
+                            <div class="div-report-header" style="float: left; padding-top: 40px;">
+                                Field Analysis
+                            </div>
+                        </div>
+                        <div style="width: 100%; margin-left: 8%; padding-left: 15px; clear: both;" id="divField">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div style="width: 100%" id="dvMainMarketing" class="hide">
+                        <div style="width: 100%">
+                            <div style="width: 9%; float: left;">
+                                <img src="../Areas/HiDoctor_Reports/Content/images/Marketing-small.png" />
+                            </div>
+                            <div class="div-report-header" style="float: left; padding-top: 40px;">
+                                Marketing Analysis
+                            </div>
+                        </div>
+                        <div style="width: 100%; margin-left: 8%; padding-left: 15px; clear: both;" id="divMarketing">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function fnExpandAndCollapse(id) {
+
+        $("#dvMainAdmin").hide();
+        $("#dvMainComp").hide();
+        $("#dvMainField").hide();
+        $("#dvMainMarketing").hide();
+        $("#" + id).toggle('highlight', '', 500);
+        $("#" + id).removeClass('hide');
+        $("#" + id).addClass('show');
+        $("#" + id).show();
+    }
+
+    //  Function Get User Menu details
+    function fnMenu() {
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Reports/Reports/GetUserMenuAccess',
+            data: 'A',
+            success: function (response) {
+                jsData = eval('(' + response + ')');
+                var tableContent = "";
+                // Binding Compliance Report
+                if (jsData.Tables[0].Rows.length > 0) {
+                    var dJsonData = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Report_Category=='C')]");
+                    if (dJsonData != false) {
+                        tableContent += "<ul class='ul-img'>";
+                        for (var j = 0; j < dJsonData.length; j++) {
+                            tableContent += " <li><span> </span><a href='#' onclick=fnLoadBody('" + dJsonData[j].Menu_URL + "',this,'')>" + dJsonData[j].Menu_Text + "</a></li>";
+                            $("#divreportCount_1").html("(" + dJsonData.length + ")")
+                        }
+
+                        tableContent += "</ul>";
+                    }
+                    else {
+                        tableContent += "<span></span>";
+                    }
+                    $("#divComp").html(tableContent);
+                }
+                tableContent += "<ul class='ul-img'>";
+            
+                tableContent += "</ul>";
+
+
+                $("#divComp").html(tableContent);
+                tableContent = "";
+                // Binding Master Report
+                if (jsData.Tables[0].Rows.length > 0) {
+                    var dJsonData = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Report_Category=='M')]");
+                    if (dJsonData != false) {
+                        tableContent += "<ul style='list-style-image: url('/Content/themes/base/images/hd/icon_bullet_go.gif');padding-bottom: 6px;'>";
+                        for (var j = 0; j < dJsonData.length; j++) {
+                            tableContent += " <li><span> </span><a href='#' onclick=fnLoadBody('" + dJsonData[j].Menu_URL + "',this)>" + dJsonData[j].Menu_Text + "</a></li>";
+                            $("#divreportCount").html("(" + dJsonData.length + ")")                        }
+                        tableContent += "</ul>";
+                    }
+                    else {
+                        tableContent += "<span></span>";
+                    }
+                    $("#divAdmin").html(tableContent);
+                }
+
+                // Binding Review Report
+                tableContent = "";
+                if (jsData.Tables[0].Rows.length > 0) {
+                    var dJsonData = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Report_Category=='R')]");
+                    if (dJsonData != false) {
+                        tableContent += "<ul style='list-style-image: url('/Content/themes/base/images/hd/icon_bullet_go.gif');padding-bottom: 6px;'>";
+                        for (var j = 0; j < dJsonData.length; j++) {
+                            tableContent += " <li><span> </span><a href='#' onclick=fnLoadBody('" + dJsonData[j].Menu_URL + "',this,'')>" + dJsonData[j].Menu_Text + "</a></li>";
+                            $("#divreportCount_2").html("(" + dJsonData.length + ")")
+                        }
+                        tableContent += "</ul>";
+                    }
+                    else {
+                        tableContent += "<span></span>";
+                    }
+                    $("#divMarketing").html(tableContent);
+                }
+
+                // Binding Analysis Report
+                tableContent = "";
+                if (jsData.Tables[0].Rows.length > 0) {
+                    var dJsonData = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Report_Category=='A')]");
+                    if (dJsonData != false) {
+                        tableContent += "<ul style='list-style-image: url('/Content/themes/base/images/hd/icon_bullet_go.gif');padding-bottom: 6px;'>";
+                        for (var j = 0; j < dJsonData.length; j++) {
+                            tableContent += " <li><span> </span><a href='#' onclick=fnLoadBody('" + dJsonData[j].Menu_URL + "',this,'')>" + dJsonData[j].Menu_Text + "</a></li>";                         
+                            $("#divreportCount_3").html("(" + dJsonData.length + ")")
+                        }
+                        tableContent += "</ul>";
+                    }
+                    else {
+                        tableContent += "<span></span>";
+                    }
+                    $("#divField").html(tableContent);
+
+                }
+            }
+        });
+    }
+
+    var domainName_g = "";
+    $(document).ready(function () {
+        try {
+
+            fnMenu();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    
+</script>

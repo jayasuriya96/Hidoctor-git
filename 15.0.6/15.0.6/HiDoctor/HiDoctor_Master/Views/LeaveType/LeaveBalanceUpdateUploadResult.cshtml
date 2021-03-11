@@ -1,0 +1,63 @@
+﻿<style>
+    #dvMsgSuccess {
+        font-size: 14px;
+        color: green;
+        background-color: #C0F2D8;
+        border: 1px solid green;
+    }
+
+    #dvMsgError {
+        font-size: 14px;
+        color: red;
+        border: 1px solid red;
+    }
+
+    .freshwidget-theme {
+        display: none;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div id="dvMsgError" class="col-lg-12">
+    </div>
+    <div id="dvMsgSuccess" class="col-lg-12">
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#dvMsgError").html('');
+        $("#dvMsgSuccess").html('');
+        var ErrCode;
+        ErrCode = @Html.Raw(Json.Encode(ViewBag.Result));
+        if(ErrCode.split(':')[0] == "ERROR"){
+            $("#dvMsgSuccess").hide();
+            parent.document.getElementById('dvRedirect').style.display='none';
+            $("#dvMsgError").html(ErrCode.split(':')[1]);
+        }
+        else{
+            parent.document.getElementById('dvRedirect').style.display='show';
+            parent.document.getElementById('dvRedirect').style.display='';
+            $("#dvMsgError").hide();
+            $("#dvMsgSuccess").html("Leave Balance uploaded successfully.Please click on the Go to Batch processing screen link to view the status of the upload");
+        }
+        //if(ErrCode == "Leave balance inserted successfully.Mail send to " + mailid + " email id")
+        //{
+        //    $('#dvMsgSuccess').html(ErrCode);
+        //    $('#dvMsgError').html('');
+        //}
+        //else if(ErrCode == "Leave balance inserted successfully.unable to send " + mailid + "  email id")
+        //{
+        //    $('#dvMsgSuccess').html(ErrCode);
+        //    $('#dvMsgError').html('');
+        //}
+        //else if(ErrCode == "Insertion Failed")
+        //{
+        //    $('#dvMsgError').html(ErrCode);
+        //    $('#dvMsgSuccess').html('');
+        //}
+        //else{
+        //    $('#dvMsgError').html(ErrCode);
+        //}   
+    });
+
+</script>

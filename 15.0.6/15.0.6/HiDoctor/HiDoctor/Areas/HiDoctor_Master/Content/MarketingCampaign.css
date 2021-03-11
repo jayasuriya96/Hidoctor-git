@@ -1,0 +1,128 @@
+﻿
+
+
+.MC{
+    width:50% !important;
+}
+
+.ui-multiselect{
+    width:50% !important;
+}
+.ui-multiselect-menu{
+    width:375px !important;
+}
+#txtCampPurpose{
+    resize:none;
+    height:auto !important;
+}
+.Productlabel{
+    padding-top:5px !important;
+}
+.ROIlabel{
+    padding-top:5px !important;
+}
+.mc {
+    padding: 0px 0px !important;
+}
+.colon{
+    float:right !important;
+}
+
+#MCfilter{
+    padding:40px;
+}
+#formhdn {
+    padding: 12px;
+    background: rgb(241, 241, 241);
+    text-align: center;
+    display: none;
+    width:98% !important;
+    margin-left:12px !important;
+    margin-right:12px !important;
+}
+
+.errTxtBox {
+    border: 1px solid #f23f4e !important;
+    outline-color: #f23f4e !important;
+}
+#apprvd {
+    color: white;
+    background-color: darkgreen;
+}
+#appld {
+    color: white;
+    background-color: DodgerBlue;
+}
+#unapprvd {
+    color: white;
+    background-color: crimson;
+}
+#Main{
+    padding-left:15px !important;
+    padding-right:15px !important;
+    padding-top:10px !important;
+}
+#Prod{
+    padding:5px !important;
+}
+#Samp{
+    padding-top:5px !important;
+}
+.paddng{
+     padding-left:0px !important;
+    padding-right:0px !important;
+}
+#DetailMain{
+    overflow:scroll;
+    height:500px !important;
+}
+.descrpcss {
+    font-style: italic;
+}
+#VO{
+    width:15%;
+}
+#Bdgt_PRO_AC{
+    width:15%;
+}
+
+#rolesel{
+    display:none;
+}
+#regsel{
+    display:none;
+}
+@media (min-width: 1200px) {
+
+
+    .col-lg-9 {
+        width:75% !important;
+    }
+    #Bdgt_PRO_AC{
+        width:15%;
+    }
+    #sDate{
+        width:15%;
+    }
+    #eDate{
+        width:15%;
+    }
+    #VO{
+        width:12%;
+    }
+}
+.maintable tbody {
+    position: relative;
+    display: block;
+    height: 100px;
+    overflow: auto;
+}
+.maintable thead {
+    position: relative;
+    display: block;
+    overflow: visible;
+}
+.maintable{
+    width:80% !important;
+    border-collapse:collapse;
+}

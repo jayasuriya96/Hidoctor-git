@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "SalesAndActivityPerformance";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px; background: #fafafa; width: 35%; border: 1px solid #c0c0c1">
+            <input type="hidden" id="hdnRegionCode" />
+            <table>
+                <tr>
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="radio" name="Selection" value="2" checked="checked" />Qtr 1<br />
+                        <input type="radio" name="Selection" value="5" />Qtr 2<br />
+                        <input type="radio" name="Selection" value="8" />Qtr 3<br />
+                        <input type="radio" name="Selection" value="11" />Qtr 4
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetSalesAndActivityPerformance();" />
+                    </td>
+                </tr>
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+            <hr />
+        </div>
+        <div id="divHeader">
+        </div>
+        <div id="divReport">
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MissedCallRecovery.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var currentMonth=0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+
+            fnBindRegionTree("tree");
+            $("#dvTree").show();
+            $('#divInput').hide();
+            $('#divToggle').hide();
+            currentMonth = @Html.Raw(Json.Encode(ViewBag.CurrentMonth)); 
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+
+    });
+    function fnRegionTreeActivate(node) {
+        $("#divReport").html("");
+        $("#divHeader").html("");
+        
+        $("#dvTree").hide();
+        $('#hdnRegionCode').val(node.data.key);
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        fnBindRegionTypeName1();
+    }
+    function fnRegionTreePostInit() {
+
+    }
+
+
+</script>

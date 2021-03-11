@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "PayslipDataUpload";
+    Layout = null;
+}
+
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PaySlip.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<form action="../HiDoctor_Master/Payslip/ExcellPayslipDataUpload" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="form-group panel panel-primary" id="dvUserExcelMain">
+        <div class="col-lg-12 panel-heading">
+            Payslip - Excel Upload
+        </div>
+
+        <div class="form-group panel-body">
+            <div id="dvRules" class="col-lg-6 table-responsive form-group">
+                <table>
+                    <tr>
+                        <td>1.Click the upload button to upload the data.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2.Below Fields is mandatory <span class="Mandatory">*</span>
+                            <div class="col-lg-12 table-responsive">
+                                <table>
+                                    <tr>
+                                        <td>Emp_No.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Also please note that Emp_No Should always be the first column.Else Upload might not be successful.</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3.For a colunm type that contains a month,for e.g:Column Name = Payslip For and Column Value is."'July.2013",then the Data Type should be given as TEXT.  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4.For a colunm type that contains a Date, e.g:Column Name = "Date of joining" and Column Value is "21/03/2015",then the Data Type should be given as DATE.  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5.Do not enter above 500 characters in Excel sheet column.</td>
+                    </tr>
+                    <tr>
+                        <td>6.Do not add new (or) Alter (or) Delete colunms in Excel sheet.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7.Please Enter Active Employee Number in first row of Excel Sheet.
+                        </td>
+                    </tr>
+                </table>
+                @Html.ActionLink("Download PayslipRefer Sheet", "PutPayslipmetadataintoExcel",new {})
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="col-lg-12 form-group" id="dvMonth">
+                    <div class="Month">
+                        <label for="txtMonth">Month</label>
+                    </div>
+                    <input class="selectboxWidth" id="txtMonthDate" type="text" />
+                </div>
+                <div class="col-lg-12 form-group">
+                    <input type="file" id="file" tabindex="2" name="file" accept=".xlsx" />
+                    <br />
+                    <input type="submit" id="btnUp" tabindex="3" value="Upload" class="btn btn-primary" />
+                </div>
+                <div id="dvFrame" class="form-group col-lg-12">
+                    <iframe name="ifrmExcel"></iframe>
+                </div>
+                <div id="dvRedirect" class="form-group col-lg-12">
+                    <br />
+                    <a href="#" onclick="fnRedirectToBP('PAYSLIP_UPLOAD');">>>Go to Batch processing</a>
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    @Html.Hidden("txtMonth")
+  @Html.Hidden("txtYear")
+</form>
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+        $('#txtMonthDate').monthpicker();
+    });
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+
+
+</script>
+

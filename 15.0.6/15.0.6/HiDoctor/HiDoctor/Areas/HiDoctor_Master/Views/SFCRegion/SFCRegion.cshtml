@@ -1,0 +1,521 @@
+﻿@{
+    ViewBag.Title = "SFC Region Based";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+<script src="../Areas/Scripts/Bootstrap/bootstrap.js"></script>
+<link href="../Areas/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style>
+    .treebg {
+        background: #fafafa !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .formtextboxfocus {
+        height: 22px;
+        clear: both;
+    }
+
+    .formselectboxfocus {
+        height: 30px;
+        clear: both;
+    }
+
+    .mandatorysymbol {
+        color: red;
+    }
+
+    .pagenav {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .pgcont {
+        float: right;
+    }
+
+    #spnnxt {
+        background-image: url('../content/images/next.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+
+    #spnprev {
+        background-image: url('../content/images/prev.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+
+    .link {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .highlight {
+        font-weight: bold !important;
+    }
+
+    #SFCExcellink {
+        border: 0px;
+        color: blue;
+        cursor: pointer;
+    }
+
+    .SFCVersionAdd {
+        background: url(../Areas/HIdoctor_Master/Content/images/SFC_Version_add-32.png) no-repeat !important;
+        height: 32px;
+        width: 32px;
+        float: left;
+    }
+
+    .SFCEdit {
+        background: url(../Areas/HIdoctor_Master/Content/images/SFCEdit-32.png) no-repeat !important;
+        height: 32px;
+        width: 32px;
+        float: left;
+    }
+
+    #dataDiv {
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    }
+
+    .distanceEdit, .amtEdit {
+        width: 60px;
+    }
+
+    .ui-tabs, .ui-tabs-panel {
+        padding: 0px !important;
+    }
+
+    .popheader {
+        color: #777 !important;
+    }
+
+    .SFC_Approved {
+        background-color: #B2C938 !important;
+        color: #fff;
+    }
+
+    .SFC_Applied {
+        background-color: #00ABEC !important;
+        color: #fff;
+    }
+
+    .SFC_Unapproved {
+        background-color: #E92E2F !important;
+        color: #fff;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<div id="dvSFC" class='col-xs-12'>
+
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <input type="hidden" id="hdnSFCVersionValue" />
+        <div id="regiontree" style="float: left; height: auto; width: 100%">
+        </div>
+        <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div>
+    <div style="display: none;" id="divToggle">
+        <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 20px"
+              onclick="fnToggleTree()">Hide Tree</span>
+    </div>
+    <div id="dataDiv" class='col-xs-9 rghtInputandRpt' style="float: left">
+        <ul class="nav nav-pills">
+            <li><a href="#dvSFCEntryForm">Add SFC</a></li>
+            <li><a href="#dvSFCGrid" id="TabViewSFC">View SFC</a></li>
+        </ul>
+        <div class="page-header">
+            <h3 id="regionNameHeader" style="padding: 8px"></h3>
+        </div>
+
+        <div id="dvSFCEntryForm" class="col-sm-10 form-group" style="padding-left: 35px !important">
+            <div class="form-group col-sm-10" >
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">
+                    From Place<span class="mandatorysymbol">*</span>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type='text' id='txtfrmplace' class='form-control autoSFC' />
+                    <input type='hidden' id='hdnSFC' />
+                </div>
+            </div>
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">
+                    To Place <span class="mandatorysymbol">*</span>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type='text' id='txttoplace' class='form-control autoSfcToplace' />
+                    <input type='hidden' id='hdnSFCtoplace' />
+                </div>
+            </div>
+
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">
+                    Category <span class="mandatorysymbol">*</span>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <select id="drpCategory" class="form-control"></select>
+                </div>
+            </div>
+
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">
+                    Distance <span class="mandatorysymbol">*</span>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" id="txtDistance" maxlength="4" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">Amount</div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" maxlength="7" id="txtAmount" class="form-control" />
+                    <span id="spnamountloading">&nbsp;</span>
+                </div>
+            </div>
+            <div class="col-sm-10 form-group" style="height: 100px;">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4" >Travel Mode</div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6" style="height:90%" >
+                    <div style="overflow-y:auto;height:100%;width:100%;">
+                        <div id="divTravelMode"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">Date From <span class="mandatorysymbol">*</span></div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" id="txtDateFrom" class="form-control datepicker" />
+                </div>
+            </div>
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">Date To <span class="mandatorysymbol">*</span></div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" id="txtDateTo" class="form-control datepicker" />
+                </div>
+            </div>
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">SFC Min Visit Count</div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" maxlength="3" id="txtSFCMinVisitCount" class="form-control" value="0" />
+                </div>
+            </div>
+            <div class="col-sm-10 form-group">
+                <div class="col-sm-12 col-xs-12 col-md-5 col-lg-4">SFC Max Visit Count</div>
+                <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" maxlength="3" id="txtSFCVisitCount" class="form-control" value="0" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <div class="col-sm-12">
+                @Html.Hidden("hdnSFCCode")
+                @Html.Hidden("hdnBindRowNo")
+                @Html.Hidden("hdnSFCVersionNo")
+                <input type="button" id="btnSave" class="btn btn-success btn-primary" value="Save"
+                       onclick="fnInsertSFC()" />
+                <input type="button" id="btnClear" class="btn btn-danger  btn-primary" value="Clear"
+                       onclick="fnClear()" />
+            </div>
+            <div style="margin-top: 5px">
+                <div id="successmsg" class="alert alert-success" style="display: none"></div>
+                <div id="warningmessage" class="alert alert-warning" style="display: none"></div>
+                <div id="errormsg" class="alert alert-danger" style="display: none"></div>
+            </div>
+        </div>
+
+        <div style="clear: both"></div>
+        <div style="clear: both"></div>
+
+        <div id="dvSFCGrid">
+
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="../HiDoctor_Master/SFCRegion/DownloadSFCExcelFormat"
+                  role="form">
+                <div class="col-sm-10 form-group">
+                    <div class="col-sm-12 col-xs-12 col-md-4 col-lg-3">SFC Status</div>
+                    <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                        <input type="checkbox" id="applied" name="SFCStatus" value="2">Applied
+                        <input type="checkbox" id="approved" name="SFCStatus" checked="checked" value="1">Approved
+                        <input type="checkbox" id="unapproved" name="SFCStatus" value="0">Unapproved
+                    </div>
+                </div>
+                <div id="Search">
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-12 col-xs-12 col-md-4 col-lg-3">Region</div>
+                        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                            <input type="text" id="txtRegionSearch" tabindex="1" maxlength="100" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-12 col-xs-12 col-md-4 col-lg-3">From Place</div>
+                        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                            <input type="text" id="txtFromSearch" tabindex="2" maxlength="100" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-12 col-xs-12 col-md-4 col-lg-3">To Place</div>
+                        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                            <input type="text" id="txttoSearch" tabindex="3" maxlength="100" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-12 col-xs-12 col-md-4 col-lg-3">Show Archived SFC</div>
+                        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                            <input type="radio" name="rdoShowArchived" value="1">Yes
+                            <input type="radio" name="rdoShowArchived" checked="checked" value="0">No
+                        </div>
+                    </div>
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                            <input type="button" id="btnSerachGo" tabindex="4" class="btn btn-success btn-primary" value="Search"
+                                   onclick="fnGetSFCRegions(1)" />
+                            <input type="button" id="btnSearchClear" tabindex="5" class="btn btn-danger  btn-primary" value="Clear"
+                                   onclick="fnSearchClear()" />
+                        </div>
+                    </div>
+                </div>
+                <div id="dvSFCGridData" class="col-sm-12 table-responsive" style="font-size: 12px !important; clear:both;  margin: 0px;">
+                </div>
+                <div id="dvApprovebtnArea">
+                </div>
+                @Html.Hidden("hdnRegionCode")
+                <input type="submit" style="display: none" id="SFCExcellink" value="Download SFC Excel" />
+            </form>
+        </div>
+             
+        <div>
+            <label id="lblmessage"></label>
+        </div>
+        <div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+            <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+                <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+                    <img src="~/Images/close.png" />
+                </span>
+                <h2 id="popheader" class="popheader"></h2>
+                <div id="divModel" style="height: 500px; overflow: auto">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+
+        <div id="dvAddSFCVersion" style="display: none; z-index: 10000; background-color: #fff; min-height: 500px; width: 75%; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000; overflow: auto; background-color: #f5f5f5; border: 8px solid #5E87B0; margin: 0px auto;">
+            <div class="col-lg-12" style="background-color: #5E87B0; padding: 0px; margin: 0px">
+                <div style="text-align: center; height: 35px; color: #fff; font-size: 13px;">
+                    ADD SFC Version
+                    <span style="float: right; cursor: pointer; color: white" onclick="$('#dvAddSFCVersion').overlay().close();;">
+                        <img src="~/Images/close.png" />
+                    </span>
+                </div>
+            </div>
+            <div style="position: absolute; font-size: 11px; padding: 0px; width: 100%">
+                <div id="divAddSFCVesrionContent" style="height: 500px; overflow: auto">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+
+        <div id="dvEditSFC" style="display: none; z-index: 10000; position:absolute; background-color: #fff; width: 75%; margin:0px auto; min-height: 500px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000; overflow: auto; background-color: #f5f5f5; border: 8px solid #5E87B0;">
+            <div class="col-lg-12" style="background-color: #5E87B0; padding: 0px; margin: 0px">
+                <div style="text-align: center; height: 35px; color: #fff; font-size: 13px;">
+                    EDIT SFC
+                    <span style="float: right; cursor: pointer; color: white" onclick="$('#dvEditSFC').overlay().close();;">
+                        <img src="~/Images/close.png" />
+                    </span>
+                </div>
+            </div>
+            <div style="position: relative; width:100%; font-size: 11px; padding: 5px;" class="col-lg-12">
+                <div id="divEditSFCContent" style="height: 500px; overflow: auto; width:100%; ">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<input type="hidden" id="hdnmultravelmode" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/SFCRegion.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"
+        language="javascript"></script>
+<script>
+    var  sfcFromdate="";
+    var  sfcTodate="";
+    var SFCStatus="";
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        $('#regionNameHeader').html('');
+        $('#dvApprovebtnArea').html('');
+        $('#hdnSFCVersionValue').val(@Html.Raw(Json.Encode(ViewBag.Mode)));
+        sfcFromdate = @Html.Raw(Json.Encode(ViewBag.FromDate));
+        sfcTodate = @Html.Raw(Json.Encode(ViewBag.Todate));
+        $('#txtDateFrom').val(sfcFromdate);
+        $('#txtDateTo').val(sfcTodate);
+        AjaxGlobalHandler.Initiate();
+
+        try {
+            var SFCEdit =  fnGetPrivilegeValue("IS_SFC_MASTER_EDIT","NO");
+            if(SFCEdit.toUpperCase() == "YES")
+            {
+                $('#TabViewSFC').html("View / Edit SFC");
+            }
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {
+
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $('#dataDiv').tabs();
+            }
+            //$("#dvAjaxLoad").hide();
+            //$('#dataDiv').tabs();
+            //$('.dynatree-container').css('border', 'none');
+            //$('#dvSFC').block({
+            //    message: 'Processing',
+            //    css: { border: '1px solid #ddd' }
+            //});
+            //fnBindRegionTree("regiontree"); // to bind region tree
+
+            SFCStatus=  $("input:checkbox[name=SFCStatus]:checked").val();
+        }
+        catch (err) {
+            $("#dvSFC").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    fnGetAndFillCategory();
+    fnGetTravelModes();
+    $("#dvOverlay").overlay().load();
+    $("#dvAddSFCVersion").overlay().load();
+    $('#dvEditSFC').overlay().load();
+
+    $('#btnApprove').css('display', 'none');
+    $('#btnUnapprove').css('display', 'none');
+    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        //showButtonPanel: true
+    });
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+
+            $('#regiontree').hide();
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#dataDiv").removeClass('col-xs-9');
+            $("#dataDiv").removeClass('col-xs-8');
+            $("#dataDiv").removeClass('col-xs-7');
+            $("#dataDiv").addClass('col-xs-11');
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();
+            $('#leftNav').addClass('col-xs-3');
+            $('#dataDiv').removeClass('col-xs-7');
+            $('#dataDiv').removeClass('col-xs-8');
+            $('#dataDiv').removeClass('col-xs-9');
+            $("#dataDiv").addClass('col-xs-9');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+
+    function fnRegionTreeNodeClick(node){
+        debugger;
+        $('#approved').attr('checked', 'checked');
+        $('#divToggle').show();
+        $("#hdnRegionCode").val(node.data.key);
+        $('#regionNameHeader').html(node.data.title);
+        $('#txtDateFrom').val(sfcFromdate);
+        $('#txtDateTo').val(sfcTodate);
+        fnGetAllPrivileges(node.data.key)
+        fnClear();
+        fnSearchClear();
+        fnGetSfc();
+        fnGetSfcTo();
+        $("#Search").show();
+        //var SFC_TO_REFER_DFC = fnGetPrivilegeVal('SFC_TO_REFER_DFC', '');
+        //if (SFC_TO_REFER_DFC == "YES") {
+        //    $('#txtAmount').attr('disabled', 'disabled');
+        //}
+        //else {
+        //    $('#txtAmount').attr('disabled', false);
+        //}
+
+        fnGetSFCRegions(1);
+        $('#divToggle').show();
+        $("#divMain").addClass('col-xs-9');
+    }
+    function fnRegionTreeActivate(node) {
+
+    }
+
+    function fnRegionTreePostInit() {
+        try
+        {
+
+            if (GetRegionTreeLength() == 1) {
+                fnGetAllPrivileges($("#hdnRegionCode").val())
+                //var SFC_TO_REFER_DFC = fnGetPrivilegeVal('SFC_TO_REFER_DFC', '');
+                //if (SFC_TO_REFER_DFC == "YES") {
+                //    $('#txtAmount').attr('disabled', 'disabled');
+                //}
+                //else {
+                //    $('#txtAmount').attr('disabled', false);
+                //}
+                fnGetSFCRegions(1);
+            }
+            $("#dvSFC").unblock();
+        }
+        catch(err)
+        {
+            $("#dvSFC").unblock();
+        }
+    }
+
+    $(document).keypress(function(e) {
+        if(e.which == 13) {
+            return false;
+        }
+    });
+    //$("#dvSFC").unblock();
+
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) {
+
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'dataDiv', 'regiontree');
+    }
+
+  
+</script>

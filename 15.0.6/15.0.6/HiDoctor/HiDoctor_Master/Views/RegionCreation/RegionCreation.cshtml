@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "RegionCreation";
+    Layout = null;
+}
+
+
+<style>
+    .cls_header {
+        text-align: center;
+        font-weight: bold;
+        background-color: #3276b1;
+        color: white;
+    }
+
+
+    .divlable ul.ulmaster li {
+        font-family: 'Times New Roman';
+        font-size: 12px;
+    }
+
+    .divlist ul.ulmaster li {
+        text-decoration: underline;
+        cursor: pointer;
+        font-family: 'Times New Roman';
+        font-size: 12px;
+    }
+
+    .divfont {
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .divalignuser {
+        text-align: center;
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+        font-weight: bold;
+        /*padding-top: 26px;*/
+        background-color: aliceblue;
+    }
+
+    .divtext {
+        font-size: 13px;
+        padding-top: 26px;
+        padding-left: 32px !important;
+        background-color: whitesmoke;
+    }
+
+    .divalignreg {
+        text-align: center;
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+        font-weight: bold;
+        /*padding-top: 26px;*/
+        background-color: aliceblue;
+    }
+</style>
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="col-md-10" id="dvRegioncreationwizard" style="margin-top: 21px;margin-left: 165px;">
+    <div class="col-md-10 cls_header">
+        HiDoctor Region Creation/Disable/Hierarchy or Attribute Changes
+
+    </div>
+
+    <div class="col-md-10" style="background-color:whitesmoke;padding:0px;">
+        <div class="col-md-12">
+            <div class="col-md-12 dvheader" style="font-weight: bold;">Pre-requisities for Region Creation</div>
+            <div class="col-md-6 divlable">
+                <ul style="list-style: none;" class="ulText">
+                    <li id="regtypemaster">* Region Types in Region Type Master.</li>
+                    <li id="regclass">* Region Classification in Region Classification Master.</li>
+                    <li id="citystate">* State and City in City and State Master.</li>
+                </ul>
+            </div>
+            <div class="col-md-6 divlist">
+                <ul style="list-style: none;" class="ulmaster">
+                    <li id="Regiontype"><a onclick="fnRegionTypeMaster();">Link to Region Type Master Screen</a></li>
+                    <li id="RegionClass"><a onclick="fnRegionClassificationMaster();">Link to  Region Classification Master Screen</a></li>
+                    <li id="CityStatemaster"><a onclick="fnCityMaster();">Link to City and State Master Screen</a></li>
+
+                </ul>
+            </div>
+            <div class="col-md-10 divfont">
+                (if you navigate to any of the links provided above,you will need to manually return to the Wizard.
+                Navigation back to the wizard is not automatic.)
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divtext">
+            *Click here to go to the Region Creation
+        </div>
+        <div class="col-md-12 divalignuser">
+            <a onclick="fnCreateNewRegion();">Region Creation</a>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divtext">
+            *Click here to go to the Region Disable
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divalignreg">
+            <a onclick="fnDiableRegion()">Region Disable</a>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divtext">
+            *Click here to go to the Attribute Changes/Hierarchy
+        </div>
+        <div style="clear: both;"></div>
+        <div class="col-md-12 divalignreg">
+            <a onclick="fnhierarchy()">Attribute Changes/Hierarchy</a>
+        </div>
+        @*<div style="clear: both;"></div>
+
+            <div style="clear: both;"></div>*@
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RegionCreationWizard.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#dvAjaxLoad').hide();
+        fnshowbasedonmenu();
+    });
+    function fnshowbasedonmenu() {
+        debugger;
+        var Region_Type_Master = 'HiDoctor_Master/RegionType/RegionType';
+        var Region_Classification_Master = 'HiDoctor_Master/RegionCategoryMaster/Create';
+
+        var regiontypemaster = false;
+        var regionclassificationmaster = false;
+
+        for (var i = 0; i < menuContent_g.Tables[0].Rows.length; i++) {
+            if (menuContent_g.Tables[0].Rows[i].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[i].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == Region_Type_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    regiontypemaster = true;
+                }
+            }
+        }
+
+        if (regiontypemaster == true) {
+            $('#regtypemaster').show();
+            $('#Regiontype').show();
+        } else {
+            $('#regtypemaster').hide();
+            $('#Regiontype').hide();
+        }
+
+        for (var j = 0; j < menuContent_g.Tables[0].Rows.length; j++) {
+            if (menuContent_g.Tables[0].Rows[j].Menu_URL != null) {
+                if (menuContent_g.Tables[0].Rows[j].Menu_URL.toUpperCase().replace(/[^A-Z0-9]/ig, ' ') == Region_Classification_Master.toUpperCase().replace(/[^A-Z0-9]/ig, ' ')) {
+                    regionclassificationmaster = true;
+                }
+
+            }
+        }
+
+        if (regionclassificationmaster == true) {
+            $('#regclass').show();
+            $('#RegionClass').show();
+        }
+        else {
+            $('#regclass').hide();
+            $('#RegionClass').hide();
+        }
+
+    }
+</script>

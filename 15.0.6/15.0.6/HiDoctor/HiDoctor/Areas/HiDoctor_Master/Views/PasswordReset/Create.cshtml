@@ -1,0 +1,238 @@
+﻿@model HiDoctor_Master.Models.PasswordReset
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+<div>
+    <div id="leftNav" style="width: 30%; float: left;" class="col-lg-4 table-responsive">
+        <div id="usertree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+
+    <div style="width: 70%; float: left" id="divMain" class="col-lg-8 table-responsive">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                  onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="dvtable" style="display: none;">
+            <table>
+                <tr>
+                    <td>
+                        <input type="hidden" id="hdnUserCode" />
+                        <label type="hidden" id="treetitle"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Enter new password :</label>
+                    </td>
+                    <td>
+                        <input type="password" id="txtpwd" value="" autocomplete="off" class="form-control"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Send Mail :</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkmail" name="checkMail" />
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>
+                        <input type="button" name="Send Password Now" value="Save Password" id="btnsend" class="btn btn-primary" onclick="fnValidate()" />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <br />
+            <div id="divUserPasswordHistory" class="table-responsive form-group" style="clear: both;" hidden></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="txtpass" />
+    <input type="hidden" id="txtpasshistory" />
+    <input type="hidden" id="txtpasshistoryneed" />
+    <input type="hidden" id="txtpasshistorycount" />
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/PasswordReset.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+
+    var userCode = "";
+    var treeExpandLevel = 0;
+    var usertype ='';
+    var currentUserCode_g = "";
+    var Selected_UserCode_g = "";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        debugger;
+        try {
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.UserCode));
+            $("#txtpasshistoryneed").val(@Html.Raw(Json.Encode(ViewBag.PasswordHistoryNeed)));
+            $("#txtpasshistorycount").val(@Html.Raw(Json.Encode(ViewBag.PasswordHistoryCount)));
+            $("#txtpass").val(@Html.Raw(Json.Encode(ViewBag.PasswordStrength)));
+            $("#txtpasshistory").val(@Html.Raw(Json.Encode(ViewBag.PassHistory)));
+
+
+            if(currentUserCode_g != null && currentUserCode_g != ''){
+                $("#leftNav").show();
+                fnTreePosiitionNew("usertree");
+                fnGetUserTreeByUserNewmethod(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {
+                        fnSearchUsersNew();
+                        return false;
+                    }
+                });
+                $('#dvtable').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');
+                $("#dvAjaxLoad").hide();
+            }
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+    function fnUserTreeNodeClick(node) {
+        debugger;
+        $("#lbluserstatus").html('');
+        $('#hdnUserCode').val(node.data.key);
+        selecteduserCode = node.data.key;
+        Selected_UserCode_g = node.data.key;
+        if(currentUserCode_g == selecteduserCode){
+            debugger;
+            var Underusercode = fnGetUnderuserCode(currentUserCode_g);
+            if(currentUserCode_g == Underusercode){
+                $('#dvtable').show();
+                $('#divUserPasswordHistory').show();
+                $("#divMain").css('width', '60%');
+                $('#treetitle').val(node.data.title);
+                $("#spnTreeToggle").html('Hide Tree');
+                $('#divToggle').show();
+                $("#lbluserstatus").html('');
+
+                usertype = node.data.title.split(',')[1];
+                fncheckpassPrivlige(usertype);
+                fnGetUsersEmailID(Selected_UserCode_g);
+            }
+            else{
+                fnMsgAlert('info','Info','You cannot reset the password of the selected user');
+                return false;
+            }
+        }
+        else{
+            $('#dvtable').show();
+            $('#divUserPasswordHistory').show();
+            $("#divMain").css('width', '60%');
+            $('#treetitle').val(node.data.title);
+            $("#spnTreeToggle").html('Hide Tree');
+            $('#divToggle').show();
+            $("#lbluserstatus").html('');
+            selecteduserCode = node.data.key;
+            usertype = node.data.title.split(',')[1];
+            fncheckpassPrivlige(usertype);
+            fnGetUsersEmailID(Selected_UserCode_g);
+        }
+    }
+
+    function fnUserTreePostInit() { }
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            $('#usertree').hide();
+            $('#dvTree').removeClass('col-xs-5');
+            $('#dvTree').removeClass('col-xs-4');
+            $('#dvTree').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');
+            $("#spnTreeToggle").html('Show Tree');
+            //Expand the Tree
+            //$('#spnTreeResize').attr('title', 'Click here to expand tree');
+            //$('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#usertree').show();
+            $('#dvTree').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7');
+            $('#divMain').removeClass('col-xs-8');
+            $('#divMain').removeClass('col-xs-9');
+            $("#divMain").addClass('col-xs-9');
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#dvtable").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#dvtable").slideDown();
+        }
+    }
+
+    function fnGetUnderuserCode(currentUserCode_g){
+        var underUsrCode ="";
+        debugger;
+        $.ajax({
+            url: '../HiDoctor_Master/PasswordReset/GetUnderusercode',
+            type: "GET",
+            data: "userCode=" + currentUserCode_g,
+            async: false,
+            success: function(result){
+                debugger;
+                for(var i = 0; i<result.length; i++){
+                    if(result[i].Under_User_Code != null){
+                        underUsrCode = result[i].Under_User_Code;
+                    }
+                }
+            },
+            error: function (result) {
+                debugger;
+            }
+        });
+        return underUsrCode;
+    }
+
+    function fnGetUsersEmailID(Selected_UserCode_g){
+        var UsrMailID ="";
+        debugger;
+        $.ajax({
+            url: '../HiDoctor_Master/PasswordReset/GetUserEmailID',
+            type: "GET",
+            data: "userCode=" + Selected_UserCode_g,
+            async: false,
+            success: function(result){
+                debugger;
+                for(var i = 0; i<result.length; i++){
+                    if(result[i].length > 0){
+                        UsrMailID = result[i];
+                        $("#chkmail").removeAttr("disabled")
+                    }
+                    else{
+                        $("#chkmail").attr("disabled","disabled");
+                    }
+                }
+            },
+            error: function (result) {
+                debugger;
+            }
+        });
+        return UsrMailID;
+    }
+</script>

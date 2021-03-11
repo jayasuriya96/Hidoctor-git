@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "TreeWithoutCheck";
+    Layout = null;
+}
+
+<style>
+    /*.dvResize {
+        cursor: e-resize;
+        width: 15px;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        display: block;
+        font-size: .5px;
+        right: -7px;
+    }*/
+
+    /*a#NavigationResize {
+        position: absolute;
+        top: 12px;
+        margin: 0;
+        width: 7px;
+        height: 22px;
+        cursor: pointer;
+        overflow: hidden;
+        display: none;
+        left: 305px;
+        display: inline-block;
+    }
+
+    .cl_nav_resize_open {
+        top: -3px;
+        left: -313px;
+    }
+
+    .cl_nav_resize_close {
+        top: -3px;
+        left: -297px;
+    }*/
+
+    .leftNav {
+        width: 30%;
+        max-width: 50%;
+        min-height: 922px;
+        height: auto;
+        margin: 0 -1px 0 0;
+        border-right: 1px solid #b6b6b6 !important;
+        background-color: #efefef;
+        padding-right: 0px !important;
+        padding-left: 5px !important;
+    }
+
+    /*#tocnav {
+        margin: -20px 0 0 -4px;
+        font-size: 1.0803em;
+        overflow-x: hidden;
+        line-height: normal;
+    }*/
+
+    #dvRegionTree {
+        min-height: 400px;
+        height: 500px;
+        padding-top: 2%;
+        float: left;
+        width: 96%;
+    }
+
+    .dvPreviousNode {
+        width: 4%;
+        cursor: pointer;
+        display: none;
+        float: left;
+        padding-top: 2%;
+    }
+
+    .input-group-addon {
+        cursor: pointer;
+    }
+
+    .dvFilteredNode {
+        padding-top: 4%;
+    }
+
+    span.childIcon span.dynatree-icon {
+        background-image: url("../../Content/images/Add.png");
+        cursor: pointer;
+    }
+
+    #dvTreeButtons {
+        padding-left: 0% !important;
+        cursor: pointer;
+    }
+
+    #dvNodeSearch {
+        padding-top: 1%;
+    }
+
+    #spnTreeResize {
+        cursor: pointer;
+        position: absolute;
+        z-index: 999999;
+    }
+</style>
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class="col-xs-3 leftNav" id="leftNav">
+    <div id="treeNav">
+        <div id="dvNodeSearch">
+            <div class="input-group col-xs-8">
+                <input type="text" id="txtSearchNode" placeholder="Search" class="form-control" />
+                <span class="input-group-addon" onclick="fnSearchUsers();"><i class="fa fa-search"></i></span>
+            </div>
+            <span onclick="fnShowFullTreeClick();" id="dvFullTree" class="pull-right" style="margin-right: 4%;" title="Click here to show all users">
+                <i class="fa fa-th-list fa-2"></i></span>
+            <span onclick="fnLoadInitialTree();" id="dvLoadTree" class="pull-right" style="display: none; margin-right: 4%;" title="Click here to show all users">
+                <i class="fa fa-th-list fa-2"></i></span>
+            <div class="clearfix"></div>
+        </div>
+        <div id="dvFilteredNode" class="dvFilteredNode" style="display: none;">
+        </div>
+        <div id="dvMainTree">
+            <div id="dvPreviousNode" class="dvPreviousNode" onclick="fnBindUsersWithOneLevelParent();">
+                <i class="fa fa-arrow-up "></i>
+            </div>
+            <div id="dvRegionTree">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+<span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+<div style="width: 1px;"></div>
+
+<script>
+    var currentUserCode_g = "";
+    //  var canResizable = "YES";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        // $(document).idleTimeout();
+        AjaxGlobalHandler.Initiate();
+        currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.Current_User_Code))
+       fnGetUserTreeByUser(currentUserCode_g, "dvRegionTree", "dvFilteredNode");
+        // fnGetUserTreeByUserWithCheckBox(currentUserCode_g, "dvRegionTree", "dvFilteredNode");
+        // fnLoaduserDynaTree(currentUserCode_g, "dvRegionTree", "dvFilteredNode");
+        //if (canResizable == "YES") {
+        //    $("#leftNav").resizable();
+        //}
+        $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+        $('#txtSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                alert('key');
+                fnSearchUsers();
+                return false;
+            }
+        });
+        $('#dvAjaxLoad').hide()
+    });
+    function fnSearchUsers() {
+        if ($.trim($('#txtSearchNode').val()) == '') {
+            fnGetUserTreeByUser(currentUserCode_g, "dvRegionTree", "dvFilteredNode");
+        }
+        else {
+            fnGetUsersByUserName($('#txtSearchNode').val(), "dvRegionTree", "dvFilteredNode");
+        }
+    }
+    function fnBindUsersWithOneLevelParent() {
+        var userCode = $("#dvRegionTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        fnGetUserTreeByUserWithOnelevelParent(userCode, "dvRegionTree", "dvFilteredNode");
+    }
+    function fnTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj);
+    }
+
+
+
+    function fnUserTreeNodeClick(node) {
+    }
+
+    function fnUserTreePostInit(node) {
+    }
+
+    function fnShowFullTreeClick() {
+        $('#dvPreviousNode').hide();
+        $('#dvFullTree').hide();
+        $('#dvLoadTree').show();
+        $('#dvLoadTree').attr("title", "Click here to show users");
+        fnShowFullTree(currentUserCode_g, "dvRegionTree", "dvFilteredNode", "NO");
+    }
+    function fnLoadInitialTree() {
+        $('#dvFullTree').show();
+        $('#dvLoadTree').hide();
+        $('#dvFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUser(currentUserCode_g, "dvRegionTree", "dvFilteredNode");
+    }
+</script>

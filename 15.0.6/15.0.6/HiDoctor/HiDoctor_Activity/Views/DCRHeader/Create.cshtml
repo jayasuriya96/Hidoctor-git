@@ -1,0 +1,338 @@
+﻿@model HiDoctor_Activity.Models.DCRHeaderModel
+@{
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <style>
+        #dvAccPopUp {
+            top: 150px !important;
+        }
+
+        #trInterAuto {
+            background-color: #A5D16C;
+        }
+
+            #trInterAuto td label {
+                color: #fff !important;
+                float: left;
+            }
+
+        .routeCompHelp {
+            background-image: url("/Content/images/Help_Circle_Blue.png");
+            width: 25px;
+            height: 25px;
+            background-repeat: no-repeat;
+            float: right;
+        }
+
+        .lblRcHelp {
+            color: #1570A6;
+            padding: 5px;
+        }
+    </style>
+    <div id="div_Header">
+        <div id="prog-bar">
+            <div class="stepno1 step1Selected ">
+                <span id="spnDCR"></span>
+            </div>
+            <div id="dvstep2" style="width: 15%; float: left;">
+                &nbsp</div>
+            <div class="stepno2 ">
+                Doctors/Customers & Sample/Promotional items
+            </div>
+            <div style="width: 10.5%; float: left;">
+                &nbsp</div>
+            <div class="stepno3">
+                Stockist - Expense
+            </div>
+        </div>
+        <div id="prog-bar-att" style='display: none; text-align: center'>
+            <div class="stepno1 step1Selected ">
+                 <span id="spnADCR"></span>
+            </div>
+            <div style="width: 28.5%; float: left;">
+                &nbsp</div>
+            <div class="stepno2" >
+                Expense
+            </div>
+        </div>
+        <div id="dvLoading" style="display: none">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+        </div>
+        <div id="dvAccPopUp" style="display: none; margin-top:-200px">
+            <input type="hidden" id="hdnAccompPopUP" />
+            <div class="dvAccPopUpClose">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif" style="float: right; cursor:pointer;
+                    margin-right: 0px;" onclick="fnCloseAccPopUP()" />
+            </div>
+            <div class="dvAccPopUpClose" id="divAccMessage" style=""></div>
+            <div id="dvAccPopUpSub">
+                <table cellpadding="0" cellspacing="0" id="tblPopUp">
+                    <tr>
+                        <td>
+                            Enter minimun of 3 characters from user name or region name:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="txtMatching" />
+                            <span>
+                                <input type="button" id="btnGo" value="Go" onclick="fnGetAccompPopup()" />
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="dvAccompSelectPopUpSub" style="display:none;">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        @*<div id="dvAccompSelectPopUp" style="display: none;">
+            <div class="dvAccPopUpClose">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/trash1_16x16.gif" style="float: right;
+                    margin-right: 0px;" onclick="HideModalPopup('dvAccompSelectPopUp');" />
+            </div>
+            
+        </div>*@
+        <div style="clear: both">
+        </div>
+        <div id="divHeaderLoad" style="display: none;">
+            <center>
+                <div id="divUnapprove" class="unapprovedetail" onclick="fnHideUnapprove()" style="display: none;">
+                </div>
+                <table cellpadding="0px" cellspacing="0px" width="50%" border="0px" id="tblHeader">
+                    <tr align="left">
+                        <td class="first_td">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.DCR_Date)
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="editor-field">
+                                <label id="DCR_Date">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td class="first_td">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Category)
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.Category, ViewBag.category as SelectList, new { id = "ddlCategory" })
+                                @Html.ValidationMessageFor(model => model.Category)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left" id="divShowCP">
+                        <td class="first_td">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.CP_No)
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.CP_No, new { @class = "autoCP" })
+                                @Html.ValidationMessageFor(model => model.CP_No)
+                                <input type="hidden" id="hdnCPCode" runat="server" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left" id="rowAcc">
+                        <td class="first_td" style="vertical-align:middle;">
+                            <label>
+                                Accompanists</label>
+                        </td>
+                        <td colspan="2">
+                            <div id="accompanistDetail">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td class="first_td">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Work_Place)
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Work_Place, new { @class = "autoIntermediateWork" })
+                                @Html.ValidationMessageFor(model => model.Work_Place)
+                                <input type="hidden" id="hdnWorkPlace" runat="server" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td class="first_td" style="vertical-align: top">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Start_Time)
+                            </div>
+                        </td>
+                        <td>
+                            <div class="editor-field" style="float: left; width: 100px;">
+                                @Html.EditorFor(model => model.Start_Time)
+                                @Html.ValidationMessageFor(model => model.Start_Time)
+                            </div>
+                            <div class="editor-field" style="float: left; width: 100px;">
+                                @Html.EditorFor(model => model.End_Time)
+                                @Html.ValidationMessageFor(model => model.End_Time)
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr align="left">
+                        <td class="first_td" style="vertical-align:middle;">
+                            <label>
+                                Place Details</label>
+                        </td>
+                        <td colspan="2">
+                            <div id="intermediatePlace">
+                            </div>
+                            <span id="lblRCHelp" class="lblRcHelp" ></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first_td" style="vertical-align:middle;text-align:left;margin-top:3px;">
+                            <label id="lblActivity" style="display:none;">
+                                Activity</label>
+                        </td>
+                        <td colspan="3">
+                            <div id="dvactivity" style='display: none'>
+                                <table id="tblActivity">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Activity Name
+                                            </th>
+                                            <th>
+                                                Start Time
+                                            </th>
+                                            <th>
+                                                End Time
+                                            </th>
+                                            <th>
+                                                Remarks
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+            <p style="text-align: center;">
+                <input type="button" value="Go To Doctor/Customer & Sample/Promotional items" id="btnHeaderSubmit" onclick="fnSubmitHeader()" />
+                <input type="button" value="Clear" onclick="fnClearHeader()" />
+            </p>
+        </div>
+    </div>
+    
+}
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/Header.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+    var dcrDate = "";
+    var dcrStatus = "";
+    var currentRegion = "";
+    var currRegionName = "";
+    var cpNeed = "";
+    var isrcpa="";
+    var source="";
+    var sourceString="";
+    var flag_g="";
+    var actvistyJSON_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        ShowModalPopup('dvLoading');
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        $("#DCR_Date").html(dcrDate.split('-')[2] + '-' + dcrDate.split('-')[1] + '-' + dcrDate.split('-')[0]);
+        var activityFullName = fnGetSelectedActivityFullName(flag_g, isrcpa)
+        $('#spnDCR').html("DCR-"+new Date(dcrDate.split('-')[1]+'/'+dcrDate.split('-')[2]+'/'+dcrDate.split('-')[0]).toDateString() + " "+activityFullName);
+        // set attendance controls
+        if(flag_g.toUpperCase() == "A")
+        {$('#spnADCR').html("DCR-"+new Date(dcrDate.split('-')[1]+'/'+dcrDate.split('-')[2]+'/'+dcrDate.split('-')[0]).toDateString() + " "+activityFullName);
+            $('#prog-bar').css('display','none');
+            $('#prog-bar-att').css('display','');
+            $('#btnHeaderSubmit').val("Go to Expense");
+            $('#divShowCP').css('display','none');
+            $('#rowAcc').css('display','none');
+          
+        }
+        // assigning time picker for start and end date.
+        $('#Start_Time').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+
+        $('#End_Time').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+
+        if(flag_g.toUpperCase() == 'A')
+        {
+            $('#btnHeaderSubmit').val('Go To Expense');
+            $('#lblActivity').css('display','');
+        }
+
+        $("#Start_Time").addClass("time");
+        $("#End_Time").addClass("time");
+
+        $("#Start_Time").keypress(function () { return false; });
+        $("#End_Time").keypress(function () { return false; });
+       
+        cpNeed = fnGetPrivilegeValue("CAMPAIGN_PLANNER", "NO");
+        if (cpNeed == "NO") {
+            $("#CP_No").attr('disabled', 'disabled');
+            $("#divShowCP").css('display','none');
+        }
+        else {
+            if (cpNeed == "YES") {
+                $("#CP_No").blur(function () { fnFillCpDetails(); });
+            }
+            if (cpNeed == "OPTIONAL") {
+                $("#CP_No").blur(function () { fnFillCpDetails(); });
+                //$("#CP_No").blur(function () { return fnCheckRemarksSpecialChar(event) });
+            }
+        }
+
+
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        
+        sourceString = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        source=sourceString.split('_')[0];
+        var region = "";
+        region=@Html.Raw(Json.Encode(ViewBag.regionCode));
+        currentRegion = region.split(',')[0];
+        currRegionName = region.split(',')[1];
+
+        // in page load the work place should be current region name, except in the case of drafted data.
+        $("#Work_Place").val(currRegionName);
+        //$("#Work_Place").blur(function() { return fnCheckRemarksSpecialChar(this) });
+
+        $("#ddlCategory").attr('selectedIndex','0');
+        $("#ddlCategory").change(function () { fnCategorySelected(); });
+        fnSetHeaderPrivileges();
+        GetHeaderDetails();
+        $('#txtMatching').keyup(function(e) {
+            if (e.which == 13) {  // detect the enter key
+                $('#btnGo').click(); // fire a sample click,  you can do anything
+            }
+        });
+        
+        
+
+    });
+</script>

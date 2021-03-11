@@ -1,0 +1,295 @@
+﻿@{
+    ViewBag.Title = "BrandAnalysisReport";
+Layout=null;
+}
+<style>
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    #divMain {
+        width: 78%;
+        float: left;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+
+    table.data thead th {
+        text-align: center !important;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 98%;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 1%;
+        border-right: 1px solid #ddd;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    #dvReportPeriod {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #tblBrand td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblBrand th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+</style>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div style="width: 100%; border: 1px solid #efefef; min-height: 300px; overflow: auto;">
+    <div id="dvTree">
+        <div id="tree"></div>
+    </div>
+    <div id="divMain">
+        <div id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span> |
+            <div class="helpIconright">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('BRANDANALYSISREPORT','PAGE')" />
+            </div>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px; width: 100%;">
+            <div style="width: 100%;">
+                <table>
+                    <tr>
+                        <td>Month</td>
+                        <td>
+                            <input type="text" id="txtMonth" class="datepicker" /></td>
+                    </tr>
+                    <tr>
+                        <td>DCR Status</td>
+                        <td>
+                            <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                            <label for="2">
+                                Approved</label>
+                            <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                            <label for="1">
+                                Applied</label>
+                            <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                            <label for="0">
+                                Unapproved</label>
+                            <input type="checkbox" id="chkDrafted" value="3" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                            <label for="3">
+                                Drafted</label>
+                            <input type="checkbox" id="rbAllWOD" name="dcrStatusAllWOD" value="0,1,2" onclick="fnChangeCheckWithoutDraft();" /><label
+                                for="0">
+                                All without draft</label>
+                            <input type="checkbox" id="rbAllWD" name="dcrStatusAllWD" value="0,1,2,3" onclick="fnChangeCheckWithDraft();" /><label
+                                for="0">
+                                All with draft</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="button" class="btn small primary" value="Show Report" onclick="fnShowReport();" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="width: 100%;" id="dvMainReport">
+            <div style="width: 100%;">
+                <div id="dvTablePrint">
+                    <div style="width: 90%; float: left;"></div>
+                    <div style="width: 9%; float: right; padding-right: 1%;">
+                        <a id="lnkExcel" title="Excel Export">
+                            <img src="../Content/DataTable/media/images/xls.png" style='border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer;' /></a>
+                        <div id='dvPrint' title='Print Table' class='TableTools_button'
+                            style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer;'>
+                        </div>
+                    </div>
+                </div>
+                <div class="helpIconright" style="width: 100%; text-align: right;">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('BRANDANALYSISREPORT','TABLE')" />
+                </div>
+                <div style="width: 100%;" id="dvReport">
+                </div>
+                @*
+                <div style="clear: both;"></div>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        var options = {
+            pattern: 'mm-yyyy'
+        };
+        $('#txtMonth').monthpicker(options);
+        fnBindUserTree("tree");
+        $("#dvTree").show();
+        $('#divInput').hide();
+        $('#divToggle').hide();
+        $("#dvMainReport").hide();
+        $("#dvPrint").click(function () { fnPrint('divPrint', 'ifrmPrint'); });
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnShowReport() {
+        if ($('#txtMonth').val() == '') {
+            fnMsgAlert('info', 'Validate', 'Please select month');
+            $("#dvAjaxLoad").hide();
+            return;
+        }
+        $("#dvAjaxLoad").show();
+        var month = $('#txtMonth').val().split('-')[0];
+        var year = $('#txtMonth').val().split('-')[1];
+        var dcrStatus = "";
+        var flag = false;
+        $('input:checkbox[name=dcrStatus]').each(function () {
+            if ($(this).is(':checked')) {
+                flag = true;
+                dcrStatus += $(this).val() + "^";
+            }
+        });
+        if (!flag) {
+            fnMsgAlert('info', 'Validate', 'Please select atleast one dcr status');
+            $("#dvAjaxLoad").hide();
+            return;
+        }
+
+        var userTree = $("#tree").dynatree("getTree");
+        var userCode = userTree.getActiveNode().data.key;
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Reports/DoctorVisit/GetBrandAnalysisReport',
+            data: 'month=' + month + '&year=' + year + '&userCode=' + userCode + '&dcrStatus=' + dcrStatus,
+            success: function (result) {
+                if (result != '') {
+                    $("#dvReport").html(result.split('$')[0]);
+                    $("#lnkExcel").attr("href", result.split('$')[1]);
+                    // $("#imgClient").attr("src", $("#imgIndexClientLogo").attr("src"));
+                    $("#divPrint").html($("#dvReport").html());
+                }
+                $("#dvMainReport").show();
+                $('#tblBrand').tablePagination({});
+                $("#dvAjaxLoad").hide();
+            },
+            error: function () {
+            }
+        });
+    }
+    function fnUserTreeNodeClick(node) {
+        $("#dvReport").html("");
+        $("#dvTree").hide();
+        $('#divInput').show();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '99%');
+
+    }
+
+    function fnUserTreePostInit() {
+
+    }
+
+
+    function fnChangeCheckWithDraft() {
+        if ($(":checkbox[name=dcrStatusAllWD]:checked").length > 0) {
+            //uncheck all without draft
+            $("input:checkbox[name=dcrStatusAllWOD]").removeAttr('checked');
+
+            //Check All other status
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                $(this).attr('checked', 'checked');
+            });
+            return;
+        }
+    }
+
+    function fnChangeCheckWithoutDraft() {
+        if ($(":checkbox[name=dcrStatusAllWOD]:checked").length > 0) {
+            // uncheck all with draft
+            $("input:checkbox[name=dcrStatusAllWD]").removeAttr('checked');
+
+            // uncheck Draft and check Applied, Approved, Unappreved
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                if ($(this).val() == '3') {
+                    $(this).removeAttr('checked');
+                }
+                else {
+                    $(this).attr('checked', 'checked');
+                }
+            });
+            return;
+        }
+    }
+
+    // for dcr status
+    function fnChangeRadioDCR() {
+        //uncheck all without draft
+        $("input:checkbox[name=dcrStatusAllWOD]").removeAttr('checked');
+        // uncheck all with draft
+        $("input:checkbox[name=dcrStatusAllWD]").removeAttr('checked');
+
+        if ($(":checkbox[name=dcrStatus]:checked").length > 0) {
+            var dcrStatus = "";
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                if ($(this).is(':checked')) { dcrStatus += $(this).val(); }
+            });
+            if (dcrStatus == '210') {
+                // check All without draft
+                $("input:checkbox[name=dcrStatusAllWOD]").attr('checked', 'checked');
+            }
+            if (dcrStatus == '2103') {
+                // check All with draft
+                $("input:checkbox[name=dcrStatusAllWD]").attr('checked', 'checked');
+            }
+        }
+    }
+
+
+</script>

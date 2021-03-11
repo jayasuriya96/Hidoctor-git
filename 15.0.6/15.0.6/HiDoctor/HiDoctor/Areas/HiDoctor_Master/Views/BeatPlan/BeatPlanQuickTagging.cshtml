@@ -1,0 +1,641 @@
+﻿@{
+    ViewBag.Title = "BeatPlanQuickTagging";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+    @@media (min-width: 768px) {
+        #dvWebBody {
+            display: block;
+        }
+
+        #dvAppBody {
+            display: none;
+        }
+    }
+
+    @@media only screen and (min-width: 992px) {
+
+        .card-columns {
+            column-count: 3;
+        }
+    }
+
+    .datalabel {
+        font-weight: bold;
+    }
+
+    .form-group {
+        font-size: 13px;
+    }
+
+    .databody {
+        height: 485px;
+        overflow-y: auto;
+    }
+
+    .databodydestination {
+        height: 475px;
+        overflow-y: auto;
+    }
+
+    .databodydestination1 {
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .card {
+        background-color: unset !important;
+    }
+
+    .beatheaderColor {
+        background-color: gainsboro;
+    }
+
+    .commonheadercolor {
+        background-color: burlywood;
+    }
+
+    .localArea_label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+
+    .form-group {
+        margin-bottom: unset;
+    }
+
+    .card-columns1 {
+        column-count: 1;
+    }
+
+    .labelfont {
+        font-size: 13px;
+    }
+
+    .dot {
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .colorcls {
+        background-color: green;
+        height: 12px;
+        width: 12px;
+    }
+
+</style>
+
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Beat/Patch Plan Quick Tagging
+        </div>
+        <div class="card-body" id="dvMainBody">
+            <div class="col-sm-12 col-md-12" id="dvWebBody">
+                <div class="d-flex justify-content-between pb-2" id="regiondropdown">
+                    <div class="flex-fill" id="idShowhidelink" style="display:none;">
+                        <p class="text-primary mb-0 mt-1" style="cursor:pointer;text-decoration:underline;" id="showhide">Hide Pie Charts</p>
+                    </div>
+                    <div class="flex-fill">
+
+                    </div>
+                    <div class="flex-fill text-right">
+                        <div class="d-flex">
+                            <div class="p-2 flex-grow-1">
+                                <div class="form-group row no-gutters">
+                                    <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm text-right pr-2"><b>Region Name:</b></label>
+                                    <div class="col-sm-6">
+                                        <input type="hidden" id="hdnRegionCode" />
+                                        <input type="text" class="form-control form-control-sm" id="txtRegion" onblur="BeatPlanQuickTagging.fnValidateRegionAutoFill(this);" placeholder="Enter Region Name..">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnGetAllBeatRelatedActivity();">Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-gutters" id="pieChart" style="display:none;">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-md-center overflow-auto">
+                            <div class="col-6 col-sm-6 col-md-6 col-lg-6 p-0 pr-2">
+                                <div class="border shadow-sm rounded">
+                                    <div id="pie_container1" style="display:block;height:250px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-6 col-md-6 col-lg-6 p-0 pr-2">
+                                <div class="border shadow-sm rounded">
+                                    <div id="pie_container2" style="display:block;height:250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mt-2">
+                        <div class="d-flex justify-content-md-center overflow-auto">
+                            <div class="col-4 col-sm-4 col-md-4 col-lg-4 p-0 pr-2">
+                                <div class="border shadow-sm rounded">
+                                    <div id="pie_container3" style="display:block;height:250px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-4 col-lg-4 p-0 pr-2">
+                                <div class="border shadow-sm rounded">
+                                    <div id="pie_container4" style="display:block;height:250px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-4 col-lg-4 p-0 pr-2">
+                                <div class="border shadow-sm rounded">
+                                    <div id="pie_container5" style="display:block;height:250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row bd-highlight alert-info justify-content-end mt-2" style="display:none !important;" id="dvCommonFunctions">
+                    <div class="p-2 bd-highlight"><i class="fa fa-plus" aria-hidden="true" id="btnPlusExpandAll"></i></div>
+                    <div class="p-2 bd-highlight">Expand All</div>
+                    <div class="p-2 bd-highlight"><i class="fa fa-minus" aria-hidden="true" id="btnMinusCollapseAll"></i></div>
+                    <div class="p-2 bd-highlight">Collapse All</div>
+                </div>
+                <div class="col-sm-12 col-md-12 row mt-3 mx-0" id="dvWebGrid" style="display:none;">
+                    <div class="p-1 col-sm-6 border-right border-dark" style="float:left;">
+                        <div class="card-body p-0" id="dvWebSource">
+                            <!--Beat Plans-->
+                            <div class="card mb-2" id="MainDivBeat_S">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Beat Plans</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" style="display: none;" id="dvBeatsDataBody">
+
+                                </div>
+                            </div>
+                            <!--Doctor Details-->
+                            <div class="card mb-2" id="MainDivDoctor_S">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Doctor Details</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2" style="border-bottom: 1px solid;">
+                                    <div class="flex-fill labelfont ">
+                                        <span id="doctorchkAll" class="dvSourChkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row">
+                                        @*<input type="hidden" id="filter" />*@
+                                        <div id="dvSourceDocSearch">
+                                            <input type="text" class="form-control form-control-sm" id=" " placeholder="Enter Doctor Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" id="SearchDoctorName" onclick="BeatPlanQuickTagging.fnSearch('txtDoctorName','DOCTOR','SOURCE');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right ml-2">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebSource','divDoctorsDataBody','SOURCE','DOCTOR','doctorsourcemuliselect')">Tag</button>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" style="display: none;" id="divDoctorsDataBody">
+
+                                </div>
+                            </div>
+                            <!--Chemist Details-->
+                            <div class="card mb-2" id="MainDivChemist_S">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Chemist Details</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2" style="border-bottom: 1px solid;">
+                                    <div class="flex-fill labelfont ">
+                                        <span id="chemistchkAll" class="dvSourChkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row">
+                                        <div id="dvSourceChemSearch">
+                                            <input type="text" class="form-control form-control-sm" id="txtChemistName" placeholder="Enter Chemist Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" id="SearchChemistName" onclick="BeatPlanQuickTagging.fnSearch('txtChemistName','CHEMIST','SOURCE');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebSource','dvChemistsDataBody','SOURCE','CHEMIST','chemistsourcemultiselect')">Tag</button>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" style="display: none;" id="dvChemistsDataBody">
+
+                                </div>
+                            </div>
+                            <!--Stockist Details-->
+                            <div class="card mb-2" id="MainDivStockist_S">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Stockist Details</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2" style="border-bottom: 1px solid;">
+                                    <div class="flex-fill labelfont">
+                                        <span id="stockistchkAll" class="dvSourChkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row">
+                                        <div id="dvSourceStockSearch">
+                                            <input type="text" class="form-control form-control-sm" id="txtStockistName" placeholder="Enter Doctor Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" id="SearchStockistName" onclick="BeatPlanQuickTagging.fnSearch('txtStockistName','STOCKIST','SOURCE');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right ml-2">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebSource','dvStockistDataBody','SOURCE','STOCKIST','stockistsourcemultiselect')">Tag</button>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" style="display: none;" id="dvStockistDataBody">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-1 col-sm-6" style="float:right;">
+                        <div class="card-body p-0" id="dvWebDestination">
+                            <!--Beat Plan Destination-->
+                            <div class="card mb-2" id="dvBeatsDest" style="">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Beat/Patch Plan Selected:<span class="mandatory">*</span></div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @*<div class="d-flex">
+                                            <div class="bd-highlight">Beat/Patch Plan Selected:<span class="mandatory">*</span></div>
+                                        </div>*@
+                                </div>
+                                <div class="d-flex p-2 text-right" style="border-bottom: 1px solid;">
+                                    <div class="flex-fill">
+                                        <label for="count">Beat Count:</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-info" id="bdgBeat">0</span></label>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" id="dvBeatDestinationBody" style="display:none;">
+
+                                </div>
+                            </div>
+
+                            <!--Doctors Destination-->
+                            <div class="card mb-2" id="dvDoctorsDest">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Doctor(s) Selected for Tagging:<span class="mandatory">*</span></div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2">
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Tagged Count:</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-info" id="bdgDoctorsTagd">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Approved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-success" id="bdgDoctorsTagdAppr">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">UnApproved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-danger" id="bdgDoctorsTagdUnAppr">0</span></label>
+                                    </div>
+
+                                </div>
+                                <div class="p-2 dvSearchGridDest" style="border-bottom: 1px solid;" id="dvDoctorsSearchGrid">
+                                    <div class="flex-fill labelfont">
+                                        <span id="DoctorDestchkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row" id="dvDesignationceDocSearch">
+                                        <div id="dvDestDocSearch">
+                                            <input type="text" class="form-control form-control-sm" id="textDestDoctorName" placeholder="Enter Doctor Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" id="SearchTagDoctorName" onclick="BeatPlanQuickTagging.fnSearch('textDestDoctorName','DOCTOR','DESTINATION');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebDestination','dvDoctorDestinationBody','DESTINATION','DOCTOR','doctorDestmultiselect');">UnTag</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body databody" id="dvDoctorDestinationBody" style="display: none;">
+
+                                </div>
+                            </div>
+
+                            <!--Chemists Destination-->
+                            <div class="card mb-2" id="dvChemistsDest">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Chemist(s) Selected for Tagging:</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2">
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Tagged Count:</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-info" id="bdgChemistsTagd">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Approved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-success" id="bdgChemistsTagdAppr">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">UnApproved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-danger" id="bdgChemistsTagdUnAppr">0</span></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 dvSearchGridDest" style="border-bottom: 1px solid;" id="dvChemistsSearchGrid">
+                                    <div class="flex-fill labelfont">
+                                        <span id="ChemistDestchkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row" id="dvDesignationceChemSearch">
+                                        <div id="dvDestChemSearch">
+                                            <input type="text" class="form-control form-control-sm" id="textDestChemistName" placeholder="Enter Doctor Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" onclick="BeatPlanQuickTagging.fnSearch('textDestChemistName','CHEMIST','DESTINATION');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebDestination','dvChemistDestinationBody','DESTINATION','CHEMIST','chemistDestmultiselect');">UnTag</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body databody" id="dvChemistDestinationBody" style="display: none;">
+
+                                </div>
+                            </div>
+
+                            <!--Stockists Destination-->
+                            <div class="card mb-2" id="dvStockistsDest">
+                                <div class="card-header card-header-primary px-3 py-2 bg-info text-white">
+                                    <div class="d-flex">
+                                        <div class="bd-highlight">Stockist(s) Selected for Tagging:</div>
+                                        <div class="ml-auto bd-highlight">
+                                            <span id="CommonCollapse" class="CommonCollapse">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex p-2">
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Tagged Count:</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-info" id="bdgStockistsTagd">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">Approved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-success" id="bdgStockistsTagdAppr">0</span></label>
+                                    </div>
+                                    <div class="flex-fill labelfont">
+                                        <label for="count">UnApproved Count(In Tagged):</label><label for="badge" class="ml-1"><span class="badge badge-pill badge-danger" id="bdgStockistsTagdUnAppr">0</span></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 dvSearchGridDest" style="border-bottom: 1px solid;" id="dvStockistsSearchGrid">
+                                    <div class="flex-fill labelfont">
+                                        <span id="StocksitDestchkAll" style="cursor:pointer;text-decoration:underline;color:blue;">Select All</span>
+                                    </div>
+                                    <div class="row" id="dvDesignationceStocSearch">
+                                        <div id="dvDestStocSearch">
+                                            <input type="text" class="form-control form-control-sm" id="textDestStockistName" placeholder="Enter Doctor Name..">
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-sm ml-2" onclick="BeatPlanQuickTagging.fnSearch('textDestStockistName','STOCKIST','DESTINATION');">Search</button>
+                                    </div>
+                                    <div class="flex-fill text-right">
+                                        <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="BeatPlanQuickTagging.fnTagOrUnTagCustomerEntityCards('dvWebDestination','dvStockistDestinationBody','DESTINATION','STOCKIST','stockistDestmultiselect');">UnTag</button>
+                                    </div>
+                                </div>
+                                <div class="card-body databody" id="dvStockistDestinationBody" style="display: none;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 mt-3" id="dvActions" style="text-align:right;display:none;">
+                    <button type="button" id="btnClearGrid" class="btn btn-info btn-sm" onclick="BeatPlanQuickTagging.fnGetAllBeatRelatedActivity();">Clear</button>
+                    <button type="button" id="btnSaveTag" class="btn btn-info btn-sm" onclick="BeatPlanQuickTagging.fnSaveBeatMapping();">Save Tagging</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl show" data-backdrop="static" tabindex="-1" role="dialog" id="beatModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel">Beat / Patch Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="BeatPlanQuickTagging.fnCloseBeatModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="beatPopBody" style="height: 550px;overflow-y: auto;">
+                <div class="" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl show" data-backdrop="static" tabindex="-1" role="dialog" id="EntityModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel"><span id="spanEntity"></span> Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="BeatPlanQuickTagging.fnCloseEntityModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="EntityPopBody" style="height: 550px;overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl show" data-backdrop="static" tabindex="-1" role="dialog" id="detailmodal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel">Doctor Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="BeatPlanQuickTagging.fnClosedetailsModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="detailsbody" style="height: 571px;overflow-y: auto;">
+                <div class="" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/BeatPlan/BeatPlanQuickTagging.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script type="text/javascript">
+    var companyCode="";
+    var companyId="";
+    var loguserCode="";
+    var loguserTypeCode="";
+    var currentRegionCode_g = "";
+    var selectedRegionCode_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        companyCode = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        companyId = @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        loguserCode = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        loguserTypeCode=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+        currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        BeatPlanQuickTagging.defaults.CompanyCode=companyCode;
+        BeatPlanQuickTagging.defaults.CompanyId=companyId;
+        BeatPlanQuickTagging.defaults.RegionCode=currentRegionCode_g;
+        BeatPlanQuickTagging.defaults.UserCode=loguserCode;
+        BeatPlanQuickTagging.defaults.UserTypeCode=loguserTypeCode;
+        BeatPlanQuickTagging.Init();
+    });
+
+
+
+
+    $("#dvWebSource #CommonCollapse").click(function () {
+        var togglediv = $(this).parent().parent().parent().parent().find('.card-body');
+        if (togglediv.css('display') == 'none') {
+            $(this).html('<i class="fa fa-minus" aria-hidden="true"></i>')
+        }
+        else {
+            $(this).html('<i class="fa fa-plus" aria-hidden="true"></i>');
+        }
+        togglediv.delay(200).toggle();
+    });
+
+    $("#dvWebDestination #CommonCollapse").click(function () {
+        var togglediv = $(this).parent().parent().parent().parent().find('.card-body');
+        if (togglediv.css('display') == 'none') {
+            $(this).html('<i class="fa fa-minus" aria-hidden="true"></i>')
+        }
+        else {
+            $(this).html('<i class="fa fa-plus" aria-hidden="true"></i>');
+        }
+        togglediv.delay(200).toggle();
+    });
+    $('#btnPlusExpandAll').click(function(){
+        $('.databody').show();
+        $('.CommonCollapse').html('<i class="fa fa-minus" aria-hidden="true"></i>');
+
+    });
+    $('#btnMinusCollapseAll').click(function(){
+        $('.databody').hide();
+        $('.CommonCollapse').html('<i class="fa fa-plus" aria-hidden="true"></i>');
+
+    });
+
+    $('#showhide').click(function () {
+        debugger;
+        if ($("#pieChart").css('display') == 'none') {
+            $('#showhide').html('Hide Pie Charts');
+            $("#pieChart").css('display', 'block');
+        }
+        else {
+            $('#showhide').html('Show Pie Charts');
+            $("#pieChart").css('display', 'none');
+        }
+    });
+    //Source Doctors On click
+    $('#doctorchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='doctorsourcemuliselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#doctorchkAll").text('UnSelect All');
+        }
+        else {
+            $("#doctorchkAll").text('Select All');
+        }
+    });
+
+
+    //Source Chemists On Click
+    $('#chemistchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='chemistsourcemultiselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#chemistchkAll").text('UnSelect All');
+        }
+        else {
+            $("#chemistchkAll").text('Select All');
+        }
+    });
+
+
+    //Source Stockists On Click
+    $('#stockistchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='stockistsourcemultiselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#stockistchkAll").text('UnSelect All');
+        }
+        else {
+            $("#stockistchkAll").text('Select All');
+        }
+    });
+
+    //Destination Doctors On Click
+    $('#DoctorDestchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='doctorDestmultiselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#DoctorDestchkAll").text('UnSelect All');
+        }
+        else {
+            $("#DoctorDestchkAll").text('Select All');
+        }
+    });
+
+    //Destination Chemists On Click
+    $('#ChemistDestchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='chemistDestmultiselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#ChemistDestchkAll").text('UnSelect All');
+        }
+        else {
+            $("#ChemistDestchkAll").text('Select All');
+        }
+    });
+    //Destination Stockists On Click
+    $('#StocksitDestchkAll').click(function () {
+        debugger;
+        $("input[type=checkbox][name='stockistDestmultiselect']").prop('checked', ($(this).text() == 'Select All' ? true : false));
+        var check = $(this).text() == 'Select All' ? true : false;
+        if (check) {
+            $("#StocksitDestchkAll").text('UnSelect All');
+        }
+        else {
+            $("#StocksitDestchkAll").text('Select All');
+        }
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿@model MVCModels.SubRegionMasterModel
+
+@{
+    ViewBag.Title = "SubRegionMaster";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+    #dvTabs {
+        min-height: 500px;
+        overflow: auto;
+    }
+
+    #dvSubRegionMaster {
+        height: 450px;
+        overflow: scroll;
+    }
+
+        #dvSubRegionMaster a {
+            color: blue;
+        }
+
+    .selectboxWidth {
+        width: 99%;
+    }
+ #dvEditSubRegionMaster a {
+        color: blue !important;
+    }
+</style>
+
+
+<div class="col-lg-12 form-group" id="dvTabs">
+    <ul class="nav nav-pills">
+        <li><a href="#dvNewsubRegionMaster">New SubRegion Master</a></li>
+        <li><a href="#dvEditSubRegionMaster">Edit SubRegion Master</a></li>
+    </ul>
+    <div id="dvNewsubRegionMaster">
+        <div id="dataDiv" class="col-lg-9 form-group" style="display: none;">
+            <div class="row clearfix form-group">
+                <div class="col-xs-3  form-group">
+                    <label>Sub Region Name:</label>
+                </div>
+                <div class="col-xs-4  form-group">
+                    <input type="text" id="txtSubRegionName" class="form-control" />
+                    <input type="hidden" id="hdnSubRgionCode" />
+                </div>
+            </div>
+            <div class="row clearfix form-group" style="clear: both;">
+                <div class="col-xs-3  form-group">
+                    <label>Under Region</label>
+                </div>
+                <div class="col-xs-4 form-group dropdown">
+                    <select class="selectboxWidth form-control" id="ddlUnderRegion"></select>
+                    <input type="hidden" id="hdnUnderRegion" />
+                </div>
+            </div>
+<div style="clear:both;"></div>
+            <div class="row clearfix form-group">
+                <input type="button" id="btnSave" onclick="fnSaveSubRegionMaster();" value="Save" class="btn btn-primary"></input>
+                <input type="hidden" id="hdnMode" value="I" />
+                <input type="button" id="btnCancel" onclick="fnCancelSubRegionMaster();" value="Cancel" class="btn btn-primary"></input>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+    <div id="dvEditSubRegionMaster">
+        @Html.ActionLink("Download SubRegion Master details", "PutSubRegionMasterIntoExcel")
+        <div id="dvSubRegionMaster" class="table-responsive form-group" style="clear: both;">
+        </div>        
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/SubRegionMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            fnBindUnderregion();
+            fnGetSubregionMaster();
+            $("#dvTabs").tabs();
+            $('#dataDiv').show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

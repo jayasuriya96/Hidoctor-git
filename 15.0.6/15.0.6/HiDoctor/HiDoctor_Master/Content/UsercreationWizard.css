@@ -1,0 +1,462 @@
+﻿/*created by :sumathi*/
+
+.cls_res_profile_wizard_header {
+    display: none;
+}
+
+/*Wizard default*/
+.cls_profile_wizard_header li a:after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid #0173BA;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 100%;
+    z-index: 2;
+}
+
+#ullist > li > a {
+    height: 60px;
+}
+
+.cls_profile_wizard_header li a:before {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid white;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: 1px;
+    left: 101%;
+    z-index: 1;
+}
+
+.cls_profile_wizard_header {
+    list-style: none;
+    overflow: hidden;
+    /*margin-left: -39px;*/
+}
+
+    .cls_profile_wizard_header li {
+        float: left;
+        width: 33%;
+    }
+
+        .cls_profile_wizard_header li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #0173BA; /* fallback color */
+            background: #0173BA;
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+
+.cls_cut:after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+    border-bottom: 50px solid transparent;
+    border-left: 0px solid white !important;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 100%;
+    z-index: 2;
+}
+
+.cls_up_inactive a {
+    background-color: #d8d8d8;
+}
+/*Wizard default*/
+/*Steps Pass*/
+.cls_profile_wizard_header li.cls_steps_pass a:after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid #A5CE00;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 100%;
+    z-index: 2;
+}
+
+
+.cls_profile_wizard_header li.cls_steps_pass a:before {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid white;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: 1px;
+    left: 101%;
+    z-index: 1;
+}
+
+.cls_profile_wizard_header {
+    list-style: none;
+    overflow: hidden;
+    margin-left: -39px;
+}
+
+    .cls_profile_wizard_header li {
+        float: left;
+        width: 33%;
+    }
+
+        .cls_profile_wizard_header li.cls_steps_pass a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #A5CE00; /* fallback color */
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+
+        /*Step1 pass End*/
+
+        /*Step Inactive*/
+        .cls_profile_wizard_header li.cls_up_inactive a:after {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+            border-bottom: 50px solid transparent;
+            border-left: 30px solid #737373;
+            position: absolute;
+            top: 50%;
+            margin-top: -50px;
+            left: 100%;
+            z-index: 2;
+        }
+
+        .cls_profile_wizard_header li.tick_img a:after {
+            border-left: 30px solid green;
+        }
+
+#ullist li.tick_img a {
+    background-color: green;
+    /* background-image: url('../../HiDoctor_Master/Content/images/US_WS_Tick.png');*/
+    background-image: url('/Content/images/US_WS_Tick.png');
+    background-repeat: no-repeat;
+}
+
+#ullist li.tick_img.cls_up_step2 a,
+#ullist li.tick_img.cls_up_step3 a,
+#ullist li.tick_img.cls_up_step4 a,
+#ullist li.tick_img.cls_up_step5 a {
+    background-position: 33px 13px;
+}
+
+#ullist li.tick_img.cls_up_stpe1 a {
+    background-position: 8px 12px;
+}
+
+.cls_profile_wizard_header li.cls_up_inactive a:before {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid white;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: 1px;
+    left: 101%;
+    z-index: 1;
+}
+
+.cls_profile_wizard_header {
+    list-style: none;
+    overflow: hidden;
+    margin-left: 28px;
+}
+
+    .cls_profile_wizard_header li {
+        float: left;
+        width: 20%;
+    }
+
+        .cls_profile_wizard_header li.cls_up_inactive a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #737373; /* fallback color */
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+
+.mandatory {
+    color: red;
+    font-weight: bold;
+}
+
+.cls_div_header {
+    /*margin-left: 28px;*/
+    font-weight: bold;
+}
+
+/*Employee details start here*/
+.divNew {
+    margin-left: 28px;
+    border-bottom: 3px solid #5c9ccc;
+    margin-bottom: 10px;
+    padding: 5px 5px;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.dcrConsTabHeader {
+    /*text-decoration: underline;*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #06c;
+    height: 45px;
+}
+
+    .dcrConsTabHeader:hover {
+        cursor: pointer;
+    }
+
+    .dcrConsTabHeader span {
+        font-weight: normal;
+        font-style: italic;
+        /*display:inline-block;*/
+        color: black;
+        font-size: 13px;
+        font-family: 'Times New Roman';
+    }
+
+    .dcrConsTabHeader p {
+        text-decoration: underline;
+        display: inline-block;
+        margin: 0;
+    }
+
+.dcrconscollapse {
+    background: transparent url('../Images/plus.png') no-repeat left center !important;
+}
+
+.dcrconsexpand {
+    background: transparent url('../Images/minus.png') no-repeat left center !important;
+}
+
+.dcrconscollapse span {
+    background: none;
+}
+
+.dcrconsexpand span {
+    background: none;
+}
+
+/*Create New User - Final*/
+.cls-divNew {
+    margin-left: 28px;
+    margin-bottom: 10px;
+    padding: 5px 5px;
+    font-style: italic;
+    font-size: 13px;
+}
+
+/*User creation Wizard - Disable User*/
+
+
+
+/*-----START - USER CREATION WIZARD------*/
+.cls_profile_wizard_header_Disable li a:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid #0173BA;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 100%;
+    z-index: 2;
+}
+
+.cls_profile_wizard_header_Disable li a:before {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 30px solid white;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: 1px;
+    left: 101%;
+    z-index: 1;
+}
+
+.cls_profile_wizard_header_Disable {
+    list-style: none;
+    overflow: hidden;
+    /*margin-left: -39px;*/
+}
+
+    .cls_profile_wizard_header_Disable li {
+        float: left;
+        width: 49%;
+    }
+
+        .cls_profile_wizard_header_Disable li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #0173BA; /* fallback color */
+            background: #0173BA;
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+
+        .cls_profile_wizard_header_Disable li.cls_steps_pass a:after {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+            border-bottom: 50px solid transparent;
+            border-left: 30px solid #A5CE00;
+            position: absolute;
+            top: 50%;
+            margin-top: -50px;
+            left: 100%;
+            z-index: 2;
+        }
+
+
+        .cls_profile_wizard_header_Disable li.cls_steps_pass a:before {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            border-left: 30px solid white;
+            position: absolute;
+            top: 50%;
+            margin-top: -50px;
+            margin-left: 1px;
+            left: 101%;
+            z-index: 1;
+        }
+
+.cls_profile_wizard_header_Disable {
+    list-style: none;
+    overflow: hidden;
+    margin-left: -39px;
+}
+
+    .cls_profile_wizard_header_Disable li {
+        float: left;
+        width: 49%;
+    }
+
+        .cls_profile_wizard_header_Disable li.cls_steps_pass a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #A5CE00; /* fallback color */
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+
+        /*Step1 pass End*/
+
+        /*Step Inactive*/
+        .cls_profile_wizard_header_Disable li.cls_up_inactive__Disable a:after {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+            border-bottom: 50px solid transparent;
+            border-left: 30px solid #737373;
+            position: absolute;
+            top: 50%;
+            margin-top: -50px;
+            left: 100%;
+            z-index: 2;
+        }
+
+        .cls_profile_wizard_header_Disable li.tick_img a:after {
+            border-left: 30px solid green;
+        }
+
+        .cls_profile_wizard_header_Disable li.cls_up_inactive__Disable a:before {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            border-left: 30px solid white;
+            position: absolute;
+            top: 50%;
+            margin-top: -50px;
+            margin-left: 1px;
+            left: 101%;
+            z-index: 1;
+        }
+
+.cls_profile_wizard_header_Disable {
+    list-style: none;
+    overflow: hidden;
+    margin-left: 28px;
+}
+
+    .cls_profile_wizard_header_Disable li {
+        float: left;
+        width: 49%;
+    }
+
+        .cls_profile_wizard_header_Disable li.cls_up_inactive__Disable a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0 10px 65px;
+            background: #737373; /* fallback color */
+            position: relative;
+            display: block;
+            float: left;
+            width: 100%;
+        }
+/*-----END - USER CREATION WIZARD--------*/

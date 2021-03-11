@@ -1,0 +1,414 @@
+﻿@model HiDoctor_Master.Models.DoctorMasterModel
+@{
+    ViewBag.Title = "HDInsights";
+    Layout = null;
+}
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/DoctorMaster.css" rel="stylesheet" />
+
+<style>
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    #divMain {
+        width: 78%;
+        float: left;
+    }
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #tblDoctor td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblDoctor th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+</style>
+<div style="width: 100%;">
+    <div id="imgScroll" class="ScrollDown" style="cursor: pointer"></div>
+    <div style="width: 15%; float: left; border: 1px solid #f2f2f2; height: 725px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;"
+        id="dvLeftPanel">
+        <div id="dvRegionTree" style="height: 100%;">
+        </div>
+    </div>
+    <div style="width: 81%; float: left; border: 1px solid #EFEFEF; display: none; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;"
+        id="dvCenterPanel">
+        <div style="float: right; padding-right: 3px; width: 25%;">
+            <div id="dvOptions" class="dvOptions" onclick="fnOpenOptions('HDINSIGHTS');"></div>
+            <div id="dvPages" style="display: none;">
+            </div>
+        </div>
+        <div style="width: 100%; height: 45px;">
+            <div style="float: left; padding-left: 10px; padding-top: 6px; width: 60%;">
+                <span></span><span style="font-size: 19px;" id="spnEntity"></span>
+                <input type="hidden" id="seletedRegionCodeBulkAdd" />
+            </div>
+            <div style="clear: both"></div>
+            <div>
+                <center>
+                <div>
+                    <table cellpadding="0" cellspacing="0" style="font-size:15px;border: 1px solid #efefef;padding: 9px;">
+                        <tr>
+                            <td colspan="4" style="text-align:center;background:#efefef"><span style="font-size: 16px;" id="spnEntityType"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;border-right:1px solid #efefef !important;border-left:1px solid #efefef !important">Applied</td>
+                            <td style="padding:5px;border-right:1px solid #efefef !important">Approved</td>
+                            <td style="padding:5px;border-right:1px solid #efefef !important">Unapproved</td>
+                            <td style="padding:5px;border-right:1px solid #efefef !important">Unlisted</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;padding:5px;border-bottom:1px solid #efefef !important;border-right:1px solid #efefef !important;border-left:1px solid #efefef !important"><span id="spnApplied" onclick="fnBindDetails('APPLIED')" style="text-decoration:underline;cursor:pointer;"></span></td>
+                            <td style="text-align: center;padding:5px;border-bottom:1px solid #efefef !important;border-right:1px solid #efefef !important"><span id="spnApproved" onclick="fnBindDetails('APPROVED')" style="text-decoration:underline;cursor:pointer;"></span></td>
+                            <td style="text-align: center;padding:5px;border-bottom:1px solid #efefef !important;border-right:1px solid #efefef !important"><span id="spnUnapproved" onclick="fnBindDetails('UNAPPROVED')" style="text-decoration:underline;cursor:pointer;"></span></td>
+                            <td style="text-align: center;padding:5px;border-bottom:1px solid #efefef !important;border-right:1px solid #efefef !important"><span id="spnUnlisted" onclick="fnBindDetails('UNLISTED')" style="text-decoration:underline;cursor:pointer;"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                </center>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div id="dvCustomerDetails" style="width: 100%; overflow: auto"></div>
+    </div>
+</div>
+@Html.HiddenFor(model => model.Entity)
+@Html.HiddenFor(model => model.Region_Code)
+ @Html.HiddenFor(model => model.Table_Name)
+
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+<script lang="ja">
+    var entityColumns_g = "";
+    var customerDtlJson = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try
+        {
+
+            $("#Customer_Name").val($("#Entity").val() + ' Name');
+            $("#Customer_Name").css('color', '#aaa');
+            //$("#spnEntity").html($("#Entity").val() + " Master");
+            $("#spnEntity").html("HD Insights");
+            $("#spnEntityType").html($("#Entity").val() + " Count");
+
+            entityColumns_g = @Html.Raw(Json.Encode(ViewBag.Entity))
+            entityColumns_g = eval('(' + entityColumns_g.Data + ')')
+            fnBindRegionTree("dvRegionTree");
+            var viewbag = @Html.Raw(Json.Encode(ViewBag.sessionRegionCode))
+            var regionCode= viewbag.split('^')[0] ;
+            var regionName=viewbag.split('^')[1];
+            //   var selectedRegionCode =@Html.Raw(Json.Encode(ViewBag.SelectedRegion_Code));
+            $("#Region_Code").val(regionCode);
+            $("#seletedRegionCodeBulkAdd").val(regionCode);
+
+        }
+        catch(err)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreePostInit(node) {
+        
+        var treeobj = $("#dvRegionTree").dynatree("getTree")
+        var childCount = treeobj.tnRoot.countChildren();
+        if (childCount == 1) {
+            $("#Region_Code").val(treeobj.tnRoot.childList[0].data.key);
+            $("#seletedRegionCodeBulkAdd").val(treeobj.tnRoot.childList[0].data.key);
+            $("#dvRegionTree").dynatree("getTree").activateKey(treeobj.tnRoot.childList[0].data.key);
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '95%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvCenterPanel").css('display','');
+            $("#spnApplied").html('0');
+            $("#spnApproved").html('0');
+            $("#spnUnapproved").html('0');
+            $("#spnUnlisted").html('0');
+            $("#dvAjaxLoad").show();
+            $("#dvCustomerDetails").html('');
+            $.ajax({
+                url: '../HiDoctor_Master/DoctorMaster/GetCustomerCount/',
+                type: "POST",
+                data: "Entity=" + $("#Entity").val() + "&RegionCode=" + $("#Region_Code").val() + "",
+                success: function (jsData) {
+                    jsData = eval('(' + jsData + ')');
+                    customerDtlJson = jsData;
+                    var appliedCount = 0;
+                    var approvedCount = 0;
+                    var unapprovedCount =0;
+                    var unlistedCount =0;
+                    if (jsData.Tables[0].Rows.length > 0) {
+                        //Applied count                    
+                        var appliedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='APPLIED')]");
+                        if(appliedObj != false && appliedObj != undefined)
+                        {
+                            appliedCount = appliedObj.length;
+                        }
+                        //Approved count                    
+                        var approvedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='APPROVED')]");
+                        if(approvedObj != false && approvedObj != undefined)
+                        {
+                            approvedCount = approvedObj.length;
+                        }
+                        //Ununapproved count                    
+                        var unapprovedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='UNAPPROVED')]");
+                        if(unapprovedObj != false && unapprovedObj != undefined)
+                        {
+                            unapprovedCount = unapprovedObj.length;
+                        }
+                        //Unlisted count                    
+                        var unlistedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='UNLISTED')]");
+                        if(unlistedObj != false && unlistedObj != undefined)
+                        {
+                            unlistedCount = unlistedObj.length;
+                        }
+                        $("#spnApplied").html(appliedCount);
+                        $("#spnApproved").html(approvedCount);
+                        $("#spnUnapproved").html(unapprovedCount);
+                        $("#spnUnlisted").html(unlistedCount);
+
+                        $("#dvAjaxLoad").hide();
+                    }
+                    else {
+                        $("#spnApplied").html(appliedCount);
+                        $("#spnApproved").html(approvedCount);
+                        $("#spnUnapproved").html(unapprovedCount);
+                        $("#spnUnlisted").html(unlistedCount);
+
+                        $("#dvAjaxLoad").hide();
+                    }
+                },
+                error: function () {
+                    $("#dvAjaxLoad").hide();
+                }
+            });
+
+        }
+        else
+        {
+            $("#dvRegionTree").dynatree("getTree").activateKey($("#Region_Code").val());
+        }
+        fnSelectedregionCode();
+    }
+
+    function fnRegionTreeActivate(node) {
+        
+        $("#Region_Code").val(node.data.key);
+        $("#seletedRegionCodeBulkAdd").val(node.data.key);
+        if ($('#imgScroll').hasClass("ScrollUp")) {
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+            $("#dvLeftPanel").show();
+            $("#dvCenterPanel").css('width', '81%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '95%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+        }
+
+        $("#dvCenterPanel").css('display','');
+        $("#dvAjaxLoad").show();
+        $("#Region_Code").val(node.data.key);
+        $("#dvCustomerDetails").html('');
+        $("#spnApplied").html('0');
+        $("#spnApproved").html('0');
+        $("#spnUnapproved").html('0');
+        $("#spnUnlisted").html('0');
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/GetCustomerCount/',
+            type: "POST",
+            data: "Entity=" + $("#Entity").val() + "&RegionCode=" + $("#Region_Code").val() + "",
+            success: function (jsData) {
+                $("#spnApplied").html('0');
+                $("#spnApproved").html('0');
+                $("#spnUnapproved").html('0');
+                $("#spnUnlisted").html('0');
+                jsData = eval('(' + jsData + ')');
+                customerDtlJson = jsData;
+                var appliedCount = 0;
+                var approvedCount = 0;
+                var unapprovedCount =0;
+                var unlistedCount =0;
+                if (jsData.Tables[0].Rows.length > 0) {
+                    //Applied count                    
+                    var appliedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='APPLIED')]");
+                    if(appliedObj != false && appliedObj != undefined)
+                    {
+                        appliedCount = appliedObj.length;
+                    }
+                    //Approved count                    
+                    var approvedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='APPROVED')]");
+                    if(approvedObj != false && approvedObj != undefined)
+                    {
+                        approvedCount = approvedObj.length;
+                    }
+                    //Ununapproved count                    
+                    var unapprovedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='UNAPPROVED')]");
+                    if(unapprovedObj != false && unapprovedObj != undefined)
+                    {
+                        unapprovedCount = unapprovedObj.length;
+                    }
+                    //Unlisted count                    
+                    var unlistedObj = jsonPath(jsData, "$.Tables[0].Rows[?(@@.Customer_Status=='UNLISTED')]");
+                    if(unlistedObj != false && unlistedObj != undefined)
+                    {
+                        unlistedCount = unlistedObj.length;
+                    }
+                    $("#spnApplied").html(appliedCount);
+                    $("#spnApproved").html(approvedCount);
+                    $("#spnUnapproved").html(unapprovedCount);
+                    $("#spnUnlisted").html(unlistedCount);
+
+                    $("#dvAjaxLoad").hide();
+                }
+                else {
+                    $("#spnApplied").html(appliedCount);
+                    $("#spnApproved").html(approvedCount);
+                    $("#spnUnapproved").html(unapprovedCount);
+                    $("#spnUnlisted").html(unlistedCount);
+
+                    $("#dvAjaxLoad").hide();
+                }
+            },
+            error: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+        fnSelectedregionCode();
+    }
+    $("#imgScroll").click(function () {
+        if ($('#imgScroll').hasClass("ScrollUp")) {
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+            $("#dvLeftPanel").show();
+            $("#dvCenterPanel").css('width', '81%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '95%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+        }
+    });
+
+    function fnSelectedregionCode(){
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/SetSession/',
+            type: "POST",
+            data: "selectedRegionCode=" +  $("#seletedRegionCodeBulkAdd").val(),
+            success: function (result) {
+                result = eval('('+result+')');
+         
+            },
+            error: function () {
+            }
+        });
+    }
+</script>

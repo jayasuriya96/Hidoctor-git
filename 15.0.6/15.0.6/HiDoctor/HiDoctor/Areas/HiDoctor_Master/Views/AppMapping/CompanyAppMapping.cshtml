@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "CompanyAppMapping";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div class="col-lg-12">
+    <div class="col-lg-12" style="clear: both;">
+        <div id="dvCompanyMapping">
+        </div>
+    </div>
+    <div class="col-lg-12" style="clear: both;">
+        <div class="col-lg-6" style="clear: both;"></div>
+        <div class="col-lg-6" style="clear: both; text-align: left">
+            <input type="button" class="btn small primary" value="Save" onclick="fnAppSubmit();" />
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/AppMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);     
+        $("#dvAjaxLoad").hide();
+        GetAppDetails();
+    });
+
+
+</script>

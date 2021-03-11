@@ -1,0 +1,47 @@
+﻿<div style="clear: both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>DCR Lock Detail
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <a onclick="fngoBackLock()" href="#" data-icon="arrow-l" id="aback" style="float:right"><< Back</a>
+    <div data-role="collapsible-set">
+        <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="d" data-mini="true">
+            <h3>DCR Lock Detail    
+            </h3>
+            <div class="dvSOsub" id="dvLockDetailList">
+            </div>
+
+        </div>
+    </div>
+  <input id="btnlockSubmit" type="button" data-theme="b" value="Lock Release" data-mini="true" onclick="fnreleasethelock();">
+    
+
+ <div data-role="collapsible-set">
+        <div data-role="collapsible" data-collapsed="false" data-theme="s" data-content-theme="s" data-mini="true">
+            <h3>DCR Lock Release History
+            </h3>
+            <div id="divDCRLockrelease">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="footer"></div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var sPersonName_g = "";
+    $(document).ready(function () {
+        var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+        AjaxGlobalHandler.Initiate();
+        fnDCRlockDetail(userCode);
+        fnGetDCRLockReleaseDates(userCode);
+    });
+
+
+
+
+</script>

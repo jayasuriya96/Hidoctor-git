@@ -1,0 +1,320 @@
+﻿@model MVCModels.HiDoctor_Reports.DCRLastSubmittedQuickRefReportModel
+
+@{
+    ViewBag.Title = "Async LastsubmittedQuickRef";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    #divMain {
+        width: 99% !important;
+        float: left;
+    }
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #LastsubmittedqukRefRept td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #LastsubmittedqukRefRept th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+
+
+<div id="dvLastsubmitted">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-md-3">
+
+            <div style="clear: both"></div>
+            <div id="dvUserTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvMain" class="col-md-9" style="display: none">
+            <input type="hidden" id="hdnUserCode" value="" />
+
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Inputs</span>
+                 | <span id="spnReportQueueToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleReportQueue('LastSubmittedQuickRef')">Show Report Queue Status</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-7">
+                    <div class="col-lg-3">
+                        Start Date
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txtstartDate" class='datepicker' />
+                        <input type="hidden" id="hdnUserCode" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-7">
+                    <div class="col-lg-3">
+                        End Date
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txtEndDate" class='datepicker' />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('LASTSUBMITTED_QUICK-REFERENCE','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <input type="button" class="btn btn-primary" style="margin-left: 16%;" value="View" onclick="fnValidateLastSubmittedRept()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="dvRptQueuePanel" style="padding:10px; display:none">
+                <div id="dvAsynMsg" style="display:none"></div>
+                <div>
+                    <input type="button" class="btn btn-primary" value="Refresh" onclick="fnRefreshReportQueueStatus('LastSubmittedQuickRef');" /><br />
+                </div>
+                <div>
+                    <div id="dvReportQueue"></div>
+                </div>
+                <br />
+            </div>
+            <div id="dvRptPanel" style="width: 100%; overflow:auto;">
+                @Html.Hidden("ReportTransactionID")
+                @Html.Hidden("ReportName")   
+                <div id="dvAsynReport" style="width: 100%; overflow:auto;"></div>
+            </div>
+            <!--<div id="divLastsubmittedQuickRef">
+            </div>-->
+            <div style="clear: both"></div>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncReportGeneric.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/AsyncReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvMain').show();
+        try {
+            $('#dvLastsubmitted').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnBindUserTreeWithCheckBoxDoubleClick("dvUserTree") //To Bind The UserTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvLastsubmitted").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            //showButtonPanel: true
+        });
+    });
+
+    function fnToggleTree() {
+        debugger;
+        if ($("#lnkTree").html() == "Hide Tree") {      
+            fnCloseTree();
+        }
+        else {
+            debugger;
+            //$("#dvUserTree").show();
+            fnOpenTree();
+        }
+    }
+    function fnUserTreePostInit() {
+        $("#dvLastsubmitted").unblock();
+    }
+
+    function fnOpenTree() {
+        $("#dvTree").show();
+        $('#lnkTree').html('Hide Tree');
+        $("#dvUserTree").slideDown();
+
+        $('#dvTree').addClass('col-md-3');
+        $('#dvMain').removeClass('col-md-12');
+        $('#dvMain').addClass('col-md-9');
+    }
+    function fnCloseTree() {
+        debugger;
+        $("#dvTree").hide();
+        $('#lnkTree').html('Show Tree');
+        $("#dvUserTree").slideUp();
+        $('#dvTree').removeClass('col-md-3');
+        $('#dvMain').addClass('col-md-12');
+        $('#dvMain').removeClass('col-md-9');
+    }
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-md-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-md-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-md-12');
+        }
+    }
+  
+    function fnUserTreeNodeClick(node) {
+        fnCloseTree();
+        $("#dvMain").show();
+        $('#dvAsynReport').html('');
+    }
+
+    function fnUserTreeActivate(node) {
+    }
+    var selKeys = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnUserCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+</script>

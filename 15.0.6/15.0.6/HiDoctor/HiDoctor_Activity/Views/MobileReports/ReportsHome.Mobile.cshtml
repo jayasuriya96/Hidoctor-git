@@ -1,0 +1,67 @@
+﻿<div style="clear: both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>Reports Home
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <br />
+    <fieldset data-role="controlgroup">
+        <div id="tpRpt" class="menuhidden">
+            <input type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />
+            <label for="radio-choice-1">Tour Plan</label>
+        </div>
+        <div id="activeRpt" class="menuhidden">
+            <input type="radio" name="radio-choice" id="radio-choice-2" value="choice-2" />
+            <label for="radio-choice-2">Activity Summary</label>
+        </div>
+        <div id="userRpt" class="menuhidden">
+            <input type="radio" name="radio-choice" id="radio-choice-3" value="choice-2" />
+            <label for="radio-choice-3">User Per Day Report</label>
+        </div>
+    </fieldset>
+
+    <h5 data-theme="b" style="background-color: #2489ce; color: #fff; font-weight: normal; padding: 5px; margin-bottom: -0.75em;">Select user for report</h5>
+
+    <br />
+    <a href="#" onclick="fnGetUserCode('Mine')">Mine</a>
+    <br />
+    <div id="dvChildUser" style="display: none;">
+        <div>
+            <span>*************OR*************** </span>
+        </div>
+        <div>Type the child User Name</div>
+        <div>
+            <input type="text" maxlength="30" id="UserName" placeholder="Search 3 letters" />
+            <a data-role="button" data-theme="b" data-mini="true" id="btnClear" href="#page1" class="ui-btn-right" onclick="fnGetChildUser();" style="width: 35%">GO
+            </a>
+        </div>
+        <div style="width: 100%; padding-top: 5px;" id="dvUserList">
+        </div>
+    </div>
+</div>
+<div data-role="footer"></div>
+@Scripts.Render("~/bundles/mobileReportsjs")
+<script>
+    // $('#spnReportHome').html(loginUserName_g);
+    $(document).ready(function () {        
+        AjaxGlobalHandler.Initiate();
+        // User Name bind
+        $('span.cls_usernamespn').text(loginUserName_g);
+
+        if (userperrpt_g.toUpperCase() == "USER") {
+            $('#userRpt').removeClass('menuhidden');
+            $('#userRpt').addClass('menuShow');
+        }
+        if (tprpt_g.toUpperCase() == "TP") {
+            $('#tpRpt').removeClass('menuhidden');
+            $('#tpRpt').addClass('menuShow');
+        }
+        if (activesumrpt_g.toUpperCase() == "ACT") {
+            $('#activeRpt').removeClass('menuhidden');
+            $('#activeRpt').addClass('menuShow');
+        }
+        fnGetChildUserCheck();
+    });
+</script>

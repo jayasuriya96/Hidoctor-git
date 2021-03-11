@@ -1,0 +1,350 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .bootbox-body {
+        margin-left: 21% !important;
+    }
+
+    .modal-footer {
+        text-align: center !important;
+    }
+
+    .modal-dialog {
+        margin-top: 10%;
+        background: no-repeat !important;
+        padding: 0px !important;
+    }
+</style>
+<div>
+    <div class="col-sm-12">
+        <div class="col-sm-3" id='leftNav'>
+
+            <input type="hidden" id="hdnSFCVersionValue" />
+            <div id="regiontree" style="float: left; height: auto; width: 100%">
+            </div>
+            <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+            <div style="width: 1px;"></div>
+        </div>
+
+        <div class="col-sm-9">
+            <div class="col-sm-12" style="">
+
+                <div class="col-sm-6" style="text-align: right;">Select Date</div>
+                <div class="col-sm-6">
+                    <input type="text" name="name" value=" " class='datepicker' id="txtDcrDate" />
+                </div>
+                <div style="text-align: center;">
+                    <input type="button" name="name" value="Get SFC" id="btnSfc" class="btn" style="margin-top: 20px; margin-left: 111px; margin-bottom: 40px;" />
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+
+                <div id="region_sfc"></div>
+            </div>
+
+            <div class="col-sm-12">
+
+                <div id="sfc_exetension"></div>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="hdnRegionCode" />
+</div>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script>
+    var currentRegionCode_g = "";
+    var sfc_ext_g=new Array();
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+            if (currentRegionCode_g != null && currentRegionCode_g != '') {
+
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                $("#txtDcrDate").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    numberOfMonths: 1
+                });
+            }
+            $("#btnSfc").on("click", function () {
+                debugger;
+                if (fnValidation()) {
+                    var date = $("#txtDcrDate").val().trim();
+                    var dcr_Date = date.split('/')[2] + '-' + date.split('/')[1] + '-' + date.split('/')[0];
+                    var region_code = $("#hdnRegionCode").val();
+                    fnBindSFCExtendedDetails(region_code, dcr_Date, 0);
+                    fnBindSFC(region_code, dcr_Date);
+                }
+            });
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            alert(err.message);
+        }
+    });
+    function isValidDate(sText) {
+        var reDate = /(?:0[1-9]|[12][0-9]|3[01])\/(?:0[1-9]|1[0-2])\/(?:19|20\d{2})/;
+        return reDate.test(sText);
+    }
+    function fnValidation() {
+        var rValue = true;
+        var date = $("#txtDcrDate").val().trim();
+        var error = "";
+        if (date.trim() == '')
+            error = "Please select the date<br />";
+        else {
+            if (!isValidDate(date))
+                error += "Please select Valid date format<br />";
+
+        }
+        if ($("#hdnRegionCode").val().trim() == '')
+            error += "Please Select Region<br />";
+
+        if (error != '') {
+            fnMsgAlert('error', "SFC", error);
+            rValue = false;
+        }
+        return rValue;
+    }
+    //Used To Resize the Tree
+    function fnBindSFCDetails(dcr_date) {
+
+    }
+    function fnBindSFCExtendedDetails(region_code, dcr_Date, distance_Fare_Code) {
+        $("#sfc_exetension").block();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/SFCRegion/GetSFCExtendedDetails',
+            data: "region_code=" + region_code + "&dcr_Date=" + $.trim(dcr_Date) + "&distance_Fare_Code=" + distance_Fare_Code,
+            success: function (response) {
+                debugger;
+                var sfc = response;
+                sfc_ext_g=sfc;
+                var table = "<div style='background: #999;color: #fff;font-weight: bold;font-size: 16px;padding: 5px 5px;'>SFC Extended List</div><table id='tblsfcExtended' class='table'><thead><tr><th>S.No</th><th>SFC Category</th><th>From Place</th><th>TO Place</th><th>Travel Mode</th><th>Visit Count</th><th>SFC-From Date</th><th>SFC-To Date</th>";
+                table += "<th>Extend Count</th><th>Change Status</th></tr></thead><tbody>";
+                if (sfc.length > 0) {
+                    for (var i = 0; i < sfc.length; i++) {
+                        table += "<tr><td>" + (i + 1) + "</td>";
+                        table += "<td>" + sfc[i].Category_Name + "</td>";
+                        table += "<td>" + sfc[i].From_Region_Name + "</td>";
+                        table += "<td>" + sfc[i].To_Region_Name + "</td>";
+                        table += "<td>" + sfc[i].Travel_Mode + "</td>";
+                        table += "<td>" + sfc[i].SFC_Visit_Count + "</td>";
+                        table += "<td>" + sfc[i].Date_From + "</td>";
+                        table += "<td>" + sfc[i].Date_To + "</td>";
+                        if(sfc[i].Remark.trim()!='')
+                            table += "<td><div style='display:none' id='divRemrk_"+i+"'>"+sfc[i].Remark+"</div><a href='#' onclick='fnBindRemark("+i+");' title='remark'>" + sfc[i].SFC_Extend_Count + "</a></td>";
+                        else
+                            table += "<td>" + sfc[i].SFC_Extend_Count +"</td>";
+                        table += "<td><a href='#' onClick='fnDisableSFCCount(" + sfc[i].SFC_Extend_Id + ");' >Change Status</a></td><tr>";
+                    }
+                    table += "</tbody></table>";
+                    $("#sfc_exetension").html('');
+                    $("#sfc_exetension").html(table);
+                    //$('#tblSfc').dataTable();
+                    //$('.TableTools').remove();
+                    //$('.dataTables_filter').remove();
+                }
+                else {
+                    table += "<tr style='text-align: center;'><td colspan='10'>No Record Found</td></tr>";
+                    table += "</tbody></table>";
+                    $("#sfc_exetension").html('');
+                    $("#sfc_exetension").html(table);
+
+                   
+
+                }
+                $("#sfc_exetension").unblock();
+            },
+        });
+    }
+    function fnBindSFC(region_code, dcr_Date) {
+        $("#region_sfc").block();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/SFCRegion/GetRegionSFC',
+            data: "region_code=" + region_code + "&dcr_Date=" + $.trim(dcr_Date),
+            success: function (response) {
+                debugger;
+                var sfc = response;
+                var table = " <div style='background: #999;color: #fff;font-weight: bold;font-size: 16px;padding: 5px 5px;'>SFC List</div><table style='border-bottom: 2px solid #0066cc;' id='tblSfc' class='table datatable'><thead><tr><th>S.No</th><th>SFC Category</th><th>From Place</th><th>TO Place</th><th>Travel Mode</th><th>Visit Count</th><th>From Date</th><th>To Date</th>";
+                table += "<th>Extend</th></tr></thead><tbody>";
+                if (sfc.length > 0) {
+                    for (var i = 0; i < sfc.length; i++) {
+                        table += "<tr><td>" + (i + 1) + "</td>";
+                        table += "<td>" + sfc[i].Category_Name + "</td>";
+                        table += "<td>" + sfc[i].From_Region_Name + "</td>";
+                        table += "<td>" + sfc[i].To_Region_Name + "</td>";
+                        table += "<td>" + sfc[i].Travel_Mode + "</td>";
+                        table += "<td>" + sfc[i].SFC_Visit_Count + "</td>";
+                        table += "<td>" + sfc[i].Date_From + "</td>";
+                        table += "<td>" + sfc[i].Date_To + "</td>";
+
+                        table += "<td><a href='#' onClick='fnExtenSFC(" + sfc[i].Distance_Fare_Code + "," + sfc[i].SFC_Version_No + ");' >Extend</a></td><tr>";
+                    }
+                    table += "</tbody></table>";
+                    $("#region_sfc").html('');
+                    $("#region_sfc").html(table);
+                    //$('#tblSfc').dataTable();
+                    $('.TableTools').remove();
+                    $('.dataTables_filter').remove();
+                }
+                else {
+                    table += "<tr style='text-align: center;'><td colspan='9'>No Record Found</td></tr>";
+                    table += "</tbody></table>";
+                    $("#region_sfc").html('');
+                    $("#region_sfc").html(table);
+
+                    
+                }
+                $("#region_sfc").unblock();
+            },
+        });
+    }
+    function fnValidatesfcCount(evt) {
+        debugger;
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        } else {
+            if ($("#txtCount").val().length >= 4) {
+                return false;
+            }
+            else if($("#txtCount").val().length==0)
+            {
+                if(charCode==48)
+                    return false;
+            }
+            return true;
+        }
+    }
+    function fnShowBtn() {
+        if ($("#txtCount").val().length > 0) {
+            $(".modal-footer button:nth-child(2)").show();
+        }
+        else {
+            $(".modal-footer button:nth-child(2)").hide();
+        }
+    }
+    function fnExtenSFC(distance_Fare_Code, sfc_Version_No) {
+        var input_box = "<div><div style='float: left;margin-right: 10PX;'>Number of times</div>";
+        input_box += "<div><input type='text' id='txtCount' onkeypress='return fnValidatesfcCount(event);' onpaste='return false' onkeyup='fnShowBtn();' max='4' /></div><div style='margin-top: 13px;'><div style='float: left;margin-right: 51px;'>Remarks</div><div><input type='text' id='txtremark' /></div><div></div>";
+        bootbox.confirm({
+            message: input_box,
+            label: "Save",
+            callback: function (result) {
+                debugger;
+                if (result == true) {
+                    var count = $("#txtCount").val();
+                    var remark = $("#txtremark").val();
+                    if (fnValidation()) {
+                        var date = $("#txtDcrDate").val().trim();
+                        var dcr_Date = date.split('/')[2] + '-' + date.split('/')[1] + '-' + date.split('/')[0];
+                        var region_code = $("#hdnRegionCode").val();
+
+                        fnExtenSFCAjax(distance_Fare_Code, sfc_Version_No, count, remark, dcr_Date, region_code);
+                    }
+                }
+            }
+        })
+        $(".modal-footer button:nth-child(2)").text("Save");
+        $(".modal-footer button:nth-child(2)").hide();
+    }
+    function fnExtenSFCAjax(distance_Fare_Code, sfc_Version_No, count, remark, dcr_Date, regionCode) {
+        $("#region_sfc").block();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/SFCRegion/SaveExtendSFC',
+            data: "distance_Fare_Code=" + distance_Fare_Code + "&sfc_Version_No=" + $.trim(sfc_Version_No) + "&dcr_Date=" + $.trim(dcr_Date) + "&remark=" + $.trim(remark) + "&sfc_Extend_Count=" + $.trim(count),
+            success: function (response) {
+                if (response == "1") {
+                    fnBindSFCExtendedDetails(regionCode, dcr_Date, 0);
+                    $("#region_sfc").unblock();
+                    fnMsgAlert('success', "SFC", "SFC Extended successfully");
+
+                }
+            }
+        });
+    }
+    function fnDisableSFCCount(SFC_Extend_Id) {
+        $("#sfc_exetension").block();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/SFCRegion/DisableSFCCount',
+            data: "sfc_Extend_Id=" + SFC_Extend_Id,
+            success: function (response) {
+                if (response == "1") {
+                    if (fnValidation()) {
+                        var date = $("#txtDcrDate").val().trim();
+                        var dcr_Date = date.split('/')[2] + '-' + date.split('/')[1] + '-' + date.split('/')[0];
+                        var region_code = $("#hdnRegionCode").val();
+                        fnMsgAlert('success', "SFC", "SFC Count Deleted successfully");
+                        fnBindSFCExtendedDetails(region_code, dcr_Date, 0);
+                    }
+                }
+
+            },
+            complete: function () {
+                $("#sfc_exetension").unblock();
+            }
+        });
+    }
+    function fnRegionTreeResize(obj) {
+
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'dataDiv', 'regiontree');
+    }
+    function fnRegionTreePostInit() {
+        try {
+
+            if (GetRegionTreeLength() == 1) {
+                fnGetAllPrivileges($("#hdnRegionCode").val())
+                //var SFC_TO_REFER_DFC = fnGetPrivilegeVal('SFC_TO_REFER_DFC', '');
+                //if (SFC_TO_REFER_DFC == "YES") {
+                //    $('#txtAmount').attr('disabled', 'disabled');
+                //}
+                //else {
+                //    $('#txtAmount').attr('disabled', false);
+                //}
+                fnGetSFCRegions(1);
+            }
+            $("#dvSFC").unblock();
+        }
+        catch (err) {
+            $("#dvSFC").unblock();
+        }
+    }
+    function fnRegionTreeNodeClick(node) {
+        $("#hdnRegionCode").val(node.data.key);
+    }
+    function fnBindRemark(id)
+    {
+        
+        bootbox.alert({
+            title: "Remarks",
+            message: "<div style='margin-left: -128px !important'>"+$("#divRemrk_"+id).text()+"</div>"
+        });
+        
+    }
+
+</script>

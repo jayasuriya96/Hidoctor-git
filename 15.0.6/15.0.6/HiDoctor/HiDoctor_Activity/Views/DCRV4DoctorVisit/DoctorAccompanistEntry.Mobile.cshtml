@@ -1,0 +1,240 @@
+﻿<style>
+    .left {
+        float: left;
+        width: 38%;
+        margin-top: 8px;
+        margin-right: 8px;
+        margin-left: 5px;
+    }
+
+    .input-radio {
+        float: left;
+        /*width: 50px;*/
+        /*margin-top: 2px;*/
+        /*margin-left:30px;*/
+        width: 30px;
+        margin-left: 30px;
+    }
+
+    .top {
+        width: 50%;
+        /*margin-left: 10%;*/
+        float: left;
+        /*padding-top: 22px;*/
+        word-break: break-all;
+    }
+
+    .left {
+        float: left;
+        width: 30% !important;
+        /* margin-top: 8px; */
+        margin-right: 0px!important;
+        margin-left: 18px!important;
+        margin-bottom: 10px!important;
+    }
+
+    #radio-choice-3 > label > span {
+        border-bottom: 1px solid #CCC;
+    }
+
+    .divider {
+        padding: 4px;
+        margin-bottom: 0px!important;
+        height: auto!important;
+    }
+
+    .ui-checkbox .ui-btn-icon-left .ui-icon, .ui-radio .ui-btn-icon-left .ui-icon {
+        left: 2px!important;
+    }
+
+    .ui-radio {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+        .ui-checkbox .ui-btn-icon-left .ui-btn-inner, .ui-radio .ui-btn-icon-left .ui-btn-inner {
+            padding-left: 23px !important;
+        }
+
+    .ui-fullsize .ui-btn-inner, .ui-fullsize .ui-btn-inner {
+        font-size: 10px !important;
+        padding: 5px !important;
+        margin-top: 0px !important;
+    }
+
+    .ui-btn-icon-left > .ui-btn-inner > .ui-icon, .ui-btn-icon-right > .ui-btn-inner > .ui-icon {
+        top: 47% !important;
+        margin-top: -9px !important;
+    }
+</style>
+<div class="menucontent">
+    <div class="homeicon"></div>
+    <a href="#" onclick="fnGoToHome('menu')">Home
+    </a>
+    <a href="#" class="ui-icon-home" onclick="fnGoToCalendar()">Calendar
+    </a>
+</div>
+<div id="docnamelable">Doctor Name</div>
+<div id="docnamevalue" class="clsdocname">
+</div>
+<div data-role="header" class="accpageheader" data-theme="b" data-inset="true" style="margin: 0px !important">
+    <h5 class="fontsize">Accompanist</h5>
+</div>
+<div style="border: 1px solid #dadada; padding: 3px">
+    <div data-inset="true" data-theme="b" data-mini="true" style="border: 1px solid #DDD;">
+        <div id="docAcc_1" class="divider">
+            <input type="hidden" id="hdnAccEntry_1" value="">
+            <input type="hidden" id="hdnAccEntryMode_1" value="">
+            <div style="display: none;">
+                <select data-mini="true" id="selectdocAcc_1" onchange="fnSetAccValues('1')" style="display: none;">
+                </select>
+                <label class="ver-alig-top lblbold">Independant Call</label>
+                <select name="toggonlyfordoc_1" id="toggonlyfordoc_1" data-theme="b" data-role="slider" data-mini="true" disabled="disabled">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div>
+                <div class="top">
+                    <label id="lbldocAcc_1"></label>
+                </div>
+                <div>
+                    <fieldset data-role="controlgroup">
+                        <div class="left" style="border-bottom: 0.9px solid lightgray;">
+                            <div class="radio">
+                                <input type="radio" name="Accompaniedcall_1" value="YES" id="radio-choice-3">
+                            </div>
+                            <label for="radio-choice-3">YES</label>
+                        </div>
+                        <div class="left">
+                            <div class="radio">
+                                <input type="radio" name="Accompaniedcall_1" value="NO" id="radio-choice-4">
+                            </div>
+                            <label for="radio-choice-4" class="rdb-no">NO</label>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div id="docAcc_2" class="divider">
+            <input type="hidden" id="hdnAccEntry_2" value="">
+            <input type="hidden" id="hdnAccEntryMode_2" value="">
+            <div style="display: none;">
+                <select data-mini="true" id="selectdocAcc_2" onchange="fnSetAccValues('2')">
+                </select>
+                <label class="ver-alig-top lblbold">Independant Call</label>
+                <select name="toggonlyfordoc_2" id="toggonlyfordoc_2" data-theme="b" data-role="slider" data-mini="true" disabled="disabled">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div>
+                <div class="top">
+                    <label id="lbldocAcc_2"></label>
+                </div>
+                <div>
+                    <fieldset data-role="controlgroup">
+                        <div class="left" style="border-bottom: 0.9px solid lightgray;">
+                            <input type="radio" name="Accompaniedcall_2" value="YES" id="radio-choice-5">
+                            <label for="radio-choice-5">YES</label>
+                        </div>
+                        <div class="left">
+                            <input type="radio" name="Accompaniedcall_2" value="NO" id="radio-choice-6">
+                            <label for="radio-choice-6">NO</label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div id="docAcc_3" class="divider">
+            <input type="hidden" id="hdnAccEntry_3" value="">
+            <input type="hidden" id="hdnAccEntryMode_3" value="">
+            <div style="display: none;">
+                <select data-mini="true" id="selectdocAcc_3" onchange="fnSetAccValues('3')">
+                </select>
+                <label class="ver-alig-top lblbold">Independant Call</label>
+                <select name="toggonlyfordoc_3" id="toggonlyfordoc_3" data-theme="b" data-role="slider" data-mini="true" disabled="disabled">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div>
+                <div class="top">
+                    <label id="lbldocAcc_3"></label>
+                </div>
+                <div>
+                    <fieldset data-role="controlgroup">
+                        <div class="left" style="border-bottom: 0.9px solid lightgray;">
+                            <input type="radio" name="Accompaniedcall_3" value="YES" id="radio-choice-7">
+                            <label for="radio-choice-7">YES</label>
+                        </div>
+                        <div class="left">
+                            <input type="radio" name="Accompaniedcall_3" value="NO" id="radio-choice-8">
+                            <label for="radio-choice-8">NO</label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div id="docAcc_4" class="divider">
+            <input type="hidden" id="hdnAccEntry_4" value="">
+            <input type="hidden" id="hdnAccEntryMode_4" value="">
+            <div style="display: none;">
+                <select data-mini="true" id="selectdocAcc_4" onchange="fnSetAccValues('4')">
+                </select>
+                <label class="ver-alig-top lblbold">Independant Call</label>
+                <select name="toggonlyfordoc_4" id="toggonlyfordoc_4" data-theme="b" data-role="slider" data-mini="true" disabled="disabled">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div>
+                <div class="top">
+                    <label id="lbldocAcc_4"></label>
+                </div>
+                <div>
+                    <fieldset data-role="controlgroup">
+                        <div class="left" style="border-bottom: 0.9px solid lightgray;">
+                            <input type="radio" name="Accompaniedcall_4" value="YES" id="radio-choice-1">
+                            <label for="radio-choice-1">YES</label>
+                        </div>
+                        <div class="left">
+                            <input type="radio" name="Accompaniedcall_4" value="NO" id="radio-choice-2">
+                            <label for="radio-choice-2">NO</label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div style="margin: 5px; padding: 5px">
+            <input type="button" data-theme="b" value="Save & Back" onclick="fnGoToBack()" />
+            <input type="button" data-theme="d" value="Save & Home" onclick="fnGoToHome('ACTION')" />
+            <input type="button" data-theme="d" value="Cancel" onclick="fnCancel()" />
+        </div>
+    </div>
+
+</div>
+@Scripts.Render("~/bundles/mDCRDoctorAccompanistjs")
+<script>
+    $(document).ready(function () {
+        try {
+            //eryString_g = @Html.Raw(Json.Encode(ViewBag.mQueryString));
+            var docName = @Html.Raw(Json.Encode(ViewBag.DoctorName));
+            
+            // $('#docnamevalue').html('');
+            
+            //$('#docnamevalue').append(docName);
+            $.mobile.loading('show');
+            $('div.clsdocname').text(docName);
+            fnSetAccompanistAutoFill();
+            fnGetDoctorAccompanist();
+        }
+        catch(e){
+            fnMsgAlert('error', 'Doctor Accompanist', e.responseText);
+        }
+    });
+</script>

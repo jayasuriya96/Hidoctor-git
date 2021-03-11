@@ -1,0 +1,65 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnSaleOrderCL"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div data-theme="b" data-mini="true" data-role="header">
+    <a id="CLHome" data-role="button" data-theme="b" href="#page1" data-icon="home"
+        data-iconpos="notext" class="ui-btn-right" onclick="fnGoToOTC()"></a>
+    <h3></h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Customer List
+        </h5>
+    </div>
+</div>
+
+<div role="main" class="ui-content ui-body-d" data-theme="d" data-role="content">
+    <div id="alpha">
+        <span onclick="fnAlphabet(' ')">#</span>
+        <span onclick="fnAlphabet('A%')">A</span>
+        <span onclick="fnAlphabet('B%')">B</span>
+        <span onclick="fnAlphabet('C%')">C</span>
+        <span onclick="fnAlphabet('D%')">D</span>
+        <span onclick="fnAlphabet('E%')">E</span>
+        <span onclick="fnAlphabet('F%')">F</span>
+        <span onclick="fnAlphabet('G%')">G</span>
+        <span onclick="fnAlphabet('H%')">H</span>
+        <span onclick="fnAlphabet('I%')">I</span>
+        <span onclick="fnAlphabet('J%')">J</span>
+        <span onclick="fnAlphabet('K%')">K</span>
+        <span onclick="fnAlphabet('L%')">L</span>
+        <span onclick="fnAlphabet('M%')">M</span>
+        <span onclick="fnAlphabet('N%')">N</span>
+        <span onclick="fnAlphabet('O%')">O</span>
+        <span onclick="fnAlphabet('P%')">P</span>
+        <span onclick="fnAlphabet('Q%')">Q</span>
+        <span onclick="fnAlphabet('R%')">R</span>
+        <span onclick="fnAlphabet('S%')">S</span>
+        <span onclick="fnAlphabet('T%')">T</span>
+        <span onclick="fnAlphabet('U%')">U</span>
+        <span onclick="fnAlphabet('V%')">V</span>
+        <span onclick="fnAlphabet('W%')">W</span>
+        <span onclick="fnAlphabet('X%')">X</span>
+        <span onclick="fnAlphabet('Y%')">Y</span>
+        <span onclick="fnAlphabet('Z%')">Z</span>
+    </div>
+    <div id="dvCLCustList">
+    </div>
+</div>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var sPersonName_g = "";
+    $(document).ready(function () {
+        $('#spnSaleOrderCL').html(loginUserName_g);
+        AjaxGlobalHandler.Initiate();
+        fnCLBindCustomerdetail('');
+    });
+
+    function fnAlphabet(val) {
+        fnCLBindCustomerdetail(val);
+    }
+
+    function fnCLBindCustomerdetail(val) {
+        fnCLBindCustomerList(val);
+    }
+</script>
+

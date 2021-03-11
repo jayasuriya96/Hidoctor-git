@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "SampleStockforResignedDetailsReport";
+    Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+
+<div id="dvsamplestock">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+            <div style="clear: both"></div>
+            <div id="disabledUserTree" style="height: 630px; overflow: auto;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <input type="hidden" value="" id="hdnUserCode" />
+            <input type="hidden" value="" id="hdnUserName" />
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-12">
+                    <div class="helpIconright">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('SAMPLESTOCKFORRESIGNEDEMPLOYEEREPORT','PAGE')" />
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row clearfix form-group">
+                        <div class="col-xs-3">Start Date:</div>
+                        <div class="col-xs-4 form-group">
+                            <input type="text" id="txtStartDate" class="datepicker form-control" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="row clearfix form-group">
+                        <div class="col-xs-3">End Date:</div>
+                        <div class="col-xs-4 form-group">
+                            <input type="text" id="txtEndDate" class="datepicker form-control" />
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div class="col-sm-3"></div>
+                    <div class="col-lg-4">
+                        <input type="radio" name="rdReportView" value="View in screen" checked="checked" />
+                        <label for="optViewInScreen">View in screen</label>
+                        <input type="radio" name="rdReportView" value="Export to excel" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <div class="col-lg-5"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div class="col-sm-3"></div>
+                    <div class="col-lg-4">
+                        <input type="button" class="btn btnprimary" value="Show Report" onclick="fnshowSamplestockReport()" />
+                    </div>
+                    <div class="col-lg-5"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div id="dvsamplestockforAlumni" style="padding-top: 5px;">
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+
+    </div>
+    <div style="clear: both"></div>
+    <div id="dvloading" style="display: none">
+        <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+    </div>
+    <a href="#" class="scrollup">Scroll</a>
+</div>
+
+<div class="simple_overlay" id="dvInward">
+    <a class="overlayclose" onclick="$('#dvInward').overlay().close();"></a>
+    <div class="col-lg-12">
+        <div class="col-lg-12 form-group">
+            <div id="tblInwardTaken" style="height: 400px; overflow: auto; clear: both;">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divReport">
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SampleStockReportforResignedEmployee.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            //showButtonPanel: true
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvsamplestock").unblock();
+            fnDisabledUserTree("disabledUserTree")
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $('#dvInward').overlay();
+        }
+        catch (err) {
+            $("#dvsamplestock").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnDisabledUserTreeClick(node) {
+        fnCloseTree();
+        $(".dvDisableUser").removeClass('selectNode');
+        $("#hdnUserCode").val(node);
+        $("#dvdata").show();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#rptInputs").addClass('col-lg-12');
+        $("#dvsamplestockforAlumni").empty();
+    }
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#disabledUserTree").slideDown();
+
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#disabledUserTree").slideUp();
+
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    //function fnBindDisabledUserTree(id) {
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '../HiDoctor_Reports/Reports/GetDisabledUsers',
+    //        data: 'companyCode=1',
+    //        success: function (response) {
+    //            var jsUser = eval('(' + response + ')');
+    //            var content = "";
+    //            if (!(jsUser.Tables === undefined) && jsUser.Tables.length > 0 && jsUser.Tables[0].Rows.length > 0) {
+    //                for (var i = 0; i < jsUser.Tables[0].Rows.length; i++) {
+    //                    content += "<div class='dvDisableUser' onclick='fnDisabledUserTreeClick(\"" + jsUser.Tables[0].Rows[i]["User_Code"] + "\");$(this).addClass(\"selectNode\");' >" + jsUser.Tables[0].Rows[i]["User_Name"] + "</div>";
+    //                }
+    //                $("#disabledUserTree").html(content);
+    //            }
+    //        },
+    //        error: function () {
+    //            fnMsgAlert('info', 'Report', 'Error.');
+    //        }
+    //    });
+
+    //}
+</script>

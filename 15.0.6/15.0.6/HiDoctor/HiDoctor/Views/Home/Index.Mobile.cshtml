@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script>
+    $(document).ready(function () {
+        var userName=@Html.Raw(Json.Encode(ViewBag.User_Name));
+     loginUserName_g = userName;
+     if (userName == '') {
+
+         $.mobile.changePage("/Home/Create", {
+             type: "post",
+             reverse: false,
+             changeHash: false
+         });
+     }
+     else {
+         loginUserName_g = userName;
+         fnmGetAllPrivileges();
+     }
+ });
+    </script>

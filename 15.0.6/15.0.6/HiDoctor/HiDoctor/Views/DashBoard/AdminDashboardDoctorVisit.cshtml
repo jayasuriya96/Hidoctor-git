@@ -1,0 +1,388 @@
+﻿@{
+    ViewBag.Title = "AdminDashboardDoctorVisit";
+    Layout = null;
+}
+
+
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    /*#divMain {
+        width: 78%;
+        float: left;
+    }*/
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #tblDoctorPopUp td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblDoctorPopUp th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .listheaderbar1 {
+        background-color: #3B6792 !important;
+        color: #fff;
+        height: 28px !important;
+        padding: 8px;
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial,Helvetica, sans-serif !important;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+
+
+
+<style>
+    .cls-color-indication {
+        display: inline-block;
+        height: 15px;
+        width: 60px;
+    }
+
+    .cls-missed-color {
+        background-color: #E53935 !important;
+        color: white;
+        text-align: center;
+    }
+
+    .cls-met-std {
+        background-color: #009688 !important;
+        color: white;
+        text-align: center;
+    }
+
+    .cls-met-less {
+        background-color: #FFC107 !important;
+        color: black;
+        text-align: center;
+    }
+
+    .cls-met-more {
+        background-color: #FF9800 !important;
+        color: black;
+        text-align: center;
+    }
+
+    .spn-title {
+        font-size: 18px;
+        font-weight: bold;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        display: inline-block;
+    }
+
+    .tblColorIndication td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .TableTools {
+        display: none !important;
+    }
+
+    #dvRepVisit table.data tbody tr td {
+        border-bottom: 1px solid #DDD !important;
+        border-right: 1px solid #ddd !important;
+    }
+
+    #dvRepVisit table {
+        border-left: 1px solid #ddd;
+    }
+
+    #dvManagerVisit table.data tbody tr td {
+        border-bottom: 1px solid #DDD !important;
+        border-right: 1px solid #ddd !important;
+    }
+
+    #dvManagerVisit table {
+        border-left: 1px solid #ddd;
+    }
+
+    .cls-back-dash {
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        font-size: 14px;
+        color: blue;
+    }
+
+    .cls-link {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    #dvManagerVisit {
+        margin-top: 5px;
+    }
+     #dvTitleForRep {
+        font-size: 18px;
+        font-weight: bold;
+        padding-top: 10px;
+        padding-bottom: 5px;
+        display: inline-block;
+    }
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+
+<script src="~/Scripts/HD/Dashboard.js"></script>
+<div class="col-lg-12" style="border: 2px solid #ddd;">
+    <span style="" class="cls-back-dash">Back to Dashboard</span>
+    <span class="spn-title">Doctor met details for the month of </span>
+    <div class="col-lg-12">
+        <div style="width: 80%; float: left;">
+            <table class="tblColorIndication">
+                <tr>
+                    <td>
+                        <span class="cls-color-indication cls-missed-color"></span>
+                    </td>
+                    <td><span>Doctor Missed</span></td>
+
+                    <td>
+                        <span class="cls-color-indication cls-met-std"></span>
+                    </td>
+                    <td><span>Met Exactly</span></td>
+                    <td>
+                        <span class="cls-color-indication cls-met-less"></span>
+                    </td>
+                    <td><span>Less than met</span></td>
+                    <td>
+                        <span class="cls-color-indication cls-met-more"></span>
+                    </td>
+                    <td><span>More than met</span></td>
+                </tr>
+                @*  <tr>
+                    <td>
+                        <span class="cls-color-indication cls-met-std"></span>
+                    </td>
+                    <td><span>Met Correctly</span></td>
+                </tr>*@
+                @* <tr>
+                    <td>
+                        <span class="cls-color-indication cls-met-less"></span>
+                    </td>
+                    <td><span>Less than Std.Visit count</span></td>
+                </tr>*@
+                @*   <tr>
+                    <td>
+                        <span class="cls-color-indication cls-met-more"></span>
+                    </td>
+                    <td><span>More than Std.Visit count</span></td>
+                </tr>*@
+            </table>
+
+        </div>
+        <div style="width: 20%; float: right;">
+
+            @* <p>Filter By</p>
+            Category :
+            <select id="cboCategory">
+            </select>
+            Speciality :
+            <select id="cboSpeciality">
+            </select>*@
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="dvManagerVisit">
+    </div>
+    <div class="col-lg-12">
+        <table style="width: 50%; float: right;" class="tblFilter">
+            <tr>
+                <td>
+                    <p><b>Filter By</b></p>
+                </td>
+                <td>Category :</td>
+                <td>
+                    <select id="cboCategory" style="width: 100%;">
+                    </select>
+                </td>
+                <td>Speciality :</td>
+                <td>
+                    <select id="cboSpeciality" style="width: 100%;">
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+        <div id="dvcategoryregion"></div>
+        <div>
+            <div id="dvTitleForRep"></div>
+        <div id="dvRepVisit">
+        </div>
+            </div>
+    </div>
+
+</div>
+<!-- Simple Pagination  -->
+<script src="~/Scripts/HD/AdminDashboard.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>*@
+<link href="~/Content/simplePagination.css" rel="stylesheet" />
+<script lang="ja">
+    var mode =@Html.Raw(Json.Encode(ViewBag.Mode));
+    var selectedUserCode=@Html.Raw(Json.Encode(ViewBag.User_Code));
+    var selectedRegionCode=@Html.Raw(Json.Encode(ViewBag.Region_Code));
+    var curMonth=@Html.Raw(Json.Encode(ViewBag.Current_Month));
+    var curYear=@Html.Raw(Json.Encode(ViewBag.Current_Year));
+    var childUserCount=@Html.Raw(Json.Encode(ViewBag.Child_User_Count));
+    var firstTimeLoad= true;
+    var IsCurrent = @Html.Raw(Json.Encode(ViewBag.IsCurrent));
+    var CategoryCoverageDivisionCode = @Html.Raw(Json.Encode(ViewBag.CategoryCoverageDivisionCode));
+    var IsBack = @Html.Raw(Json.Encode(ViewBag.IsBacks));
+    var Division_Name= @Html.Raw(Json.Encode(ViewBag.Division_Name));
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        if (IsCurrent == 'Current') {
+            $('.spn-title').html('Doctor met details for the month of '+ monthArray[parseInt(curMonth)-1] + "-"+ curYear);
+        }
+        else {
+            var _curMonth =  curMonth == 1 ? 11 : (parseInt(curMonth)-2);
+            var _curYear = curMonth == 1 ?  (parseInt(curYear) - 1) :  curYear ;
+            $('.spn-title').html('Doctor met details for the month of '+ monthArray[_curMonth]  + "-"+ _curYear);
+        }
+        AdminDashboard.defaults.isCurrent = IsCurrent == 'Current' ? true : false;
+        // Get Category Coverage Division Code
+        AdminDashboard.defaults.CategoryCoverageDetails = CategoryCoverageDivisionCode;
+
+
+
+        $('.cls-back-dash').unbind('click').bind('click', function(){
+            if(IsBack=="NO") {
+                $('#main').load('Dashboard/AdminDashBoard');
+            }
+            else
+                fnLoadBody('DashBoardV2/MenuBar',this,'Home');
+             //   $('#main').load('Dashboard/AdminDashBoard?IsBack=YES');
+            });
+        if(IsCurrent=='Previous')
+        {
+            if(curMonth==1)
+            {
+                curMonth=12;
+                curYear=curYear-1;
+            }
+            else{
+                curMonth=curMonth-1;
+            }
+        }
+
+        AdminDashboard.getNewCategoryCoverageSummary(curMonth,curYear,mode,Division_Name);
+
+    });
+</script>

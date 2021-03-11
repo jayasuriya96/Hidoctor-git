@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Disableregion";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+<div>
+    <div id="regiondisable">
+        <div class="col-md-12 cls_nomargin_nopadding" id="dvPanel">
+            <div class="col-md-10 cls_nomargin_nopadding clearfix" style="margin-top: 10px;">
+                <div class="cls_div_header">Setup Wizard For Region Disable</div>
+            </div>
+
+            <div class="col-md-10 cls_nomargin_nopadding">
+                <ul id='ullist' class="cls_profile_wizard_header">
+                    <li class="cls_up_stpe1 cls_up_active">
+                        <a href="#">
+                            Step - 1/1
+                            <br />
+                            <span>Region Disable</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <div class="clearboth">&nbsp;</div>
+            </div>
+
+            <div id="divMaininputs" class="col-md-10 cls_nomargin_nopadding form-group">
+
+                <div class="divNew">
+                    Enter Region Name to Disable:
+                </div>
+                <div style="clear: both;"></div>
+                <br />
+
+                <div class="col-sm-12 clearfix">
+                    <div class="col-sm-4">
+                        <label>Select Region</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @*<input type="text" id="regiontxt" class="regioncls form-control" onblur="fnregiongetregiondetails();" style="position: relative;right: 100px;display: inline-block !important; width:50% !important;" />
+                        <input type="hidden" id="hdnregcode" />*@
+                        <input type="hidden" id="hdnregcode" />
+                        <input type="text" id="regiontxt" onblur="fnUserValidateRegionAutoFill(this);" placeholder="Enter Region Name..">
+                        <input type="button" id="btngo" class="btn btn-primary" value="Go" onclick="fngo();" />
+                    </div>
+                    <div class="col-sm-2">
+                       
+                    </div>
+                </div>
+                <div class="col-sm-12 cls_nomargin_nopadding form-group clearfix" id="reportregions" style="display:none;margin-left: 14px;margin-top: 20px;">
+                    <label id="reptoregname"></label>
+                    <div id="showleafregions" style="border: 2px solid;height: 200px;overflow-y:scroll;display:none;width:815px;">
+
+                    </div>
+                </div>
+                <div class="col-sm-12 clearfix" style="text-align:center;margin-top:12px;">
+                   
+                </div>
+                @*<div class="col-sm-12 clearfix" style="text-align:center;margin-top:12px;">
+                    <input type="button" id="btnsave" class="btn btn-primary" style="display:none;" value="Save" onclick="fnsavereportingreg();" />
+                </div>*@
+                <div class="col-sm-12 clearfix" style="display: none;margin-top:12px;" id="disableDate">
+                    <div class="col-xs-3" style="clear: both;">
+                        <label>Disable Date</label>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" id="txtdisableDate" class="datepicker form-control" style="position: relative;left: 90px;display: inline-block !important; width:50% !important;" />
+                    </div>
+                </div>
+                <div class="col-sm-12 clearfix" style="margin-top:12px;right: 90px;text-align: center;">
+                    <input type="button" class="btn btn-primary" value="Back" onclick="fnback();" />
+                    @*<input type="button" class="btn btn-primary" value="Next" onclick="fnnext();" id="next" style="display:none;" />*@
+                    <input type="button" id="finish" value="Finish" class="btn btn-success" style="display:none;"onclick="fnsavereportingreg();"/>
+                </div>
+                <br/>
+                <div class="col-sm-12 clearfix" style="margin-top:12px;">
+                    <div class="col-xs-1" style="clear:both;">
+                        <label>Note :</label>
+                    </div>
+                    <div class="col-xs-5">
+                        <p>1.Vacant/Not Assigned Regions that have non-vacant child regions 
+                        will not be displayed in the list above in Selected Region.</p>
+                        <br/>
+                        <p>2.If you want to disable a region that is not a part of the list, You
+                         need to first move all the regions under it to some other region
+                        using the heirarchy/attribute changes screen in Region Creation Wizard.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/DisableRegion.js"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script>
+    var CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    $(document).ready(function () {
+        debugger;
+
+        fngetactiveregions();
+        //$("#regiondisable").show();
+        $("#disable").hide();
+
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate: '0'
+
+        });
+        KI_DisableRegion.CompanyCode = CompanyCode;
+    });
+</script>

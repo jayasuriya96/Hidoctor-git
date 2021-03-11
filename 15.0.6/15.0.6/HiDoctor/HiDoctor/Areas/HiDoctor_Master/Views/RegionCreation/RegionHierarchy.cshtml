@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "RegionHierarchy";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+<style>
+    .dd{
+          margin-left: auto;
+    width: 46%;
+    margin-right: auto;
+    /*margin-top: 55px;*/
+        padding-top: 0px !important;
+    }
+      
+    .modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    display: none;
+    overflow: auto;
+    overflow-y: auto !important;
+}
+</style>
+<div>
+    <div class="col-md-12 cls_nomargin_nopadding" id="dvPanel">
+        <div class="col-md-10 cls_nomargin_nopadding clearfix" style="margin-top: 10px;">
+            <div class="cls_div_header">Setup Wizard For Region Creation</div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding">
+            <ul id='ullist' class="cls_profile_wizard_header">
+                <li class="cls_up_stpe1 cls_up_active">
+                    <a href="#">
+                        Step - 1/1
+                        <br />
+                        <span>Attribute Changes</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearboth">&nbsp;</div>
+        </div>
+
+        <div id="divMaininputs" class="col-md-10 cls_nomargin_nopadding form-group">
+            <div class="col-sm-12 clearfix" style="margin-bottom:10px;">
+                <div class="col-sm-4">
+                    <label>Enter Region Name</label>
+
+                </div>
+                <div class="col-sm-3">
+                    @*<input type="text" id="regiontxt" class="form-control regioncls" style="width: 50% !important;" />
+                        <input type="hidden" id="hdnregcode" />*@
+                    <input type="hidden" id="hdnregcode" />
+                    <input type="text" id="regiontxt"  placeholder="Enter Region Name..">
+                </div>
+                <div class="col-sm-3">
+                    <input type="button" class="btn btn-primary" id="btngo" value="Go" onclick="fnprefillregdata();" />
+                </div>
+            </div>
+            <div class="divNew"></div>
+            <div class="col-sm-12 clearfix">
+                <div class="col-sm-3">
+                    <label>Region Name</label>
+                    <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control" style="" type="text" id="regname" onkeypress="return alpha(event)"/>
+                </div>
+                <div class="col-sm-3">
+                    <label>Division</label>
+                    <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                </div>
+                <div class="col-sm-3">
+                    <select id="DDlDivision" multiple="multiple" onchange="fngetunderregiondetails();"></select>
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+
+                <div class="col-sm-3">
+                    <label>Under Region Name</label>
+                    <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                </div>
+                <div class="col-sm-3" id="dvUnderRegion">
+                    @*<select id="underreg" class="form-control" style="" onchange="fngetregiontype();" placeholder="--Choose a Under Region --"></select>*@
+                    <input id="underreg" style="" placeholder="--Select a Under Region --" />
+                    @*<input type="hidden" id="hdnunderregid" />*@
+                </div>
+                <div class="col-sm-3">
+                    <label>Region Type</label>
+                    <span><i class="fa fa-star" id="star" style="color:red;font-size:7px;margin-left:3px;"></i></span>
+                </div>
+                <div class="col-sm-3" id="dvRegionType">
+                    @*<select id="regtype" class="form-control" style="" placeholder="--Choose a region type--"></select>*@
+                    <input id="regtype" style="" placeholder="--Select a Region type--" />
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+
+                <div class="col-sm-3">
+                    <label>Region Classification</label>
+                </div>
+                <div class="col-sm-3" id="dvRegionClassifi">
+                    @*<select id="regclass" class="form-control" style="" placeholder="--Choose a Region Classification--"></select>*@
+                    <input id="regclass" style="" placeholder="--Select a Region Classification--" autocomplete="off" />
+                </div>
+                <div class="col-sm-3">
+                    <label>Expense Group</label>
+                </div>
+                <div class="col-sm-3" id="dvExpenseGrp">
+                    @*<select id="expgrp" class="form-control" style="" placeholder="--Choose a Expense Group--">
+                        <option value="">Select Expense Group</option>
+                    </select>*@
+                    <input id="expgrp" style="" placeholder="--Select a Expense Group--" />
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+                <div class="col-sm-3">
+                    <label>State</label>
+                </div>
+                <div class="col-sm-3" id="dvStates">
+                    @*<select id="state" class="form-control" style="" onchange="fngetcities();" placeholder="--Choose a state--"></select>*@
+                    <input id="state" style="" placeholder="--Choose a State--" autocomplete="off" />
+                    @*<input type="hidden" id="hdnstate" />*@
+                </div>
+                <div class="col-sm-3">
+                    <label>City</label>
+                </div>
+                <div class="col-sm-3" id="dvCities">
+                    <input id="city" style="" placeholder="Choose a City" autocomplete="off" />
+                    @*<select id="city" class="form-control" style="" placeholder="--Choose a city--"></select>*@
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+                <div class="col-sm-3">
+                    <label>Country</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" style="" id="country" value="India" />
+                </div>
+                <div class="col-sm-3">
+                    <label>Local Area</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" style="" id="lclarea" />
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+                <div class="col-sm-3">
+                    <label>Ref Key1</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" style="" id="refkey1" onkeypress="return alpha(event)" max="50"/>
+                </div>
+                <div class="col-sm-3">
+                    <label>Ref Key2</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" style="" id="refkey2" onkeypress="return alpha(event)" max="50"/>
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix">
+                <div class="col-sm-3">
+                    <label>Depo Mapping</label>
+
+                </div>
+
+                <div class="col-sm-3" id="dvdepo">
+                    <input id="Depomapping" style="" placeholder="Choose a City" autocomplete="off" />
+
+                </div>
+
+            </div>
+            <br />
+            <div id="divNotionalTerritory" style="text-align:center; display:none;">
+                <label>Notional Territory</label>
+                <input type="checkbox" id="notionalTerritory" style="padding-left:10%;" />
+            </div>
+            <br />
+            <div class="col-sm-12 clearfix" style="text-align:center;">
+                <input type="button" id="btnBack1" value="Back" class="btn btn-primary" onclick="fnBack();" />
+                <input type="button" id="btnNext1" value="Save" class="btn btn-success" onclick="fngetprimarydivisionEdit();" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PrimaryDivision" role="dialog">
+    <div class="modal-dialog  dd">
+        <div>
+            <div class="modal-body">
+                <h4>Primary Division</h4>
+                <div id="Pd"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="fncloseprimary()">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/RegionHierarchy.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    var CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    $(document).ready(function () {
+        $("#DDlDivision").multiselect().multiselectfilter();
+        fngetregions();
+        fngetdivisions();
+        fngetregclass();
+        fngetexpgrp();
+        fnGetStateDetails();
+        fngetunderregions();
+        fngetregiontypes();
+        fngetdepo();
+        var atcObj = new ej.dropdowns.DropDownList({
+            //set the data to dataSource property
+            dataSource: [],
+            filterBarPlaceholder: 'Search',
+            showClearButton: true,
+            allowFiltering: true,
+            fields: { text: 'label', value: 'id' },
+            placeholder: 'Select City'
+        });
+        atcObj.appendTo('#city');
+
+    });
+
+    function alpha(e) {
+        var k;
+        document.all ? k = e.keyCode : k = e.which;
+        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+    }
+</script>

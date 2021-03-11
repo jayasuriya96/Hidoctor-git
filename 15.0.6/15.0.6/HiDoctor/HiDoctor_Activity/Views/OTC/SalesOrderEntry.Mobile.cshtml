@@ -1,0 +1,74 @@
+﻿<div style="float: right; margin-right: 19px; margin-top: 5px;">
+     <span id="spnSaleOrderEntry"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div style="clear: both"></div>
+
+
+<div data-theme="b" data-role="header">
+    <a data-role="button" href="#page1" data-icon="arrow-l" data-iconpos="notext"
+        class="ui-btn-right" onclick="fnOpenSalesOrder()"></a>
+    <h3>Sale Order Entry
+    </h3>
+    <div data-theme="b" data-role="header" data-mini="true" style="max-height: 1.7em !important;">
+        <h5 style="text-align: left !important; margin-top: 0.5%; padding-left: 5px; margin-left: 0.5%; font-size: 0.83em;">Customer Details
+        </h5>
+    </div>
+</div>
+
+<div style="padding-left: 1.5%; font-size: 12px;">
+
+    <h3 id="hCustName"></h3>
+
+    <span id="spnCustAdd" style="width: 100%;float: left;"></span>
+    <span id="spnCustTinNumb" style="width: 100%;float: left;"></span>
+    <span id="spnCustCstNumb" style="width: 100%;float: left;"></span>
+</div>
+
+<div data-role="content">
+    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+        <li data-role="list-divider" role="heading">Sale Order Details
+        </li>
+        <li data-theme="c">
+            <a href="#" data-transition="slide" id="openAddProd">Create New Order
+            </a>
+        </li>
+        <li data-theme="c">
+            <a href="#" data-transition="slide" id="openOrderHistory">View History
+            </a>
+        </li>
+    </ul>
+</div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mOTC.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var cCode_g = "";
+    var cName_g = "";
+    var sPersonCode_g = "";
+    var adrs_g = "";
+    var tNo_g="";
+    var cNo_g="";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#spnSaleOrderEntry').html(loginUserName_g);
+        cCode_g = @Html.Raw(Json.Encode(ViewBag.customerCode));    
+        cName_g = @Html.Raw(Json.Encode(ViewBag.customerName));
+        adrs_g = @Html.Raw(Json.Encode(ViewBag.Address));
+        tNo_g= @Html.Raw(Json.Encode(ViewBag.tinNumber));
+        cNo_g= @Html.Raw(Json.Encode(ViewBag.cstNumber)); 
+        sPersonCode_g =@Html.Raw(Json.Encode(ViewBag.salesPersonCode));
+        adrs_g = (adrs_g == null) ? "Not Available" : ((adrs_g == "") ?"Not Available":((adrs_g.toUpperCase() == "NULL") ?"Not Available":adrs_g));
+        tNo_g = (tNo_g == null) ? "Not Available" : ((tNo_g == "") ?"Not Available":((tNo_g.toUpperCase() == "NULL") ?"Not Available":tNo_g));
+        cNo_g = (cNo_g == null) ? "Not Available" : ((cNo_g == "") ?"Not Available":((cNo_g.toUpperCase() == "NULL") ?"Not Available":cNo_g));
+
+
+        $("#hCustName").html("Name : " + cName_g);
+        $("#spnCustAdd").html("Address : " + unescape(adrs_g));
+        $("#spnCustTinNumb").html("TIN Number : " + unescape(tNo_g));
+        $("#spnCustCstNumb").html("CST Number : " + unescape(cNo_g));        
+
+        $("#openAddProd").click(function () { fnOpenSOAddProduct() });
+        $("#openOrderHistory").click(function () { fnOpenOrderHistory() });
+    });
+</script>

@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "ZipFileUpload";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    .selectboxWidth {
+        width: 99%;
+    }
+
+    .progress {
+        position: relative;
+        width: 400px;
+        border: 1px solid #ddd;
+        padding: 1px;
+    }
+
+    .bar {
+        background-color: #4CAF50;
+        width: 0%;
+        height: 20px;
+        margin: 0px !important;
+    }
+
+    .percent {
+        position: absolute;
+        display: inline-block;
+        top: -1px;
+        left: 48%;
+    }
+
+    .statusmsg {
+        font-size: 15px;
+        color: green;
+        font-weight: bold;
+        margin-left: 14px;
+    }
+
+    .clsshowlink {
+        cursor: pointer;
+        text-decoration: underline;
+        font-style: italic;
+        color: blue;
+    }
+
+    .mandatory {
+        color: red;
+        font-weight: bold;
+    }
+
+    .panel {
+        background-color: #eee !important;
+    }
+</style>
+
+<form method="post" onsubmit="return false" enctype="multipart/form-data" id="file-form">
+    <div class="form-group panel panel-primary" id="dvUserExcelMain">
+        <div class="col-lg-12 panel-heading">
+            My Document - File Upload
+        </div>
+
+        <div class="form-group panel-body">
+
+            <div id="dvRules" class="col-sm-6 table-responsive form-group">
+                <table>
+                    <tr>
+                        <td style="text-align: center; font-weight: bold; font-size: 14px;">Step 1: Instruction</td>
+                    </tr>
+                    <tr>
+                        <td>1. Upload only zip files which has compressed with employee documents or region documents(based on ref key1 value).</td>
+                    </tr>
+                    <tr>
+                        <td>2. Don’t choose a folder while creating a zip file; please choose the files and zip.</td>
+                    </tr>
+                    <tr>
+                        <td>3. With in the zip file, files should complain the valid file format: (documentName_EmployeeNumber.extn or documentName_RefKey1.extn) .</td>
+                    </tr>
+                    <tr>
+                        <td>4. Valid file extensions :  pdf, xls, xlsx, doc & docx.</td>
+                    </tr>
+                    <tr>
+                        <td>5.When uploading Employee driven files, Employee number should not mapped to  more than one user (Employee).</td>
+                    </tr>
+                    <tr>
+                        <td>6. Referred (employee number or ref key1) should available in HiDoctor.</td>
+                    </tr>
+                    <tr>
+                        <td>7. Document Name (Displayed to all employees in MyDocument view) should not exceed 100 characters.</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <div style="font-weight: bold; font-size: 14px;" class="col-lg-12">
+                    Step 2 : Upload File
+                </div>
+
+                <div class="col-lg-12 form-group">
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>Document Type</label><span class="mandatory">*</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <select class="selectboxWidth input-large" id="ddlDocType">
+                                <option value="0">-Select Document Type-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>Month</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <select class="selectboxWidth input-large" id="ddlMonth">
+                                <option value="0">-Select a Month-</option>
+                                <option value="01">Jan</option>
+                                <option value="02">Feb</option>
+                                <option value="03">Mar</option>
+                                <option value="04">Apr</option>
+                                <option value="05">May</option>
+                                <option value="06">Jun</option>
+                                <option value="07">Jul</option>
+                                <option value="08">Aug</option>
+                                <option value="09">Sep</option>
+                                <option value="10">Oct</option>
+                                <option value="11">Nov</option>
+                                <option value="12">Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>Year</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <select class="selectboxWidth input-large" id="ddlYear">
+                                @*<option value="0">-Select a Year-</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>*@
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>File Upload Category</label><span class="mandatory">*</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <select class="selectboxWidth input-large" id="ddlCatType">
+                                <option value="0">-Select Category-</option>
+                                <option value="User">User</option>
+                                <option value="Region">Region</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>Document Name</label><span class="mandatory">*</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="text" id="txtDocName" class="form-control" />
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <label>Zip File Upload</label><span class="mandatory">*</span>
+                        </div>
+                        <div class="col-lg-5">
+                            <input type="file" id="fileupload" name="fileupload" accept=".zip" />
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5"></div>
+                        <div class="col-lg-5">
+                            <input type="submit" id="btnfileUpload" class="btn small default" value="Upload" />
+                        </div>
+                    </div>
+                    <div class="row col-lg-10 form-group clearfix">
+                        <div class="col-lg-5">
+                            <span class="mandatory">*</span> are Mandatory Fields.
+                        </div>
+
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <div class="progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
+                        <div id="progressbar"></div>
+                    </div>
+                    <div id="uploadedStatus" class="statusmsg"></div>
+                    <div id="showstatus" class="statusmsg"></div>
+                </div>
+
+                <div id="status"></div>
+                @Html.Hidden("txtdoctype")
+                @Html.Hidden("txtdocMonth")
+                @Html.Hidden("txtdocYear")
+                @Html.Hidden("txtdocName")
+                @Html.Hidden("txtCatType")
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MyDocuments.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        CHUNKUPLOAD.fnGetDocTypes();
+        CHUNKUPLOAD.fnGetYear();
+        CHUNKUPLOAD.fnInitializeEvents();
+        //  setInterval(CHUNKUPLOAD.fnGetFileUploadStatus(), 3000);
+        $("#dvAjaxLoad").hide();
+    });
+</script>
+
+

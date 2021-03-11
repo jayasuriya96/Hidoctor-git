@@ -1,0 +1,392 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdCreateCourse.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdminMaster.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/Bootstrap/bootstrap.min.js"></script>
+
+<script src="../../Areas/HDNextGen/Scripts/Course/CourseCategory.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CourseCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateCourse.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Course/FileUpload.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/jquery.form.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Course/CourseCategory.js"></script>
+
+<style>
+    table.scrollTbl, tr td {
+        /*border:1px solid red*/
+    }
+
+        table.scrollTbl tbody {
+            display: block;
+            height: 300px;
+            overflow: auto;
+        }
+
+            table.scrollTbl thead, table.scrollTbl tbody tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+        table.scrollTbl thead {
+            width: calc( 100% - 1em );
+        }
+
+    table.scrollTbl {
+        width: 100%;
+    }
+
+    #txtAllCategory {
+        border-bottom-right-radius: 5px !important;
+        border-top-right-radius: 5px !important;
+        height: 30px;
+        margin-top: 5px;
+        padding: 3px 0 0;
+    }
+
+    #dvCategoryDetails {
+        height: 350px;
+        overflow: auto;
+    }
+</style>
+
+<div class="col-md-12 cls_nomargin_nopadding" id="dvCourseRight">
+    <div class="col-md-12 clsRoundMain">
+        <div class="clsWidget">
+            <div class="clsDvHeader clsRoundHead">
+                <div class="inactive-full-circle pull-right" id="dvStep3">
+                    <div class="clsPaddingNone clsSpnNumber">3</div>
+                    <div class="clsSpnNumbertext">@Resources.AdCourse.Course_Properties_Step</div>
+                </div>
+                <div class="inactive-full-circle pull-right" id="dvStep2">
+                    <div class="clsPaddingNone clsSpnNumber">2</div>
+                    <div class="clsSpnNumbertext">@Resources.AdCourse.Course_Properties_Step</div>
+                </div>
+                <div class="active-full-circle  pull-right" id="dvStep1">
+                    <div class="clsPaddingNone clsSpnNumber">1</div>
+                    <div class="clsSpnNumbertext">@Resources.AdCourse.Course_Properties_Step</div>
+                </div>
+                <div class="clsRoundheadtext">
+                    @Resources.AdCourse.Course_Properties_Text
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dvCourseContent">
+        <div>
+            <div class="col-lg-12 clsPaddingNone">
+                <div class="col-md-5">
+                    <div class="clsWidget row">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.AdCourse.Course_Name</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+
+                            <input type="text" id="txtCourseName" class="col-md-12 form-control" maxlength="100" />
+                            <input type="hidden" id="hdnCourseId" value="0" />
+                            <input type="hidden" id="hdnCourseMode" value="INSERT" />
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" data-toggle="tooltip" id="dvCourseNameValid" title="">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCourseNameErr" class="spnError"></span>
+                    </div>
+                    <div class="clsWidget row clearfix" id="dvImage">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.AdCourse.Course_Image</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+
+                            <div class="input-group">
+                                <form onsubmit="return false;" id="course-form" method="post" enctype="multipart/form-data">
+                                    <input type="file" class="cls_display_none" name="postedFile" id="txtCourseImage" />
+                                </form>
+                                <input type="text" class="form-control clsReadOnlyText" id="txtSurImg" readonly="readonly" />
+                                <span class="input-group-btn" style="padding-top: 5px;">
+                                    <button class="btn btn-default btn-admin-file" onclick="$('input[id=txtCourseImage]').click();"
+                                        type="button" style="margin-top: -5px;height: 2.4em;">
+                                        @Resources.AdCourse.Course_Image_Select_text
+                                    </button>
+                                </span>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" id="dvCourseImageValid">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCourseImageErr" class="spnError"></span>
+                    </div>
+                    <div class="clsWidget  row clearfix">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.AdCourse.Course_Description</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <textarea id="txtCourseDesc" maxlength="500" class="clsCourseDesc form-control"></textarea>
+                            <span style="float: right" id="spnDesMaxLen">Characters remaining: 500</span>
+                            <span style="font-size: 12px; float: left;">(Restricted characters : ~!@@$^)</span>
+
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" id="dvCourseDescValid">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCourseDescErr" class="spnError"></span>
+                    </div>
+                    <div class="clsWidget  row clearfix">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">Course Category&nbsp;<a onclick="CourseCategoryList.getCourse('S');" style="cursor: pointer" title="Add Category" class="fa fa-plus"></a></h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            @*<textarea id="txtCourseCategory" maxlength="500" class="form-control"></textarea>*@
+                            @*<input type="text" id="txtCourseCategory" class="col-md-12 form-control" maxlength="100" />*@
+                            <select id="ddCourseCategory" class="col-md-12 form-control">
+                            </select>
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" id="dvCourseCategoryValid">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCourseCatErr" class="spnError"></span>
+                    </div>
+                    <div class="clsWidget  row clearfix">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">Tags</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <input type="text" id="txtCourseTags" name="courseTags" style="width: 10% !important; float: left" /><div onclick="COURSE.fnClearTag();" style="color: blue; text-decoration: underline; cursor: pointer">Clear Tag</div>
+
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" id="dvCourseTagsValid">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCourseTagsErr" class="spnError"></span>
+                    </div>
+                    <div class="clsWidget  row clearfix" style="display: none;">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.AdCourse.Course_Type</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <input type="radio" name="rdCourseType" value="0" />
+                            <span id="spnFreeCourse">@Resources.AdCourse.Course_Free</span><br />
+                            <input type="radio" name="rdCourseType" value="1" checked="checked" />
+                            <span id="spnPaidCourse">@Resources.AdCourse.Course_Paid</span>
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone">
+                        </div>
+                    </div>
+                    <div class="clsWidget  row clearfix" style="display: none;">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.AdCourse.Course_Points</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <input type="number" id="txtCoursePoint" class="form-control clsNumbers" value="1" min="1" max="32767" />
+                        </div>
+                        <div class="col-xs-1 clsPaddingNone" id="dvCoursePointValid">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <span id="spnCoursePointErr" class="spnError"></span>
+                    </div>
+
+                    <div class="clsWidget row">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <a class="btn btn-primary pull-right" id="btnCreateCourse"><i class="fa fa-floppy-o"></i>&nbsp;@Resources.AdCourse.Course_Submit_Text</a>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="progressBar"></div>
+                    <div id="dvCreateCourseImgInfo"></div>
+                    <div id="dvCreateCourseInfo"></div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5 clsSurImgPreview" id="dvSurImagePreview">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*</div>*@
+
+<div id="myModal" class="modal" role="dialog">
+    <div class="modal-body" id="dvBodyQuesImgPreview">
+    </div>
+</div>
+<div class="" id="dvImgModal" style="display: none;">
+    <div class="" id="dvModalBodyQuesPre">
+        <img alt="" class="img-responsive" id="dvQuesPreview" />
+    </div>
+</div>
+@*<a id="btnCategory" href="#">Create Category</a>*@
+<div class="modal" id="dvCategoryMaster">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CourseCategoryList.fnClosePopup();"><span aria-hidden="true">&times;</span></button>
+                <h4 id="thumbnailsinglemodallbl" class="modal-title">Category Master</h4>
+            </div>
+            <div class="modal-body">
+            <div style="height:0.5em"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">Category Name<span class="spnMandat">*</span></div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txtCategoryName" style="width:250px" />
+                    </div>
+                    <div class="col-lg-5"></div>
+                </div>
+                <div class="clearfix"></div>
+<div style="height:0.5em"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-8">
+                        <a class="btn btn-primary" href="#" id="btnSubmit" onclick="CourseCategoryList.fnInsertCourseCategory();"><i class="fa fa-floppy-o"></i>&nbsp;Submit</a>
+                        <a class="btn btn-primary" href="#" id="btnClear"><i class="fa fa-times"></i>&nbsp;Cancel</a>
+                        <input type="hidden" id="hdnCategoryId" />
+                        <input type="hidden" id="hdnMode" value="I" />
+                    </div>
+
+                    <div class="col-lg-4"></div>
+                </div>
+                <div class="clearfix"></div>
+                <br />
+                <div class="col-lg-12">
+                    <div class="pull-right">
+                        <div class="col-lg-12">
+                            <div class="clsDivSearch" style="float: left; padding-top: 10px;">
+                                Search&nbsp;
+                            </div>
+                            <div style="width: 65%; float: left;">
+                                <input type="text" class="form-control clstxtSearch" placeholder="Type category Name" id="txtCategorySearch" style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0 !important;">
+                            </div>
+                            <div style="width: 10%; float: left;">
+                                <input type="button" class="btn btn-primary clsbtnSearch" onclick="" style="height: 30px; height: 34px;width: 35px;margin-top: 0px!important;" id="txtAllCategory" value="Go">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+<br >
+                <div id="dvCategoryDetails"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#btnCategory').click(function () {
+        CourseCategoryList.getCourse('');
+        $('#btnSubmit').click(function () {
+            debugger;
+            CourseCategoryList.fnInsertCourseCategory();
+        });
+        $('#btnClear').click(function () { CourseCategoryList.fnClearAll(); });
+    });
+    $('#btnClear').click(function () {
+        $("#txtCategoryName").val('');
+    });
+    //var $table = $('table.scrollTbl'),
+    //$bodyCells = $table.find('tbody tr:first').children(),
+    //colWidth;
+
+    //// Adjust the width of thead cells when window resizes
+    //$(window).resize(function () {
+    //    // Get the tbody columns width array
+    //    colWidth = $bodyCells.map(function () {
+    //        return $(this).width();
+    //    }).get();
+
+    //    // Set the width of thead columns
+    //    $table.find('thead tr').children().each(function (i, v) {
+    //        $(v).width(colWidth[i]);
+    //    });
+    //}).resize();
+    debugger;
+    var courseID_g = '';
+    var DATE_FORMAT = "dd/mm/yyyy";
+    courseID_g = @Html.Raw(Json.Encode(ViewBag.Course_ID))
+    debugger;
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        AjaxGlobalHandler.Initiate();
+        advancedCourse.init();
+        COURSE.fnInitializeEvents();
+        COURSE.fnGetCourseTags(function () {
+
+            COURSE.fnBindCourseCategory(function (data) {
+
+                if (courseID_g != null) {
+                    debugger;
+                    COURSE.fnFillCourseHeader(courseID_g);
+                }
+            });
+        });
+        $('#txtAllCategory').click(function () { CourseCategoryList.getCourse("S"); });
+    });
+
+    //$("#dvPageHeader").html(@Html.Raw(Json.Encode(ViewBag.PageHeader)));
+    $('#mnuAddCourse').addClass('cls_submenuActive');
+    $('#mnuCourse').addClass('cls_active');
+
+    var DATE_FORMAT = "dd/mm/yyyy";
+
+    $('.datepicker').datepicker({
+        autoclose: true,
+        format: DATE_FORMAT
+    });
+
+
+    $('#txtCourseDesc').keypress(function () {
+        $('#spnDesMaxLen').html('Characters remaining: ' + parseInt(500 - (parseInt($('#txtCourseDesc').val().length))));
+    }).blur(function () {
+        $('#spnDesMaxLen').html('Characters remaining: ' + parseInt(500 - (parseInt($('#txtCourseDesc').val().length))));
+    }).keyup(function () {
+        $('#spnDesMaxLen').html('Characters remaining: ' + parseInt(500 - (parseInt($('#txtCourseDesc').val().length))));
+    });;
+    /////////// ************** DISPLAY TEXT ****************************/
+    var courseNametext = "@Resources.AdCourse.Course_Name";
+    var surDescText = "@Resources.AdCourse.Course_Description";
+    var dvQuesHintText = "Hint";
+    var btnQuestCancel = "@Resources.AdCourse.Course_QuestionCancel";
+    var surDeleteConfirm = "@Resources.AdCourse.Course_Delete_Confirm";
+    var surSubmitText = "@Resources.AdCourse.Course_Submit_Text";
+    var CourseImgUploadText = "@Resources.AdCourse.Course_Img_Upload_Text";
+    var surImgUploadSuccessMsg = "@Resources.AdCourse.Course_Img_Upload_Success_Text";
+    var surImgUploadErrorMsg = "@Resources.AdCourse.Course_Img_Upload_Error_Text";
+    var surImgValid = "@Resources.AdCourse.Course_Image_Valid_Text";
+    var uploadButtonText = "@Resources.AdCourse.Course_Image_Select_text";
+    var Course_Question_Next = "@Resources.AdCourse.Course_Question_Next";
+
+
+    ///////////************************* VALIDATION MESSAGES ***********************/
+    var courseNameValidation = "@Resources.AdCourse.Course_Validate_Course_Name";
+    var coursePointValidation = "@Resources.AdCourse.Course_Validate_Course_Points";
+    var surDescSplCharValid = "@Resources.AdCourse.Course_Validate_Course_Desc_SPL";
+    var surInstSplChar = "@Resources.AdCourse.Course_Validate_Course_Inst_SPL";
+    var surNameSPlCharValid = "@Resources.AdCourse.Course_Validate_Course_Name_SPL";
+    var courseSubmitLoadMsg = "@Resources.AdCourse.Course_Submit_Loading_Msg";
+    var coursesubmitValidate = "@Resources.AdCourse.Course_Submit_Validate_Text";
+    var courseSubmitValidSuccess = "@Resources.AdCourse.Course_Submit_Valid_Success";
+    var Course_Question_Mandatory = "@Resources.AdCourse.Course_Question_Mandatory";
+    var Course_Point_Valid = "@Resources.AdCourse.Course_Point_Valid";
+</script>

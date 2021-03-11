@@ -1,0 +1,52 @@
+﻿@model MVCModels.StatusMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+
+<div id="dvRules" class="col-lg-12 form-group">
+    <div class="col-lg-12  form-group">
+        <div class="row clearfix form-group">
+            <div  class="col-xs-2">
+                <label>Status Name:</label>
+            </div>
+            <div  class="col-xs-3">
+                <input type="hidden" name="statusCode" id="hdnstatusCodeval" />
+                <input type="text" id="txtstatusname" class="form-control clsDecimal" />
+            </div>
+        </div>
+        <div class="row clearfix form-group">
+            <div class="col-xs-2">
+                <label>Display Name:</label>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" id="txtdispname" class="form-control clsDecimal" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="row clearfix form-group">
+            <input type="button" id="btnsave" onclick="fnSaveStatusMaster();" value="Save" class="btn btn-primary"></input>
+            <input type="hidden" name="Update" value="I" id="hdnMode" />
+            <input type="button" id="btncancel"  onclick="fnCancel();" value="Cancel" class="btn btn-primary"></input>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <br />
+    @Html.ActionLink("Download status Master details", "PutStatusMasterIntoExcel",new {@style="blue"})
+    <br />
+    <div id="divstatusmaster"></div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/StatusMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {       
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        fnGetStatusMasterDetails();
+        $("#dvAjaxLoad").hide();
+    });
+</script>

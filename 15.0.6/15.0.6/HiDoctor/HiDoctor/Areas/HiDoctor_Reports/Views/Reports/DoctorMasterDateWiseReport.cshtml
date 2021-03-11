@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "DoctorMasterDateWiseReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<div id="dvDoctorMasterDaetwiseReport">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <input type="button" class="btn btn-primary" value="Back" id="btnback" onclick="btnBack();" />
+    <div class="col-lg-12">
+        <div class="col-lg-4" style="min-height: 250px; overflow: auto;">
+            <div id="dvBindTree" style="width: 100%"></div>
+        </div>
+        <br />
+        <div class="col-lg-8" style="min-height: 350px; overflow: auto;">
+            <div id="dvReport" style="width: 100%"></div>
+        </div>
+        <br />
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-12" id="dvDoctorNames" style="min-height: 350px; overflow: auto;">
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MasterReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    // var regionCode='';
+    var region = "";    
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvDoctorMasterDaetwiseReport").unblock();
+            $('#dvDoctorMasterDaetwiseReport').block({
+                message: 'Retrieving data...',
+                css: { border: '1px solid #ddd' }
+            });
+            region = @Html.Raw(Json.Encode(ViewBag.RegnCode))           
+            fnGetTree();        
+            fnGetCountDetailsforUser(region);        
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvDoctorMasterDaetwiseReport").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+</script>
+
+

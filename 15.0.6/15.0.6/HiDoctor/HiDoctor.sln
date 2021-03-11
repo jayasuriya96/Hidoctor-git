@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiDoctor", "HiDoctor\HiDoctor.csproj", "{76C12A39-A660-4BFB-969C-7B85DABFDA46}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7885AC06-EDA4-4BAB-944D-882621039488} = {7885AC06-EDA4-4BAB-944D-882621039488}
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9} = {CCC44559-D1AC-4246-B469-E03E0DDA91E9}
+		{7F1D03A7-4C34-4368-83AE-039F1795D700} = {7F1D03A7-4C34-4368-83AE-039F1795D700}
+		{71EFA0A8-8288-42C7-A289-5C7E61E1B020} = {71EFA0A8-8288-42C7-A289-5C7E61E1B020}
+		{7F073FF0-CCC6-4557-BEFB-E504C5710843} = {7F073FF0-CCC6-4557-BEFB-E504C5710843}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiDoctor_Activity", "HiDoctor_Activity\HiDoctor_Activity.csproj", "{7885AC06-EDA4-4BAB-944D-882621039488}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9} = {CCC44559-D1AC-4246-B469-E03E0DDA91E9}
+		{7F1D03A7-4C34-4368-83AE-039F1795D700} = {7F1D03A7-4C34-4368-83AE-039F1795D700}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataControl", "DataControl\DataControl.csproj", "{CCC44559-D1AC-4246-B469-E03E0DDA91E9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F1D03A7-4C34-4368-83AE-039F1795D700} = {7F1D03A7-4C34-4368-83AE-039F1795D700}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiDoctor_Reports", "HiDoctor_Reports\HiDoctor_Reports.csproj", "{71EFA0A8-8288-42C7-A289-5C7E61E1B020}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9} = {CCC44559-D1AC-4246-B469-E03E0DDA91E9}
+		{7F1D03A7-4C34-4368-83AE-039F1795D700} = {7F1D03A7-4C34-4368-83AE-039F1795D700}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCModels", "MVCModels\MVCModels.csproj", "{7F1D03A7-4C34-4368-83AE-039F1795D700}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiDoctor_Master", "HiDoctor_Master\HiDoctor_Master.csproj", "{7F073FF0-CCC6-4557-BEFB-E504C5710843}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76C12A39-A660-4BFB-969C-7B85DABFDA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76C12A39-A660-4BFB-969C-7B85DABFDA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76C12A39-A660-4BFB-969C-7B85DABFDA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76C12A39-A660-4BFB-969C-7B85DABFDA46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7885AC06-EDA4-4BAB-944D-882621039488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7885AC06-EDA4-4BAB-944D-882621039488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7885AC06-EDA4-4BAB-944D-882621039488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7885AC06-EDA4-4BAB-944D-882621039488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC44559-D1AC-4246-B469-E03E0DDA91E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71EFA0A8-8288-42C7-A289-5C7E61E1B020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71EFA0A8-8288-42C7-A289-5C7E61E1B020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71EFA0A8-8288-42C7-A289-5C7E61E1B020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71EFA0A8-8288-42C7-A289-5C7E61E1B020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F1D03A7-4C34-4368-83AE-039F1795D700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F1D03A7-4C34-4368-83AE-039F1795D700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F1D03A7-4C34-4368-83AE-039F1795D700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F1D03A7-4C34-4368-83AE-039F1795D700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F073FF0-CCC6-4557-BEFB-E504C5710843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F073FF0-CCC6-4557-BEFB-E504C5710843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F073FF0-CCC6-4557-BEFB-E504C5710843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F073FF0-CCC6-4557-BEFB-E504C5710843}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://hidoctor.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = HiDoctor\\HiDoctor.csproj
+		SccProjectName1 = HiDoctor
+		SccLocalPath1 = HiDoctor
+		SccProjectUniqueName2 = HiDoctor_Activity\\HiDoctor_Activity.csproj
+		SccProjectName2 = HiDoctor_Activity
+		SccLocalPath2 = HiDoctor_Activity
+		SccProjectUniqueName3 = DataControl\\DataControl.csproj
+		SccProjectName3 = DataControl
+		SccLocalPath3 = DataControl
+		SccProjectUniqueName4 = HiDoctor_Reports\\HiDoctor_Reports.csproj
+		SccProjectName4 = HiDoctor_Reports
+		SccLocalPath4 = HiDoctor_Reports
+		SccProjectUniqueName5 = MVCModels\\MVCModels.csproj
+		SccProjectName5 = MVCModels
+		SccLocalPath5 = MVCModels
+		SccProjectUniqueName6 = HiDoctor_Master\\HiDoctor_Master.csproj
+		SccProjectName6 = HiDoctor_Master
+		SccLocalPath6 = HiDoctor_Master
+	EndGlobalSection
+EndGlobal

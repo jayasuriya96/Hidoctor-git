@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "ShareAllocationReport";
+    Layout=null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .tblhead {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    #lnkExcel {
+        text-decoration: underline;
+    }
+
+    .dvPositive {
+        background-color: green;
+        border: 1px solid #efefef;
+    }
+
+    .dvNegative {
+        background-color: lightpink;
+        border: 1px solid #efefef;
+    }
+</style>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+
+
+<div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+    <div id="dvTree" class="col-xs-3">
+        <div id="dvregionTree" style="height: 500px;">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+        <input type="hidden" value="" id="hdnRegionCode" />
+        <div style="clear: both"></div>
+    </div>
+
+    <div id="dvdata" class="col-xs-9" style="display: none">
+        <div>
+            <span onclick="fnToggleUserTypeTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+            |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+        </div>
+        <div style="clear: both"></div>
+        <div id="rptInputs" class="col-lg-12 dvRptInput">
+            <div class="col-lg-12">
+                <div class="helpIconright">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('STOCKISTSHARE','PAGE')" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" style="overflow: auto;">
+                <div class="col-xs-1">
+                    Mode
+                </div>
+                <div class="col-xs-3">
+                    <select id="drpPeriodType" onchange="fnBindMonth();" style="width: 100%;">
+                        <option value="M">Month</option>
+                        <option value="Q">Quarter</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    Month/Quarter
+                </div>
+                <div class="col-xs-3">
+                    <select id="drpPeriod" style="width: 100%;">
+                        <option value="0">Select Period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-6">
+                    <input type="radio" value="N" id="optViewInScreen" name="rptOptions" checked="checked" />
+                    <label for="optViewInScreen">View in-screen</label>
+                    <input type="radio" value="Y" id="optExportToExcel" name="rptOptions" />
+                    <label for="optExportToExcel">Export to excel</label>
+                </div>
+
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-6 form-group" style="padding-top: 4px; font-weight: bold;"><a id="lnkExcel"></a></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-5">
+                    <input type="button" class="btn btnprimary" value="Show Report" onclick="fnShowReport();" />
+                </div>
+                <div class="col-xs-5"></div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="dvMainReport" style="display: none;">
+            <div>
+                <div class="helpIconright">
+                    <br />
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('STOCKISTSHARE','PAGE')" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="dvDataTable" class="table-responsive" style="overflow: auto;">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+</div>
+<input type="hidden" id="hdnCurrentDate" />
+<div id="dvloading" style="display: none">
+    <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script lang="ja">
+    var selectedRegionCodes, selectedRegionNames;
+    var currentDate = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        selectedRegionCodes = "";
+        selectedRegionNames = "";
+        $('.datepicker').datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+        currentDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate))
+        $("#hdnCurrentDate").val(currentDate);
+        fnTreeWithChkBoxChildSelction("dvregionTree");
+        fnBindMonth();
+        $("#dvTree").show();
+        $("#dvdata").hide();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#rptInputs").addClass('col-lg-12');
+        $("#dvDataTable").empty();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnBindMonth() {
+        $('option', $("#drpPeriod")).remove();
+        if ($("#drpPeriodType").val().toUpperCase() == "M") {
+
+            var currentMonth = $("#hdnCurrentDate").val().split('-')[1];
+            $("#drpPeriod").append("<option value=0>-Select Period-</option>");
+            var fixedYear = 2014;
+            var year = new Date($("#hdnCurrentDate").val()).getFullYear();
+            var year_to_add = fixedYear;
+            for (var j = year_to_add; j <= year; j++) {
+                for (var i = 0; i < monthArray.length; i++) {
+                    $("#drpPeriod").append("<option value=" + year_to_add + "-" + monthNumArray[i] + ">" + year_to_add + "-" + monthArray[i] + "</option>");
+                    if (year_to_add == year && monthArray[i] == monthArray[new Date($("#hdnCurrentDate").val()).getMonth()]) {
+                        break;
+                    }
+                }
+                year_to_add = fixedYear + 1;
+            }
+            $("#tdPeriod").html('Select Month');
+        }
+        else if ($("#drpPeriodType").val().toUpperCase() == "Q") {
+            $("#drpPeriod").append("<option value=0>-Select Period-</option>");
+            var select = $("#drpPeriod");
+            var date = new Date($("#hdnCurrentDate").val());
+            var fixedYear = 2014;
+            var year = date.getFullYear();
+            var quarter = Math.floor(date.getMonth() / 3);
+            var year_to_add = fixedYear;
+            for (var i = year_to_add; i <= year; i++) {
+                for (var j = 0; j < 4; j++) {
+                    var option = $('<option/>');
+                    var quarter_value = get_quarter_text(j).split('|')[1];
+                    var quarter_text = get_quarter_text(j).split('|')[0];
+
+                    var value = year_to_add + '-' + quarter_value;
+                    var text = year_to_add + ' ' + quarter_text;
+
+                    option.val(value).text(text);
+                    if (year_to_add == year && quarter == j) {
+                        option.css('font-weight', 'bold !important')
+                    }
+                    select.append(option);
+                    if (year_to_add == year && quarter == j) {
+                        break;
+                    }
+
+                }
+                year_to_add = fixedYear + 1;
+            }
+            $("#tdPeriod").html('Select Quarter');
+        }
+    }
+
+    function get_quarter_text(num) {
+        switch (num) {
+            case 0:
+                return 'Jan-Mar|1_2_3';
+            case 1:
+                return 'Apr-Jun|4_5_6';
+            case 2:
+                return 'Jul-Sep|7_8_9';
+            case 3:
+                return 'Oct-Dec|10_11_12';
+        }
+    }
+
+    function fnGetMonthYear() {
+        var arr = $("#drpPeriod").val().split('-');
+        var arr1 = arr[1].split('_');
+        month = "";
+        for (var m = 0; m < arr1.length; m++) {
+            month += +arr1[m] + ",";
+        }
+        var year = arr[0].toString();
+        month = month.slice(0, -1) + "_" + year;
+        return month;
+    }
+
+    function fnShowReport() {
+        if ($('#drpPeriod').val() == '0') {
+            fnMsgAlert('info', 'Validate', 'Please select any one month/quarter');
+            return;
+        }
+        var isExcel = 'N';
+        isExcel = $(":radio[name=rptOptions]:checked").val();
+        if (selectedRegionCodes != undefined && selectedRegionCodes != null && selectedRegionCodes != '') {
+            $('#dvMainReport').show();
+            $('#main').block({
+                message: '<h3>Loading...</h3>',
+                css: { border: '2px solid #ddd' }
+            });
+
+            var months = "";
+            var arMonth = $("#drpPeriod").val().split('-')[1].split('_');
+            for (var m = 0; m < arMonth.length; m++) {
+                months += +arMonth[m] + ",";
+            }
+            var years = $("#drpPeriod").val().split('-')[0];
+            $.ajax({
+                type: 'POST',
+                url: '../HiDoctor_Reports/Customer/GetShareAllocationReport',
+                data: "months=" + months + "&year=" + years + "&isExcel=" + isExcel + "&regionCodes=" + selectedRegionCodes
+                         + "&Mode=" + $('#drpPeriodType').val() + "&SelectedMonth=" + $('#drpPeriod').val() + "",
+                success: function (result) {
+                    if (isExcel == "N") {
+                        $("#dvDataTable").html(result);
+                    }
+                    else {
+                        $('#lnkExcel').attr("href", result);
+                        $('#lnkExcel').html('Click here to download');
+                    }
+                    $('#main').unblock();
+                    //$('#tblBrand').tablePagination({});
+                },
+                error: function () {
+                    $('#main').unblock();
+                },
+                complete: function () {
+                    $('#main').unblock();
+                }
+            });
+        }
+        else {
+            fnMsgAlert('info', 'Validate', 'Please select atleast one user type');
+            return;
+        }
+    }
+
+    function fnRegionTreeActivate(node) {
+    }
+    function fnRegionTreePostInit(node) {
+        $("#dvdata").show();
+    }
+    function fnRegionTreeSelect(select, node) {
+        selectedRegionCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selectedRegionNames = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.title;
+        });
+    }
+
+
+    function fnToggleUserTypeTree() {
+        if ($('#dvTree').hasClass('col-xs-3')) {
+            fnCloseRegionTree();
+        }
+        else {
+            fnOpenRegionTree();
+        }
+    }
+
+
+    function fnOpenRegionTree() {
+        $("#dvregionTree").slideDown();
+        $('#lnkTree').html('Hide Tree')
+        $('#dvTree').addClass('col-xs-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-xs-9')
+    }
+    function fnCloseRegionTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvregionTree").slideUp();
+        $('#dvTree').removeClass('col-xs-3');
+        $('#dvdata').removeClass('col-xs-9');
+        $('#dvdata').addClass('col-lg-12')
+
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+</script>

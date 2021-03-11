@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "ExpenseGroupMasterReport";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<style type="text/css">
+    #dvLoadingExpense {
+        background-color: #E8F1FF;
+        border: 3px solid #d3d3d3;
+    }
+</style>
+<div id="dvLoadingExpense" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingExpense');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvDailyBlockM" style="margin: 10px; max-height: 300px; overflow: auto; width: 97%;">
+        </div>
+    </div>
+    <div style="width: auto;">
+        <div id="dvNonDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+</div>
+
+<div>
+    <div id="dvTree" style="width: 20%; float: left">
+        <div id="tree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 80%; float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+
+        <div id="divReport">
+        </div>
+    </div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+
+            $("#dvTree").show();
+            var dvTree = $("#tree");
+            fnBindUserTree("tree");
+            $("#divMain").css('width', '80%');
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdnUserCode').val(node.data.key);
+        $("#dvTree").hide();
+        $("#spnTreeToggle").html('Show Tree');
+        $('#divToggle').show();
+        $("#divMain").css('width', '100%');
+        $("#divReport").empty();
+        fnGetExpenseGroupMasterReport(node.data.key);
+    }
+    function fnUserTreePostInit() {
+    }
+</script>

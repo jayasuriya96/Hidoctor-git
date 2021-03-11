@@ -1,0 +1,32 @@
+﻿
+@media only screen and (max-width: 600px) {
+    .startcss {
+        padding-right: 20px;
+        padding-left: 20px;
+        margin-top: 16px;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .startcss {
+        padding-right: 20px;
+        padding-left: 20px;
+        margin-top: 16px;
+    }
+}
+
+
+@media only screen and (min-width: 768px) {
+ 
+}
+
+
+@media only screen and (min-width: 992px) {
+   
+}
+
+
+@media only screen and (min-width: 1200px) {
+  
+}

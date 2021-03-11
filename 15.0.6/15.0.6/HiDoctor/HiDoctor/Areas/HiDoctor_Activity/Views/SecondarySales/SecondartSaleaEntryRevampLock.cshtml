@@ -1,0 +1,269 @@
+﻿@{
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+
+</style>
+
+<div class="row col-lg-12 form-group clearfix">
+    <div class="col-xs-4">
+        <input type="button" value="Hide Tree" id="btnTree" class="btn btn-primary btn-sm" onclick="SecondarySales.fnToggleTree();" />
+
+        <div id="dvregtree" style="height: 450px;">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+
+        <input type="hidden" value="" id="hdnRegionCode" onclick="fnLockdetails" />
+
+    </div>
+    <div class="col-sm-6">
+        <div class="tab">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link def active" href="#" onclick="SecondarySales.fnperodiclock();">Perodic Release</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link sum" role="tab" aria-controls="nav-profile" id="nav-profile" href="#" onclick="SecondarySales.fnDetails();">Perodic details</a>
+                </li>
+            </ul>
+            @*<nav>
+                    <div class="nav nav-tabs mt-2" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><b> Perodic Release</b></a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><b>Details</b></a>
+                    </div>
+                </nav>*@
+        </div>
+
+        <div class="row" id="perloc">
+            <div class="form-group row  col-md-10" style="margin-top:8px">
+                <label class="col-md-4" for="inputstartdate">
+                    <span class="fonthead">Secondary Sales Month & year</span>
+                    <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                </label>
+                <div class="col-md-6">
+                    <input type="text" id="txtMonth" placeholder="Month &Year" style="width:100%" />
+                </div>
+            </div>
+            @*<div class="col-xs-3" style="margin-top: 15px;">Secondary Sales Month & year </div>
+                <div class="col-xs-3" style="margin-top: 15px;">
+                    <input type="text" id="txtMonth" style="width:100%" />
+                </div>*@
+
+            <div class="form-group row  col-md-10" style="margin-top:2px">
+                <label class="col-md-4" for="inputstartdate">
+                    <span class="fonthead">Effective From</span>
+                    <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                </label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="effectfrom" placeholder="Effective From" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group row  col-md-10">
+                <label class="col-md-4" for="inputEnddate">
+                    <span class="fonthead">Effective To</span>
+                    <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                </label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="effectto" placeholder="Effective To" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-sm-12 col-xs-12row">
+
+                <div class="col-lg-6">
+                    <input type="button" class="btn btn-primary" value="Release" style="margin-top: 15px;" onclick="SecondarySales.fnReleasedetails();" />
+                </div>
+                <div class="col-lg-6">
+                    <input type="button" class="btn btn-primary" value="clear" style="margin-top: 15px;" onclick="SecondarySales.fnClear();" />
+                </div>
+                <div class="col-xs-6" style="text-align:center;">
+                </div>
+            </div>
+        </div>
+        <div id="DetailsPer" style="display:none;">
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group row  col-md-10" style="margin-top:2px">
+                            <label class="col-md-4" for="inputstartdate">
+                                <span class="fonthead">Effective From</span>
+                                <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="effectivefrom" placeholder="Effective From" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group row  col-md-10">
+                            <label class="col-md-4" for="inputEnddate">
+                                <span class="fonthead">Effective To</span>
+                                <label class="fa fa-star" style="color:red;font-size:9px;"></label>
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="effectiveto" placeholder="Effective To" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-top:33px;">
+                            <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="SecondarySales.fnGo();">Go</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="nav-link sum" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+    <div id="dvSecondarySalesEnteredDetails" class="col-sm-12 mt-1" style="overflow:auto;">
+        <div id="tblSecondarySalesReleased"></div>
+    </div>
+</div>
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/HD/SecondarySalesEntryRevampLock.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Activity/Scripts/SSCoreREST.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script type="text/javascript">
+    var Selected_Region_Code = "";
+    var Region_Code="";
+    var selKeys = "";
+    var Sel_Region_Code="";
+    $(function () {
+        $('#txtMonth').monthpicker();
+    });
+    fnMonthPickerDisableFutureMonths('txtMonth');
+    $(document).ready(function () {
+        debugger;
+       fnGetDateList();
+        AjaxGlobalHandler.Initiate();
+        Company_Code = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        Company_Id = @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        User_Code = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        Region_Code = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        SecondarySales.defaults.Company_Code = Company_Code;
+        SecondarySales.defaults.Company_Id = Company_Id;
+        SecondarySales.defaults.LogUserCode = User_Code;
+        SecondarySales.defaults.LogRegionCode = Region_Code;
+
+        //$('#dvAjaxLoad').hide();
+        //secondarySalesApproval.Init();
+        //if(currentRegionCode_g!="" && currentRegionCode_g!=null){
+        //    // $("#leftNav").show();
+
+        //}
+        try{
+
+            fnBindFullRegionTreeWithCheckbox('dvregtree');
+
+            $("#dvAjaxLoad").hide();
+            $('.dynatree-selected span.dynatree-checkbox').attr('disabled', 'disabled');
+            if (user.length > 0) {
+                // node.select(true);
+
+                //node.data.unselectable = true; //make it unselectable
+                //node.data.hideCheckbox = true; //hide the checkbox (mo
+                node.render(true);
+                node.select(false);
+                $(node.span).css("background-color", "lightgreen");
+                $('.span.dynatree-checkbox').prop('checked', false);
+            }
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+    $("#effectfrom").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date('01-01-2020')
+    });
+    $("#effectto").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date('01-01-2020')
+    });
+    $("#effectivefrom").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        //minDate: new Date()
+    });
+    $("#effectiveto").datepicker({
+        dateFormat: 'dd-mm-yy',
+        //numberOfMonths: 1,
+        //maxDate: 0,
+        changeMonth: true,
+        changeYear: true,
+        //minDate: new Date()
+    });
+    function fnMonthPickerDisableFutureMonths(id) {
+        var months = new Array();
+        var CurrentMonth = (new Date().getMonth() + 1) + 1;
+        for (var i = CurrentMonth; i <= 12; i++) {
+            months.push(i);
+        }
+        $('#' + id).monthpicker({ startYear: new Date().getFullYear()-8, finalYear: new Date().getFullYear(), pattern: 'mmm-yyyy' }).bind('monthpicker-click-month', function (e, month) {
+            debugger;
+
+        });
+        for (var i = 0; i < $('#' + id).length; i++) {
+            $($('#' + id)[i]).monthpicker("disableMonths", months);
+            $($('#' + id)[i]).monthpicker().bind('monthpicker-change-year', function (e, year) {
+                var item = $(e.currentTarget);
+                if (parseInt(year) === new Date().getFullYear()) {
+                    $(item).monthpicker('disableMonths', months);
+                } else {
+                    $(item).monthpicker('disableMonths', []);
+                }
+            });
+
+        }
+    }
+
+
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnRegionTreeActivate(node) {
+        debugger;
+        //$('#hdnRegionCode').val(node.data.key);
+        //Selected_Region_Code = node.data.key;
+        SecondarySales.fnLoadSSEntryScreen();
+    }
+    function fnRegionTreeSelect(select, node) {
+        debugger;
+        selectedKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+
+        selectedKeys = selectedKeys + ",";
+    }
+    //debugger;
+    //var selKeys = new Array();
+    //var selKeys_ls = new Array();
+    //function fnRegionTreeSelect(select, node) {
+    //    debugger;
+    //    var lastSelectedNode = node.data.key;
+    //    selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+    //        return node.data.key;
+    //    });
+
+    //    SelTitleKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+    //        return node.data.title;
+    //    });
+
+    //    selKeys_ls = selKeys;
+    //}
+
+</script>

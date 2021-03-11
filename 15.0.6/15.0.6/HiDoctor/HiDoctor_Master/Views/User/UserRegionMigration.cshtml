@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "UserRegionMigration";
+    Layout=null;
+}
+<div style="width: 100%;">
+    <input type="button" value="Update User" onclick="fnUpdateUserIndex();" class="btn small primary" />
+    <input type="button" value="Update Region" onclick="fnUpdateRegionIndex();" class="btn small primary" />
+    <input type="button" value="Update user Type" onclick="fnUpdateUserTypeIndex();" class="btn small primary" />
+</div>
+
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvAjaxLoad").hide();
+
+    });
+    function fnUpdateUserIndex() {
+        // $("#dvAjaxLoad").show();
+        $.blockUI();
+        $.ajax({
+            type: 'POST',//UpdateUserNewIndex
+            url: '../HiDoctor_Master/User/UpdateUserNewIndex',
+            data: "A",
+            success: function (result) {
+                if (result != '') {
+                    if (result.split(':')[0] == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', 'User master updated successfully');
+                    }
+                    else {
+                        fnMsgAlert('error', 'error', 'User master updation failed because of ' + result.split(':')[1]);
+                    }
+                }
+                else {
+                    fnMsgAlert('error', 'error', 'User master updation failed');
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnUpdateUserTypeIndex() {
+        // $("#dvAjaxLoad").show();
+        $.blockUI();
+        $.ajax({
+            type: 'POST',//UpdateUserNewIndex
+            url: '../HiDoctor_Master/User/UpdateUserTypeNewIndex',
+            data: "A",
+            success: function (result) {
+                if (result != '') {
+                    if (result.split(':')[0] == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', 'User Type master updated successfully');
+                    }
+                    else {
+                        fnMsgAlert('error', 'error', 'User Type master updation failed because of ' + result.split(':')[1]);
+                    }
+                }
+                else {
+                    fnMsgAlert('error', 'error', 'User Type master updation failed');
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnUpdateRegionIndex() {
+        // $("#dvAjaxLoad").show();
+        $.blockUI();
+        $.ajax({
+            type: 'POST',//UpdateUserNewIndex
+            url: '../HiDoctor_Master/Region/UpdateRegionNewIndex',
+            data: "A",
+            success: function (result) {
+                if (result != '') {
+                    if (result.split(':')[0] == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', result.split(':')[1]);
+                    }
+                    else {
+                        fnMsgAlert('error', 'error', result.split(':')[1]);
+                    }
+                }
+                else {
+                    fnMsgAlert('error', 'error', result.split(':')[1]);
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+    function fnVacancyMigration() {
+        $("#dvAjaxLoad").show();
+        $.ajax({
+            type: 'POST',//UpdateUserNewIndex
+            url: '../HiDoctor_Master/User/VacancyMigration',
+            data: "A",
+            success: function (result) {
+                if (result != '') {
+                    if (result.split(':')[0] == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', 'User master updated successfully');
+                    }
+                    else {
+                        fnMsgAlert('error', 'error', 'User master updation failed because of ' + result.split(':')[1]);
+                    }
+                }
+                else {
+                    fnMsgAlert('error', 'error', 'User master updation failed');
+                }
+            },
+            error: function () {
+            },
+            complete: function () {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+    }
+</script>

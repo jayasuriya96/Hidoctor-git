@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "STOS_Reassign";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Activity/Content/Stos.css" rel="stylesheet" />
+
+<style>
+    .charts-modalpopup, .modal-dialog {
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        box-shadow: none !important;
+        background: none !important;
+        background-clip: unset !important;
+        border: none !important;
+        border: none !important;
+        outline: 0;
+    }
+</style>
+
+<h2>Reassign</h2>
+<div class="container">
+    <div class="row">
+        <input type="button" value="Hide Summary" id="showhideBtn" style="background: #428bca;color: #fff;border: none;padding: 5px 10px;margin-bottom: 10px;cursor:pointer;" />
+        <div id="RequestByUserExpense" style="background: #ddd;">
+            <div class="col-xs-12" id="RequestByUser" style="padding: 0px;">
+            </div>
+        </div>
+        <div class="col-xs-12" id="UserRequestDetails" style="padding: 0px;">
+            <input type="hidden" id="hdnCycleCode" />
+            <input type="hidden" id="hdnMoveOrder" />
+            <div class="col-xs-12 clearfix" style="padding: 0px;">
+                <div class="col-xs-12 clearfix" id="TopApprovedUnapproved" style="text-align: right; padding: 0px;margin: 15px 0px;">
+                    <span class="MyTeam" style="font-weight: bold;float: left;border: 1px solid red;" onclick="STOSReassign.fnApproveCancel();">Cancel</span>
+                    <span class="MyTeam" id="reassignusertree" style="font-weight: bold;float: right;" onclick="fnUserhierarchy();">Reassign</span>
+                </div>
+                <div class="col-xs-12" id="History" style="padding: 0px;text-align:right;position: absolute;border: none;">
+                    <span class="MyTeam" id="Gethistory" style="font-weight: bold;position: relative;top: 24px;z-index: 10000;background: #fff;">History</span>
+                </div>
+                <div class="col-xs-12" id="EmployeeDetails" style="padding: 0px;background: #f8f8f8;margin: 15px 0px;"></div>
+                <div class="col-xs-12" id="STOSSummary" style="padding: 0px;background: #f8f8f8;margin: 15px 0px;">
+                    <input type="hidden" id="hdnSTOSId" />
+
+                    <input type="hidden" id="hdnApproved_Date" />
+                </div>
+                <div class="col-xs-12" id="ProductRequest" style="padding: 0px;background: #f8f8f8;margin: 15px 0px;"></div>
+                <div id="dvImages" class="col-xs-12" style="padding: 0px;background: #f8f8f8;margin: 15px 0px;"></div>
+                <div class="col-xs-12" id="Remarks" style="padding: 0px;background: #f8f8f8;margin: 15px 0px;"></div>
+                <div class="col-xs-12" id="BottomApprovedUnapproved" style="text-align: right; padding: 0px;margin: 15px 0px;">
+                    <span class="MyTeam" style="font-weight: bold;float: left;border: 1px solid red;" onclick="STOSReassign.fnApproveCancel();">Cancel</span>
+                    <span class="MyTeam" id="reassignusertrees" style="font-weight: bold;float: right;" onclick="fnUserhierarchy();">Reassign</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="simple_overlay simple_overlayCus" id="docDetail">
+    <a class="close"></a>
+    <a class="overlayclose" onclick="$('#docDetail').overlay().close();"></a>
+    <div id="usertree" class="usertreeCus">
+        <div class="dv-controls-load">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+            Loading tree
+        </div>
+    </div>
+    <div style="text-align:right;padding: 10px 10px;font-weight: bold;border-top: 1px solid #ddd;">
+        <span id="SelectUser" style="margin-right:5px;display:inline-block;float:left;"></span>
+        <span class="MyTeam" id="TreeUserDataClose" style="margin-right:10px">Close</span>
+        <span class="MyTeam" id="TreeUserData">Save</span>
+    </div>
+</div>
+
+
+
+
+<div id="ViewHistoryDetails" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">History Details</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <input type="button" style="display: inline-block;background: none;border: none;text-decoration: underline;color: blue;" value="Back" id="BackHistory" />
+                <div class="col-xs-12" id="HistoryDetails" style="padding:0px;">
+                </div>
+                <div class="col-xs-12" id="HistoryFullDetails" style="padding:0px;">
+                </div>
+                <div class="col-xs-12" id="HistoryRemarks" style="padding:0px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/STOSReassign.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/STOSService.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+
+<script>
+    $(document).ready(function () {
+        debugger;
+        alert(1);
+        var companyCode = "@ViewBag.CompanyCode";
+        var regionCode = "@ViewBag.RegionCode";
+        var regionName = "@ViewBag.RegionName";
+        var userCode = "@ViewBag.UserCode";
+        var userName = "@ViewBag.UserName";
+        var usertypeName = "@ViewBag.UserTypeName";
+
+        STOSReassign.defaults.CompanyCode = companyCode;
+        STOSReassign.defaults.RegionCode = regionCode;
+        STOSReassign.defaults.RegionName = regionName;
+        STOSReassign.defaults.UserCode = userCode;
+        STOSReassign.defaults.UserName = userName;
+        STOSReassign.defaults.UserTypeName = usertypeName;
+
+
+
+        $('#showhideBtn').click(function () {
+            var Btntext = $('#showhideBtn').val();
+            if (Btntext == 'Hide Summary') {
+                $('#RequestByUserExpense').hide();
+                $('#UserRequestDetails').show();
+                $('#showhideBtn').val('Show Summary');
+            } else {
+                $('#RequestByUserExpense').show();
+                $('#UserRequestDetails').hide();
+                $('#showhideBtn').val('Hide Summary');
+            }
+        });
+
+        $('#BackHistory').click(function () {
+            $('#BackHistory').hide();
+            $('#HistoryFullDetails').hide();
+            $('#HistoryRemarks').hide();
+            $('#HistoryDetails').show();
+        });
+
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        fnBindUserTree("usertree");
+        STOSReassign.init();
+    });
+
+    $("#reassignusertree").unbind('click').bind('click', function () {
+        $('#hdntreeSelectUserCode').val('');
+        $('#docDetail').overlay().load();
+    });
+    $("#reassignusertrees").unbind('click').bind('click', function () {
+        $('#hdntreeSelectUserCode').val('');
+        $('#docDetail').overlay().load();
+    });
+
+    $("#TreeUserDataClose").unbind('click').bind('click', function () {
+        $('#hdntreeSelectUserCode').val('');
+        $('#docDetail').overlay().close();
+    });
+
+    function fnUserTreePostInit() {
+    }
+
+    function fnUserTreeNodeClick(node) {
+        $('#hdntreeSelectUserCode').val('');
+        var Content = '';
+        Content += '<span style="margin-right:5px;"><b>Select User Name :</b></span><span>' + node.data.title + '</span>';
+        $('#SelectUser').html(Content);
+        $('#hdntreeSelectUserCode').val(node.data.key);
+        //$('#docDetail').overlay().close();
+    }
+    function fnUserhierarchy() {
+    }
+</script>

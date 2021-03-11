@@ -1,0 +1,43 @@
+﻿@model MVCModels.HiDoctor_Reports.ReportsModel
+
+@{
+    ViewBag.Title = "MasterReport";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<div class="col-lg-12" style="min-height: 350px; overflow: auto;">
+    <input type="hidden" id="hdnrptId" />
+    <div id="dvMasterReport" class="col-lg-12"></div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/MasterReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            reptType=@Html.Raw(Json.Encode(ViewBag.rptType))
+            if (reptType.toUpperCase() == 'BRAND') {
+                fnGetBrandMasterrptDetails();
+            }
+            if (reptType.toUpperCase() == 'PRODUCT') {
+                fnGetProductrptMasterDetails();
+            }
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+</script>
+

@@ -1,0 +1,1909 @@
+﻿@{
+    ViewBag.Title = "UserDashboard";
+    Layout = null;
+}
+@*<style>
+    .dash-content-wrapper {
+        background-color: #ecf0f5;
+        /*z-index: 800;*/
+        min-height: 550px;
+    }
+
+    .content-header {
+        position: relative;
+        padding: 15px 15px 0 15px;
+    }
+
+    .dash-content {
+        min-height: 250px;
+        padding: 5px 15px 5px 15px;
+        margin-right: auto;
+        margin-left: auto;
+        /*padding-left: 15px;
+        padding-right: 15px;*/
+        /*padding-left: 0px;*/
+        /*padding-right: 0px;
+        padding-top: 5px;*/
+    }
+
+    .dash-info-box {
+        display: block;
+        min-height: 90px;
+        background: #fff;
+        width: 100%;
+        /*box-shadow: 0 1px 1px rgba(0,0,0,0.1);*/
+        border-radius: 2px;
+        /*margin-bottom: 15px;*/
+    }
+
+        .dash-info-box small {
+            font-size: 14px;
+        }
+
+        .dash-info-box .progress {
+            background: rgba(0,0,0,0.2);
+            margin: 5px -10px 5px -10px;
+            height: 2px;
+        }
+
+            .dash-info-box .progress, .dash-info-box .progress .progress-bar {
+                border-radius: 0;
+            }
+
+                .dash-info-box .progress .progress-bar {
+                    background: #fff;
+                }
+
+    .dash-info-box-icon {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 2px;
+        display: block;
+        float: left;
+        height: 90px;
+        width: 90px;
+        text-align: center;
+        font-size: 45px;
+        line-height: 90px;
+        background: rgba(0,0,0,0.2);
+    }
+
+        .dash-info-box-icon > img {
+            max-width: 100%;
+        }
+
+    .dash-info-box-content {
+        padding: 14px 10px;
+        margin-left: 90px;
+        text-align: center;
+    }
+
+    .dash-info-box-number {
+        display: block;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .progress-description, .dash-info-box-text {
+        display: block;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /*.dash-info-box-text {
+        text-transform: uppercase;
+    }*/
+
+    .dash-info-box-more {
+        display: block;
+    }
+
+    .bg-aqua, .bg-red, .bg-green, .bg-yellow {
+        color: #fff !important;
+    }
+
+    .bg-aqua {
+        background-color: #00c0ef !important;
+    }
+
+    .bg-red {
+        background-color: #dd4b39 !important;
+    }
+
+    .bg-green {
+        background-color: #00a65a !important;
+    }
+
+    .bg-yellow {
+        background-color: #f39c12 !important;
+    }
+
+    .unTable {
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+        background-color: #fff;
+        min-height: 201px;
+        height: 201px !important;
+        overflow: auto;
+        margin-top: 5px;
+    }
+
+        .unTable thead tr {
+            height: 35px !important;
+        }
+
+        .unTable tr td {
+            text-align: center;
+        }
+
+    .unDcrTable {
+        border: 1px solid #109618;
+    }
+
+        .unDcrTable thead {
+            background-color: #109618;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .unExpTable {
+        border: 1px solid #909;
+    }
+
+        .unExpTable thead {
+            background-color: #909;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .unTPTable {
+        border: 1px solid #909;
+        /*border: 1px solid #DC3912;*/
+    }
+
+        .unTPTable thead {
+            /*background-color: #DC3912;*/
+            background-color: #909;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .tblSS {
+        border: 1px solid #dd4b39;
+    }
+
+        .tblSS thead {
+            background-color: #dd4b39;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .tblCallAvg {
+        border: 1px solid #8533ff;
+    }
+
+        .tblCallAvg thead {
+            background-color: #8533ff;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .tblCatCov {
+        border: 1px solid #00c0ef;
+    }
+
+        .tblCatCov thead {
+            background-color: #00c0ef;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+
+    .unTable thead tr {
+        padding: 0px;
+        margin: 0px;
+        height: 35px;
+        text-align: center;
+    }
+
+        .unTable thead tr td {
+            padding-top: 5px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+            .unTable thead tr td i {
+                margin-right: 6px;
+            }
+
+    .unTable tbody tr {
+        /*height: 30px;*/
+    }
+
+        .unTable tbody tr td {
+            /*border-bottom: 1px solid #ddd;*/
+            padding: 0px 4px 0px 0px;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+    .unTable tr .viewInfo {
+        text-align: right;
+        text-decoration: underline;
+        font-style: italic;
+        cursor: pointer;
+    }
+
+    .tblTP {
+        width: 100% !important;
+    }
+
+        .tblTP table tr td {
+            padding: 5px;
+        }
+
+    .tblUnDcr {
+        width: 100%;
+    }
+
+        .tblUnDcr table tr td {
+            padding: 5px;
+        }
+
+    .tblUnTP {
+        width: 100%;
+    }
+
+        .tblUnTP table tr td {
+            padding: 5px;
+        }
+
+    .unTPLockTable {
+        border: 1px solid #b87333;
+    }
+
+        .unTPLockTable thead {
+            background-color: #b87333;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    #tblTPLockBody {
+        text-align: center;
+    }
+
+        #tblTPLockBody td {
+            border-bottom: 0px;
+        }
+
+    #dvInfoContent {
+        max-height: 300px;
+        min-height: 200px;
+        overflow: auto;
+    }
+
+    .modal-dialog {
+        padding: 0px !important;
+        margin-top: 50px !important;
+    }
+
+    .tblTP tr td {
+        padding: 8px !important;
+    }
+
+    .clsdvBlock {
+        margin-top: 5px;
+        /*min-height: 201px;
+        height: 201px;
+        overflow: auto;*/
+    }
+
+    .unAppExpCliam {
+        border: 1px solid #00c0ef;
+    }
+
+        .unAppExpCliam thead {
+            background-color: #00c0ef;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .unPendingClaim {
+        border: 1px solid #DB562D;
+    }
+
+        .unPendingClaim thead {
+            background-color: #DB562D;
+            color: white;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+    .clsdvtbl {
+        height: 207px;
+        overflow: auto;
+    }
+
+    .fa-caret-down {
+        font-size: 35px !important;
+        color: red;
+    }
+
+    .fa-caret-up {
+        font-size: 35px !important;
+        color: green;
+    }
+
+    .fa-minus {
+        font-size: 18px !important;
+        color: #F39C12;
+    }
+
+    td.nextMonth {
+        font-weight: bold;
+    }
+
+    td.curMonth {
+        font-weight: bold;
+        color: #109618;
+    }
+
+    td.preMonth {
+        font-weight: bold;
+        color: #b87333;
+    }
+
+    .dash-content-wrapper .col-md-3, .dash-content-wrapper .col-sm-6, .dash-content-wrapper .col-xs-12 {
+        padding-right: 4px;
+        padding-left: 4px;
+    }
+
+    .form-container {
+        width: 965px;
+        margin: 0px auto;
+    }
+
+    .tdText {
+        text-align: left !important;
+        font-weight: bold;
+        padding-left: 5px !important;
+    }
+
+    .unDcrTable tbody {
+        background-color: rgb(232, 252, 233);
+    }
+
+    .unTPTable tbody {
+        background-color: #ffe5ff;
+    }
+
+    .unTPLockTable tbody {
+        background-color: rgb(249, 242, 235);
+    }
+
+    .tblCallAvg tbody {
+        background-color: rgb(240, 229, 255);
+    }
+
+    .tblCatCov tbody {
+        background-color: rgb(229, 250, 255);
+    }
+
+    .tblSS tbody {
+        background-color: #fbebe9;
+    }
+</style>*@
+<style>
+    .form-container {
+        width: 965px;
+        margin: 0px auto;
+    }
+
+    .cls-notification {
+        background-color: #FDFDFD;
+        height: 45px;
+        box-shadow: 0px 5px 0px rgba(0,0,0,0.1);
+        /*border-top: 2px solid #F0F0F0;*/
+    }
+
+    .cls-dash-content {
+        background-color: #EEEEEE;
+        min-height: 300px;
+        padding: 7px;
+    }
+
+    .panel-heading {
+        padding: 10px 4px 10px 6px !important;
+        /*padding: 5px 4px 16px 6px !important;*/
+        font-size: 14px;
+    }
+
+    .panel {
+        padding: 0px !important;
+        box-shadow: 3px 4px 7px #C5C5C5 !important;
+        background-color: #F4F4F4 !important;
+        border: 0px solid transparent !important;
+        margin-bottom: 8px !important;
+        height: 122px;
+    }
+
+        .panel .panel-heading i {
+            font-size: 12px;
+        }
+
+    .cls-positive .panel-heading {
+        background-color: #26A69A !important;
+        color: white;
+    }
+
+    .cls-positive .btn-switch {
+        float: right;
+        border: 1px solid #45B2A8;
+        border-radius: 22px;
+        /*vertical-align: top;
+        margin-top: -18px !important;*/
+    }
+
+        .cls-positive .btn-switch .btn-active {
+            background-color: #92D2CC !important;
+        }
+
+            .cls-positive .btn-switch .btn-active i {
+                color: #010202;
+            }
+
+        .cls-positive .btn-switch .btn-inactive {
+            background-color: #65C0B7 !important;
+        }
+
+            .cls-positive .btn-switch .btn-inactive i {
+                color: #3D736E;
+            }
+
+    .cls-negative .panel-heading {
+        background-color: #E53935 !important;
+        color: white;
+    }
+
+    .cls-negative .btn-switch {
+        float: right;
+        border: 1px solid #E8524E;
+        border-radius: 22px;
+        /*vertical-align: top;
+        margin-top: -18px !important;*/
+    }
+
+        .cls-negative .btn-switch .btn-active {
+            background-color: #F29B99 !important;
+        }
+
+            .cls-negative .btn-switch .btn-active i {
+                color: #010202;
+            }
+
+        .cls-negative .btn-switch .btn-inactive {
+            background-color: #ED7270 !important;
+        }
+
+            .cls-negative .btn-switch .btn-inactive i {
+                color: #8E4443;
+            }
+
+    /*.cls-doctor-avg-main .panel-heading {
+        background-color: #26A69A !important;
+        color: white;
+    }
+
+    .cls-chemist-avg-main .panel-heading {
+        background-color: #E53935 !important;
+        color: white;
+    }*/
+    .cls-common-head .panel-heading {
+        background-color: #7986CB !important;
+        color: white;
+    }
+
+    .cls-common-head .btn-switches {
+        float: right;
+        border: none!important;
+        border-radius: 0px;
+    }
+
+        .cls-common-head .btn-switches .btn-inactive {
+            background-color: #A0A9DA !important;
+        }
+
+            .cls-common-head .btn-switches .btn-inactive i {
+                color: #606583;
+            }
+
+        .cls-common-head .btn-switches .btn-active {
+            background-color: #f8f8f8 !important;
+            color: black;
+        }
+
+            .cls-common-head .btn-switches .btn-active i {
+                color: black;
+            }
+
+    .cls-common-head .btn-switch {
+        float: right;
+        border: 1px solid #BCC2E5;
+        border-radius: 22px;
+        /*vertical-align: top;
+        margin-top: -18px !important;*/
+    }
+
+        .cls-common-head .btn-switch .btn-active {
+            background-color: #BCC2E5 !important;
+        }
+
+            .cls-common-head .btn-switch .btn-active i {
+                color: #000000;
+            }
+
+        .cls-common-head .btn-switch .btn-inactive {
+            background-color: #A0A9DA !important;
+        }
+
+            .cls-common-head .btn-switch .btn-inactive i {
+                color: #606583;
+            }
+
+    /*.cls-cat-cov-main .panel-heading {
+        background-color: #0068C3 !important;
+        color: white;
+    }
+
+    .cls-unapproved-main .panel-heading {
+        background-color: #CC3865 !important;
+        color: white;
+    }
+
+    .cls-pending-main .panel-heading {
+        background-color: #00ABA9 !important;
+        color: white;
+    }
+
+    .cls-SS-main .panel-heading {
+        background-color: #9E9E9E !important;
+        color: white;
+    }
+
+    .cls-Lock-main .panel-heading {
+        background-color: #9E9E9E !important;
+        color: white;
+    }*/
+
+    .btn-switch div {
+        padding: 0px;
+        border-right: 1px solid;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .btn-switch i {
+        color: black;
+    }
+
+    .btn-switch .first {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .btn-switch .second {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+
+    /*.cls-doctor-avg-main .btn-switch {
+        float: right;
+        border: 1px solid #45B2A8;
+        border-radius: 22px;
+    }
+
+        .cls-doctor-avg-main .btn-switch .btn-active {
+            background-color: #92D2CC !important;
+        }
+
+            .cls-doctor-avg-main .btn-switch .btn-active i {
+                color: #010202;
+            }
+
+        .cls-doctor-avg-main .btn-switch .btn-inactive {
+            background-color: #65C0B7 !important;
+        }
+
+            .cls-doctor-avg-main .btn-switch .btn-inactive i {
+                color: #3D736E;
+            }*/
+
+    /*.cls-chemist-avg-main .btn-switch {
+        float: right;
+        border: 1px solid #E8524E;
+        border-radius: 22px;
+    }
+
+        .cls-chemist-avg-main .btn-switch .btn-active {
+            background-color: #F29B99 !important;
+        }
+
+            .cls-chemist-avg-main .btn-switch .btn-active i {
+                color: #010202;
+            }
+
+        .cls-chemist-avg-main .btn-switch .btn-inactive {
+            background-color: #ED7270 !important;
+        }
+
+            .cls-chemist-avg-main .btn-switch .btn-inactive i {
+                color: #8E4443;
+            }*/
+
+    /*.cls-cat-cov-main .btn-switch {
+        float: right;
+        border: 1px solid #0068C3;
+        border-radius: 22px;
+    }
+
+        .cls-cat-cov-main .btn-switch .btn-active {
+            background-color: #7FB3E0 !important;
+        }
+
+            .cls-cat-cov-main .btn-switch .btn-active i {
+                color: #000000;
+            }
+
+        .cls-cat-cov-main .btn-switch .btn-inactive {
+            background-color: #4A94D4 !important;
+        }
+
+            .cls-cat-cov-main .btn-switch .btn-inactive i {
+                color: #2C597F;
+            }*/
+        .cls-positive .panel-heading {
+        background-color: #26A69A !important;
+        color: white;
+    }
+
+    .cls-positive .btn-switch {
+        float: right;
+        border: 1px solid #45B2A8;
+        border-radius: 22px;
+        /*vertical-align: top;
+        margin-top: -18px !important;*/
+    }
+
+        .cls-positive .btn-switch .btn-active {
+            background-color: #f8f8f8 !important;
+            color: black;
+        }
+
+            .cls-positive .btn-switch .btn-active i {
+                color: black;
+            }
+
+        .cls-positive .btn-switch .btn-inactive {
+            background-color: #65C0B7 !important;
+        }
+
+            .cls-positive .btn-switch .btn-inactive i {
+                color: #3D736E;
+            }
+
+    .cls-negative .panel-heading {
+        background-color: #E53935 !important;
+        color: white;
+    }
+
+    .cls-negative .btn-switch {
+        float: right;
+        border: 1px solid #E8524E;
+        border-radius: 22px;
+        /*vertical-align: top;
+        margin-top: -18px !important;*/
+    }
+
+        .cls-negative .btn-switch .btn-active {
+            background-color: #f8f8f8 !important;
+            color: black;
+        }
+
+            .cls-negative .btn-switch .btn-active i {
+                color: black;
+            }
+
+        .cls-negative .btn-switch .btn-inactive {
+            background-color: #ED7270 !important;
+        }
+
+            .cls-negative .btn-switch .btn-inactive i {
+                color: #8E4443;
+            }
+
+    .notifications {
+        display: inline-block;
+        list-style: none;
+        margin: 11px -10px 0 0;
+        padding: 0;
+        vertical-align: middle;
+        /*float: right;*/
+    }
+
+        .notifications > li {
+            float: left;
+            margin: 0 20px 0 0;
+            position: relative;
+        }
+
+            .notifications > li .notification-icon {
+                /*background: #FFF;*/
+                border-radius: 50%;
+                /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);*/
+                display: inline-block;
+                height: 30px;
+                position: relative;
+                width: 30px;
+                text-align: center;
+            }
+
+            .notifications > li > a {
+                border: none;
+            }
+
+            .notifications > li .notification-icon img {
+                color: #404040;
+                line-height: 32px;
+                vertical-align: middle;
+                font-size: 19px;
+            }
+
+            .notifications > li .notification-icon .badge {
+                background: #FF1744;
+                color: #FFF;
+                font-size: 12px;
+                font-weight: normal;
+                height: 19px;
+                padding: 3px 5px 3px 5px;
+                position: absolute;
+                right: -15px;
+                top: -11px;
+                border-radius: 100%;
+                display: inline-block;
+                min-width: 19px;
+                line-height: 1;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+            }
+
+    .cls-numbers {
+        font-size: 33px;
+        margin-bottom: 0px;
+    }
+
+    .cls-sub-numbers {
+        font-size: 12px !important;
+        margin-bottom: 0px;
+    }
+
+    .fa-long-arrow-down {
+        color: #F44538 !important;
+        font-size: 30px !important;
+        -ms-transform: rotate(-32deg);
+        -webkit-transform: rotate(-32deg);
+        transform: rotate(-32deg);
+        margin-right: 5px;
+    }
+
+    .fa-long-arrow-up {
+        color: #2E7D32 !important;
+        font-size: 30px !important;
+        -ms-transform: rotate(32deg);
+        -webkit-transform: rotate(32deg);
+        transform: rotate(32deg);
+        margin-right: 5px;
+    }
+
+    .panel-body {
+        text-align: center;
+    }
+
+    .title-i {
+        margin-right: 5px;
+        font-size: 20px !important;
+    }
+
+    .numbers-positive {
+        color: green;
+    }
+
+    .numbers-negative {
+        color: red;
+    }
+
+    .cls-cat-cov-main {
+        min-height: 205px;
+        height: 252px;
+    }
+
+    .dv-box-block {
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+    }
+
+    .cls-unapproved-main .panel-body {
+        /*padding: 8px !important;*/
+    }
+
+        .cls-unapproved-main .panel-body ul {
+            display: inline-block;
+            list-style: none;
+            width: 100%;
+        }
+
+            .cls-unapproved-main .panel-body ul li {
+                float: left;
+                width: 30%;
+            }
+
+                .cls-unapproved-main .panel-body ul li p.numbers {
+                    font-size: 25px;
+                    margin-bottom: 4px !important;
+                }
+
+                .cls-unapproved-main .panel-body ul li p.text {
+                    font-size: 13px;
+                    margin-bottom: 0px !important;
+                }
+
+    .cls-pending-main .panel-body {
+        /*padding: 8px !important;*/
+    }
+
+        .cls-pending-main .panel-body ul {
+            display: inline-block;
+            list-style: none;
+            width: 100%;
+        }
+
+            .cls-pending-main .panel-body ul li {
+                float: left;
+                width: 30%;
+            }
+
+                .cls-pending-main .panel-body ul li p.numbers {
+                    font-size: 25px;
+                    margin-bottom: 0px !important;
+                }
+
+                .cls-pending-main .panel-body ul li p.text {
+                    font-size: 13px;
+                    margin-bottom: 0px !important;
+                }
+
+    /*.cls-SS-main .btn-switch {
+        float: right;
+        border: 1px solid #9E9E9E;
+        border-radius: 22px;
+    }
+
+        .cls-SS-main .btn-switch .btn-active {
+            background-color: #CECECE !important;
+        }
+
+            .cls-SS-main .btn-switch .btn-active i {
+                color: #000000;
+            }
+
+        .cls-SS-main .btn-switch .btn-inactive {
+            background-color: #BABABA !important;
+        }
+
+            .cls-SS-main .btn-switch .btn-inactive i {
+                color: #707070;
+            }*/
+
+    .cls-SS-main .panel-body ul {
+        display: inline-block;
+        list-style: none;
+        width: 100%;
+    }
+
+        .cls-SS-main .panel-body ul li {
+            float: left;
+            width: 50%;
+        }
+
+    .panel-body {
+        background-color: #F4F4F4 !important;
+    }
+
+    .text {
+        margin-bottom: 0px !important;
+    }
+
+    .lock-TP-left-days {
+        margin-bottom: 6px;
+        font-size: 13px;
+    }
+
+    .dcr-lock {
+        margin-bottom: 0px;
+        font-size: 13px;
+    }
+
+    .dash-title {
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 8px;
+        font-weight: bold;
+    }
+
+    .cls-lock {
+        background-color: #E53935;
+        color: white;
+    }
+
+    .cls-lock-common {
+        width: 49%;
+        float: left;
+        height: 122px;
+        /* padding: 39px; */
+        text-align: center;
+        vertical-align: middle;
+        padding-top: 35px;
+        cursor: pointer;
+    }
+
+    .img-negative {
+        background-image: url("/Content/images/Home/ic_down.png");
+        height: 26px;
+        width: 26px;
+        /*display: inline-block;*/
+        display: none;
+    }
+
+    .img-positive {
+        background-image: url("/Content/images/Home/ic_up.png");
+        height: 26px;
+        width: 26px;
+        /*display: inline-block;*/
+        display: none;
+    }
+
+    .cls-dv-separator {
+        width: 2px;
+        background-color: #ddd;
+        height: 30px;
+    }
+
+    .progress {
+        margin-bottom: 6px !important;
+        height: 12px !important;
+        width: 100%;
+    }
+
+    .cls-cat-cov-main .lengend {
+        float: left;
+        font-size: 12px;
+        margin-bottom: 2px;
+        width: 100%;
+    }
+
+        /*.cls-cat-cov-main .panel-body {
+        padding-left: 12px;
+        padding-top: 12px;
+        padding-right: 12px;
+        padding-bottom: 0px;
+    }*/
+
+        .cls-cat-cov-main .lengend span {
+            float: left;
+        }
+
+    .doc-count {
+        float: right !important;
+    }
+
+    .panel-body p {
+        margin: 0px;
+    }
+
+    .progress-missed {
+        background-color: #E53935 !important;
+    }
+
+    .missed-main {
+        background-color: #FFCDD2 !important;
+        border: none;
+    }
+
+    .progress-met {
+        background-color: #009688 !important;
+    }
+
+    .met-main {
+        background-color: #B2DFDB !important;
+        border: none;
+    }
+
+    .progress-less-met {
+        background-color: #FFC107 !important;
+    }
+
+    .less-met-main {
+        background-color: #FFF9C4 !important;
+        border: none;
+    }
+
+    .progress-more-met {
+        background-color: #FF9800 !important;
+    }
+
+    .more-met-main {
+        background-color: #FFE0B2 !important;
+        border: none;
+    }
+
+    .max-category {
+        height: 28px !important;
+    }
+
+    .cls-date {
+        height: 55px;
+        width: 55px;
+        float: left;
+    }
+
+    .cls-date-num {
+        padding: 7px;
+        font-size: 21px;
+        background-color: white;
+    }
+
+    .cls-date-success {
+        background-color: #26A69A !important;
+        color: white;
+    }
+
+    .cls-date-Error {
+        background-color: #E53935 !important;
+        color: white;
+    }
+
+    .cls-TP-main .panel-body {
+        height: 72px;
+        text-align: center;
+        padding-left: 50px;
+        padding-top: 9px;
+    }
+
+    #dvInfoContent {
+        max-height: 300px;
+        min-height: 200px;
+        overflow: auto;
+    }
+
+    .modal-dialog {
+        padding: 0px !important;
+        margin-top: 50px !important;
+    }
+
+    .cls-green-lock {
+        background-color: #004d00;
+        color: white;
+    }
+
+    .cls-orange-lock {
+        background-color: #ff6600;
+        color: white;
+    }
+
+    .cls-grey-lock {
+        background-color: #999;
+        color: white;
+        cursor: default;
+    }
+
+    .btn-switch .first {
+        cursor: pointer;
+    }
+
+    .btn-switch .second {
+        cursor: pointer;
+    }
+
+    .cls-all-coverage {
+        /*cursor: pointer;*/
+    }
+
+    .cls-link {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .cls-tp-lock {
+        cursor: default !important;
+    }
+
+    .spn-helptext {
+        /*display: inline-block;*/
+        font-style: italic;
+        font-size: 11px;
+        /* float: left; */
+        /* margin-left: 19px !important; */
+        /* margin-top: 0px; */
+        text-align: center;
+        color: #B5AEAE;
+    }
+
+
+    .cls_AltTitle {
+        width: 100%;
+        background-color: #0173BA;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .cls_doctor {
+        text-align: left;
+        font-weight: bold;
+        color: black;
+        font-size: 12px;
+    } 
+     .dropdown {
+        float: right;
+        position: relative;
+        display: inline-block;
+    }
+
+        .dropdown .fa {
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
+    .dropdown-contentUser {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+        right: 1px;
+        top: 20px;
+        border: 1px solid rgba(128, 128, 128, 0.27);
+        border-radius: 3px;
+    }
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+@*<script src="~/Scripts/Bootstrap/respond.js"></script>*@
+<div class="dash-content-wrapper">
+
+
+    <div class="cls-notification">
+        <section class="dash-content  form-container">
+            <span class="dash-title">Insights - January 2016</span>
+            <ul class="notifications" id="fieldnotifyhide" style="float: right !important; display: none;">
+                <li>
+                    <div class="cls-dv-separator"></div>
+                </li>
+                <li id="lstInwardIcon">
+                    <a href="#" class="notification-icon inward-pop" data-toggle="dropdown" title="Inward">
+                        @*   <i class="fa fa-envelope"></i>*@
+                        <img src="~/Content/images/Home/ic_inward.png" style="width: 28px; height: 28px;" />
+                        <span class="badge" id="spnInward">0</span>
+                    </a>
+
+                </li>
+                <li>
+                    <a href="#" class="notification-icon messages-pop" data-toggle="dropdown" title="Message">
+                        @*   <i class="fa fa-envelope"></i>*@
+                        <img src="~/Content/images/Home/ic_message.png" />
+                        <span class="badge" id="spnMsg">0</span>
+                    </a>
+
+                </li>
+                <li id="ICEtask">
+                    <a href="#" class="notification-icon task-pop" data-toggle="dropdown" title="Task">
+                        <img src="~/Content/images/Home/ic_Task.png" style="width: 28px; height: 28px;" />
+                        <span class="badge" id="spntask">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="notification-icon notify-pop" data-toggle="dropdown" title="Notification">
+                        @* <i class="fa fa-bell"></i>*@<img src="~/Content/images/Home/ic_Alert.png" />
+                        <span class="badge" id="spnNotify">0</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="cls-dv-separator"></div>
+                </li>
+                <li>
+                    <a href="#" class="notification-icon birthday-pop" data-toggle="dropdown" title="Birthday">
+                        @*   <i class="fa fa-gift"></i>*@<img src="~/Content/images/Home/ic_birthday.png" />
+                        <span class="badge" id="spnBirthday">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="notification-icon anniversary-pop" data-toggle="dropdown" title="Anniversary">
+                        @* <i class="fa fa-calendar-o"></i>*@
+                        <img src="~/Content/images/Home/ic_anniversary.png" />
+                        <span class="badge" id="spnAnniversary">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="notification-icon holiday-pop" data-toggle="dropdown" title="Holiday">
+                        @* <i class="fa fa-calendar-o"></i>*@
+                        <img src="~/Content/images/Home/ic_holiday.png" width="26px" height="27px" />
+                        <span class="badge" id="spnHoliday">0</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </div>
+    <div class="cls-dash-content">
+        <section class="dash-content  form-container">
+            <div class="row">
+                <div class="col-xs-3 dv-box-block">
+                    <div class="panel cls-doctor-avg-main cls-common-head">
+                        <div class="panel-heading">
+                            <i class="fa fa-stethoscope title-i"></i>Doctor Call Average
+                            @*   <span class="spn-helptext">(For current month)</span>*@
+                            <div class="btn-switch">
+                                <div class="col-xs-6 first btn-active"><i class="fa fa-user"></i></div>
+                                <div class="col-xs-6 second btn-inactive"><i class="fa fa-users"></i></div>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="padding-top: 13px !important; padding-bottom: 0px !important;">
+                            <span class="img-arrow" />
+                            <span class="cls-numbers" id="spnDocCallAvg" title="Current Month Value">0.00</span>
+                            <span class="cls-sub-numbers" id="spnDocCallAvgDiff" title="Previous Month Value">(+0.00)</span>
+                            @* <p>Doctor call per day</p>*@
+                            <p class="spn-helptext">Current Month (Previous Month)</p>
+                        </div>
+                    </div>
+                    <div class="panel cls-chemist-avg-main cls-common-head">
+                        <div class="panel-heading">
+                            <i class="fa fa fa-flask title-i"></i>Chemist Call Average
+                           @*  <span class="spn-helptext">(For current month)</span>*@
+                            <div class="btn-switch">
+                                <div class="col-xs-6 first btn-inactive"><i class="fa fa-user"></i></div>
+                                <div class="col-xs-6 second btn-active"><i class="fa fa-users"></i></div>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="padding-top: 13px !important; padding-bottom: 0px !important;">
+                            <span class="img-arrow" />
+                            <span class="cls-numbers" id="spnChemCallAvg" title="Current Month Value">0.00</span>
+                            <span class="cls-sub-numbers" id="spnChemCallAvgDiff" title="Previous Month Value">(+0.00)</span>
+                            @*  <p>Chemist call per day</p>*@
+                            <p class="spn-helptext">Current Month (Previous Month)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 dv-box-block">
+                    <div class="panel cls-cat-cov-main cls-common-head">
+                        <div class="panel-heading" style="height: 47px !important;">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <i class="fa fa-suitcase title-i" style="padding-left: 0px;"></i>Category Coverage
+                                </div>
+                                <div class="dropdown" style="right:20px;">
+                                    <span class="fa fa-ellipsis-v toggle-menuUser" title="Menu"></span>
+                                    <div class="dropdown-contentUser" id="categorydrop">
+                                        <p>
+                                            <span style="color: black;">Division Name : </span>
+                                            <select id="ddlCategoryCoverageDivision" style="width: 100%;"></select>
+                                        </p>
+                                        <p role="presentation" style="cursor: pointer;"><a role="menuitem"  tabindex="-1" id="btnCategoryPre">Previous</a></p>
+                                        <p role="presentation" style="cursor: pointer;"><a role="menuitem" tabindex="-1" id="btnCategoryCur">Current</a></p>
+                                    </div>
+                                </div>
+                                  
+                                @*<div class="col-sm-7 pull-right">
+                                    <div class="btn-switch" style="margin-top: 0px !important;">
+                                        <div class="col-sm-6 first btn-inactive"><i class="fa fa-user"></i></div>
+                                        <div class="col-sm-6 second btn-active"><i class="fa fa-users"></i></div>
+                                    </div>
+                                    <div class="btn-switches" style="margin-top: 0px !important; margin-right: 20px;">
+                                        <div id="btnCategoryPrevious" class="col-sm-6 btn btn-inactive  first" style="padding: 0px 8px 5px 4px!important">Previous</div>
+                                        <div id="btnCategoryCurrent" class="col-sm-6 btn btn-active  second" style="padding: 0px 8px 5px 4px!important">Current</div>
+                                    </div>
+                                </div>*@
+                                @*<div class="col-sm-3">
+                                    <div class="btn-switch" style="margin-top: 0px !important;">
+                                        <div class="col-sm-6 first btn-inactive"><i class="fa fa-user"></i></div>
+                                        <div class="col-sm-6 second btn-active"><i class="fa fa-users"></i></div>
+                                    </div>
+                                </div>*@
+                            </div>
+
+                            </div>
+                        <div class="panel-body cls-all-coverage">
+                            @*        <p class="lengend">
+                            <span>Completely missed count</span>
+                            <span class="doc-count">85/200 Doctors</span>
+                        </p>
+                        <div class="progress missed-main">
+                            <div class="progress-bar progress-missed" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            </div>
+                        </div>
+                        <p class="lengend">
+                            <span>Met as per Std.Visit Count</span>
+                            <span class="doc-count">85/200 Doctors</span>
+                        </p>
+                        <div class="progress met-main max-category">
+
+                            <div class="progress-bar progress-met" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            </div>
+                        </div>
+                        <p class="lengend">
+                            <span>Less than Std.Visit Count</span>
+                            <span class="doc-count">85/200 Doctors</span>
+                        </p>
+                        <div class="progress less-met-main">
+
+                            <div class="progress-bar progress-less-met" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            </div>
+                        </div>
+                        <p class="lengend">
+                            <span>More than Std.Visit Count</span>
+                            <span class="doc-count">85/200 Doctors</span>
+                        </p>
+                        <div class="progress more-met-main">
+
+                            <div class="progress-bar progress-more-met" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            </div>
+                        </div>*@
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xs-4  dv-box-block">
+                    <div class="panel cls-unapproved-main cls-common-head">
+                        <div class="panel-heading">
+                            <i class="fa fa-exclamation-triangle title-i"></i>My unapproved entries
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>
+                                    <p class="numbers unapproved-dcr">0</p>
+                                    <p class="text">DCRs</p>
+                                </li>
+                                <li>
+                                    <p class="numbers unapproved-tp">0</p>
+                                    <p class="text">TPs</p>
+                                </li>
+                                <li>
+                                    <p class="numbers unapproved-claim">0</p>
+                                    <p class="text">Claims</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel cls-pending-main cls-common-head">
+                        <div class="panel-heading">
+                            <img src="~/Content/images/Home/ic_approve.png" />
+                            <span id="spnApproveTitle">Entries that i need to approve</span>
+
+                            <div class="btn-switch">
+                                <div class="col-xs-6 first btn-inactive"><i class="fa fa-user"></i></div>
+                                <div class="col-xs-6 second btn-active"><i class="fa fa-users"></i></div>
+                            </div>
+
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>
+                                    <p class="numbers pending-dcr">0</p>
+                                    <p class="text">DCRs</p>
+                                </li>
+                                <li>
+                                    <p class="numbers pending-tp">0</p>
+                                    <p class="text">TPs</p>
+                                </li>
+                                <li>
+                                    <p class="numbers pending-claim">0</p>
+                                    <p class="text">Claims</p>
+                                </li>
+                            </ul>
+                            <span id="spnPenddingApprovalMode" style="font-size: 16px; font-weight: 600;">Self</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3 dv-box-block">
+                    <div class="panel cls-TP-main cls-common-head">
+                        <div class="panel-heading">
+                            <img src="~/Content/images/Home/ic_Bike.png" />
+                            Upcoming Tour Plan
+                        </div>
+                        <div class="panel-body" style="height: 72px;">
+                            <div class="notp" style="text-align: center; margin-left: -35px !important;">
+                            </div>
+                            <div class="cls-date cls-today-date" style="margin-right: 20px;">
+                                @* <p class="cls-date-success">WED</p>
+                            <p class="cls-date-num">0</p>*@
+                            </div>
+                            <div class="cls-date cls-next-date">
+                                @* <p class="cls-date-success">WED</p>
+                            <p class="cls-date-num">0</p>*@
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5  dv-box-block" style="padding: 0px!important;">
+                    <div class="col-xs-12" style="padding: 0px!important;">
+  @*                      <div class="col-xs-6" style="padding-left: 5px; padding-right: 5px;">
+                            <div class="panel cls-SS-main cls-common-head">
+                                <div class="panel-heading">
+                                    <i class="fa fa-shopping-cart title-i"></i>Secondary Sales
+                             <span class="spn-helptext">Last available Sales Value (vs. Prior-to-Last Sales Value)</span>
+
+                                    <div class="btn-switch">
+                                        <div class="col-xs-6 first btn-active"><i class="fa fa-user"></i></div>
+                                        <div class="col-xs-6 second btn-inactive"><i class="fa fa-users"></i></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding-top: 5px !important; padding-bottom: 0px !important;">
+                                    <span class="img-arrow" />
+                                    <span class="cls-numbers" id="spnSS" title="Last available Sales Value" style="font-size: 22px;">0.00</span>
+                                    <span class="cls-sub-numbers" id="spnSSDiff" title="Prior-to-Last Sales Value">(+0.00)</span>
+                                    <p>Value</p>
+                                    <p class="spn-helptext">Previous Month (Pre-Previous Month)</p>
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="col-xs-6" style="padding-left: 5px; padding-right: 5px;" id="dvCampaigns">
+                                <div class="panel box_height  cls-common-head" style="height: 124px !important;">
+                                    <div class="panel-heading">
+                                        <img src="/Content/images/Home/ic_approve.png" style="width: 21px; height: 16px; margin-right: 5px;" />Campaigns 
+                                    </div>
+                                    <div class="panel-body" style="padding-top: 13px !important; padding-bottom: 0px !important;">
+                                        <span class="img-arrow img-negative"></span>
+                                        <span class="cls-numbers" id="spnAcctiveRunMc" title="Active running MC">0</span>
+                                       @* <span class="cls-sub-numbers" id="spnNumParticipant" title="Num.of Participants">(0)</span>*@
+                                        <p class="spn-helptext">Active running MC(Num.of Participants)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-xs-6" style="padding-left: 5px; padding-right: 5px;">
+                            <div class="panel cls-Expense-main cls-common-head">
+                                <div class="panel-heading">
+                                    <i class="fa fa-shopping-cart title-i"></i>Expenses
+                             @*<span class="spn-helptext">Last available Sales Value (vs. Prior-to-Last Sales Value)</span>*@
+
+                                    <div class="btn-switch">
+                                        <div class="col-xs-6 first btn-active"><i class="fa fa-user"></i></div>
+                                        <div class="col-xs-6 second btn-inactive"><i class="fa fa-users"></i></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding-top: 5px !important; padding-bottom: 0px !important;">
+                                    <span class="img-arrow" />
+                                    <span class="cls-numbers" id="spnExpense" title="Last Expenses Value" style="font-size: 22px;">0.00</span>
+                                    <span class="cls-sub-numbers" id="spnExpenseDiff" title="Prior-to-Last Expenses Sales Value">(+0.00)</span>
+                                    <p>Value</p>
+                                    <p class="spn-helptext">Current Month (Previous Month)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+
+                <div class="col-xs-4 dv-box-block">
+                    <div class="cls-lock cls-lock-common cls-dcr-lock" style="margin-right: 2%;">
+                        @*  <i class="fa fa-lock title-i"></i>
+                    <p>DCR Locked</p>*@
+                    </div>
+                    <div class="cls-lock-common cls-tp-lock">
+                        @*<i class="fa fa-lock title-i"></i>
+                    <p>TP Locked</p>*@
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+<div class="modal" id="dvMoreInfoModal" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvMoreInfoModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title clsModalTitle">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvInfoContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*<div class="dash-content-wrapper form-container">
+    <section class="dash-content">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12 cls-first-row">
+                <div class="dash-info-box">
+                    <span class="dash-info-box-icon bg-aqua"><i class="fa fa-bell"></i></span>
+
+                    <div class="dash-info-box-content">
+                        <span class="dash-info-box-text">Unread Notification</span>
+                        <span class="dash-info-box-number" id="spnNotify">0</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12 cls-first-row">
+                <div class="dash-info-box">
+                    <span class="dash-info-box-icon bg-red"><i class="fa fa-inbox"></i></span>
+
+                    <div class="dash-info-box-content">
+                        <span class="dash-info-box-text">Unread Messages</span>
+                        <span class="dash-info-box-number" id="spnMsg">0</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-md-3 col-sm-6 col-xs-12 cls-first-row">
+                <div class="dash-info-box">
+                    <span class="dash-info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
+
+                    <div class="dash-info-box-content">
+                     <span class="dash-info-box-text" id="spnBirthday">0</span>
+                      <span class="dash-info-box-text" id="spnAnniversary">0</span>
+                     
+                     
+                      
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12 clsTPMeetingBlock cls-first-row">
+                <div class="dash-info-box">
+
+                    <span class="dash-info-box-icon bg-yellow"><i class="fa fa-plane"></i></span>
+
+                    <div class="dash-info-box-content">
+                        <span class="dash-info-box-text" id="spnTPDetails" style="text-decoration: underline; cursor: pointer;">Show Tour Planner Details</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock">
+                <div class="clsdvtbl">
+                    <table class="unTable unDcrTable" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td colspan="5">Unapproved</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="preMonth">Previous Month</td>
+                                <td class="curMonth">Current Month</td>
+                                <td class="nextMonth">Next Month</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">DCR</td>
+                                <td id="spnDCrPrevious">0</td>
+                                <td id="spnDCrCurrent">0</td>
+                                <td>-</td>
+                                <td class="viewInfo viewMoreDCR"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">TP</td>
+                                <td>-</td>
+                                <td id="spnTPCurrent">0</td>
+                                <td id="spnTPNext">0</td>
+                                <td class="viewInfo viewMoreTP"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="border-top: 1px solid #ddd;" class="tdText">Claim </td>
+                                <td colspan="3" style="border-top: 1px solid #ddd;"><span id="spnUnExClaimCount"></span></td>
+                                <td class="viewInfo viewMoreExpCliam" style="border-top: 1px solid #ddd;"><i class="fa fa-arrow-circle-right"></i></td>
+
+                            </tr>
+                        </tbody>
+                       
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock clsYetToBeApproved">
+                <div class="clsdvtbl">
+                    <table class="unTable unTPTable" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td colspan="5">Yet to be Approved</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="preMonth">Previous Month</td>
+                                <td class="curMonth">Current Month</td>
+                                <td class="nextMonth">Next Month</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">DCR</td>
+                                <td id="spnDCRPendingPre">0</td>
+                                <td id="spnDCRPendingCur">0</td>
+                                <td>-</td>
+                                <td class="viewInfo viewMoreDCRPending"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">TP</td>
+                                <td>-</td>
+                                <td id="spnTPPendingCur">0</td>
+                                <td id="spnTPPendingNext">0</td>
+                                <td class="viewInfo viewMoreTPPending"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">Claim</td>
+                                <td id="spmClaimPre">0</td>
+                                <td id="spmClaimCurrent">0</td>
+                                <td>-</td>
+                                <td class="viewInfo viewMoreClaim"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock">
+                <div class="clsdvtbl">
+                    <table class="unTable unTPLockTable" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td><i class="fa fa-lock"></i>Lock Status</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tblTPLockBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock">
+                <div id="dvDocCallAvg" class="clsdvtbl">
+                    <table class="unTable tblCallAvg" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td colspan="5">Call Average</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="preMonth">Previous Month</td>
+                                <td class="curMonth">Current Month</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">Doctor</td>
+                                <td id="spnDocCallAvgPre">0</td>
+                                <td id="spnDocCallAvgCur">0</td>
+                                <td class="DocCallAvgIcon"><i class="fa fa-caret-up"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">Chemist</td>
+                                <td id="spnCheCallAvgPre">0</td>
+                                <td id="spnCheCallAvgCur">0</td>
+                                <td class="CheCallAvgIcon"><i class="fa fa-caret-down"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock">
+                <div id="dvCatCoverage" class="clsdvtbl">
+                    <table class="unTable tblCatCov" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td colspan="5">Category Coverage</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="preMonth">Previous Month</td>
+                                <td class="curMonth">Current Month</td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12 clsdvBlock">
+                <div id="dvSSValue" class="clsdvtbl">
+                    <table class="unTable tblSS" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td colspan="5">Secondary Sales</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="preMonth">Previous Month</td>
+                                <td class="curMonth">Current Month</td>
+
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">Sales Total Quantity</td>
+                                <td id="spnSSPreQty">0</td>
+                                <td id="spnSSCurQty">0</td>
+                                <td class="SSQtyIcon"><i class="fa fa-caret-up"></i></td>
+                                <td class="viewInfo viewMoreSSQty"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="tdText">Sales Total Value</td>
+                                <td id="spnSSPreValue">0</td>
+                                <td id="spnSSCurValue">0</td>
+                                <td class="SSValueIcon"><i class="fa fa-caret-down"></i></td>
+                                <td class="viewInfo viewMoreSSValue"><i class="fa fa-arrow-circle-right"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+        </div>
+    </section>
+</div>
+<div class="modal" id="dvMoreInfoModal" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('dvMoreInfoModal');"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title clsModalTitle">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 cls-padding-none" id="dvInfoContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>*@
+
+<div id="dvLoadingDoctorsBirthdayAlerts" style="padding-top: 5px; padding-right: 10px; display: none; width: 700px; height: 400px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white; margin: -23px;" onclick="HideModalPopup('dvLoadingDoctorsBirthdayAlerts'); fnHideAccordinforBday();">
+            <img src="~/Images/close.png" />
+        </span>
+        <div style="width: auto;" class="cls_AltTitle">Birthday Details</div>
+        <br />
+        <div id="dvshowBirthdayAlertsforchildusers" style="width: 100%"></div>
+    </div>
+</div>
+
+<div id="dvLoadingDoctorsAnniversaryAlerts" style="padding-top: 5px; padding-right: 10px; display: none; width: 700px; height: 400px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+    <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+        <span style="float: right; cursor: pointer; color: white; margin: -23px;" onclick="HideModalPopup('dvLoadingDoctorsAnniversaryAlerts'); fnHideAccordinforAnniversary();">
+            <img src="~/Images/close.png" />
+        </span>
+        <div style="width: auto;" class="cls_AltTitle">Anniversary Details</div>
+        <br />
+        <div id="dvshowAnniversaryAlertsforchildusers" style="width: 100%"></div>
+    </div>
+</div>
+
+<script src="~/Scripts/HD/Dashboard.js"></script>
+<script src="~/Scripts/HD/DashBoardV2.js"></script>
+<script lang="ja" type="text/javascript">
+    var IsBack=null;
+    var Month_category="";
+    var Year_category="";
+    $(document).ready(function () {
+        //$('.cls-notification').empty();
+        AjaxGlobalHandler.Initiate();
+        $("#dvAjaxLoad").hide();
+        $('#page-header').hide();
+        $('#main').css('margin',"0px !important");
+        Month_category=@Html.Raw(Json.Encode(ViewBag.Month));
+        Year_category=@Html.Raw(Json.Encode(ViewBag.Year));
+        User_Dashboard.defaults.Current_Date=@Html.Raw(Json.Encode(ViewBag.Current_Date));
+        User_Dashboard.defaults.Previous_Date=@Html.Raw(Json.Encode(ViewBag.Previous_Date));
+        User_Dashboard.defaults.Next_Date=@Html.Raw(Json.Encode(ViewBag.Next_Date));
+        var cur = @Html.Raw(Json.Encode(ViewBag.Current_Month));
+        var pre = @Html.Raw(Json.Encode(ViewBag.Previous_Month));
+        var next =@Html.Raw(Json.Encode(ViewBag.Next_Month));
+        IsBack = @Html.Raw(Json.Encode(ViewBag.IsBacks));  
+        User_Dashboard.defaults.Current_Month=cur.split('-')[0];
+        User_Dashboard.defaults.Previous_Month=pre.split('-')[0];
+        User_Dashboard.defaults.Next_Month=next.split('-')[0];
+        User_Dashboard.defaults.Child_User_Count=@Html.Raw(Json.Encode(ViewBag.Child_User_Count))
+        User_Dashboard.defaults.Current_Year=cur.split('-')[1];
+        User_Dashboard.defaults.Previous_Year=pre.split('-')[1];
+        User_Dashboard.defaults.Next_Year=next.split('-')[1];
+        User_Dashboard.defaults.Day_After_Tomorrow = @Html.Raw(Json.Encode(ViewBag.Day_After_Tomorrow));
+       
+        $(".toggle-menuUser").click(function () {
+            debugger;
+            $(this).next(".dropdown-contentUser").toggle();
+        });
+        
+        $('#btnCategoryCur').click(function () {
+            //$(this).removeClass("btn-inactivecat").addClass("btn-activecat");
+            //$("#btnCategoryPre").removeClass("btn-activecat").addClass("btn-inactivecat");
+            User_Dashboard.defaults.isCurrent = true;
+            User_Dashboard.getNewCategoryCoverage();
+            //User_Dashboard.getDashboardCategoryCountData();
+            //User_Dashboard.getDashboardCategoryCountDataForSingleUser();
+        });
+
+
+        $('#btnCategoryPre').click(function () {
+            //$(this).removeClass("btn-inactivecat").addClass("btn-activecat");
+            //$("#btnCategoryCur").removeClass("btn-activecat").addClass("btn-inactivecat");
+            User_Dashboard.defaults.isCurrent = false;
+            User_Dashboard.getNewCategoryCoverage();
+            //User_Dashboard.getDashboardCategoryCountData();
+            //User_Dashboard.getDashboardCategoryCountDataForSingleUser();
+        });
+        $('.dash-content-wrapper').block({
+            message: 'Processing...',
+            css: { border: '2px solid #DDD' }
+        });
+        setTimeout(function () { User_Dashboard.initDashboard(); }, 50);
+        if(IsBack !="YES" || IsBack == null){
+            $("#notifyhide").show();
+            $("#fieldnotifyhide").show();
+        }
+        else{
+            $("#fieldnotifyhide").hide();
+            $(".dash-title").html('');
+            $(".cls-notification ").css('height','0px');
+        }
+    });
+
+
+</script>

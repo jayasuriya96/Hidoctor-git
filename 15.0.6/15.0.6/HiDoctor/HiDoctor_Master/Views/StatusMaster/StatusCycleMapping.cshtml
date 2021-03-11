@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "StatusCycleMapping";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+<style>
+    .dv-Stat-Cycl-Main {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    .mandatory {
+        color: red;
+    }
+    .clsStaCylwidth {
+        width:100%;
+    }
+</style>
+
+<div id="dvRules" class="col-lg-12 form-group dv-Stat-Cycl-Main">
+    <div class="col-lg-4">
+        <h3>Mapping Details</h3>
+        <table>
+            <tr>
+                <td>
+                    <label class="control-label">Cycle Name <span class="mandatory">*</span></label>
+                </td>
+                <td>
+                    <select id="drpCycle" class="clsStaCylwidth"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Status Name <span class="mandatory">*</span></label>
+                </td>
+                <td>
+                    <select id="drpStatus" class="clsStaCylwidth"></select>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top">
+                    <label class="control-label">Description @*<span class="mandatory">*</span>*@</label>
+                </td>
+                <td>
+                    <textarea id="txtAreaDescription" maxlength="1000" class="clsStaCylwidth"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Order No <span class="mandatory">*</span></label>
+                </td>
+                <td>
+                    <input type="text" id="txtOrderNo" maxlength="4" class="clsStaCylwidth" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Move Order<span class="mandatory">*</span></label>
+                </td>
+                <td>
+                        <div id="dvMoveOrder"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" name="Save" value="Save" id="btnsave" class="btn btn-primary" onclick="fnInsertStatusCycleMapping()" />&nbsp; &nbsp
+                    <button type="button" value="Save" class="btn btn-primary" onclick="fnClearAll()">Reset</button>
+                    <input type="hidden" name="Update" value="I" id="hdnMode" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-3">
+        <h3>Status Owner Type <span class="mandatory">*</span></h3>
+        <div id="dvUserType" style="height: 300px; overflow: auto"></div>
+    </div>
+    <span>( * indicates mandatory fields )</span>
+    <div style="clear: both"></div>
+</div>
+
+<br />
+<div id="divstatusCycleMapping"></div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/StatusCycleMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        fnStatusCycleMasterDetails();
+        fnStatusCycleMappingDetails()
+        $("#dvAjaxLoad").hide();
+    });
+</script>

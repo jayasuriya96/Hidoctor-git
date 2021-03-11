@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "ExpenseClaimDeductionReport";
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<style type="text/css">
+    input[type=checkbox] {
+        margin-right: 3px;
+        margin-left: 2px;
+    }
+
+    .group {
+        font-weight: bold !important;
+    }
+
+    .expRem {
+        width: 150px !important;
+        overflow: hidden !important;
+    }
+
+    tfoot {
+        display: table-footer-group;
+        text-align: right;
+    }
+
+        tfoot th {
+            padding-right: 0px !important;
+        }
+
+    .simple_overlay .close {
+        background-image: url(/Areas/HiDoctor_Reports/Content/images/close.png);
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+        z-index: 99;
+    }
+</style>
+
+<div>
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12">
+
+        <div class='col-xs-3 leftNav' id='leftNav'>
+            <div id="dvTree" style="width: 100%; float: left">
+                <div id="tree" style="float: left; height: auto; width: 100%">
+                </div>
+            </div>
+            <span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+            <div style="width: 1px;"></div>
+            <input type="hidden" id="hdnUserCode" />
+            <input type="hidden" id="hdnUserName" />
+        </div>
+        <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+            <div style="display: none;" id="divToggle">
+                <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                        onclick="fnToggleInput()">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="divInput" style="display: none; padding: 5px">
+                <div class="col-lg-12">
+                    <div class="helpIconright">
+                        <img src="~/Images/HelpIcon.png" onclick="fnHelp('EXPENSECLAIMDEDUCTION','PAGE')" />
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <div class="col-sm-2">
+                        Claim Period for DCR
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" id="txtFromDate" class='form-control datepicker' />
+
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" id="txtToDate" class='form-control datepicker' />
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12" style="margin-top: 7px;">
+                    <div class="col-sm-2">
+                        Status
+                    </div>
+                    <div class="col-lg-8" id="cbList">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-sm-2"></div>
+                    <div class="col-lg-5">
+                        <input type="button" class="btn btnprimary" value="Show Report" onclick="fnExpenseClaimDeductionReport()" />
+                        <input type="button" class="btn btnprimary" value="Cancel" onclick="fnClearExpenseClaimReport()" />
+                    </div>
+                    <div class="col-lg-5"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+
+            <div id="dvTablePrint" style="float: left;" class="col-lg-12">
+                <div style="float: left;" class="col-lg-10"></div>
+                <div style="float: right; padding-right: 1%;" class="col-lg-2">
+                    <div id='dvPrint' onclick='fnPrint("dvPrintContent","ifrmCompPrint");' title='Print Table' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div style="clear: both"></div>
+            <div id="dvDataTable" style="padding-top: 5px;">
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"></div>
+
+    </div>
+    <div style="clear: both"></div>
+
+    <div id="dvloading" style="display: none">
+        <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+    </div>
+    <a href="#" class="scrollup">Scroll</a>
+</div>
+
+<div class="simple_overlay" id="dvOverLay">
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Expense Claim Deduction Details</span>
+    </div>
+
+    <div id="divclaimDeductionDetail" style="max-height: 450px; overflow: auto;">
+    </div>
+</div>
+
+<iframe id="ifrmPrintPopUp" style="height: 0px; width: 0px;"></iframe>
+<div id="dvPrintPopupContent" style="display: none;">
+</div>
+
+<iframe id="ifrmCompPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="dvPrintContent" style="display: none;">
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+
+        try {            
+            $(document).ajaxStop($.unblockUI);
+            $("#divPageHeader").append('<span id="spnPeriodDetail"></span>');
+
+
+            $("#leftNav").show();
+            var leftNav = $("#tree");
+            fnTreePosiition("tree");
+            currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.cur_UserCode));
+            fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");                
+            //fnDCRConsolidatedReport();
+            $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+            $('#txtSearchNode').bind("keypress", function (e) {
+                if (e.keyCode == 13) {                       
+                    fnSearchUsers();
+                    return false;
+                }
+            });
+            $('#dvAjaxLoad').hide()        
+            $('#divToggle').hide();
+
+
+            var st = @Html.Raw(Json.Encode(ViewBag.Status));
+            var claimStatus = eval('(' + st.Data + ')');
+            fnBindStatus(claimStatus);
+
+            //  fnBindUserTree("tree")
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnBindStatus(jdata) {               
+        var content = "";
+        var allCode = "";
+        var allName="";
+        for (var j = 0; j < jdata.Tables[0].Rows.length; j++) {
+            content += "<input type='checkbox' id='chkCS_" + (j + 1) + "' name='claimStatus' value='" + jdata.Tables[0].Rows[j]["Status_Code"] + "' sn='"+jdata.Tables[0].Rows[j]["Status_Name"]+"' onclick='fnChangeStatusRadio();' /><label>" + jdata.Tables[0].Rows[j]["Status_Name"] + "</label>";
+            allCode += jdata.Tables[0].Rows[j]["Status_Code"] + ",";
+            allName += jdata.Tables[0].Rows[j]["Status_Name"] + ",";
+        }
+        allCode = allCode.slice(0, -1);
+        allName = allName.slice(0,-1);
+        if(allCode!="")
+        {
+            content += "<input type='checkbox' id='rbAll' name='claimStatusAll' value='" + allCode + "' sn='" + allName + "' onclick='fnChangeStatusCheck();' checked='checked' /><label for='0'>All</label>";
+        }
+        $("#cbList").html(content);
+    }
+
+
+    function fnUserTreeNodeClick(node) {
+        // fnCloseTree();
+        $("#hdnUserCode").val(node.data.key);
+        $("#hdnUserName").val(node.data.title);
+        //fnClearSpecialityCoverageAnalysis();
+        fnClearExpenseClaimReport();
+        $("#divInput").show();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#divMain").addClass('col-xs-9')
+        $("#dvDataTable").empty();
+        $("#leftNav").show();
+        $('#divToggle').show();
+    }
+
+    function fnToggleTree() {
+        
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            // $('#tree').hide();
+            // $("#leftNav").hide();
+            $('#dvTree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-11');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {                    
+            $('#dvTree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');            
+            $("#spnTreeToggle").html('Hide Tree');           
+        }
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvTree").slideDown();
+
+        $('#dvTree').addClass('col-sm-3')
+        $('#divMain').removeClass('col-lg-12')
+        $('#divMain').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvTree").slideUp();
+
+        $('#dvTree').removeClass('col-sm-3')
+        $('#divMain').addClass('col-lg-12')
+        $('#divMain').removeClass('col-lg-9')
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+
+        }
+    }
+    $("#dvOverLay").overlay().load();
+
+    function fnUserTreePostInit()
+    {
+    }
+
+    function fnTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'dvTree');
+    }
+    
+</script>
+
+

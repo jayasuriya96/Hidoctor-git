@@ -1,0 +1,268 @@
+﻿@{
+    ViewBag.Title = "DisableUser";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+
+<div class="col-md-10 cls_nomargin_nopadding" id="dvPanel">
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <div class="cls_div_header">SETUP WIZARD - DISABLE USER</div>
+    </div>
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <ul id='ullist' class=" cls_profile_wizard_header_Disable">
+            <li class="cls_up_stpe1 cls_up_active_Disable"><a onclick="fnRedirecttheEmployeePage();">Step - 1/1
+            <br />
+                <span>Disable a Hidoctor User - Step 1/1</span>
+            </a></li>
+            @*<li class="cls_up_step2 cls_up_inactive__Disable"><a class="cls_cut" onclick="fnRedirecttheLeavePage()">Step - 2/5
+            <br />
+                <span>Disable a Hidoctor User - Step 2/2</span>
+            </a></li>*@
+        </ul>
+        <div class="clearboth">&nbsp;</div>
+    </div>
+
+    <div id="divMaininputs" class="col-md-9 cls_nomargin_nopadding form-group">
+        <div class="divNew">Enter User Id to search a User/Employee to Disable:</div>
+        <div style="clear: both;"></div>
+        <br />
+        @*
+        <div>User Id OR Employee Number OR Region to search for Employee to Disable</div>
+        <div style="clear: both"></div>
+        *@
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-3">
+                <label>Select the User Id</label>
+            </div>
+            <div class="control-section col-lg-8">
+                @*<input type="text" id="txtSearhUserId" class="form-control GroupsearchUserId" onblur="fnGetemployeeNamebyUsercode();" />
+                <input type="hidden" id="hdnsearchUserCode" />*@
+                <input type="hidden" id="hdnsearchUserCode" />
+                <input type="text" id="txtSearhUserId" placeholder="Enter user Name.." >
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div id="dvenabledetails" style="display: none;">
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Employee No</label>
+                </div>
+                <div class="col-xs-5">
+                    <label id="txtemployeeNo"></label>
+                    @*
+                    <input type="text" id="txtemployeeNo" class="form-control GroupsearchemployeeNo" onblur="fnGetemployeeNamebyEmployeecode();" />*@
+                <input id="hdnSearchEmployeeNo" type="hidden" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Region Name</label>
+                </div>
+                <div class="col-xs-5">
+                    <label id="txtsearchRegion"></label>
+                    @*<input type="text" id="txtsearchRegion" class="form-control Groupsearchregion" onblur="fnGetemployeeNamebyRegioncode();" />*@
+                <input id="hdnSearchregion" type="hidden" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-3">
+                    <label>Employee Name</label>
+                </div>
+                <div class="col-xs-5">
+                    <label id="txtsearchEmpname"></label>
+                    @*
+                    <input type="text" id="txtsearchEmpname" readonly="true" class="form-control" />*@
+                 <input type="hidden" id="hdndisableEmployeeCode" />
+                </div>
+                <span id="spnMessage" style="color: red;margin-left:-8px;"></span>
+                <div class="col-md-6 cls_nomargin_nopadding form-group clearfix" id="reportuser" style="display:none;margin-top: 13px;">
+                    <label id="reportinguser"></label>
+                    <div id="showleafusers" style="border: 2px solid;height: 200px;overflow-y:scroll;display:none;width:715px;margin-top: 10px;">
+
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-3" style="clear: both;">
+                </div>
+                <div class="col-xs-5">
+                    <input type="button" class="btn btn-primary" id="btnGO" value="GO" onclick="fnCheckDisableUser()" />
+                    @*<input type="button" class="btn btn-primary" id="btnsave" value="save" style="display:none;" onclick="fndisablerepuser();"/>*@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="display: none;" id="disableDate">
+            <div class="col-xs-3" style="clear: both;">
+                <label>Resignation Date</label>
+            </div>
+            <div class="col-xs-5">
+                <input type="text" id="txtdisableDate" class="datepicker form-control" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix" style="display: none;" id="remks">
+            <div class="col-xs-3" style="clear: both;">
+                <label>Remarks</label>
+            </div>
+            <div class="col-xs-5">
+                <textarea class="" rows="5" maxlength="500" id="txtrem" style="margin: 0px; width: 279px; height: 81px;"></textarea>
+                @*<textarea id="txtrem" class="form-control" style="width: 541px;" maxlength="500" name="w3review" rows="4" cols="50"></textarea>*@
+            </div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowtmailbtn" style="display:none;">
+            <div class="col-xs-1">
+                <input type="checkbox" name="Mailaccess" id="ResMailchk" checked="checked"/>
+            </div>
+            <div class="col-xs-4">
+                <label>Send Mail</label>
+                <span style="margin-left:20px;cursor:pointer;color:#428bca;text-decoration: underline;" onclick="javascript:return fnGetRegionTreefordisableuser($('#hdnSearchregion').val());"> Copy Holders </span>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="table-responsive col-md-10 cls_nomargin_nopadding form-group">
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-6">
+                    <input type="button" id="btnBackdisableUser" value="Back" class="btn btn-primary" onclick="fnBackdisableUser();" />
+                    @*<input type="button" id="finish" value="Finish" class="btn btn-success" onclick="fnFinishDisable();" style="float: right;" />*@
+                    <input type="button" id="finish" value="Finish"  class="btn btn-success" onclick="fndisablerepuser();" style="display:none;" />
+                    @*<input type="button" id="btnQuit" value="Quit" class="btn btn-info" onclick="fnQuit()" />*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModalregion" class="modal" role="dialog" style="overflow-y:hidden;">
+    <div class="modal-dialog" style="background: none;border: none;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Copy Holders</h4>
+            </div>
+            <div class="modal-body" style="height:400px;overflow:auto;">
+                <div id="regionTreeNew"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnccsave" onclick="fnSaveCCUsers(0);">Save</button>
+                <button type="button" class="btn btn-primary" style="display:none" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div id="myModalremark" class="modal" role="dialog" style="overflow-y:hidden;">
+    <div class="modal-dialog" style="background: none;border: none;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Remarks</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="txtrem" style="width: 541px;" maxlength="500" name="w3review" rows="4" cols="50"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnccsave" onclick="fndisablerepuser();">Save</button>
+                <button type="button" class="btn btn-primary" style="display:none" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div id="dvquitPopup" title="New User Creation Wizard">Do you wish to quit the wizard?All data entered will be lost.Click Yes/No</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Notification.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/CompanyEmail.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    var json_GetchildUsers = "", UserCode_g = "", userName_g = "", disabledate_g = "", EmployeeCode_g = "",regionCode_g="",EmployeeNo_g="",employeeName_g="",regionName_g="",entryMode_g="",Usertypecode_g="";
+    var json_Userdetails_g ="",Json_Employeedetails_g="",Json_Regiondetails_g="";
+    var CompanyCode_g = "";
+    var Resignremarks="";
+    var ResignDet=[];
+    var ResignDetobj={};
+    var ResMailarr='';
+    var IsResMailNeeded =0;
+    var Templatedetails='';
+    var Userdivs='';
+    ShowModalPopup('dvLoading');
+    $(document).ready(function () {
+        try {
+            AjaxGlobalHandler.Initiate();
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                maxDate: '0'
+                //showButtonPanel: true
+            });
+            fnGetUserstodisable();
+            
+            fngetCompanyEmail();
+            fnGetTemplateDetails();
+            //fnGetEmployeeNumbertoDisable();
+            //fnGetRegionstoDisable();
+            UserCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+            userName_g = @Html.Raw(Json.Encode(ViewBag.User_Name));
+            disabledate_g = @Html.Raw(Json.Encode(ViewBag.Acivie_Date));
+            EmployeeCode_g = @Html.Raw(Json.Encode(ViewBag.Employee_Code));
+            regionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            EmployeeNo_g = @Html.Raw(Json.Encode(ViewBag.Employee_Number));
+            regionName_g = @Html.Raw(Json.Encode(ViewBag.Region_Name));
+            employeeName_g = @Html.Raw(Json.Encode(ViewBag.Employee_Name));
+            entryMode_g =  @Html.Raw(Json.Encode(ViewBag.Entry_Mode));
+            CompanyCode_g = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+            KI_DisableUser.CompanyCode = CompanyCode_g;
+            if(userName_g != null){
+                $('#txtSearhUserId').val(userName_g);
+                if(entryMode_g == "B"){
+                    fnGetemployeeNamebyUsercode();
+                }
+            }
+            if(UserCode_g != null){
+                $('#hdnsearchUserCode').val(UserCode_g);
+            }
+            if(regionName_g != null){
+                $('#txtsearchRegion').val(regionName_g);
+            }
+            if(regionCode_g != null){
+                $('#hdnSearchregion').val(regionCode_g);
+            }
+            if(EmployeeNo_g != null){
+                $('#txtemployeeNo').val(EmployeeNo_g);
+            }
+            if( employeeName_g != null){
+                $('#txtsearchEmpname').val(employeeName_g);
+            }
+            if(EmployeeCode_g != null){
+                $('#hdndisableEmployeeCode').val(EmployeeCode_g);
+            }
+            if(disabledate_g != null){
+                $('#disableDate').show();
+                $('#remks').show();
+                $('#btnNextdisableUser').show();
+                var disabledate = disabledate_g.split('-')[2] + '/' + disabledate_g.split('-')[1] + '/'+disabledate_g.split('-')[0];
+                $('#txtdisableDate').val(disabledate);
+            }
+            else
+            {
+                $('#disableDate').hide();
+                $('#remks').hide();
+               // $('#btnNextdisableUser').hide();
+                $('#txtdisableDate').val('');
+            }
+            //fnGetChildUsers();
+            HideModalPopup('dvLoading');
+        }
+        catch (e) {
+            HideModalPopup('dvLoading');
+            alert("fnSet" + e.message);
+        }
+    });
+</script>

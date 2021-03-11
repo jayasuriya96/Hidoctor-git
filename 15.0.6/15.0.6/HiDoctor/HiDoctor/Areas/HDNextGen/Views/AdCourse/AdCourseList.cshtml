@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "AdCourseList";
+}
+<style>
+    #txtAllCourse {
+        height: 34px;
+        margin-top: 0px!important;
+        border-top-right-radius: 5px!important;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 5px;
+    }
+</style>
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AdCourseList.css" rel="stylesheet" />
+
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CourseList.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateQuestion.js"></script>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvCourseList" onclick="CourseList.getAllCourseList('','');">Course List</a></li>
+            <li><a href="#dvActiveCourse" onclick="CourseList.getActivePublish('','');">Active tests</a></li>
+            <li><a href="#dvExpired" onclick="CourseList.fngetExpiredPublish('','');">Inactive tests</a></li>
+        </ul>
+
+        <div id="dvCourseList" class="form-group">
+            <div class="pull-right col-lg-4 cls_paging clspg">
+                <span id="spncurClPgno"></span>Of <span id="spnTotClpgno" class="clsTotal"></span>
+                <input type="button" id="btnClEditPre" class="btn-paging btn-primary clsPre" value="<" />
+                <select class="btn-paging clsPgChange" onchange="CourseList.fnClPageChange(this.value)" id="drpClPages">
+                </select>
+                <input type="button" id="btnClEditNxt" class="btn-paging btn-primary clsNext" value=">" />
+            </div>
+            <div class="col-lg-4 pull-right">
+                <div class="col-lg-12">
+                    <div class="clsDivSearch">
+                        Search&nbsp;
+                    </div>
+                    <div style="width: 65%; float: left;">
+                        <input type="text" id="txtCourseSearch" placeholder="Type Course Name" class="form-control clstxtSearch" />
+                    </div>
+                    <div style="width: 10%; float: left;">
+                        <input type="button" id="txtAllCourse" onclick="" class="btn btn-primary clsbtnSearch" />
+                    </div>
+                </div>
+            </div>
+            <div id="dvCourseDetail" class="table-responsive form-group" style="clear: both; padding-top: 1%;"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="dvActiveCourse" class="col-lg-12 form-group" style="overflow: auto;">
+            <div class="pull-right col-lg-4 cls_paging clspg">
+                <span id="spncurActPgno"></span>Of <span id="spnTotActpgno" class="clsTotal"></span>
+                <input type="button" id="btnActEditPre" class="btn-paging btn-primary clsPre" value="<" />
+                <select class="btn-paging clsPgChange" onchange="CourseList.fnActPageChange(this.value)" id="drpActPages">
+                </select>
+                <input type="button" id="btnActEditNxt" class="btn-paging btn-primary clsNext" value=">" />
+            </div>
+            <div class="col-lg-4" style="float: right;">
+                <div class="col-lg-12">
+                    <div class="clsDivSearch">
+                        Search&nbsp;
+                    </div>
+                    <div style="width: 65%; float: left;">
+                        <input type="text" id="txtActiveCourseSearch" placeholder="Type Course Name" class="form-control clstxtSearch" />
+                    </div>
+                    <div style="width: 10%; float: left;">
+                        <input type="button" value="Go" style="height: 34px;margin-top: 0px!important;border-top-left-radius: 0px;border-bottom-left-radius: 0px;" id="txtActCourse" class="btn btn-primary clsbtnSearch" />
+                    </div>
+                </div>
+            </div>
+            <div id="dvActiveList" class="table-responsive" style="clear: both; padding-top: 1%;"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="dvExpired" class="col-lg-12 form-group" style="overflow: auto;">
+            <div class="pull-right col-lg-4 cls_paging clspg">
+                <span id="spncurExpPgno"></span>Of <span id="spnTotExppgno" class="clsTotal"></span>
+                <input type="button" id="btnExpEditPre" class="btn-paging btn-primary clsPre" value="<" />
+                <select class="btn-paging clsPgChange" onchange="CourseList.fnExpPageChange(this.value)" id="drpExpPages">
+                </select>
+                <input type="button" id="btnExpEditNxt" class="btn-paging btn-primary clsNext" value=">" />
+            </div>
+            <div class="col-lg-4" style="float: right;">
+                <div class="col-lg-12">
+                    <div class="clsDivSearch">
+                        Search&nbsp;
+                    </div>
+                    <div style="width: 65%; float: left;">
+                        <input type="text" id="txtExpireCourseSearch" placeholder="Type Course Name" class="form-control clstxtSearch" />
+                    </div>
+                    <div style="width: 10%; float: left;">
+                        <input type="button" value="Go" style="height: 34px;margin-top: 0px!important;border-top-left-radius: 0px;border-bottom-left-radius: 0px;" id="txtExpCourse" class="btn btn-primary clsbtnSearch" />
+                    </div>
+                </div>
+            </div>
+            <div id="dvExpiredCourse" class="table-responsive" style="clear: both; padding-top: 1%;"></div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="popup_overlay" id="dvCoursePublishViews" style="display: none;">
+    <div class="popup-wrapper">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvCoursePublishViews')";>
+        <span aria-hidden="true">×</span></button>
+        <div class="title" id="dvAssetsTitle">
+            <h3>Loading Title...</h3>
+        </div>
+        <div id="dvAssets" class="table-responsive">
+            <table class="table" id="tablePublishViews">
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>User Name</th>
+                    <th>Employee Name</th>
+                    <th>Region Name</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dvViewCourse">
+    <div class="modal-dialog" style="width: 800px!important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="HideModalPopup('dvViewCourse')";">
+<span aria-hidden="true">&times;</span></button>
+                <h4 id="thumbnailsinglemodallbl" class="modal-title">Course Preview</h4>
+            </div>
+            <div class="modal-body" style="height:450px;overflow:auto;">
+                <div class="col-lg-12 clsPaddingNone clearfix" id="dvViewHeader">
+                    <div class="col-md-4 img_left ">
+                        <img class="clsCompLogo img-responsive thumnail" id="imgComLogo" />
+                    </div>
+                    <div class="col-md-8 clsPaddingNone count_right" style="text-align: right;">
+                        <div class="col-lg-12 clsPaddingNone" id="dvPageInfo">
+                            <div class="col-lg-12 page_div" style="display: none;">
+                                <div class="col-lg-12" id="">
+                                    <div class="col-xs-1 clsFloatRight">
+                                        <select id="cboPageNo"></select>
+                                    </div>
+                                    <div class="col-xs-5 clsFloatRight" id="dvQ">
+                                        Questions per page
+                                    </div>
+                                    dvQuesPagePer
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="dvTotalQues" style="font-weight: bold;"></div>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 clsPaddingNone clearfix" id="dvViewMid" style="color: #5E87B0 !important; text-align: left; font-weight: bold;">
+                    <div class="col-md-9">
+                        <div id="dvCourseName" class="col-lg-12"></div>
+                        <div id="dvCourseDesc" class="col-lg-12"></div>
+                    </div>
+                    <div class="col-md-3" id="dvSurImage">
+                        <img id="dvImgSurImg" class="thumbnail img-responsive" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-12" id="dvViewQuestions" style="height: 375px; overflow: scroll;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script lang="ja">
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        AjaxGlobalHandler.Initiate();
+
+        $("#dvPageHeader").html(@Html.Raw(Json.Encode(ViewBag.PageHeader)));
+        $("#dvPanel").tabs();
+    });
+    $('#txtAllCourse').val("Go");
+    $('#txtAllCourse').click(function () {
+        CourseList.fnGetSearchResult();
+    });
+    $('#txtActCourse').click(function () {
+        CourseList.fnGetActiveCourseSearch();
+    });
+    $('#txtExpCourse').click(function () {
+        CourseList.fnGetExpiredCourseSearch();
+    });
+
+    CourseList.getAllCourseList('', '');
+
+    $('#btnClEditPre').on("click", function () { CourseList.getAllCourseList('', 'p') });
+    $('#btnClEditNxt').on("click", function () { CourseList.getAllCourseList('', 'n') });
+
+    $('#btnActEditPre').on("click", function () { CourseList.getActivePublish('', 'p') });
+    $('#btnActEditNxt').on("click", function () { CourseList.getActivePublish('', 'n') });
+
+    $('#btnExpEditPre').on("click", function () { CourseList.fngetExpiredPublish('', 'p') });
+    $('#btnExpEditNxt').on("click", function () { CourseList.fngetExpiredPublish('', 'n') });
+</script>

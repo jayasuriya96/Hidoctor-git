@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Notice Board Approval";
+    Layout = null;
+
+}
+<style>
+    .treebg {
+        background: #fafafa !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .NoticeNO {
+        background-color: #F06421 !important;
+        color: #fff;
+    }
+
+    .NoticeYES {
+        background-color: #89C33F !important;
+        color: #fff;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<div id="dvNoticeAppr" class="col-lg-12" style="float: left;">
+    <div class="col-lg-3" id="divleft" class="treebg">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+        <div id="usertree" style="height: 700px;">
+            <div class="dv-controls-load">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading tree
+            </div>
+        </div>
+    </div>
+    <div id="dataDiv" class="col-lg-9">
+
+        <input type="hidden" id="hdnUserCode" />
+        <div class="page-header">
+            <h3 id="userNameHeader"></h3>
+        </div>
+        <div id="dvNoticeDataGrid" class="table-responsive"></div>
+        <div id="btnDiv" style="display: none">
+            <button id="btnNoticeApprove" style="margin-right: 5px;" type="button" class="btn btn-primary" onclick="fnChangeStatus('Approve')">Approve</button>
+            <button id="btnNoticeUnapprove" style="margin-right: 5px;" type="button" class="btn btn-primary" onclick="fnChangeStatus('UnApprove')">Un Approve</button>
+        </div>
+        <div style="margin-top: 5px">
+            <div id="successmsg" class="alert alert-success" style="display: none"></div>
+            <div id="warningmessage" class="alert alert-warning" style="display: none"></div>
+            <div id="errormsg" class="alert alert-danger" style="display: none"></div>
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script>
+    var userCode_g = "";
+    $(document).ready(function () {
+        $('#userNameHeader').html('');
+        AjaxGlobalHandler.Initiate();
+        try {           
+            userCode_g = @Html.Raw(Json.Encode(ViewBag.UserCode));
+            $('#dvNoticeAppr').block({
+                message: 'Processing',
+                css: { border: '1px solid #ddd' }
+            });
+            $('.dynatree-container').css('border', 'none');
+            fnBindUserTree("usertree"); // to bind user tree
+            $("#dvAjaxLoad").hide();
+            
+        }
+        catch (err) {
+            $('#dvNoticeAppr').unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    fnGetNotices();
+    function fnUserTreeNodeClick(node) {
+        $("#hdnUserCode").val(node.data.key);
+        $('#userNameHeader').html(node.data.title);
+        fnGetNotices();
+    }
+
+    function fnUserTreePostInit() {
+        $('#btnDiv').css('display', '');
+        fnRootNodeDisableOrEnable();
+    }
+
+   
+</script>

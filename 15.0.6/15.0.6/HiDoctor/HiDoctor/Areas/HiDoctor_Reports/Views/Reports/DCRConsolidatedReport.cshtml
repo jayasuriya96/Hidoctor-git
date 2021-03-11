@@ -1,0 +1,692 @@
+﻿ @{
+    ViewBag.Title = "DCRConsolidatedReport";
+    Layout = null;
+}
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style type="text/css">
+    .detaildiv {
+        clear: both;
+        width: 95%;
+        margin: auto;
+        background-color: #E8F1FF;
+        border: 2px solid #7AA3CC;
+    }
+
+    #divReport, #divHeaderDetails {
+        background-color: #fff;
+        width: 100%;
+    }
+
+    #divHeaderDetails {
+        overflow: auto;
+    }
+
+    .gridHeader {
+        padding-top: 0px !important;
+    }
+
+    .group {
+        font-size: 14px !important;
+        font-weight: bold !important;
+    }
+
+    .gridDCRConsHeader h3 {
+        border: 1px solid #6082AD;
+        height: 20px;
+        color: #fff !important;
+        -webkit-border-top-left-radius: 4px;
+        -webkit-border-top-right-radius: 4px;
+        background-color: #3B6792 !important;
+        text-align: center;
+    }
+
+    #dvLoadingExpense {
+        background-color: #fff !important;
+        border: 2px solid #d3d3d3 !important;
+        width: 500px !important;
+    }
+
+    .accHeaderTable {
+        width: 99%;
+        margin-bottom: 5px;
+    }
+
+        .accHeaderTable tr td {
+            border-bottom: 1px dotted #d3d3d3;
+        }
+
+    .accDocDetail, .DocDetailProduct {
+        width: 98%;
+        border: 1px solid #666666;
+        margin: 5px;
+    }
+
+        .accDocDetail thead, .DocDetailProduct thead {
+            background: #888888;
+            color: #fff;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .accDocDetail td, .DocDetailProduct td {
+            border-right: 1px solid #666666;
+            border-top: 1px solid #666666;
+            padding: 3px;
+        }
+
+    .listheaderbar1 {
+        background-color: #3B6792 !important;
+        color: #fff;
+        /*height: 16px !important;*/
+        padding: 8px;
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial,Helvetica, sans-serif !important;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    /*.listheaderbar {
+        margin-top: 10px;
+    }*/
+
+    .simple_overlay .close {
+        background-image: url(/Areas/HiDoctor_Reports/Content/images/close.png);
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+        z-index: 99;
+    }
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css" rel="stylesheet" />
+
+<div id="dvLoadingExpense" style="display: none;">
+    <div class="dvAccPopUpClose">
+        <img src="../Areas/HiDoctor_Reports/Content/images/trash1_16x16.gif" style="float: right; cursor: pointer; margin-right: 0px;"
+            onclick="HideModalPopup('dvLoadingExpense');" />
+    </div>
+    <div style="width: auto;">
+        <div id="dvDailyBlockM" style="margin: 10px;">
+        </div>
+    </div>
+    <div style="width: auto;">
+        <div id="dvNonDailyBlockM" style="margin: 10px; max-height: 400px; overflow: auto;">
+        </div>
+    </div>
+</div>
+
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="tree" style="float: left; height: auto; width: 100%">
+        </div>  
+    <span id="spnTreeResize" onclick="fnTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>      
+    </div>
+
+    <div class='col-xs-9 rghtInputandRpt' float: left" id="divMain">
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 20px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+
+        <div id="divInput" style="display: none; padding: 20px">
+            <div class="helpIconright">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCRCONSOLIDATED','PAGE')" />
+            </div>
+            <table>
+                <tr>
+                    <td>Start Date & End Date
+                    </td>
+                    <td>
+                        <input type="text" id="txtFromDate" class='datepicker' />
+                        <input type="text" id="txtToDate" class='datepicker' />
+                        <input type="hidden" id="hdnUserCode" />
+                        <input type="hidden" id="hdnSelect" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="2">
+                            Approved</label>
+                        <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="1">
+                            Applied</label>
+                        <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="0">
+                            Unapproved</label>
+                        <input type="checkbox" id="chkDrafted" value="3" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                        <label for="3">
+                            Drafted</label>
+                        <input type="checkbox" id="rbAllWOD" name="dcrStatusAllWOD" value="0,1,2" onclick="fnChangeCheckWithoutDraft();" checked="checked" /><label
+                            for="0">
+                            All without draft</label>
+                        <input type="checkbox" id="rbAllWD" name="dcrStatusAllWD" value="0,1,2,3" onclick="fnChangeCheckWithDraft();" /><label
+                            for="0">
+                            All with draft</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Options
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkDCR" value="D" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="D">
+                            DCR</label>
+                        <input type="checkbox" id="chkDoctor" value="DR" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="DR">
+                            Doctor</label>
+                        <input type="checkbox" id="chkChemist" value="C" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="C">
+                            Chemist</label>
+                        <input type="checkbox" id="chkStockist" value="S" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="S">
+                            Stockist</label>
+                        <input type="checkbox" id="chkProduct" value="P" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="P">
+                            Product</label>
+                        <input type="checkbox" id="chkExpense" value="E" name="otn" onclick="fnChangeRadioOptinon();" />
+                        <label for="E">
+                            Expense</label>
+
+                        <input type="checkbox" id="rbOptionAll" name="optionAll" value="D^DR^C^S^P^E^" onclick="fnChangeCheckOptinon();" checked="checked" /><label
+                            for="0">
+                            All</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>WideAngle DCR
+                    </td>
+                    <td>
+                        <input type="checkbox" id="rbWA" name="showWA" value="Y" /><label
+                            for="showWA">
+                            Show DCR Dates</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnDCRConsolidatedReport();" />
+                        @*<input type="button" id="btnShow" name="ShowMongo" value="Show Mongo Report" onclick="GetConsolidateSummaryNG();" />*@
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div id="dvloading" style="display: none">
+                <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+            </div>
+        </div>
+       @* <div class="helpIconright">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCRCONSOLIDATED','TABLE')" />
+        </div>*@
+        <div id="divHeaderDetails">
+        </div>
+
+
+        <div id="divReport" style="display: none;">
+            <a id="aExpandCollapse" href='#' onclick='fnDCRConsExpandCollapseAll(this)' style='text-decoration: underline; cursor: pointer; font-weight: bold;'>Collapse All</a><br />
+
+            <div id="lstDCRHead" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvDCRHead","spnHeaderDCRHead")'>
+ <span class='expand' id='spnHeaderDCRHead' style='padding: 15px;'>Daily Call Report Summary<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderDCRHead' style='padding: 15px;'>Daily Call Report Summary<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvDCRHead' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstDocVisit" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvDocVisit","spnHeaderDocVisit")'>
+ <span class='expand' id='spnHeaderDocVisit' style='padding: 15px;'>Doctor Visit Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderDocVisit' style='padding: 15px;'>Doctor Visit Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvDocVisit' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstDocMiss" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvDocMiss","spnHeaderDocMiss")'>
+<span class='expand' id='spnHeaderDocMiss' style='padding: 15px;'>Doctors Missed<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+                @*<span class='collapse' id='spnHeaderDocMiss' style='padding: 15px;'>Doctors Missed<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvDocMiss' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+            <div id="lstUnlistDoc" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvUnlistDoc","spnHeaderUnlistDoc")'>
+ <span class='expand' id='spnHeaderUnlistDoc' style='padding: 15px;'>Unlisted Doctor Met<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderUnlistDoc' style='padding: 15px;'>Unlisted Doctor Met<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvUnlistDoc' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstChem" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvChem","spnHeaderChem")'>
+ <span class='expand' id='spnHeaderChem' style='padding: 15px;'>Chemist Visited<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderChem' style='padding: 15px;'>Chemist Visited<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvChem' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstRCPA" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvRCPA","spnHeaderRCPA")'>
+ <span class='expand' id='spnHeaderRCPA' style='padding: 15px;'>RCPA Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderRCPA' style='padding: 15px;'>RCPA Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvRCPA' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstStock" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvStock","spnHeaderStock")'>
+ <span class='expand' id='spnHeaderStock' style='padding: 15px;'>Stockist Visited<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderStock' style='padding: 15px;'>Stockist Visited<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvStock' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstProd" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvProd","spnHeaderProd")'>
+ <span class='expand' id='spnHeaderProd' style='padding: 15px;'>Product Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderProd' style='padding: 15px;'>Product Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvProd' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstExp" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvExp","spnHeaderExp")'>
+ <span class='expand' id='spnHeaderExp' style='padding: 15px;'>Expense Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderExp' style='padding: 15px;'>Expense Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvExp' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+
+            <div id="lstWA" class='listheaderbar1' style='width: 99%; display: none;' onclick='fnDCRTableShowHide("dvWA","spnHeaderWA")'>
+ <span class='expand' id='spnHeaderWA' style='padding: 15px;'>WideAngle DCR Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>
+               @* <span class='collapse' id='spnHeaderWA' style='padding: 15px;'>WideAngle DCR Details<span style='font-size: 11px; font-style: italic'>(Click to Expaned/Collapse!)</span></span>*@
+            </div>
+            <div id='dvWA' style='overflow: auto; display: none; margin-bottom: 10px;'>
+            </div>
+
+        </div>
+
+        <div class="simple_overlay" id="dvOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Accompanist Doctor Details</span>
+            </div>
+
+            <div id="divAccDocDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td style="font-weight: bold;">User Name</td>
+                        <td><span id="spnpuserName"></span></td>
+
+                        <td style="font-weight: bold;">Employee Name</td>
+                        <td><span id="spnpEmpName"></span></td>
+
+                        <td style="font-weight: bold;">Region Name</td>
+                        <td><span id="spnpRegionName"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">DCR Date</td>
+                        <td><span id="spnDCRDate"></span></td>
+
+                        <td style="font-weight: bold;">DCR Type</td>
+                        <td><span id="spnDCRType"></span></td>
+
+                        <td style="font-weight: bold;">DCR Status</td>
+                        <td><span id="spnpDCRStatus"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Work Place</td>
+                        <td><span id="spnWorkPlace"></span></td>
+
+                        <td style="font-weight: bold;">Travelled Places</td>
+                        <td id="tdTravlledPlaces"></td>
+
+                        <td style="font-weight: bold;">Entered Date</td>
+                        <td><span id="spnDCRentedDate"></span></td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">Accompanist Name : </td>
+                        <td><span id="accPopUpName"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Time : </td>
+                        <td><span id="accPopUpTime"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="simple_overlay" id="dvDetailedProductOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Detailed Products</span>
+            </div>
+            <div id="divDetailPrdDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td style="font-weight: bold;">User Name</td>
+                        <td><span id="spnduserName"></span></td>
+                        <td style="font-weight: bold;">Employee Name</td>
+                        <td><span id="spndEmpName"></span></td>
+                        <td style="font-weight: bold;">Region Name</td>
+                        <td><span id="spndRegionName"></span></td>
+                    </tr>
+                    <br />
+                    <tr>
+                        <td style="font-weight: bold;">Doctor Name</td>
+                        <td><span id="spndDocName"></span></td>
+                        <td style="font-weight: bold;">MDL No</td>
+                        <td><span id="spndMDL"></span></td>
+                        <td style="font-weight: bold;">Specilaity</td>
+                        <td><span id="spndSpeciality"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Category</td>
+                        <td><span id="spndCategory"></span></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="simple_overlay" id="dvDoctorVisitSummaryOverLay" style="min-height: 300px">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Doctor Visits Summary</span>
+            </div>
+            <table class="accHeaderTable" style="border-bottom: 2px solid #06c; margin-left: 5px;">
+                <tr>
+                    <td style="font-weight: bold;">User Name :
+                    </td>
+                    <td>
+                        <span id="spnDVSuserName"></span></td>
+                    <td style="font-weight: bold;">Employee Name :
+                    </td>
+                    <td>
+                        <span id="spnDVSEmpName"></span></td>
+                    <td style="font-weight: bold;">Region Name :
+                    </td>
+                    <td>
+                        <span id="spnDVSRegionName"></span></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Division Name :
+                    </td>
+                    <td>
+                        <span id="spnDVSdivision"></span></td>
+                    <td style="font-weight: bold;">Manager's Name :
+                    </td>
+                    <td>
+                        <span id="spnDVSmanager"></span></td>
+                    <td style="font-weight: bold;">Date Period :
+                    </td>
+                    <td>
+                        <span id="spnDVSdateperiod"></span></td>
+                </tr>
+            </table>
+            <br />
+
+            <table class="accHeaderTable" style="margin-left: 5px; font-weight: bold; width: 55%;">
+                <tr>
+                    <td>Once Visited</td>
+                    <td><span id="spnDVSonce"></span></td>
+                </tr>
+                <tr>
+                    <td>Twice Visited</td>
+                    <td><span id="spnDVStwice"></span></td>
+                </tr>
+                <tr>
+                    <td>Thrice Visited</td>
+                    <td><span id="spnDVSthrice"></span></td>
+                </tr>
+                <tr>
+                    <td>More Than Thrice Visited</td>
+                    <td><span id="spnDVSmoreThanThrice"></span></td>
+                </tr>
+                <tr>
+                    <td>Doctor Calls Made</td>
+                    <td><span id="spnDVStotalcalls"></span></td>
+                </tr>
+            </table>
+        </div>
+
+<div id="DcrDisclaimer" style="display:none">
+*Disclaimer regarding Missed Doctor Count column</br>
+1. This column will display the correct count only if the selected period for the report is exactly a calendar month. For e.g. Mar-1-2015 to Mar-31-2015 Or Sept-1- 2015 to Sept-30-2015.</br>
+2. In case the selected period for the report is of 30 or 31 days but not exactly a calendar month, for e.g. Aug-5-2015 to Sept-5-2015, then the column may show an incorrect count.</br>
+3. In case the Doctor List changes anytime during the selected period for the report, then too the column may show an incorrect count.</br>
+It is recommended that in cases 2 or 3, user does not refer to the Missed Doctors Count Column for an exact value.</br>
+</div>
+
+    </div>
+<div class="clearfix"></div>
+</div>
+<div class="simple_overlay" id="dvAccOverLay">
+    <div class="popUpTitle" style="height: 45px; text-align: center;">
+        <span id="doc_details" style="font-size: 13px;"></span>
+    </div>
+
+    <div id="divAccDocDetail_Call" style="height: 500px; overflow: scroll">
+    </div>
+</div>
+<iframe id="ifrmPrintdvProd" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintProd" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvStock" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintStock" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvChem" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintChem" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvDCRHead" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintDCRHead" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvDocVisit" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintDocVisit" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvDocMiss" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintDocMiss" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvUnlistDoc" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintUnlistDoc" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvExp" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintExp" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvRCPA" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintRCPA" style="display: none;"></div>
+
+<iframe id="ifrmPrintdvWA" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrintWA" style="display: none;"></div>
+
+<input type="hidden" id="spnUserName"/>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/DCRConsolidatedReport.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var currentUserCode_g ="";
+    var treeExpandLevel = 0;
+    var title_g = $("#divPageHeader").html();
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+            //showButtonPanel: true
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{                   
+            var userCode = @Html.Raw(Json.Encode(ViewBag.userCode));           
+            if (userCode == null) {
+                $("#leftNav").show();
+                var leftNav = $("#tree");
+                fnTreePosiitionNew("tree");
+                // fnTreePosiition("tree");
+                currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.cur_UserCode));
+                fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                //fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");                
+                //fnDCRConsolidatedReport();
+                $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParentNew(); });
+                // $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {   
+                        fnSearchUsersNew();                 
+                        // fnSearchUsers();
+                        return false;
+                    }
+                });
+               
+                $('#dvAjaxLoad').hide()        
+            }
+            else {
+                currentUserCode_g = userCode;
+                var leftNav = $("#tree");
+                // fnBindUserTree("tree");
+                $("#txtFromDate").val(@Html.Raw(Json.Encode(ViewBag.fromDate)));
+                $("#txtToDate").val(@Html.Raw(Json.Encode(ViewBag.toDate)));
+                $("#hdnUserCode").val(@Html.Raw(Json.Encode(ViewBag.userCode)));
+                $('input:checkbox[name=dcrStatus]').each(function () {
+                    $(this).attr('checked', 'checked');
+                    //if ($(this).is(':checked')) { dcrStatus += $(this).val() + ","; }
+                });
+                $('input:checkbox[name=otn]').each(function () {
+                    $(this).attr('checked', 'checked');
+                    //if ($(this).is(':checked')) { option += $(this).val() + "^"; }
+                });
+                $('#divInput').show();
+                $("#leftNav").hide();
+                $("#divMain").addClass('col-xs-9');
+                // $("#divMain").css('width', '100%');
+                // $("#spnTreeToggle").html('Show Tree');
+                fnTreePosiitionNew("tree");
+                //fnTreePosiition("tree");
+                fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+                // fnGetUserTreeByUser(currentUserCode_g, "dvUserTree", "dvFilteredNode");                
+                fnDCRConsolidatedReport();
+                $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParentNew(); });
+                // $('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {  
+                        fnSearchUsersNew();                                     
+                        // fnSearchUsers();
+                        return false;
+                    }
+                });
+                $('#dvAjaxLoad').hide()               
+            }
+            $("#dvAccOverLay").overlay().load();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+    function fnUserTreeNodeClick(node) {       
+        $('#hdnUserCode').val(node.data.key);      
+        $('#spnUserName').val(" - "+node.data.title);
+        var pageHeader = title_g + $('#spnUserName').val();
+        $('#divPageHeader').html(pageHeader);
+        $('#divInput').show();
+        $("#leftNav").show();
+        $("#divMain").addClass('col-xs-9')
+        // $("#divMain").css('width', '100%');
+        $('#divToggle').show();
+        // $("#spnTreeToggle").html('Show Tree');
+        fnClearDCRConsolidated();       
+        //hide All dives
+        $("#divReport").hide();
+        $("#aExpandCollapse").html("Collapse All");
+        var objCol = $("#aExpandCollapse");  
+        fnDCRConsExpandCollapseAll(objCol);
+        $("#aExpandCollapse").html("Collapse All");
+
+        $("#lstStock").hide();
+        $("#lstChem").hide();
+        $("#lstProd").hide();
+        $("#lstDCRHead").hide();
+        $("#lstDocVisit").hide();
+        $("#lstDocMiss").hide();
+        $("#lstUnlistDoc").hide();
+        $("#lstExp").hide();
+        $("#lstRCPA").hide();
+        $("#lstWA").hide();
+
+        //empty div
+        $("#dvStock").empty();
+        $("#dvChem").empty();
+        $("#dvProd").empty();
+        $("#dvDCRHead").empty();
+        $("#dvDocVisit").empty();
+        $("#dvDocMiss").empty();
+        $("#dvUnlistDoc").empty();
+        $("#dvExp").empty();
+        $("#dvRCPA").empty();
+        $("#dvWA").empty();
+        $("#divHeaderDetails").empty();    
+    }
+    function fnUserTreePostInit() {
+    }
+    $("#dvOverLay").overlay().load();
+    $("#dvDetailedProductOverLay").overlay().load();
+    $("#dvDoctorVisitSummaryOverLay").overlay().load();
+    
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {
+            // $('#tree').hide();
+            // $("#leftNav").hide();
+            $('#tree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-12');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {                    
+            $('#tree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');            
+            $("#spnTreeToggle").html('Hide Tree');           
+        }
+    }
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+
+        }
+    }
+
+    function fnTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'tree');
+    }
+</script>

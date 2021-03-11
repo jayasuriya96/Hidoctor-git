@@ -1,0 +1,483 @@
+﻿@model HiDoctor_Master.Models.DoctorMasterModel
+@{
+    ViewBag.Title = "DataQuality";
+}
+  <link href="../../Content/all.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
+<link href="../../Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/jquery.ui.timepicker.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.7.2.min.js"></script>
+<script src="../../Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
+<script src="../../Scripts/HD/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../Scripts/jsonpath-0.8.0.js"></script>
+<script src="../../Scripts/json2.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.ui.timepicker.js" type="text/javascript"></script>
+<script src="../../Scripts/autocomplete.js" type="text/javascript"></script>
+<script src="../../Scripts/modalpopup.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.autocomplete.js" type="text/javascript"></script>
+<link href="../../Content/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+<script src="../../Scripts/jquery.msgbox.min.js" type="text/javascript"></script>
+<link href="../../Content/DataTable/media/css/demo_table.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="../../Content/DataTable/media/js/jquery.dataTables.js"></script>
+<script src="../../Scripts/msg-box.js" type="text/javascript"></script>
+<script src="../../Scripts/popup.js" type="text/javascript" language="javascript"></script>
+<script src="~/Scripts/jquery.tools.min.js"></script>
+<script src="../../Scripts/jquery.cookie.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.placeholder.js"></script>
+<script src="~/Scripts/AjaxGlobalHandler.js"></script>
+<link href="~/Content/hidoctor.css" rel="stylesheet" />
+<link href="../../Areas/HiDoctor_Master/Content/DoctorMaster.css" type="text/css" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js" type="text/javascript"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style type="text/css">
+    .scroll {
+        height: 300px;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .simple_overlay {
+    }
+
+    #tblBulkDoctor_filter input {
+        border: 1px solid #ddd !important;
+    }
+
+    #tblBulkDoctor_info.dataTables_info {
+        display: none;
+    }
+
+    /*#tblBulkDoctor.dataTables_scrollBody {
+        overflow: hidden !important;
+    }*/
+    tr.odd {
+        background-color: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .odd {
+        background: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    tr.even {
+        background-color: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .even {
+        background: #FFF !important;
+        border-bottom: 1px dotted #DDD !important;
+        border-right: 1px dotted #DDD !important;
+        padding-left: 3px;
+    }
+
+    .DTFC_LeftWrapper {
+        height: 622px !important;
+    }
+
+    input[type=text], input[type=password] {
+        font-family: inherit !important;
+        font-size: 12px;
+        color: #424242;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        border-top-width: 0px !important;
+        border-bottom-width: 0px !important;
+        border-right-width: 0px !important;
+        border-left-width: 0px !important;
+        border: none !important;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+        border-right-color: transparent !important;
+        border-left-color: transparent !important;
+        outline: none !important;
+        -moz-border-radius: 0px !important;
+        -webkit-border-radius: 0px !important;
+        border-radius: 0px !important;
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        width: 92% !important;
+    }
+
+    .dataTables_wrapper {
+        position: inherit !important;
+    }
+
+    .placeholder {
+        color: #aaa !important;
+        font-style: italic !important;
+    }
+
+    .errorHighlight {
+        background-color: red;
+    }
+
+    .dvAjaxLoad {
+        width: 100%;
+        text-align: center;
+        margin-top: 25px;
+        display: block;
+        position: fixed;
+        top: 30%;
+        opacity: 4;
+        display: none;
+    }
+
+    .cls_Errorindication {
+        border: 1px solid black !important;
+        background-color: #efefef !important;
+    }
+
+
+    .cls-ErrorindicationRow td {
+        border: 1px solid black !important;
+        background-color: #F0C08D !important;
+    }
+
+        .cls-ErrorindicationRow td input {
+            border: 1px solid black !important;
+            background-color: #F0C08D !important;
+        }
+
+    .cls-dvLegend {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #tblBulkDoctor input.cls_Errorindication {
+        border: 1px solid yellow !important;
+        background-color: yellow !important;
+    }
+</style>
+<div style="width: 100%">
+    <div style="width: 100%; margin-top: 1%;">
+        <div style="width: 98%; float: left; border: 1px solid #EFEFEF;">
+            <div style="width: 100%; height: 45px;">
+                <div style="float: left; padding-left: 10px; padding-top: 6px; width: 100%;">
+                    <span></span><span style="font-size: 19px; font-weight: bold;" id="spnEntity"></span>
+                    <span id="spnRegionName" style="font-size: 19px; font-weight: bold;"></span>
+                    <span style="float: right; margin-right: 10px; color: green;">Please click the Auto Correct button to check the special characters.</span>
+                </div>
+
+            </div>
+            <div style="width: 100%; display: none; margin-left: 5%;" id="dvError"></div>
+            <div style="width: 99%; background-color: #f0f0f0; height: 28px; padding: 3px;" id="dvHeader">
+                <div style="float: left; width: 20%; font-size: 12px;">
+                    &nbsp;
+                </div>
+                <div style="width: 5%;">
+                </div>
+                <div style="float: left; width: 75%;">
+                    <div style="float: left; width: 75%;">
+                        <div style="float: left; margin-right: 5px; width: 15%; padding-top: 3px;">
+                            Bulk Field Edit
+                        </div>
+                        <div style="float: left; margin-right: 5px; width: 25%;">
+                            <select id="cboFields" style="width: 100%">
+                            </select>
+                        </div>
+                        <div style="float: left; margin-right: 5px; width: 25%;">
+                            <input type="text" id="txtField" placeholder="Field Value" />
+                        </div>
+                        <div style="float: left; width: 15%; height: 30px; background: url(../../Areas/HiDoctor_Master/Content/images/Update.png) no-repeat  !important;"
+                            onclick="fnUpdate();">
+                        </div>
+                        <div style="float: left; margin-right: 5px; width: 15%;">
+                            @*  
+                            <input type="text" id="txtSearch" placeholder="Search" />*@
+                        </div>
+                    </div>
+                    <div style="float: left; width: 15%;">
+                        <div id="dvAutoCorrect" style="float: left; width: 100%; height: 30px; cursor: pointer; background: url(../../Areas/HiDoctor_Master/Content/images/autoCorrect.png) no-repeat  !important;" onclick="fnCheckSpcialChar();">
+                        </div>
+                    </div>
+                    <div style="clear: both;">
+                    </div>
+                </div>
+
+            </div>
+            <div style="width: 100%; float: left; margin-left: 6%;">
+                <div style="width: 15%; float: right; display: none;" id="dvExcelTopSave">
+                    <input type="button" id="btnTopSave" value="Save" class="btn small primary" onclick="fnBulkCustomerSave();" />
+                </div>
+            </div>
+            <div style="width: 100% !important; overflow: auto; clear: both;">
+                <div id="dvBulkDoctors" style="width: 99%; float: left; border: 1px solid #f2f2f2; height: 550px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; overflow: auto;">
+                </div>
+            </div>
+            <div style="width: 100%; float: left; margin-left: 6%;">
+                <div style="width: 15%; float: right; display: none;" id="dvExcelBottomSave">
+                    <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnBulkCustomerSave();" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="simple_overlay" id="dvColumns" style="width: 300px !important; min-height: 450px !important; height: 450px !important; -webkit-box-shadow: 0 0 21px black !important;">
+        <div class="">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Fields</span> <a class="popUpTitle-close" style="background: url(../../Areas/HiDoctor_Master/Content/images/cross.png) no-repeat !important;" onclick="fnClosePopUp('dvColumns');"></a>
+            </div>
+            <br />
+            <div style="width: 100%; height: 325px; overflow: auto;">
+                <div id="dvErrorUserChange" style="padding-left: 20px; padding-right: 20px;">
+                </div>
+                <div style="width: 100%;">
+                    <div style="float: right; border: 1px solid #F2F2F2; margin-right: 20px; margin-bottom: 3px;">
+                        <input type="text" id="txtColumnSearch" placeholder="Search Field" style="background: #FFFFFF url(../Content/images/search.png) no-repeat 4px 4px !important; padding: 4px 4px 4px 22px !important; border: 1px solid #CCCCCC !important; width: 150px !important; height: 18px !important; float: right !important; margin-right: 14px !important;" />
+                    </div>
+                </div>
+                <div style="width: 100%;" id="dvField">
+                </div>
+            </div>
+            <div style="width: 100%; margin-left: 20px;">
+                <input type="button" value="Done" class="btn small primary" onclick="fnShowColums();" />
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Region_Code)
+    @Html.HiddenFor(model => model.Customer_Code)
+    @Html.HiddenFor(model => model.Entity)
+    @Html.HiddenFor(model => model.Table_Name)
+    @Html.HiddenFor(model => model.Value)
+    @Html.HiddenFor(model => model.ErrorValue)
+</div>
+<div id="dvAjaxLoad" class="dvAjaxLoad">
+    @* 
+    <img alt='' src="../../Content/images/process.gif" />
+    <img alt='' src="../../Content/images/loading.gif" />*@
+    <span style="font-size: 20px; font-style: italic; font-weight: bold;">Loading ...</span>
+</div>
+<div id="dvLoading" style="display: none">
+    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+</div>
+<script type="text/javascript" lang="ja">
+    var rowNumber = "0";
+    var entityColumns_g = "";
+    var entity_g = "";
+    var tableName_g = "";
+    var excelValues_g = "";
+    var errorValue_g = "";
+    var currentDate="";
+    var regionName="";
+    var userCode="";
+    var userPrivilege_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try
+        {
+            $("#spnEntity").html($("#Entity").val().toUpperCase() + " Bulk Upload");
+           entity_g= $("#Entity").val().toUpperCase();
+            entityColumns_g = @Html.Raw(Json.Encode(ViewBag.Entity))
+            if(entityColumns_g!=null && entityColumns_g!='')
+            {
+                entityColumns_g = eval('(' + entityColumns_g.Data + ')')
+            }
+            excelValues_g = $("#Value").val();
+            //if (excelValues_g != '') {
+            //    excelValues_g = eval('(' + excelValues_g + ')')
+            //}
+            errorValue_g = @Html.Raw(Json.Encode(ViewBag.Error_Value))
+            currentDate=@Html.Raw(Json.Encode(ViewBag.CurrentDate))
+            userCode=@Html.Raw(Json.Encode(ViewBag.userCode))
+            //  regionName = @Html.Raw(Json.Encode(ViewBag.sessionRegionCode));
+            // $("#spnRegionName").html(' ( Region Name : '+ regionName.split('^')[1]  +' ) ');
+            $("#Value").val('');
+            // fnGetDoctorCategory();
+            fnBindFields();
+            fnGetConfigvalues(entity_g);     
+            $.ajax({
+                url: '/DoctorMaster/GetRegionwiseUser/',
+                type: "POST",
+                data: "DateTime=" + new Date().getTime() + "&RegionCode=" + $("#Region_Code").val() + "",
+                success: function (result) {
+                    result = eval('('+result+')');
+                    if(result!=''){
+                        if(result.Tables[0].Rows[0]!=undefined){
+                            var selectedUserCode= result.Tables[0].Rows[0].User_Code;
+                            fnGetUserPrivileges(selectedUserCode);
+                        }
+                        else{
+                            fnGetUserPrivileges();
+                            //fnMsgAlert('info','Information','User details not found for the selected region');
+                            //fnGetUserPrivileges('');
+                        }
+                        // fnGetCustomerEntityDetails();
+                    }
+                    else{
+                        fnGetUserPrivileges('');
+                    }
+                },
+                error: function () {
+                }
+
+            });
+            if(errorValue_g == null) {
+                if (excelValues_g != '') {
+                    $("#dvAjaxLoad").show();
+                    $.ajax({
+                        url: '/DoctorMaster/GetDoctorCategory/',
+                        type: "POST",
+                        data: "DateTime=" + new Date().getTime() + "&selectedRegionCode="+$("#Region_Code").val() + "",
+                        success: function (jsData) {
+                            jsData = eval('(' + jsData + ')');
+                            if (jsData.Tables[0].Rows.length > 0) {
+                                var category = "[";
+                                for (var i = 0; i < jsData.Tables[0].Rows.length; i++) {
+                                    category += "{label:" + '"' + "" + jsData.Tables[0].Rows[i].Category_Name + "" + '",' 
+                                        + "value:" + '"' + "" + jsData.Tables[0].Rows[i].Category_Code + "" + '"' + "}";
+                                    if (i < jsData.Tables[0].Rows.length - 1) {
+                                        category += ",";
+                                    }
+                                }
+                                category += "];";
+                                categoryJson_g = eval(category);
+                                //autoComplete(categoryJson_g, "Category", "CategoryCode", "autoCategory");
+                            }
+                            if (jsData.Tables[1].Rows.length > 0) {
+                                var speciality = "[";
+                                for (var i = 0; i < jsData.Tables[1].Rows.length; i++) {
+                                    speciality += "{label:" + '"' + "" + jsData.Tables[1].Rows[i].Speciality_Name + "" + '",' 
+                                            + "value:" + '"' + "" + jsData.Tables[1].Rows[i].Speciality_Code + "" + '"' + "}";
+                                    if (i < jsData.Tables[1].Rows.length - 1) {
+                                        speciality += ",";
+                                    }
+                                }
+                                speciality += "];";
+                                specialityJson_g = eval(speciality);
+                                //autoComplete(specialityJson_g, "Speciality_Code", "SpecialityCode", "autoSpeciality");
+                            }
+                            if (jsData.Tables[2].Rows.length > 0) {
+                                var subRegion = "[";
+                                for (var i = 0; i < jsData.Tables[2].Rows.length; i++) {
+                                    subRegion += "{label:" + '"' + "" + jsData.Tables[2].Rows[i].Subregion_Name + "" + '",' 
+                                            + "value:" + '"' + "" + jsData.Tables[2].Rows[i].Subregion_Code + "" + '"' + "}";
+                                    if (i < jsData.Tables[2].Rows.length - 1) {
+                                        subRegion += ",";
+                                    }
+                                }
+                                subRegion += "];";
+                                subRegion_g = eval(subRegion);
+                                // autoComplete(subRegion_g, "Subregion_Code", "hdnSubRegion", "autoSubRegion");
+                            }
+                            if (jsData.Tables[3].Rows.length > 0) {
+                                var customerGroup = "[";
+                                for (var i = 0; i < jsData.Tables[3].Rows.length; i++) {
+                                    customerGroup += "{label:" + '"' + "" + jsData.Tables[3].Rows[i].Customer_Group_Name + "" + '",' 
+                                            + "value:" + '"' + "" + jsData.Tables[3].Rows[i].Customer_Group_Code + "" + '"' + "}";
+                                    if (i < jsData.Tables[3].Rows.length - 1) {
+                                        customerGroup += ",";
+                                    }
+                                }
+                                customerGroup += "];";
+                                customerGroup_g = eval(customerGroup);
+                                //  autoComplete(customerGroup_g, "txt_Customer_Group", "hdnCustomerGroup", "autoCustomerGroup");
+                            }
+                            if (jsData.Tables[4].Rows.length > 0) {
+                                var depot = "[";
+                                for (var i = 0; i < jsData.Tables[4].Rows.length; i++) {
+                                    depot += "{label:" + '"' + "" + jsData.Tables[4].Rows[i].Depot_Name + "" + '",' + "value:" 
+                                                + '"' + "" + jsData.Tables[4].Rows[i].Depot_Code + "" + '"' + "}";
+                                    if (i < jsData.Tables[4].Rows.length - 1) {
+                                        depot += ",";
+                                    }
+                                }
+                                depot += "];";
+                                depot_g = eval(depot);
+                            }
+                            fnGetBulkCustomerDetails();
+                            //  autoComplete(depot_g, "txt_Depot_Code", "hdnDepotCode", "autoDepot");
+                            
+                            $("#dvAjaxLoad").hide();
+                        },
+                        error: function () {
+                            $("#dvAjaxLoad").hide();
+                        }
+                    });
+                }
+            }
+        
+            else {
+                var ar = new Array();
+                ar = errorValue_g.split('~');
+                if (ar.length > 0) {
+                    var content = "";
+                    content += "<div style='width:100%;font-size:16px;color: #B12246;font-weight: bold;'>Please correct the following errors in excel sheet</div>";
+                    for (var i = 0; i < ar.length-1; i++) {
+                        content += "<div style='width:100%;font-size:13px;'>" + (i + 1) + " . " + ar[i] + "</div>";
+                    }
+                }
+                $("#dvError").css('display', '');
+                $("#dvError").html(content);
+                $("#dvHeader").css('display', 'none');
+            }
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy'
+            });
+
+            $("#dvColumns").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            //$(".filterable tr:has(td)").each(function () {
+            //    var id = $(this);
+            //    alert($("#" + id + " input").val());
+            //    var t = $("#" + id + " input").val().toLowerCase(); //all row text
+            //    $("<td class='indexColumn'></td>")
+            //     .hide().text(t).appendTo(this);
+            //}); //each tr
+            //$("#txtSearch").keyup(function () {
+            //    var s = $(this).val().toLowerCase().split(" ");
+            //    //show all rows.
+            //    $(".filterable tr:hidden").show();
+            //    $.each(s, function () {
+            //        $(".filterable tr:visible .indexColumn:not(:contains('"
+            //    + this + "'))").parent().hide();
+            //    }); //each
+            //}); //key up.
+            $("#dvExcel").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+
+            // Invoke the plugin
+            $('input, textarea').placeholder();
+            //var regionCode= @Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[0] ;
+            //var regionName=@Html.Raw(Json.Encode(ViewBag.sessionRegionCode)) .split('^')[1];
+            //$("#Region_Code").val(regionCode);
+            //$("#spnRegionName").html(' ( Region Name : '+ regionName +' )');
+
+          
+
+            $("#dvAjaxLoad").hide();
+        }
+        catch(err)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+    $.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
+        var aData = [];
+        $('td div div:eq(' + iColumn + ') input', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+            aData.push(this.value);
+        });
+        return aData;
+    }
+   
+</script>

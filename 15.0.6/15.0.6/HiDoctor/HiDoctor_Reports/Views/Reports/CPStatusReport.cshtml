@@ -1,0 +1,302 @@
+﻿@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+   .table-striped tbody  tr .highlight {
+        background-color:#00ABEC !important;
+        color:#fff !important;
+    }
+
+</style>
+<div id="divCPStatus">
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-lg-3">
+
+            <div style="clear: both"></div>
+            <div id="dvregionTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        
+        <div id="dvdata" class="col-lg-9" style="display:none">
+            <input type="hidden" id="hdnRegionCode" value="" />
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right:3px;" >Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left:5px">Hide Input</span>
+            </div>
+            <div style="clear:both"></div>
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="col-lg-12">
+                    Region Type Name as
+                    <select id="drplevelOne"></select>
+                    Wise
+                    <select id="drplevelTwo"></select>
+                <div style="float:right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('CP_STATUS_REPORT','PAGE_HEADER')" />
+                </div>
+
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="col-lg-1">
+                        Status  
+                    </div>
+                    <div class="col-lg-7" style="margin-left:.5%">
+                        <input type="checkbox" id="chkApplied" class="clsCheck" value="2" onclick="chkAllChecked()" /><label for="chkApplied">Applied</label>
+                        <br />
+                        <input type="checkbox" id="chkApproved" class="clsCheck" value="1" checked="checked" onclick="chkAllChecked()" /><label for="chkApproved">Approved</label>
+                        <br />
+                        <input type="checkbox" id="chkUnapproved" class="clsCheck" value="0" onclick="chkAllChecked()" /><label for="chkUnapproved">Unapproved</label>
+                        <br />
+                        <input type="checkbox" id="chkAll" value="0,1,2," onclick="checkAll();" /><label for="chkAll">All</label>
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+                <div class="col-lg-12">
+                <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7" >
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" /> <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" /> <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                <div style="clear: both"></div>    
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                <div class="col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-7">
+                    <input type="button" class="btn btn-primary" value="View" onclick="fnBindCPStatusReport()" />                    </div>
+                    <div style="clear: both"></div>  
+                </div>
+
+            </div>
+            <div style="clear: both"></div>
+        
+    
+    <div id="dvtitle">
+        <h2 id="h4title" style="margin-left: 2.5%;margin-top:15px;"></h2>
+    </div>
+    <div id="dvGrid" class="col-lg-12" style="padding-left:30px;padding-right:30px;">
+        
+    </div>
+</div>
+</div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/CPCompliance.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#divCPStatus').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+
+            fnBindRegionTree("dvregionTree") //To Bind The RegionTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#divCPStatus").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-lg-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnRegionTreePostInit() {
+        $("#divCPStatus").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree');
+        $("#dvregionTree").slideDown();
+     
+        $('#dvTree').addClass('col-lg-3');
+        $('#dvdata').removeClass('col-lg-12');
+        $('#dvdata').addClass('col-lg-9');
+        $('#dvGrid').removeClass('col-lg-12');
+        $('#dvGrid').addClass('col-lg-9');
+        $('#h4title').css('marginLeft', '1%');
+        $('#h4title').css('paddingBottom', '2%');
+        $('#h4title').css('borderBottomWidth', '1px');
+        $('#h4title').css('borderBottomColor', '#dadada');
+        $('#h4title').css('borderBottomStyle', 'solid');
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvregionTree").slideUp();
+      
+        $('#dvTree').removeClass('col-lg-3');
+        $('#dvdata').addClass('col-lg-12');
+        $('#dvdata').removeClass('col-lg-9');
+
+        $('#dvGrid').removeClass('col-lg-9')
+        $('#dvGrid').addClass('col-lg-12');
+        $('#h4title').css('marginLeft', '1.2%');
+
+        $('#h4title').css('paddingBottom', '2%');
+        $('#h4title').css('borderBottomWidth', '1px');
+        $('#h4title').css('borderBottomColor', '#dadada');
+        $('#h4title').css('borderBottomStyle', 'solid');
+
+        $('#dvtitle').css('marginTop', '2%');
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    function fnRegionTreeActivate(node) {
+        $('#hdnRegionCode').val(node.data.key);
+        $('#dvGrid').html('');
+        $('#h4title').html(node.data.title + "&nbsp;<img src='../Images/HelpIcon.png' onclick=\"fnHelp('CP_STATUS_REPORT','HEADER')\" />")
+        fnBindRegionTypes();
+        fnCloseTree();
+        $("#dvdata").show();
+    }
+
+    function fnBindRegionTypes() {
+        var nodeVal = $('#hdnRegionCode').val();
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Reports/Reports/GetChildRegionType',
+            data: "regionCode=" + nodeVal.split('_')[0],
+            success: function (response) {
+                var tableContent = "";
+                jsData = eval('(' + response + ')');
+                $('option', $("#drplevelOne")).remove();
+                $('option', $("#drplevelTwo")).remove();
+
+                if (jsData.Tables[0].Rows.length > 0) {
+                    for (var i = 0; i < jsData.Tables[0].Rows.length; i++) {
+
+                        $('#drplevelOne').append("<option value='" + jsData.Tables[0].Rows[i].Region_Type_Code + "'>" + jsData.Tables[0].Rows[i].Region_Type_Name + "</option>");
+                        $('#drplevelTwo').append("<option value='" + jsData.Tables[0].Rows[i].Region_Type_Code + "'>" + jsData.Tables[0].Rows[i].Region_Type_Name + "</option>");
+                    }
+                }
+            },
+            error: function () {
+                $("#divCPStatus").unblock();
+                fnMsgAlert('info', 'Report', 'Error.');
+                HideModalPopup("dvloading");
+            }
+        });
+    }
+
+    function checkAll() {
+        if ($('#chkAll').attr('checked') == 'checked') {
+            $('.clsCheck').attr('checked', 'checked')
+        }
+        else {
+            $('.clsCheck').attr('checked', false);
+        }
+
+    }
+    function chkAllChecked() {
+        if ($('.clsCheck:checked').length == 3) {
+            $('#chkAll').attr('checked', 'checked');
+        }
+    }
+
+    function fnValidation() {
+        var checkedAnyOne = false;
+        if ($('#chkApplied').attr('checked') == 'checked' || $('#chkApproved').attr('checked') == 'checked' || $('#chkUnapproved').attr('checked') == 'checked'
+            || $('#chkAll').attr('checked') == 'checked') {
+            checkedAnyOne = true;
+        }
+        return checkedAnyOne;
+        
+    }
+
+    function fnGetViewType() {
+        if ($('#optViewInScreen').attr('checked') == 'checked') {
+            return $('#optViewInScreen').val();
+        }
+        else {
+            return $('#optExportToExcel').val();
+        }
+    }
+
+
+    function fnBindCPStatusReport() {
+            
+        if (fnValidation()) {
+            var level1RegionTypeCode = $('#drplevelOne :selected').val()
+            var level2RegionTypeCode = $('#drplevelTwo :selected').val()
+            var status = '';
+            var viweType = fnGetViewType();
+            if ($('#chkAll').attr('checked') == 'checked') {
+                status = $('#chkAll').val();
+            }
+            else {
+                if ($('#chkApplied').attr('checked') == 'checked') {
+                    status += $('#chkApplied').val() + ","
+                }
+                if ($('#chkApproved').attr('checked') == 'checked') {
+                    status += $('#chkApproved').val() + ","
+                }
+                if ($('#chkUnapproved').attr('checked') == 'checked') {
+                    status += $('#chkUnapproved').val() + ","
+                }
+            }
+            $('#divCPStatus').block({
+                message: 'Retrieve data...',
+                css: { border: '1px solid #ddd' }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '../HiDoctor_Reports/ReportsLevelThree/GetCPStatusReport',
+                data: 'selected_Region_Code=' + $('#hdnRegionCode').val() + '&level1_RegionType=' + level1RegionTypeCode + '&level2_RegionType=' + level2RegionTypeCode +
+                        '&status=' + status + '&viewType=' + viweType,
+                success: function (response) {
+                    $('#dvGrid').html(response);
+                    $("#divCPStatus").unblock();
+                },
+                error: function (e) {
+                    $("#divCPStatus").unblock();
+                }
+            });
+        }
+        else {
+            fnMsgAlert("info", 'CP Status Report', 'Please select status.');
+            return false;
+        }
+    }
+
+    // Default function for toggling tree and inputs
+</script>
+

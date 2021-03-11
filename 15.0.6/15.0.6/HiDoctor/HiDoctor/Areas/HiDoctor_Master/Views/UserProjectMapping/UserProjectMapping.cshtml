@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "UserProjectMapping";
+    Layout = null;
+}
+
+<style>
+    .pgcont {
+        float: right;
+    }
+
+    #spnnxt {
+        background-image: url('../content/images/next.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+
+    #spnprev {
+        background-image: url('../content/images/prev.gif');
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 12px;
+        float: left;
+    }
+</style>
+
+
+<div>
+    <div>
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree & Inputs</span>
+    </div>
+    <div id="lbllable" class="col-lg-12">
+        <span id="usertree" style="font-size: 15px;font-weight: bold;color: gray; text-align: center; margin-left: 9%">UserTree</span>
+        <span id="Project" style="font-size: 15px;font-weight: bold; color: gray; text-align: center; margin-left: 24%">Project</span>
+    </div>
+    <div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+        <div id="dvTree" class="col-lg-3">
+            <div id="tree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9">
+            <div id="dvinput" class="col-lg-12">
+                <div class="col-lg-4">
+                    <div style="height: 140px" id="Projecttree">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="col-lg-12 form-group">
+                        <div class="col-lg-4">
+                            <label>Start Date</label>
+                        </div>
+                        <div class="col-lg-8 form-group">
+                            <input type="text" id="txtFromDate" class='datepicker input-large' />
+                        </div>
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <div class="col-lg-4">
+                            <label>End Date</label>
+                        </div>
+                        <div class="col-lg-8 form-group">
+                            <input type="text" id="txtToDate" class='datepicker input-large' />
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <button id="btnSave" type="button" class="btn btn-primary" onclick="fnSave()">Save</button>
+                        <button id="btnUpdate" style="display: none" type="button" class="btn btn-primary" onclick="fnUpdate()">Update</button>
+                    </div>
+
+                </div>
+            </div>
+            <br />
+            <div style="clear: both"></div>
+            <lable id="lblmessage" style="font-size: 15px; color: red; text-align: center"></lable>
+            <div id="dvTable" style="height: 500px" class="col-lg-12"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UserProjectMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+            fnBindUserTreeWithCheckBoxDoubleClick("tree");
+            fnProjectTree("Projecttree");
+            fnfillMappingGrid(1);
+            $.unblockUI();
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $("#divPageHeader").html('User Project Mapping');
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#ddlmode").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#dvTree').addClass('col-lg-4')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+        $('#dvinput').show();
+        $('#usertree').show();
+        $('#Project').show();
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#ddlmode").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#divleft').removeClass('col-lg-4')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+        $('#dvinput').hide();
+        $('#usertree').hide();
+        $('#Project').hide();
+    }
+    var selKeys = "", selText = "";
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+    //get project code
+    var selKeysproject = "", selTextproject = "";
+    function fnProjectTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeysproject = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnProjectTreePostInit() {
+
+    }
+
+    function fnUserTreePostInit() { }
+</script>

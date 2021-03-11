@@ -1,0 +1,126 @@
+﻿@model MVCModels.CycleMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+<div>
+    <div id="dvTree" style="width: 40%; float: left;" class="col-lg-6 table-responsive">
+        <div id="divRegionTree" style="float: left; height: 530px; width: 100%">
+        </div>
+    </div>
+    <div style="width: 60%; float: left" id="divMain" class="col-lg-6 table-responsive">
+        <div id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span>
+        </div>
+        <table id="tblinput">
+            <tr>
+                <td>
+                    <label id="lblmessage" class="input-large" style="color: blue;"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Cycle Name:</label>
+                </td>
+                <td>
+                    <input type="hidden" name="RegionCode" id="hdnregionCode" />
+                    <input type="hidden" name="RegionName" id="hdnRegionName" />
+                    <input type="hidden" name="CycleCode" id="hdnCyclecode" />
+                    <input type="text" id="txtcycleName" class="input-large" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Start Date:</label>
+                </td>
+                <td>
+                    <input type="text" id="txtStartDate" class='datepicker input-large' />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">End Date:</label>
+                </td>
+                <td>
+                    <input type="text" id="txtEndDate" class='datepicker input-large' />
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle">
+                    <label class="control-label">Description:</label>
+                </td>
+                <td>
+                    <textarea style="padding-right: 5px;" id="txtdescription" name="Description" class='input-large' rows="5" cols="20" maxlength="200"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" checked="checked" id="chkstatus" name="Is Approval Required" value="Is Approval Required" />Is Approval Required
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" name="Save" value="Save" id="btnsave" class="btn btn-primary" />
+                    <input type="hidden" name="Update" value="I" id="hdnMode" />
+                    <div style="clear: both"></div>
+                </td>
+                <td>
+                    <input type="button" name="Cancel" value="Cancel" id="btncancel" class="btn btn-primary" />
+                    <div style="clear: both"></div>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <div id="divExcel">
+            @Html.ActionLink("Download Cycle Master details", "PutCycleMasterIntoExcel",new {})
+        </div>
+        <br />
+        <div id="divcycleMaster"></div>
+    </div>
+    <div style="clear: both"></div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loader1.gif" />
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CycleMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            fnTreeWithChkBoxChildSelction("divRegionTree");        
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            fnGetCycleMaster();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    var selKeys = "";
+    function fnRegionTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        $('#hdnregionCode').val(lastSelectedNode);
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+
+    function fnRegionTreeActivate(node) {
+        $('#hdnregionCode').val(node.data.key);
+        fnGetNodeClickDetails();
+    }
+
+    function fnRegionTreePostInit() {
+    }
+</script>

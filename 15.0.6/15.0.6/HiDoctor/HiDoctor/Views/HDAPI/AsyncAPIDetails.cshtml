@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "AsyncAPIDetails";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/API.css" rel="stylesheet" />
+<style type="text/css">
+    .simple_overlay_white {
+        z-index: 10;
+    }
+
+    /*.api-div {
+        padding: 5px;
+    }
+
+    .api-header {
+        background: #F8F8F8;
+        padding: 5px;
+        color: #00ACEE;
+        font-weight: bold;
+        font-size: 15px;
+        display: inline-block;
+        margin-left: 5%;
+    }*/
+
+    .simple_overlay .close {
+        background-image: url(../Images/close.png);
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+        z-index: 999999;
+    }
+</style>
+<div id="dvRptMenu" class="col-xs-12" style="padding: 0px;">
+    <div class="col-xs-12" style="text-align: left; padding: 0px;">
+        <input type="button" style="background: #066ecd; color: #ffffff; padding: 1px 10px; border-radius: 2px; border: 1px solid #066ecd; cursor: pointer; margin-right: 10px;" value="Back" onclick="fnBack();">
+        <input type="button" style="background: #066ecd; color: #ffffff; padding: 1px 10px; border-radius: 2px; border: 1px solid #066ecd; cursor: pointer; margin-right: 10px;" value="Hide Search Box" id="Btnshowhide">
+    </div>
+    <div class="details col-xs-12" style="padding: 5px; background: #eee; margin: 5px 0px;">
+        <div class="col-xs-12" style="text-align: left; padding: 0px;">
+            <h3 id="dvSerName" class="api-header" style="margin: 5px 0px 15px 0px; text-align: center;"></h3>
+        </div>
+
+        <div id="dvElements" class="col-xs-12" style="margin: 3px 0px; text-align: center; padding: 0px;"></div>
+        <input type="hidden" id="hdnAPIId" />
+        <input type="hidden" id="hdnServiceId" />
+        <input type="hidden" id="hdnCurrentId" />
+        <input type="hidden" id="hdnReportType" value="1" />
+        <div class="col-xs-12">
+            <p style="text-align: center;">
+                <span style="margin-right: 10px; font-weight: bold;">Report View Type ? </span>
+                <span style="margin-right: 5px;">
+                    <input type="radio" name="rdReportView" value="EXCEL" checked="checked">Export To excel
+                </span>
+                <span style="margin-left: 5px;">
+                    <input type="radio" name="rdReportView" value="REPORT">View in-screen
+                    
+                </span>
+            </p>
+        </div>
+        <div class="col-xs-12" style="padding: 0px; margin: 3px 0px; text-align: center;">
+            <input type="button" class="input-button  btn btn-primary btn-sm" style="display: none;" id="btnExecService" value="Get Report" onclick="fnExecuteAPI()" />
+        </div>
+
+        <div id="dvload" style="display: none">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+        </div>
+
+        <div id="dvURL" class="div-alert" style="display: none"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="dvXLAPIQueuePanel" style="padding: 0px; display: none">
+        <h5 id="dvAsynMsg" style="display: none; margin: 4px 0px 0px 0px; background: #ddd; padding: 5px;"></h5>
+        <div class="col-xs-12 refreshBtn" style="padding: 0px; margin-top: 10px;">
+            <input type="button" style="background: #066ecd; color: #ffffff; padding: 1px 10px; border-radius: 2px; border: 1px solid #066ecd; cursor: pointer;" value="Refresh" onclick="fnRefreshReportQueueStatus(hdnAPIId.value);" /><br />
+        </div>
+        <div>
+            <div id="dvXLAPIQueue"></div>
+        </div>
+        <br />
+    </div>
+    <div id="dvReportGridPanel" style="overflow: auto;display: none;">
+    </div>
+
+    <div class="simple_overlay" id="dvAPIPOP" style="height: 500px;">
+        <div class="details">
+            <a class="close" onclick="$('#dvAPIPOP').overlay().close();"></a>
+            <div id="dvAutofill" style="overflow: auto; height: 474px;"></div>
+            <div class="ApipopBtn" style="text-align: right;">
+                <input type="button" class="input-button" style="margin-right: 3%; margin-top: 10px;" id="btnPopSelect" value="Select" onclick="fnSelect()" />
+                <input type="button" class="input-button" style="margin-right: 3%; margin-top: 10px;" id="btnPopcancel" value="Cancel" onclick="fnCancel()" />
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/HD/AsyncAPIServices.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+    <script type="text/javascript">
+        debugger;
+        $(document).ready(function () {
+            debugger;
+            $('#dvXLAPIQueuePanel').hide();
+            $('#dvReportGridPanel').show();
+            AjaxGlobalHandler.Initiate();
+            var apiId = @Html.Raw(Json.Encode(ViewBag.ApiId));
+        var serviceId = @Html.Raw(Json.Encode(ViewBag.ServiceId));
+        var serviceName =@Html.Raw(Json.Encode(ViewBag.ServiceName));
+        debugger;
+        fnGetDetailInfo(apiId,serviceId,serviceName);
+        fnRefreshReportQueueStatus(apiId);
+        $("#dvAPIPOP").overlay({
+            onBeforeLoad: function () {
+            },
+            onLoad: function () {
+            }
+        });
+        $("#dvAjaxLoad").hide();
+        // $("#dvXLAPIQueuePanel").show();
+
+        try {
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+        $('#Btnshowhide').click(function(){
+            var Btntxt = $('#Btnshowhide').val();
+            if (Btntxt == 'Hide Search Box') {
+                $('.details').hide();
+                $('#Btnshowhide').val('Show Search Box');
+            }else{
+                $('.details').show();
+                $('#Btnshowhide').val('Hide Search Box');
+            }
+        });
+
+        $("input:radio[name=rdReportView]").click(function() {           
+            var Selectvalue = $(this).val();
+            if (Selectvalue == "EXCEL") {               
+                $('#dvReportGridPanel').hide();
+                $('#dvXLAPIQueuePanel').show();
+                $("#hdnReportType").val(1);
+            }else{
+                $('#dvXLAPIQueuePanel').hide();
+                $('#dvReportGridPanel').show();
+                $("#hdnReportType").val(0);
+            }
+        });
+
+
+    });
+    </script>

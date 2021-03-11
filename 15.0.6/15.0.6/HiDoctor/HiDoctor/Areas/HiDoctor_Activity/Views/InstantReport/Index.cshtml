@@ -1,0 +1,403 @@
+﻿@{
+    ViewBag.Title = "DCR Instant Report";
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/InstantReport.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<style>
+    .dataTables_wrapper
+    {
+        min-height: 5px;
+        padding-bottom: 5px;
+    }
+    table.display thead th
+    {
+        line-height: 14px;
+        background: url(/Areas/HiDoctor_Activity/Content/images/Web/hd/thead.png) no-repeat;
+    }
+    #main
+    {
+        background: #EEEEEE;
+    }
+    
+    .box
+    {
+        box-shadow: 1px 1px 1px rgb(204, 204, 204);
+    }
+    table td, table, table th {
+        border:0px;
+    }
+    
+ .hyperlink {
+        color:blue;
+        text-decoration:underline;
+        cursor:pointer;
+    }
+ .accHeaderTable {
+        width: 99%;
+        margin-bottom: 5px;
+    }
+
+   .accDocDetail, .DocDetailProduct {
+        width: 98%;
+        border: 1px solid #666666 ;
+        margin: 5px;
+        border:none;
+    }
+
+        .accDocDetail thead, .DocDetailProduct thead {
+            background: #888888 !important;
+            color: #fff;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .accDocDetail td, .DocDetailProduct td {
+            border-right: 1px solid #666666 !important;
+            border-top: 1px solid #666666 !important;
+            border-left: 1px solid #666666 !important;
+            border-bottom: 1px solid #666666 !important;
+            padding: 3px;
+        }
+   #divAccDocDetail table th, #divDetailPrdDetail table th {
+            background: #888888 !important;
+            color: #fff;
+            padding: 3px;
+            text-align: left;
+    }
+ .accDocDetail thead tr th, .DocDetailProduct thead tr th {
+            background: #888888 !important;
+            color: #fff;
+            padding: 3px;
+            text-align: left;
+            border:0px !important;
+            height:16px;
+        }
+ </style>
+<div style="padding-bottom: 5px;">
+    <div id="divPageHeader">
+        <div id="dvLoading" style="display: none">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+        </div>
+        <h2>DCR Instant Report <span id="spndate"></span>
+        </h2>
+        <div style="width: 100%; margin: 0px auto; padding-left: 5px; padding-right: -5px;">
+            <div class="gridHeader">
+                <h3 style="width: 85%; margin: 0px auto">Header Details<span id="spnuserName" style="display:none"></span><span id="spniregionName" style="display:none"></span></h3>
+            </div>
+            <table class="data display dataTable box" style="width: 85%">
+                <thead>
+                    <tr>
+                        <th>
+                            Type of DCR
+                        </th>
+                        <th>
+                            CP Name
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Place Worked
+                        </th>
+                        <th>
+                            Start Time
+                        </th>
+                        <th>
+                            End Time
+                        </th>
+                        <th>
+                            DCR Status
+                        </th>
+                        <th>
+                            Approved /Unapprovedby
+                        </th>
+                        <th>
+                            Approved /Unapproved date:
+                        </th>
+                        <th>
+                            Unapproval reason
+                        </th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>
+                        <span id="spnTypeofDCR">Field Work</span>
+                    </td>
+                    <td>
+                        <span id="spnCpName">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnCategory">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnPlaceWorked">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnStartTime">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnEndTime">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnDCRStatus">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnApprovedby">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnApproveddate">N/A</span>
+                    </td>
+                    <td>
+                        <span id="spnUnapprovalreason">N/A</span>
+                        <span id="spndcrEnteredDate" style="display:none;"></span>
+                        <span id="spniEmpName" style="display:none"></span>
+                    </td>
+                </tr>
+            </table>
+            <div class="gridHeader" id="dvsfcdetails">
+                <h3 style="width: 85%; margin: 0px auto">
+                    SFC Details</h3>
+            </div>
+            <table id="tblSFCDetails" class="data display dataTable box" style="width: 85%">
+                <thead>
+                    <tr>
+                        <th>
+                            Place From
+                        </th>
+                        <th>
+                            Place To
+                        </th>
+                        <th>
+                            Distance
+                        </th>
+                        <th>
+                            Travel Mode
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span id="spnPlacefrom">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnPlaceto">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnDistance">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnTravelMode">N/A</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="gridHeader" id="dvAcc">
+                <h3 style="width: 85%; margin: 0px auto">
+                    Accompanist Details</h3>
+            </div>
+            <table id="tblAcc" class="data display dataTable box" style="width: 85%; border: 1px solid #6082AD;">
+                <thead>
+                    <tr>
+                        <th>
+                            Accompanist Name
+                        </th>
+                        <th>
+                            Start Time
+                        </th>
+                        <th>
+                            End Time
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="accRow1">
+                        <td>
+                            <span id="spnFirstAccPersonName" class="hyperlink" onclick="fnShowAccDoctor(this)">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnFirstAccStartTime">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnFirstAccEndTime">N/A</span>
+                        </td>
+                    </tr>
+                    <tr id="accRow2">
+                        <td>
+                            <span id="spnSecAccPersonName" class="hyperlink" onclick="fnShowAccDoctor(this)">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnSecAccStartTime">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnSecAccEndTime">N/A</span>
+                        </td>
+                    </tr>
+                    <tr id="accRow3">
+                        <td>
+                            <span id="spnThirdAccPersonName" class="hyperlink" onclick="fnShowAccDoctor(this)">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnThirdAccStartTime">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnThirdAccEndTime">N/A</span>
+                        </td>
+                    </tr>
+                    <tr id="accRow4">
+                        <td>
+                            <span id="spnFourthAccPersonName" class="hyperlink" onclick="fnShowAccDoctor(this)">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnFourthAccStartTime">N/A</span>
+                        </td>
+                        <td>
+                            <span id="spnFourthAccEndTime">N/A</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="dvhopplaces" class="divcenter">
+            </div>
+            <div id="dvOwnDoctors" class="divcenter">
+            </div>
+            <div id="dvAccDoctors" class="divcenter">
+            </div>
+            <div id="dvProducts" class="divcenter">
+            </div>
+            <div id="dvDoctorAcc" class="divcenter">
+            </div>
+            <div id="dvDetailedProduct" class="divcenter">
+            </div>
+            <div id="dvChemists" class="divcenter">
+            </div>
+            <div id="dvRCPA" class="divcenter">
+            </div>
+            <div id="dvStockiest" class="divcenter">
+            </div>
+            <div id="dvAttendance" class="divcenter" style='display: none'>
+            </div>
+            <div id="dvExpense" class="divcenter">
+            </div>
+        </div>
+            <div class="simple_overlay" id="dvOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Accompanist Doctor Details</span>
+            </div>
+
+            <div id="divAccDocDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td style="font-weight:bold;">User Name</td>
+                        <td><span id="spnpuserName"></span></td>
+
+                        <td style="font-weight:bold;">Employee Name</td>
+                        <td><span id="spnpEmpName"></span></td>
+
+                        <td style="font-weight:bold;">Region Name</td>
+                        <td><span id="spnpRegionName"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">DCR Date</td>
+                        <td><span id="spnDCRDate"></span></td>
+
+                        <td style="font-weight:bold;">DCR Type</td>
+                        <td><span id="spnDCRType"></span></td>
+
+                        <td style="font-weight:bold;">DCR Status</td>
+                        <td><span id="spnpDCRStatus"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Work Place</td>
+                        <td><span id="spnWorkPlace"></span></td>
+
+                        <td style="font-weight:bold;">Travelled Places</td>
+                        <td id="tdTravlledPlaces"></td>
+
+                        <td style="font-weight:bold;">Entered Date</td>
+                        <td><span id="spnDCRentedDate"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="simple_overlay" id="dvDetailedProductOverLay">
+            <div class="popUpTitle" style="height: 45px;">
+                <span>Detailed Products</span>
+            </div>
+            <div id="divDetailPrdDetail" style="height: 500px; overflow: scroll">
+                <table class="accHeaderTable">
+                    <tr>
+                        <td style="font-weight:bold;">User Name</td>
+                        <td><span id="spnduserName"></span></td>
+                        <td style="font-weight:bold;">Employee Name</td>
+                        <td><span id="spndEmpName"></span></td>
+                        <td style="font-weight:bold;">Region Name</td>
+                        <td><span id="spndRegionName"></span></td>
+                    </tr>
+                    <br />
+                    <tr>
+                        <td style="font-weight:bold;">Doctor Name</td>
+                        <td><span id="spndDocName"></span></td>
+                        <td style="font-weight:bold;">MDL No</td>
+                        <td><span id="spndMDL"></span></td>
+                        <td style="font-weight:bold;">Specilaity</td>
+                        <td><span id="spndSpeciality"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Category</td>
+                        <td><span id="spndCategory"></span></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div style="clear: both">
+    </div>
+    <div id="dvUnapprove" style="text-align: center; display: none">
+        <center>
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <b>Unapprove Reason</b>
+                    </td>
+                    <td>
+                        <textarea id="txtUnapprovalReason" style="height: 35px;" runat="server"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input type="button" value="Unapprove this DCR & Resubmit" onclick="fnsetDCRUnapprove()" />
+            <br />
+        </center>
+    </div>   
+</div>
+<div style="clear: both">
+</div>
+<script type="text/javascript">
+    var dcrActualDate = "";
+    var flag_g = "";
+    var dcrdejson_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        ShowModalPopup('dvLoading');
+        dcrActualDate =  @Html.Raw(Json.Encode(ViewBag.DCRActualDate));
+        flag_g =  @Html.Raw(Json.Encode(ViewBag.Flag));
+        $('#spndate').html(dcrActualDate.split('-')[2] + '-' + dcrActualDate.split('-')[1] + '-' + dcrActualDate.split('-')[0]);
+        $.ajax({
+            type: 'POST',
+            data: 'dcrActualDate=' + dcrActualDate + "&flag=" + flag_g,
+            url: '../InstantReport/GetUserInstantReport',
+            success: function (response) {
+                // we have the response
+                BindDCRDeatils(eval('(' + response + ')'));
+            },
+            error: function (e) {
+                alert("Eror" + e);
+            }
+        });
+    });   
+    $("#dvOverLay").overlay().load();
+    $("#dvDetailedProductOverLay").overlay().load(); 
+</script>

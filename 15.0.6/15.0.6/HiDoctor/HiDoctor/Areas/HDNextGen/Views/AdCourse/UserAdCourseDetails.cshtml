@@ -1,0 +1,484 @@
+﻿@{
+    ViewBag.Title = "UserAdCourseDetails";
+    Layout = null;
+}
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<style>
+    .item_div {
+        margin: 0px;
+        padding-top: 0 !important;
+    }
+
+    .pushmenu div, .pushmenu li, .pushmenu p {
+        font-family: Arial,Helvetica,sans-serif !important;
+        font-size: 16px;
+    }
+
+    .materials div, .materials p {
+        font-family: tahoma, fantasy, arial, 'times new roman' !important;
+    }
+
+    .materials .title div {
+        font-size: 16px !important;
+    }
+
+    .materials .title p {
+        font-size: 12px !important;
+    }
+
+    .action-status div {
+        font-size: 13px !important;
+    }
+
+    .action-buttons a {
+        font-family: tahoma, fantasy, arial, times new roman !important;
+        font-size: 16px !important;
+    }
+
+    .wrapper .container {
+        width: 100% !important;
+    }
+
+    .container .main {
+        height: 400px;
+        overflow: auto;
+    }
+</style>
+<link href="../../Areas/HDNextGen/Content/bxslider/jquery.bxslider.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Content/bxslider/jquery.bxslider.min.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<link href="../../Areas/HDNextGen/Content/AdCourse/UserAdCourseDetails.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/UserAdCourseDetails.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/player.css?v=@HiDoctor.BuildVersion.KangleVersion" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CoursePlayer.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ArrowPopup.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/ADCourseServices.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+<div class="wrapper pushmenu-push">
+    <div class="pushmenu pushmenu-left">
+        <div id="li-dvUserName">Loading Details...</div>
+        <div class="upper-menu-sec">
+            <ul>
+                <li class="active" id="tabCategories">Categories</li>
+                <li id="tabTags">Tags</li>
+            </ul>
+        </div>
+        <div id="categories" style="display: block;" class="bottom-menu-sec">
+            <ul></ul>
+        </div>
+        <div id="tags" style="display: none;" class="bottom-menu-sec">
+            <ul></ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main">
+            <div class="content">
+                <h3>Loading...</h3>
+                <div class="materials" id="courseDetailsList">
+                    @*<div class="material">
+                        <div class="thumb">
+                            <img src="thumb1.jpg" />
+                        </div>
+                        <div class="details">
+                            <div class="title">Hello</div>
+                            <p>All Snapdragons feature one or more DSPs called Hexagon, short QDSP5 or QDSP6 in the modem and multimedia parts. In the Snapdragon 200–800 series, one of the multimedia Hexagons is programmable by the users through the Hexagon SDK.[7] The multimedia Hexagons are mostly used for audio encoding/decoding, the newer Snapdragons have a hardware block called Venus for video encoding/decoding.</p>
+                            <div class="info">
+                                <div class="left-info">Passage Percentage: 100%</div>
+                                <div class="right-info">Number of Assets: 3 assets</div>
+                            </div>
+                            <div class="info">
+                                <div class="left-info">Number of attempts remaining: 1 attempt(s)</div>
+                                <div class="right-info">Valid till 31/12/2014</div>
+                            </div>
+                            <div class="actions">
+                                <div class="action-status">Status: completed</div>
+                                <div class="action-buttons">
+                                    <a href="#" class="a-btn">Report</a>
+                                    <a href="#" class="a-btn">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="material">
+                        <div class="thumb">
+                            <img src="thumb2.jpg" />
+                        </div>
+                        <div class="details">
+                            <div class="title">Hello</div>
+                            <p>All Snapdragons feature one or more DSPs called Hexagon, short QDSP5 or QDSP6 in the modem and multimedia parts. In the Snapdragon 200–800 series, one of the multimedia Hexagons is programmable by the users through the Hexagon SDK.[7] The multimedia Hexagons are mostly used for audio encoding/decoding, the newer Snapdragons have a hardware block called Venus for video encoding/decoding.</p>
+                            <div class="info">
+                                <div class="left-info">Passage Percentage: 100%</div>
+                                <div class="right-info">Number of Assets: 3 assets</div>
+                            </div>
+                            <div class="info">
+                                <div class="left-info">Number of attempts remaining: 1 attempt(s)</div>
+                                <div class="right-info">Valid till 31/12/2014</div>
+                            </div>
+                            <div class="actions">
+                                <div class="action-status">Status: completed</div>
+                                <div class="action-buttons">
+                                    <a href="#" class="a-btn">Report</a>
+                                    <a href="#" class="a-btn a-btn-dim">Exam</a>
+                                    <a href="#" class="a-btn">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    *@
+                </div>
+            </div>
+            <!-- END END content -->
+        </div>
+        <!-- END main -->
+    </div>
+    <!-- END container -->
+</div>
+
+@*<script src="~/Scripts/RxBook/rxBookInit.js?v=@HiDoctor.BuildVersion.KangleVersion"></script>
+*@
+
+<script>
+    var userName_g = "";
+    var profilePic_g = "";
+    var subDomainName = "";
+    var empName = "";
+    var userId = "";
+    $('#dvAjaxLoad').hide();
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide()
+        //$("#help-btn").bind("click", function (e) {
+        //    assetHelp.showHelpText();
+        //    return false;
+        //});
+        AjaxGlobalHandler.Initiate();
+
+
+        ADCourseDetails.defaults.subdomainName = HDNG_gSubdomain;
+        ADCourseDetails.defaults.companyId = HDNG_gCompanyId;
+        ADCourseDetails.defaults.userId = HDNG_gUserId;
+        ADCourseDetails.defaults.empName = HDNG_gEmpName;
+        // rxBookInit.defaults.userId = userId;
+
+        // var userInfo = data[0];
+        userCourseDetails.init();
+        //setTimeout(function () { userCourseDetails.init(); }, 10);
+
+        // userName_g = userInfo.Employee_Name.toProperCase();
+        if (profilePic_g != null && profilePic_g != '')
+            //profilePic_g = userInfo.Profile_Photo_BLOB_URL;
+            setLeftSecUserName('li-dvUserName', HDNG_gEmpName, profilePic_g);
+        insertUserTrack(PAGE_NAMES.advancedCourse, function (d) { }, function (e) { });
+
+        var helpFlagConst = "userAdCourseHelp";
+        if (window.localStorage.getItem(helpFlagConst) == null) {
+            // assetHelp.showHelpText();
+            window.localStorage.setItem(helpFlagConst, "true")
+        }
+        //$("#home-btn").unbind('click').bind("click", function (e) {
+        //    window.location.href = "/Home/Homepage";
+        //    return true;
+        //});
+
+        //rxBookInit.enableCurUserInfo(function (data) {
+        //    if (data != null && data.length > 0) {
+        //        var userInfo = data[0];
+        //        userCourseDetails.init();
+        //        userName_g = userInfo.Employee_Name.toProperCase();
+        //        if (userInfo.Profile_Photo_BLOB_URL != null && userInfo.Profile_Photo_BLOB_URL != '')
+        //            profilePic_g = userInfo.Profile_Photo_BLOB_URL;
+        //        setLeftSecUserName('li-dvUserName', userName_g, profilePic_g);
+        //        insertUserTrack(PAGE_NAMES.advancedCourse, function (d) { }, function (e) { });
+        //    }
+        //    var helpFlagConst = "userAdCourseHelp";
+        //    if (window.localStorage.getItem(helpFlagConst) == null) {
+        //        assetHelp.showHelpText();
+        //        window.localStorage.setItem(helpFlagConst, "true")
+        //    }
+        //    $("#home-btn").unbind('click').bind("click", function (e) {
+        //        window.location.href = "/Home/Homepage";
+        //        return true;
+        //    });
+        //}, false);
+    });
+
+    //var assetHelp = {};
+    //assetHelp.showHelpText = function () {
+    //    var imageUrl = "/Content/help/helper-adcourse-1024.png";
+    //    var helps = [{
+    //        message: "Tests categorized for testing your knowledge.",
+    //        title: null
+    //    }, {
+    //        message: "Your courses.",
+    //        title: null
+    //    }, {
+    //        message: "Read Course assets and take your tests.",
+    //        title: null
+    //    },
+    //    // {
+    //    //    message: "Take your tests, get certified.",
+    //    //    title: null
+    //    //}, 
+    //    {
+    //        message: "Filter your assets.",
+    //        title: null
+    //    }, {
+    //        message: "Your information hub.",
+    //        title: null
+    //    }, {
+    //        message: "Get this help, any time.",
+    //        title: null
+    //    }];
+    //    var isLandscape = false;
+    //    if (window.innerHeight > window.innerWidth) {
+    //        isLandscape = false;
+    //    } else {
+    //        isLandscape = true;
+    //    }
+    //    if ($(window).width() >= 1006) {
+    //        imageUrl = "/Content/help/helper-adcourse-1024.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "705px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "350px";
+    //        helps[1].right = "370px";
+    //        helps[1].downArrow = false;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "270px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = false;
+    //        helps[2].arrowLeft = "215px";
+
+    //        //helps[3].top = "260px";
+    //        //helps[3].right = "1px";
+    //        //helps[3].downArrow = false;
+    //        //helps[3].arrowLeft = "125px";
+
+    //        helps[3].top = "90px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "50px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "225px";
+
+    //        helps[5].top = "50px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "150px";
+    //    } else if ($(window).width() >= 768 && $(window).width() < 1024) {
+    //        imageUrl = "/Content/help/helper-adcourse-768.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "465px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "350px";
+    //        helps[1].right = "370px";
+    //        helps[1].downArrow = false;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "270px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = false;
+    //        helps[2].arrowLeft = "255px";
+
+    //        //helps[3].top = "270px";
+    //        //helps[3].right = "20px";
+    //        //helps[3].downArrow = false;
+    //        //helps[3].arrowLeft = "185px";
+
+    //        helps[3].top = "90px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "60px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "233px";
+
+    //        helps[5].top = "60px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "165px";
+    //    } else if ($(window).width() >= 640 && $(window).width() < 768) {
+    //        imageUrl = "/Content/help/helper-adcourse-640.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "340px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "270px";
+    //        helps[1].right = "300px";
+    //        helps[1].downArrow = false;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "125px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = true;
+    //        helps[2].arrowLeft = "255px";
+
+    //        //helps[3].top = "260px";
+    //        //helps[3].right = "20px";
+    //        //helps[3].downArrow = false;
+    //        //helps[3].arrowLeft = "185px";
+
+    //        helps[3].top = "90px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "50px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "225px";
+
+    //        helps[5].top = "50px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "150px";
+    //    } /*else if ($(window).width() >= 480 && $(window).width() < 640) {
+    //    imageUrl = "/Content/help/helper-480.png";
+    //    helps[1].right = "5px";
+    //    helps[1].arrowLeft = "110px";
+    //    helps[2].right = "140px";
+    //    helps[2].downArrow = true;
+    //    helps[2].top = "60px";
+    //    helps[3].right = "3px";
+    //    helps[4].right = "10px";
+    //    }*/ else if (($(window).width() == 600 || $(window).width() == 601 || $(window).width() == 960) && $(window).height() <= 1000) {
+    //        imageUrl = "/Content/help/helper-adcourse-600.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "300px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "270px";
+    //        helps[1].right = "300px";
+    //        helps[1].downArrow = false;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "290px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = false;
+    //        helps[2].arrowLeft = "185px";
+
+    //        //helps[3].top = "290px";
+    //        //helps[3].right = "20px";
+    //        //helps[3].downArrow = false;
+    //        //helps[3].arrowLeft = "255px";
+
+    //        helps[3].top = "90px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "60px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "233px";
+
+    //        helps[5].top = "60px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "165px";
+    //    } else if (isLandscape) {
+    //        imageUrl = "/Content/help/helper-adcourse-480.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "170px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "55px";
+    //        helps[1].right = "155px";
+    //        helps[1].downArrow = true;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "150px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = true;
+    //        helps[2].arrowLeft = "250px";
+
+    //        //helps[3].top = "125px";
+    //        //helps[3].right = "20px";
+    //        //helps[3].downArrow = true;
+    //        //helps[3].arrowLeft = "255px";
+
+    //        helps[3].top = "90px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "50px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "225px";
+
+    //        helps[5].top = "50px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "150px";
+    //    } else {
+    //        imageUrl = "/Content/help/helper-adcourse-320.png";
+    //        helps[0].top = "95px";
+    //        helps[0].right = "20px";
+    //        helps[0].downArrow = false;
+    //        helps[0].arrowLeft = "1px";
+
+    //        helps[1].top = "55px";
+    //        helps[1].right = "10px";
+    //        helps[1].downArrow = true;
+    //        helps[1].arrowLeft = "15px";
+
+    //        helps[2].top = "265px";
+    //        helps[2].right = "20px";
+    //        helps[2].downArrow = true;
+    //        helps[2].arrowLeft = "255px";
+
+    //        //helps[3].top = "240px";
+    //        //helps[3].right = "20px";
+    //        //helps[3].downArrow = true;
+    //        //helps[3].arrowLeft = "255px";
+
+    //        helps[3].top = "95px";
+    //        helps[3].right = "5px";
+    //        helps[3].downArrow = false;
+    //        helps[3].arrowLeft = "240px";
+
+    //        helps[4].top = "60px";
+    //        helps[4].right = "5px";
+    //        helps[4].downArrow = false;
+    //        helps[4].arrowLeft = "233px";
+
+    //        helps[5].top = "60px";
+    //        helps[5].right = "5px";
+    //        helps[5].downArrow = false;
+    //        helps[5].arrowLeft = "165px";
+    //    }
+    //    var $img = $("<img>");
+    //    $img.load(function () {
+    //        webHelper.loadHelpPopup(imageUrl, helps, assetHelp.beforeShow, assetHelp.afterClose);
+    //    }).attr("src", imageUrl);
+    //};
+    //assetHelp.afterClose = function () {
+    //    $("#headersection").show();
+    //    //$(".helper-wrapper-main").remove();
+    //    //$('body').removeClass("helperlowerheight").css("overflow", "auto");
+    //};
+    //assetHelp.beforeShow = function () {
+    //    $("#headersection").hide();
+    //    //$('body').addClass("helperlowerheight").css("overflow", "hidden");
+    //};
+</script>
+

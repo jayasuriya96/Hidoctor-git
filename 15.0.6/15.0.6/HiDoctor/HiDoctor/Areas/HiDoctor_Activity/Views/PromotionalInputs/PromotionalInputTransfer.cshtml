@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "PromotionalInputTransfer";
+    Layout = null;
+}
+<style>
+      .e-grid .e-groupdroparea 
+      {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+      }
+
+    .e-headercelldiv 
+    {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+    .mtz-monthpicker.mtz-monthpicker-year
+    {
+        color:black;
+    }
+    @@media all and (max-width: 920px) and (min-width: 360px) 
+    {
+        #btncreate
+        {
+            margin-top: 74px !important;   
+            margin-right: 30%;
+            margin-left:47% !important;
+        }
+        #users
+        {
+            margin-left:-1% !important;
+        }
+        #btn
+        {
+            margin-top:40px !important;
+        }
+        #frmd
+        {
+            margin-left:0px !important;
+        }
+        #destination
+        {
+            margin-left:0px !important;
+        }
+
+    }
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="~/Content/Bootstrap/font-awesome.min.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+@*<div class="col-xs-12">
+    <input type="button" class="btn btn-primary" value="Create Request" style="margin-top: 26px;margin-left: 17%;" onclick="fnshowusers();" />
+</div>*@
+<div class="col-sm-12" style="padding: 14px;margin-top: 24px;" id="dateInputs">
+    <div class="col-sm-8" style="padding:0px;">
+        <div class="col-sm-5" style="margin-bottom:5px;padding:0px;margin-left:129px;" id="frmd">
+            <label class="col-sm-5" style="text-align:left;margin-top:5px;">From Date </label>
+            <div class="col-sm-7" style="padding:0px;">
+                <input type="text" id="txtFrom" class="form-control" style="height:30px;">
+            </div>
+        </div>
+        <div class="col-sm-5" style="margin-bottom:5px;padding:0px;">
+            <label class="col-sm-5" style="text-align:left;margin-top:5px;">To Date </label>
+            <div class="col-sm-7" style="padding:0px;">
+                <input type="text" id="txtTo" class="form-control" style="height:30px;">
+            </div>
+        </div>
+        <div class="col-sm-2" id="btncreate" style="margin-top:20px;margin-left:91%;">
+            <input type="button" class="btn btn-primary" value="Create Request" style="margin-top: -102px;margin-left: 90%;" onclick="fnshowusers();" />
+        </div>
+        </div>
+</div>
+<div class="col-xs-8" id="users" style="display:none;margin-left:21%;">
+    <div class="col-xs-12 col-sm-3" id="source">
+        <label>Transfer from</label>
+        <input type="text" id="sourceuser"/>
+    </div>
+    <div class="col-xs-12 col-sm-3" id="destination" style="margin-left:85px;">
+        <label>Transfer to</label><input type="text" id="destinationuser" />
+        
+    </div>
+</div>
+<div class="col-xs-12" id="btn" style="display:none;">
+    <input type="button" class="btn btn-primary" value="GO" style="margin-top: -51px;margin-left: 74%;" onclick="fnshowproducts();"/>
+</div>
+<div class="col-xs-12" id="tabs" style="display:none;">
+    <ul class="nav nav-tabs">
+        <li><a href="#" onclick="fnshowproducts();" style="font-size:14px;font-weight:bold;">Transfer Data</a></li>
+        <li><a href="#" onclick="PromotionalProductApproval();" style="font-size:14px;font-weight:bold;">Transfered Data History</a></li>
+    </ul>
+  
+</div>       
+<div class="col-xs-12" id="productdata" style="display:none;">
+
+</div>
+@*<div class="col-xs-12" id="rejectdata" style="display:none;">
+
+</div>*@
+<div class="col-xs-12" id="ProductApproval" style="margin-top:30px;display:none;">
+
+</div>
+<div class="col-xs-12" id="ViewUserDetails" style="display:none;"></div>
+<div class="col-xs-12"  id="submit" style="display:none;">
+    <input type="button" class="btn btn-primary" value="Submit" onclick="fninsertuserproduct();" style="margin-top: 15px;margin-left: 46%;" />
+</div>
+
+<div class="col-xs-12" id="resubmit" style="display:none;">
+    <div class="col-xs-6">
+        <input type="button" class="btn btn-primary" value="Resubmit" onclick="fnresubmituserproduct();" style="margin-left: 14%;" />
+    </div>
+    <div class="col-xs-6">
+        <input type="button" class="btn btn-primary" value="Cancel Transaction" onclick="fncanceluserrequest();" style="margin-bottom: 18px;margin-left: 83%;" />
+    </div>
+    </div>
+<div id="myModal" class="modal fade" role="dialog" style="display:none;overflow:hidden;height:405px;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Remarks History</h4>
+            </div>
+            <div class="modal-body" id="Remarks" style="width:100%;height:500px;overflow: auto;">
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Remarks History</h4>
+            </div>
+            <div class="modal-body" id="Remarks">
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/PromotionalInputTransfer.js"></script>
+<script>
+    $(document).ready(function ()
+    {
+        debugger;
+        $('#dvAjaxLoad').hide();
+        //$('#txtFrom').monthpicker();
+        //$('#txtTo').monthpicker();
+      
+        fnmonthPickerDisableFutureMonths('txtFrom');
+        fnmonthPickerDisableFutureMonths('txtTo');
+        var date = new Date();
+        var newDate3 = new Date(date.getFullYear(), date.getMonth() - 1);
+        var monthName = fnGetMonth(date.getMonth() + 1);
+        var currentmonth = monthName + '-' + date.getFullYear();
+        $('#txtTo').val(currentmonth)
+
+
+        var d = new Date(date.getFullYear(), date.getMonth() - 6);
+        var monthName = fnGetMonth(d.getMonth() + 1);
+        var currentmonth = monthName + '-' + d.getFullYear();
+        $('#txtFrom').val(currentmonth);
+        startDate = $('#txtFrom').val().split('-')[1] + "-" + fnGetMonthNumber($('#txtFrom').val().split('-')[0]) + "-" + "01";
+        var date = new Date();
+        var newDate3 = new Date(date.getFullYear(), date.getMonth() - 1);
+        var monthName = fnGetMonth(date.getMonth() + 1);
+        var currentmonth = monthName + '-' + date.getFullYear();
+
+        function fnmonthPickerDisableFutureMonths(id) {
+            var months = new Array();
+            var CurrentMonth = (new Date().getMonth() + 1) + 1;
+            for (var i = CurrentMonth; i <= 12; i++) {
+                months.push(i);
+            }
+            $('#' + id).monthpicker(
+                {
+                     startYear: 1900, 
+                    //finalYear: new Date().getFullYear(), pattern: 'mmm-yyyy'
+                }
+            );
+            for (var i = 0; i < $('#' + id).length; i++) {
+                debugger;
+                $($('#' + id)[i]).monthpicker("disableMonths", months);
+                $($('#' + id)[i]).monthpicker().bind('monthpicker-change-year', function (e, year) {
+                    var item = $(e.currentTarget);
+                    if (parseInt(year) === new Date().getFullYear()) {
+                        $(item).monthpicker('disableMonths', months);
+                    } else {
+                        $(item).monthpicker('disableMonths', []);
+                    }
+                });
+            }
+        }
+        
+
+       
+        function fnGetMonthNumber(monthName) {
+            debugger;
+            if (monthName.toUpperCase() == "JAN") {
+                return "1";
+            }
+            if (monthName.toUpperCase() == "FEB") {
+                return "2";
+            }
+            if (monthName.toUpperCase() == "MAR") {
+                return "3";
+            }
+            if (monthName.toUpperCase() == "APR") {
+                return "4";
+            }
+            if (monthName.toUpperCase() == "MAY") {
+                return "5";
+            }
+            if (monthName.toUpperCase() == "JUN") {
+                return "6";
+            }
+            if (monthName.toUpperCase() == "JUL") {
+                return "7";
+            }
+            if (monthName.toUpperCase() == "AUG") {
+                return "8";
+            }
+            if (monthName.toUpperCase() == "SEP") {
+                return "9";
+            }
+            if (monthName.toUpperCase() == "OCT") {
+                return "10";
+            }
+            if (monthName.toUpperCase() == "NOV") {
+                return "11";
+            }
+            if (monthName.toUpperCase() == "DEC") {
+                return "12";
+            }
+        }
+        function fnGetMonthName(monthNumber) {
+            if (monthNumber == "1" || monthNumber == "01") {
+                return "JANUARY";
+            }
+            if (monthNumber == "2" || monthNumber == "02") {
+                return "FEBRUARY";
+            }
+            if (monthNumber == "3" || monthNumber == "03") {
+                return "MARCH";
+            }
+            if (monthNumber == "4" || monthNumber == "04") {
+                return "APRIL";
+            }
+            if (monthNumber == "5" || monthNumber == "05") {
+                return "MAY";
+            }
+            if (monthNumber == "6" || monthNumber == "06") {
+                return "JUNE";
+            }
+            if (monthNumber == "7" || monthNumber == "07") {
+                return "JULY";
+            }
+            if (monthNumber == "8" || monthNumber == "08") {
+                return "AUGUST";
+            }
+            if (monthNumber == "9" || monthNumber == "09") {
+                return "SEPTEMBER";
+            }
+            if (monthNumber == "10") {
+                return "OCTOBER";
+            }
+            if (monthNumber == "11") {
+                return "NOVEMBER";
+            }
+            if (monthNumber == "12") {
+                return "DECEMBER";
+            }
+        }
+        function fnGetMonth(monthNumber) {
+            if (monthNumber == "1" || monthNumber == "01") {
+                return "Jan";
+            }
+            if (monthNumber == "2" || monthNumber == "02") {
+                return "Feb";
+            }
+            if (monthNumber == "3" || monthNumber == "03") {
+                return "Mar";
+            }
+            if (monthNumber == "4" || monthNumber == "04") {
+                return "Apr";
+            }
+            if (monthNumber == "5" || monthNumber == "05") {
+                return "May";
+            }
+            if (monthNumber == "6" || monthNumber == "06") {
+                return "Jun";
+            }
+            if (monthNumber == "7" || monthNumber == "07") {
+                return "Jul";
+            }
+            if (monthNumber == "8" || monthNumber == "08") {
+                return "Aug";
+            }
+            if (monthNumber == "9" || monthNumber == "09") {
+                return "Sep";
+            }
+            if (monthNumber == "10") {
+                return "Oct";
+            }
+            if (monthNumber == "11") {
+                return "Nov";
+            }
+            if (monthNumber == "12") {
+                return "Dec";
+            }
+        }
+    });
+ </script>

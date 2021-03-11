@@ -1,0 +1,142 @@
+﻿<style>
+    .link {
+        color:blue;
+        text-decoration:underline;
+    }
+    .headersize {
+        height:26px !important;
+    }
+    .fontsize {
+        font-size:13px !important;
+    }
+</style>
+
+
+<div class="clearboth"></div>
+<div class="menucontent">
+   <a href="#"  onclick="fnGoToMenu()">Menu
+    </a>
+   <a href="#" onclick="fnGoToCalendar()">Calendar
+    </a>
+ 
+</div>
+<div data-role="content" id="dvmobileHome">
+ <div data-role="header" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important">
+        <h5 class="fontsize">DCR Header</h5>
+        </div>           <div style="width: 100%; font-size: 12px; font-weight: normal">     <ul data-role="listview" id="listHeader" data-divider-theme="b" data-inset="true"></ul>
+            </div>
+ <div data-role="header" id="activityBar" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important;display:none;">
+        <h5 class="fontsize">Activity</h5>
+        </div>  
+            <div id="dvactist" style="width: 100%; font-size: 12px; font-weight: normal">
+                <ol data-role="listview" id="actlist" data-divider-theme="b" data-inset="true">
+                </ol>
+            </div>
+
+
+           <div data-role="header" id="doclistbar" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important;display:none">
+        <h5 class="fontsize" id="txtdocvisit">Doctor Visit</h5>
+        </div>  
+            <div id="dvdoclist" style="width: 100%; font-size: 12px; font-weight: normal;display:none;">
+                <ol data-role="listview" id="doclist" data-divider-theme="b" data-inset="true">
+                </ol>
+      <div data-role="header" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important">
+        <h5 class="fontsize" onclick="fnGoToDoctorsSelection()"><span class="plusicon">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<label id="txtadddoc">Add Doctor</label></h5>
+        </div>  
+            </div>
+ 
+      <div data-role="header" id="dvStockiest" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important;display:none">
+        <h5 class="fontsize" onclick="fnGotoStockistExpense()"><div class="plusicon" style="float:left;"></div>&nbsp;<label id="txtmanage">Manage Stockiest</label></h5>
+        </div>  
+
+     <div data-role="header" class="headersize" data-theme="b" data-inset="true" style="margin:0px !important">
+        <h5 class="fontsize" onclick="fnGotoStockistExpense()"><div class="plusicon" style="float:left;"></div>&nbsp;Manage Expense</h5>
+        </div>  
+
+    <div data-role="content" style="display:none;">
+        <a href="#" onclick="fnOpenDCROldRemarks()">Show Old Remarks</a>
+        <div data-role="fieldcontain">
+            <label for="txtDCRCommonRmrks">
+                Common Remarks
+           
+            </label>
+            <textarea name="" id="txtDCRCommonRmrks" placeholder=""></textarea>
+        </div>
+    </div>
+    <div>
+        <a id="btnSaveDCRHome" class="ui-btn-active" data-role="button" href="#" onclick="fnSaveExpenseFromHome();">Next >>
+        </a>
+    <span style="color:red" >Clicks the "Next" button to go to submit the DCR</span>
+    </div>
+
+
+<div id="dvOpenDCROldRemarksMain" style="display: none;" data-options='{"mode":"blank","headerText":"General Remarks","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div data-role="content" id="dvOpenDCROldRemarks">
+    </div>
+</div>
+</div>
+@Scripts.Render("~/bundles/DCRV4dcrhomejs")
+<script>
+    var dcrDate_g="";
+    var dcrStatus_g = "";
+    var isRCPA_g="";
+    var source_g="";
+    var sourceFromStockist_g="";
+    var flag_g="";
+    var travelKm=0.0;
+    var unapproveReason_g="";
+    var doctor_header="";
+    var stockist_header="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try{
+            $.mobile.loading('show');
+            
+            var homeData= @Html.Raw(Json.Encode(ViewBag.Data));
+            dcrDate_g=homeData.split('^')[0];
+            dcrStatus_g=homeData.split('^')[1];
+            isRCPA_g=homeData.split('^')[2];
+            source_g=homeData.split('^')[3].split('_')[0];
+            doctor_header=fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+            if (doctor_header.length >= 20) {
+                doctor_header = doctor_header.substr(0, 20) + "...";
+            }
+            stockist_header=fnGetPrivilegeValue("STOCKIEST_CAPTION_DISPLAY_NAME", "Stockist ");
+            if (stockist_header.length >= 20) {
+                stockist_header = stockist_header.substr(0, 20) + "...";
+            }
+            $('#txtdocvisit').text(doctor_header + " Visit");
+            $('#txtadddoc').text("Add "+doctor_header);
+            $('#txtmanage').text("Manage "+stockist_header );
+            if(sourceFromStockist_g=="" && homeData.split('^')[3]=="TAB_STOCKIEST" )
+            {
+                sourceFromStockist_g=homeData.split('^')[3];
+            }
+            flag_g=homeData.split('^')[4];
+            travelKm=homeData.split('^')[5];
+            $('#dcrHeadercaption').html('DCR - '+dcrDate_g.split('-')[2]+'-'+dcrDate_g.split('-')[1] +'-'+dcrDate_g.split('-')[0]+" Click the content to Edit details.");
+            if(flag_g.toUpperCase() == "A")
+            {
+                $('#dvDoctorVisit').css('display','none');
+                $('#dvStockist').css('display','none');
+            }
+            else
+            {
+                $('#dvActivity1').css('display','none');
+                $('#dvActivity1').trigger('refresh');
+            }
+                // User Name bind
+                $('span.cls_usernamespn').text(loginUserName_g);
+                fnGetHeaderDetails();
+                //fnCreateDocList();
+            }
+        
+        catch(e)
+            {
+                $.mobile.loading('hide');
+                fnMsgAlert('info', screenTitle, e.message);
+            }
+     
+        });
+    
+  </script>

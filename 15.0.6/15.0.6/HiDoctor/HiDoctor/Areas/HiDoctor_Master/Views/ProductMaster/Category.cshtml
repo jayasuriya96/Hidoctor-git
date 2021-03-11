@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Category";
+    Layout = null;
+}
+<div id="message">
+
+</div>
+<div class="col-xs-12 clearfix">
+    <div class="col-xs-3">
+        <label>Category Name</label>
+    </div>
+    <div class="col-xs-3">
+        <input type="hidden" id="hdnCategoryRowIndex" />
+        <input type="text" class="form-control" id="txtCategoryName" />
+        <input type="hidden" id="hdnCategoryCode" />
+        <input type="hidden" id="hdnMode" value="S" />
+    </div>
+</div>
+ <div class="col-xs-12 clearfix" style="left: 93px;top: 7px;">
+     <input type="button" value="Save" class="btn btn-success"  onclick="fnInsertCategory()" />
+     <input type="button" value="Reset" class="btn primary" onclick="fnCategoryClearAll()" />
+ </div>         
+
+<div class="separator">
+</div>
+<div id="divCategory" style="top: 13px !important;">
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#hdnCategoryRowIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+        fnGetAllCategory();
+    });
+    var categorylst_g = '';
+    function fnGetAllCategory() {
+        $.ajax({
+            type: "POST",
+            url: "ProductMaster/GetAllCategory",
+            data: "A",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                categorylst_g = result;
+                //var content = "";
+                //content += "<table class='data display' id='tblCategory'>";
+                //content += "<thead><tr><td>Category Name</td><td>Status</td><td>Action</td></tr></thead>";
+                //content += "<tbody>";
+                //for (var i = 0; i < result.Tables[0].Rows.length; i++) {
+                //    content += "<tr>";
+                //    content += "<td id='tdCategory_" + i + "'>" + result.Tables[0].Rows[i].Category_Name + "</td>";
+                //    content += "<td>" + result.Tables[0].Rows[i].Status + "<input type='hidden' id='hdnCategory_" + i + "' value='" + result.Tables[0].Rows[i].Category_Code + "' /></td>";
+                //    content += "<td><span style='cursor:pointer;text-decoration:underline' onclick='fnEditCategory(" + i + ")'>Edit</span> | <span style='cursor:pointer;text-decoration:underline'  onclick='fnCategoryChangeStatus(" + i + ")'>Change status</span></td>";
+                //    content += "</tr>";
+                //}
+                //content += "<tbody>";
+                //content += "</tbody>";
+                //content += "</table>";
+                $("#divCategory").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: result.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: true,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'Category_Name', headerText: 'Category Name', width: 200, textAlign: 'center' },
+                            { field: 'Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                            { headerText: 'Edit', width: 200, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#divCategory');
+                //if ($.fn.dataTable) { $('#tblBrand').dataTable({ "sPaginationType": "full_numbers", "bDestroy": true }); };
+            }
+        });
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            //args.cell.style.cursor = "pointer";
+            args.cell.style.textDecoration = "underline";
+
+            args.cell.innerHTML = "<a onclick='fnEditCategory(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+
+                fnEditCategory(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            //args.cell.style.cursor = "pointer";
+            args.cell.style.textDecoration = "underline";
+
+            args.cell.innerHTML = "<a onclick='fnCategoryChangeStatus(" + args + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+
+                fnCategoryChangeStatus(args);
+            })
+        }
+    }
+              
+    function fnEditCategory(rowIndex) {
+        $("#hdnMode").val("E");
+        //var brandCode = $("#hdnCategory_" + rowIndex).val();
+        //var brandName = $("#tdCategory_" + rowIndex).html();
+        var brandCode = rowIndex.data.Category_Code;
+        var brandName = rowIndex.data.Category_Name;
+
+        $("#hdnCategoryCode").val(brandCode);
+        $("#txtCategoryName").val(brandName);
+    }
+    function fnCategoryClearAll() {
+        $("#hdnCategoryCode").val('');
+        $("#txtCategoryName").val('');
+        $("#hdnMode").val('S');
+    }
+
+    $('#modal_close').click(function () {
+        fnEdit($('#hdnCategoryRowIndex').val());
+    });
+</script>

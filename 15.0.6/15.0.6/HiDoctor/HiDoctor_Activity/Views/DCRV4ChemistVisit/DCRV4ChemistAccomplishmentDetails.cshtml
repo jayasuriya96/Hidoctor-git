@@ -1,0 +1,36 @@
+﻿<center class="OTC/PharmaBlock">
+    <div id="div_DoctorAccDetails" class="chemistDay">
+        <div class="chemistheader" style="width:100%;" onclick="fnTableShowHide('tbl_DoctorAccDetails_Chemist','spnAccDetails_Chemist')">
+            <div class="collapse" id="spnAccDetails_Chemist" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                Accompanist Details
+                @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddAcc"><span id="accLoadingTitle" class="loadingcaption"> Accompanist autofill setting</span>*@
+
+            </div>
+            <div class="helpIconmargin">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','CHEVISITACCOMPANIST')" />
+            </div>
+        </div>
+
+        <table id="tbl_DoctorAccDetails_Chemist" class="cvtable" border="0" cellspacing="0" cellpadding="0">
+        <tr><td>Accompanist Name</td>
+        <td style="text-align:center;display:none;">Independent Call</td>
+        <td></td>
+        <td class="deleteRowIcon"></td>
+        <td>Accompanied call?</td></tr>
+        </table>
+    </div>
+</center>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistAccomplishment.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+
+        //  AccomplishmentDetails.fnGetAccompanistRegionCodes();
+
+        //AccomplishmentDetails.fnGetAccompanistAutofill();
+        AccomplishmentDetails.fnBindAccName();
+        // AccomplishmentDetails.fnAddAccompanist(null);
+        AccomplishmentDetails.GetAccompanistmandatoryvalue();
+
+    });
+</script>

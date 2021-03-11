@@ -1,0 +1,21 @@
+﻿.dvTree-search-filter {
+    max-height: 200px;
+    overflow: auto;
+    outline: none;
+    padding: 5px;
+    border: 0px solid #888;
+    box-shadow: 0px 0px 3px 0px;
+}
+
+.dvTree-left-option {
+    margin-bottom: 10px;
+}
+
+    .dvTree-left-option > span {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+input[type="text"] {
+    width: 130px;
+}

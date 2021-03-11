@@ -1,0 +1,411 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/mdtimepicker.css" rel="stylesheet" />
+<style>
+    .ui-widget.ui-widget-content {
+        height: 150px !important;
+        overflow-y: auto;
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid black;
+    }
+
+     #Initial {
+        text-align: center;
+        height: 50px;
+        width: 50px;
+        background-color: blue;
+        color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+        font-size: 30px;
+        right: 20px;
+        position: relative;
+        right: 20px;
+        padding: 5px 12px;
+    }
+
+    .align p {
+        margin: 0px;
+    }
+    .sweet-alert h2 {
+    color: #575757;
+    font-size: 18px !important;
+    text-align: center;
+    font-weight: 600;
+    text-transform: none;
+    position: relative;
+    margin: 25px 0;
+    padding: 0;
+    line-height: 28px !important;
+    display: block;
+}
+    .sweet-alert button {
+    background-color: #8cd4f5;
+    color: white;
+    border: 0;
+    box-shadow: none;
+    font-size: 17px;
+    font-weight: 500;
+    -webkit-border-radius: 4px;
+    border-radius: 5px;
+    padding: 7px 32px;
+    margin: 8px 2px 0 5px !important;
+    cursor: pointer;
+}
+</style>
+<div>
+    <form>
+        <div class="form-row" style="margin-top:10px">
+
+            <div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+                <div class="col-xs-2" style="margin-left: 10px;"><span id="Initial"></span></div>
+                <div class="col-xs-8" style="font-size:12px;margin: 0px;">
+                    <label>User Name : </label>
+                    <span style="font-size: 13px;" id="usrname"></span></br>
+                    <label>Rep Code : </label>
+                    <span style="font-size: 13px;" id="repcode"></span></br>
+                    <label>Date : </label>
+                    <span style="font-size: 13px;" id="CPDdate"></span>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="starttime" style="display:none">
+                <label>Start Time :</label>
+                <span id="strttime"></span>
+            </div>
+            <div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" id="first" style="padding:0px;">
+                    <label>Market Name</label>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <input class="form-control ui-autocomplete-input ui-corner-all" name="Market" type="text" id="Marketname" placeholder="Market Name" autocomplete="off">
+                        <input class="form-control" name="MarketID" type="hidden" id="Marketid">
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                    <label>Total Outlets</label>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <input class="form-control" type="number" id="Totaloutlet" value="0" max="999999999" onclick="fndelZero(this);" placeholder="Total Outlets Calls">
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                    <label>Total Calls</label>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <input class="form-control" type="number" id="totalcall" value="0" max="999999999" onclick="fndelZero(this);" placeholder="Total Calls">
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                    <label>Productive Calls</label>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                        <input class="form-control" type="number" id="Prodcall" value="0" max="999999999" onclick="fndelZero(this);" placeholder="Productive Calls">
+                    </div>
+                </div>
+                @*<div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="margin-left: 25px;">
+                    <div class="col-lg-5 col-md-5 col-xs-5 clearfix" style="padding:0px;">
+                        <input class="form-control" type="number" id="totalcall" value="0" placeholder="Total Calls">
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-xs-5 clearfix" style="padding:0px;margin-left:10px">
+                        <input class="form-control" type="number" id="Prodcall" value="0" placeholder="Productive Calls">
+                    </div>
+                </div>*@
+                <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;display:none" id="punchdiv">
+                    <button type="button" class="btn btn-info" style="background-color: blue;border-color: blue;" id="Punch">
+                        Punch Start Time
+                    </button>
+                </div>
+            </div>
+
+            <div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12" style="padding: 0px;">
+                    <label>Products</label>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="dvProduct" style="padding: 0px;">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="proddiv" style="padding: 0px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12" style="padding: 0px;">
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="BrightCountdiv" style="padding: 0px;">
+                        <div class="col-sm-3 col-xs-4" style="padding: 1px;">
+                            <label style="margin-top: 5px;">Bright Outlets</label>
+                        </div>
+                        <div class="col-sm-6 col-xs-6" style="padding: 1px;margin-bottom: 5px;">
+                            <input type="number" class="form-control" id="BrightCalls" value="0" max="999999999" onclick="fndelZero(this);" placeholder="Bright Calls">
+                        </div>
+                        <div class="col-sm-2 col-xs-2" style="margin-bottom: 5px;">
+                            <i class="fa fa-info-circle" aria-hidden="true" onclick="fnbright();"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="dvBright" style="padding: 0px;">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Brightdiv" style="padding: 0px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="align col-xs-12" style="border-bottom:1px solid #ddd;padding:10px;">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12" style="padding: 0px;">
+                    @*<label>Shine Outlets</label>*@
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="ShineCountdiv" style="padding: 0px;">
+                        <div class="col-sm-3 col-xs-4" style="padding: 1px;">
+                            <label style="margin-top: 5px;">Shine Outlets</label>
+                        </div>
+                        <div class="col-sm-6 col-xs-6" style="padding: 1px;margin-bottom: 5px;">
+                            <input type="number" class="form-control" id="ShineCalls" value="0" max="999999999" onclick="fndelZero(this);" placeholder="Shine Calls">
+                        </div>
+                        <div class="col-sm-2 col-xs-2" style="margin-bottom: 5px;">
+                            <i class="fa fa-info-circle" aria-hidden="true" onclick="fnshine();"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="dvShine" style="padding:0px;">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" id="Shinediv" style="padding: 0px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix">
+                <label>General Remarks</label>
+                <div class="col-sm-12 col-md-12 col-xs-12 clearfix" style="padding:0px;">
+                    <textarea class="form-control" cols="25" rows="3" id="Gremark" maxlength="300"></textarea>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;margin-bottom: 10px;">
+                <button type="button" class="btn btn-primary" style="background-color: blue;border-color: blue;" id="Back">Back</button>
+                @*<button type="button" id="Draft" style="background-color: blue;border-color: blue;" class="btn btn-primary buttonDraft">Draft</button>*@
+                <button type="button" id="Save" style="background-color: blue;border-color: blue;" class="btn btn-primary buttonSave">Submit</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#myModal').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="punchintime" placeholder="Start Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="punchtime" class="btn btn-primary">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="PunchEndTime">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Punch Time</label>
+                <button type="button" class="close" id="closemodel" onclick="$('#PunchEndTime').hide()">&times;</button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix" style="padding: 15px;">
+                    <div class="col-lg-1 col-md-1 col-xs-1 clearfix" style="padding: 0px;">
+                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 23px;"></i>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-11 clearfix" style="padding: 0px;">
+                        <input class="form-control" type="text" id="PunchEnd" placeholder="End Time" readonly="">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 clearfix">
+                    <button type="button" id="Endpunch" class="btn btn-primary">Punch</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/mdtimepicker.js"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/CPD.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var subDomainName = '';
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode='';
+    var CPD_Date = '';
+    var LID='';
+    var UserName = '';
+    var Activity = '';
+    var Repnum='';
+    var str='';
+    var res='';
+    var CPD_ID = 0;
+    var punchintime='';
+    var Totalcalls='';
+    var Productivecalls='';
+    var BrightCalls='';
+    var ShineCalls='';
+    var SumofCalls='';
+    var ProdValue='';
+    var BrightValue='';
+    var ShineValue='';
+    var TotalValue='';
+    var MarketID=0;
+    var MarketHead=[];
+    $(document).ready(function () {
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode = @Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        CPD_Date = @Html.Raw(Json.Encode(ViewBag.CPD_Date));
+        CPD_ID = @Html.Raw(Json.Encode(ViewBag.CPD_Id));
+        UserName=@Html.Raw(Json.Encode(ViewBag.LoginUserName));
+        Repnum=@Html.Raw(Json.Encode(ViewBag.Repnum));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        $('#Starttime_0').mdtimepicker();
+        $('#Endtime_0').mdtimepicker();
+        $('#usrname').html(UserName);
+        var datec=CPD_Date.split('/')[2] + '/' + CPD_Date.split('/')[1] + '/' + CPD_Date.split('/')[0];
+        $('#CPDdate').html(datec);
+        $('#repcode').html(Repnum);
+        str = UserName.toLowerCase();
+        res = str.substring(0, 1);
+        $('#Initial').html(res);
+        CPD.initialize();
+    });
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    $("#Back").click(function () {
+        if (navigator.onLine == true) {
+            var Userstatus = fnuserstatus();
+            debugger
+            if (Userstatus) {
+                window.location.href = '../CPD/CPDMobile?LID='+LID;
+            }
+            else {
+                swal("Info!", "Your account has been deactivated.", "info");
+            }
+        }
+        else {
+            swal("Please connect to the internet", "", "");
+            return false;
+        }
+    });
+    // AutoComplete.
+    var selector = 'input[name=Market]';
+    $(document).on('keydown.autocomplete', selector, function () {       
+        $(this).autocomplete({
+            delay: 45,
+            source: CPD.defaults.MarketList,
+            minLength: 1,
+            select: function (event, ui) {
+                debugger
+                $('#Marketname').val(ui.item.label);
+                $('#Marketid').val(ui.item.id);                  
+                var Marketname = $.grep(MarketHead, function (v) {
+                    return v.label == ui.item.label;
+                })
+                if(Marketname.length>0)
+                {
+                    debugger
+                    $('#Totaloutlet').val(Marketname[0].Total_Outlets);
+                    $('#Totaloutlet').prop('disabled',true);
+                }
+                else{
+                    $('#Totaloutlet').prop('disabled',false);
+                }
+            },
+            change:function(event,ui){
+                debugger;
+                var Marketname = $.grep(CPD.defaults.MTotaltOutlets, function (v) {
+                    return v.Market_Name == $("#Marketname").val();
+                })
+                if(Marketname.length>0)
+                {
+                    debugger
+                    $('#Totaloutlet').val(Marketname[0].Total_Outlets);
+                    $('#Totaloutlet').prop('disabled',true);
+                }
+                else{
+                    $('#Totaloutlet').val(0);
+                    $('#Totaloutlet').prop('disabled',false);
+                }
+            },
+            open: function () {
+                $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+            },
+            close: function () {
+                $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+            }
+        });
+    });
+    function fnbright()
+    {
+        swal('', "", "info");
+        return false;
+    }
+    function fnshine()
+    {
+        swal('', "", "info");
+        return false;
+    }
+    function fndisplay(Market)
+    {
+        var Marketname = $.grep(CPD.defaults.MarketList, function (v) {
+            return v.Market_Name == Market;
+        })
+        if(Marketname ==1)
+        {
+            $('#Totaloutlet').prop('disabled',true);
+        }
+        else{
+            $('#Totaloutlet').prop('disabled',false);
+        }
+    }
+    function fndelZero(opt)
+    {
+        debugger
+        console.log(opt.value);
+        if(opt.value == "0"){
+            debugger
+            var id=opt.id;
+            $('#'+opt.id).val('');
+        } 
+    }
+</script>

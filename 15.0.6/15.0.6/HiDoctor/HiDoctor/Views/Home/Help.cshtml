@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Help";
+    Layout = "~/Views/Shared/_CubeLayout.cshtml";
+}
+
+<link href="~/Content/jquery.cleditor.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/jquery.cleditor.min.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/AjaxGlobalHandler.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<style>
+    .dv-analytic-header {
+        background: #235484;
+        padding: 10px;
+        color: white;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="dv-analytic-header">
+    Help Description
+</div>
+
+<div id="dvHelpText" style="padding: 5px;"></div>
+<div id="dvPass" style="display:none;padding:10px;margin:10px;border:1px solid #efefef">Password <input type="password" id="txttePass" style="width:25%" /> <input type="button" value="Go" class="input-button" onclick="fnCheckPass()" /> <div id="dvMess"></div></div>
+<div class="cleditorMain" style="width: 500px; height: 250px;display:none;margin:10px">
+    <textarea cols="20" id="txtAreaHelpDescrip" name="ProposalDetails"
+        rows="2" style="display: none; width: 500px; height: 197px;"></textarea>
+    <input type="button" class="input-button" value="Save" onclick="fnInsertHelpDescrip()" />
+</div>
+<div style="clear:both"></div>
+<input type="hidden" id="hdnPageId" />
+<input type="hidden" id="hdnControlId" />
+<input type="hidden" id="hdnUserName" />
+<input type="hidden" id="hdnTEPassword" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#hdnPageId").val(@Html.Raw(Json.Encode(ViewBag.PageId)));
+        $("#hdnControlId").val(@Html.Raw(Json.Encode(ViewBag.ControlId)));
+        $("#hdnUserName").val(@Html.Raw(Json.Encode(ViewBag.UserName))); 
+        $("#hdnTEPassword").val(@Html.Raw(Json.Encode(ViewBag.TEPassword))); 
+        
+        if ($("#hdnUserName").val().toUpperCase() == "ADMINISTRATOR" || $("#hdnUserName").val().toUpperCase == "MASTER") {
+            $("#dvPass").show();
+
+            //$("#txtAreaHelpDescrip").cleditor()[0].focus();
+            //$(".cleditorMain").show();
+        }
+        fnGetHelpItem();
+    });
+    function fnCheckPass() {
+        $("#dvMess").html('');
+        if ($("#txttePass").val() == $("#hdnTEPassword").val()) {
+            $("#txtAreaHelpDescrip").cleditor()[0].focus();
+            $(".cleditorMain").show();
+            $("#dvPass").hide();
+        }
+        else {
+            $("#dvMess").html('Incorrect password , try again');
+        }
+    }
+</script>

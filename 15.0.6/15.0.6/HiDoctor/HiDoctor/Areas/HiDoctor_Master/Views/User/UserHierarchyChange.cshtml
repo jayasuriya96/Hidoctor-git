@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "UserHierarchyChange";
+    Layout= null;
+}
+<style type="text/css">
+    .dvHeader {
+        width: 99%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    #dvUserMainHierarchy select {
+        width: 100% !important;
+    }
+</style>
+<div>
+    <div style="width: 100%; min-height: 250px; overflow: auto;" id="dvUserMainHierarchy">
+        <div class="dvHeader">
+            Modify User Hierarchy
+        </div>
+        <div style="width: 99%; float: left; padding-left: 3px;">
+            <div style="width: 100%; float: left; padding-top: 5px;">
+                <div style="width: 40%; float: left; padding-left: 6%;">
+                    <div style="width: 100%;">Original Position </div>
+                    <div style="width: 100%;">
+                        <select id="cboOriginalUser" onchange="fnGetOriginalChildUsers();" style="width: 100%;"></select>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="width: 40%; float: left; padding-left: 5%;">
+                    <div style="width: 100%;">Proposed Position </div>
+                    <div style="width: 100%;">
+                        <select id="cboProposedUser" onchange="fnGetProposedChildUsers();" style="width: 100%;"></select>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="width: 5%; float: left;">
+                </div>
+            </div>
+            <div style="width: 100%; float: left;">
+                <div style="width: 6%; float: left; padding-top: 7%;">
+                    <div class="dvUp dvOriginalUp" title="Move Up">
+                    </div>
+                    <div class="dvDown dvOriginalDown" title="Move Down">
+                    </div>
+                    <div class="dvRefresh dvOriginalReset" title="Reset">
+                    </div>
+                </div>
+                <div style="width: 40%; float: left;">
+                    <div style="width: 100%; float: left;">
+                        User Name
+                    </div>
+                    <div style="width: 100%; float: left;">
+                        <select id="cboOriginalChildUsers" multiple="multiple" style="width: 100%; height: 250px;"></select>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="width: 6%; float: left; padding-top: 7%;">
+                    <div class="dvRight" onclick="fnMoveLefttoRight();" title="Move Right">
+                        >
+                    </div>
+                    <div class="dvLeft" onclick="fnMoveRighttoLeft();" title="Move Left">
+                        <
+                    </div>
+                    <div class="dvAllRight" style="width: 100%;" onclick="fnMoveAllLefttoRight();" title="MoveAll Right">
+                        >>
+                     
+                    </div>
+                    <div class="dvAllRight" style="width: 100%;" onclick="fnMoveAllRighttoLeft();" title="Move All Left">
+                        <<
+                    </div>
+                </div>
+                <div style="width: 40%; float: left;">
+                    <div style="width: 100%; float: left;">
+                        User Name
+                    </div>
+                    <div style="width: 100%; float: left;">
+                        <select id="cboProposedChildUsers" multiple="multiple" style="width: 100%; height: 250px;"></select>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div style="width: 6%; float: left; padding-top: 7%;">
+                    <div class="dvUp dvProposedUp" title="Move Up">
+                    </div>
+                    <div class="dvDown dvProposedDown" title="Move Down">
+                    </div>
+                    <div class="dvRefresh dvProposedReset" title="Reset">
+                    </div>
+                </div>
+            </div>
+            <div style="width: 65%; text-align: right; clear: both; padding-top: 1%; padding-bottom: 1%;">
+                <input type="button" class="btn small primary" value="Save" onclick="fnChangeUserHierarchySubmit();" />
+                <input type="button" class="btn small primary" value="Close" onclick="fnCloseUserHierarchyPopUp();" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var originalChildUsers = "";
+    var proposedChildUsers = "";
+    var originalChildUsersJson_g = "";
+    var proposedChildUsersJson_g = "";
+    var OriginalUser_g="";
+    var userChanged_g="N";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvAjaxLoad").show();
+        OriginalUser_g= @Html.Raw(Json.Encode(ViewBag.OriginalUser))
+        fnGetAllUsers();
+        $(".dvOriginalUp").click(function () { fnOriginalMoveUp() });
+        $(".dvOriginalDown").click(function () { fnOriginalMoveDown() });
+        $(".dvProposedUp").click(function () { fnProposedMoveUp() });
+        $(".dvProposedDown").click(function () { fnProposedMoveDown() });
+        $(".dvOriginalReset").click(function () { fnOriginalReset() });
+        $(".dvProposedReset").click(function () { fnProposedReset() });
+        $("#dvAjaxLoad").hide();
+    });
+
+</script>

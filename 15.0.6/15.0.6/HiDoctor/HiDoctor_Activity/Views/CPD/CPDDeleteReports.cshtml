@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/CPD.css" rel="stylesheet" />
+<style>
+    #Initial {
+        text-align: center;
+        height: 50px;
+        width: 50px;
+        background-color: blue;
+        color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+        font-size: 30px;
+        right: 20px;
+        position: relative;
+        right: 20px;
+        padding: 5px 12px;
+    }
+
+    .align p {
+        margin: 0px;
+    }
+</style>
+
+<div class="form-row" id="dvreport">
+    <div class="form-group col-xs-12" id="dvsrch" style="float: right;margin-top: 10px;margin-bottom: 5px;display:none">
+        <div class="form-group col-xs-3" style="float: left;margin-top: 6px;">
+            <label>Search</label>
+        </div>
+        <div class="form-group col-xs-7" style="width: 70%; float: left;">
+            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+            <input type="hidden" id="GrpID">
+        </div>
+    </div>
+    <div class="form-group col-xs-12" style="padding: 5px;">
+        <div id="Deluserdet">
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/CPDDeleteReports.js?v=@DateTime.Now.Ticks"></script>
+<script>
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoginUserCode = '';
+    var subDomainName = '';
+    var LID='';
+    var UserName='';
+    $(document).ready(function () {
+        debugger;
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        DeleteRpts.GetUserDetails();
+    })
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoginUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    function myFunction() {
+        debugger;
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#usersrch div").filter(function() {
+                $(this).parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    }
+</script>
+

@@ -1,0 +1,283 @@
+﻿@{
+    ViewBag.Title = "ExpenseAnalysisforAlumni";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    table.display tfoot th {
+        padding:0px !important;
+    }
+</style>
+
+
+<div id="dvExpenseforalumni">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 450px; overflow: auto;">
+
+
+        <div id="dvTree" class="col-sm-3" style="width:33% !important">
+            <div id="tree" style="float: left; height: auto; width: 100%">
+                <div id="userserach" class='input-group col-xs-8'>
+                    <input type='text' id='txtaluminiSearchNode' placeholder='Search' class='form-control' />
+                    <span class='input-group-addon' onclick='fnAluminiSearchUsersNew();'><i class='fa fa-search'></i></span>
+                </div>
+            </div>
+
+            <div style="clear: both"></div>
+            <div id="disabledUserTree" style="height: 630px; overflow: auto;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <input type="hidden" value="" id="hdnUserCode" />
+            <input type="hidden" value="" id="hdnUserName" />
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div class="helpIconright">
+                    <img src="~/Images/HelpIcon.png" onclick="fnHelp('EXPENSEANALYSISFORALUMNI','PAGE')" />
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3">Start Date</div>
+                    <div class="col-xs-3">
+                        <input type="text" id="txtFromDate" class="datepicker form-control" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3">End Date</div>
+                    <div class="col-xs-3">
+                        <input type="text" id="txtToDate" class="datepicker form-control" />
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3">
+                        DCR Status
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="checkbox" name="chkdcrstatus" class="clsCheck" id="chkApplied" value="1" tabindex="2" onclick="chkAllChecked();" /><label for="chkApplied">Applied</label>
+                        <input type="checkbox" name="chkdcrstatus" class="clsCheck" id="chkApproved" value="2" checked="checked" onclick="chkAllChecked();" /><label for="chkApproved">Approved</label>
+                        <input type="checkbox" name="chkdcrstatus" class="clsCheck" id="chkUnapproved" value="0" onclick="chkAllChecked();" /><label for="chkUnapproved">Unapproved</label>
+                        <input type="checkbox" name="chkdcrstatus" id="chkAll" value="1,2,0" onclick="checkAll();" /><label for="chkAll">All</label>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3">
+                        Show
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="checkbox" name="chkshow" id="chkDoctor" value="D" checked="checked" /><label for="chkDoctor">Doctor</label>
+                        <input type="checkbox" name="chkshow" id="chkChemist" value="C" /><label for="chkChemist">Chemist</label>
+                        <input type="checkbox" name="chkshow" id="chkManager" value="M" /><label for="chkManager">Accompanist</label>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3">
+                        Activity Status
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="checkbox" name="chkActivity" class="clsCheckforAct" id="chkField" value="F" onclick="chkAllCheckedforActivity();" /><label for="chkField">Field</label>
+                        <input type="checkbox" name="chkActivity" class="clsCheckforAct" id="chkAttendance" value="A" checked="checked" onclick="chkAllCheckedforActivity();" /><label for="chkAttendance">Attendance</label>
+                        <input type="checkbox" name="chkActivity" id="chkAllforActivity" value="F,A" onclick="checkAllforActivity();" /><label for="chkAllforActivity">All</label>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-5">
+                        <input type="radio" value="N" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="Y" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="row clearfix form-group">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-5">
+                        <input type="button" class="btn btn-primary" value="Show Report" onclick="fnshowExpenseAnalysisforAlumni()" />
+                    </div>
+                    <div class="col-lg-4"></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <br />
+            <div style="margin-left: 95%;">
+                <div id="dvPrint" onclick='fnPrint("divuserperPrint","ifrmuserperday");' title="Print Table" class="TableTools_button" style="background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right; margin-right: 4%; display: none; margin-top: -25%"></div>
+            </div>
+            <br />
+            <div id="dvExpenseAnalysisforAlumni" style="padding-top: 5px;">
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="divCompReport" style="padding-top: 5px;"></div>
+            <div style="clear: both;"></div>
+            <div id="dvDailyBlockM"></div>
+            <div id="dvNonDailyBlockM"></div>
+        </div>
+        <div style="clear: both"></div>
+
+    </div>
+    <div style="clear: both"></div>
+
+    <div id="dvloading" style="display: none">
+        <img src="../Areas/HiDoctor_Reports/Content/images/loader1.gif" />
+    </div>
+    <a href="#" class="scrollup">Scroll</a>
+</div>
+<iframe id="ifrmuserperday" style="height: 0px; width: 0px;"></iframe>
+<div id="divuserperPrint" style="display: none;"></div>
+
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseAnalysisforAlumni.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ExpenseReports.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 2
+        });
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            
+            $("#dvExpenseforalumni").unblock();
+            $("#dvTree").show();
+            fnBindDisabledUserTreeNew("disabledUserTree");
+            //fnBindDisabledUserTree("disabledUserTree");
+
+
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvExpenseforalumni").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    var selKeys = new Array();
+
+    function fnDisabledUserTreeClick(node) {
+        fnCloseTree();
+        $(".dvDisableUser").removeClass('selectNode');
+        selKeys = [];
+        selKeys.push(node);
+        $("#hdnUserCode").val(node);
+        $("#dvdata").show();
+        $('#lnkInput').html('Hide Inputs')
+        $("#rptInputs").show();
+        $("#userserach").hide();
+        $("#rptInputs").addClass('col-lg-12');
+        $("#dvExpenseAnalysisforAlumni").empty();
+    }
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#disabledUserTree").slideDown();
+        $("#userserach").show();
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#disabledUserTree").slideUp();
+        $("#userserach").hide();
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+
+    //function fnBindDisabledUserTree(id) {
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '../HiDoctor_Reports/Reports/GetDisabledUsers',
+    //        data: 'companyCode=1',
+    //        success: function (response) {
+    //            var jsUser = eval('(' + response + ')');
+    //            var content = "";
+    //            if (!(jsUser.Tables === undefined) && jsUser.Tables.length > 0 && jsUser.Tables[0].Rows.length > 0) {
+    //                for (var i = 0; i < jsUser.Tables[0].Rows.length; i++) {
+    //                    content += "<div class='dvDisableUser' onclick='fnDisabledUserTreeClick(\"" + jsUser.Tables[0].Rows[i]["User_Code"] + "\");$(this).addClass(\"selectNode\");' >" + jsUser.Tables[0].Rows[i]["User_Name"] + "</div>";
+    //                }
+    //                $("#disabledUserTree").html(content);
+    //            }
+    //        },
+    //        error: function () {
+    //            fnMsgAlert('info', 'Report', 'Error.');
+    //        }
+    //    });
+
+    //}
+</script>
+

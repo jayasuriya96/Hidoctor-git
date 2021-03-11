@@ -1,0 +1,503 @@
+﻿@{
+    ViewBag.Title = "TPApproval";
+    Layout = null;
+}
+<style>
+    .boldText {
+        font-weight: bold;
+    }
+
+    #dvTPHistorySub thead tr th {
+        background-color: #428bca;
+        color: #fff;
+        border-right: 1px solid #fff;
+    }
+
+    .col-lg-12 {
+        padding-bottom: 4px !important;
+    }
+
+    .col-lg-12, .col-lg-10, .col-lg-9, .col-lg-3 {
+        padding-left: 0px !important;
+    }
+
+    .selectboxwidth {
+        width: 99%;
+    }
+
+    .inner-div-Tpapproval {
+        border: 1px solid #efefef;
+        float: left;
+        background-color: #fff !important;
+        padding: 3px;
+        /* margin: 3px; */
+        border-radius: 5px;
+    }
+
+    #tblTpApp {
+        border: 1px solid #76787A;
+        background-color: darkgray;
+        font-size: 16px;
+        font-weight: 100;
+    }
+
+    #divUserInfo ul li {
+        list-style: none;
+        list-style-type: none;
+        padding-left: 5%;
+        padding-top: 1%;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    #divUserInfo a :hover {
+        text-decoration: underline;
+    }
+
+    #divUserInfo {
+        height: 530px !important;
+        overflow: scroll;
+        border-left: 2px solid #ddd;
+        border-top: 1px solid #ddd;
+    }
+
+    #divUserHeader {
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: double;
+    }
+
+    #dvUserPopup {
+        padding-top: 5px;
+        padding-right: 10px;
+        display: none;
+        width: 537px;
+        height: 600px;
+        border: 4px solid rgb(204, 204, 204);
+        overflow: scroll;
+        background-color: rgb(255, 255, 255);
+        left: 46%;
+        z-index: 9999;
+        top: 50%;
+        margin-top: -293.5px;
+        margin-left: -191px;
+        position: fixed;
+        cursor: pointer;
+    }
+
+    .selectbox {
+        width: 70%;
+    }
+
+    .weekend {
+        background-color: #91eaea !important;
+    }
+
+    .holiday {
+        background-color: #6ae85b !important;
+    }
+
+    .modal-dialog {
+        padding: 0px !important;
+    }
+
+    .heading_tp {
+        margin: 0px auto;
+        background: grey;
+    }
+
+    .divHeader {
+        height: 39px !important;
+    }
+
+    .card {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+    }
+
+    .btnCustom {
+        width: 100%;
+        font-weight: bold;
+        background-color: #52ae6f !important;
+    }
+
+    .divConsolidate {
+        margin-bottom: 5%;
+    }
+
+    #dvTPApp {
+        margin-top: 5%;
+    }
+</style>
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link href="../../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class="main-div col-lg-12">
+    <div id="dvShowHideTree" style="display: none;">
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/gr.png" id="imggr" style="display: none; cursor: pointer"
+            onclick="fnOpenTree()" />
+        <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/less.png" id="imgless" onclick="fnCloseTree()"
+            style="cursor: pointer" />
+        <span>Show / Hide Tree</span>
+    </div>
+    <div class="col-lg-4 leftNav inner-div" id='leftNav' style="margin-left: -6px;">
+        <div id='dvTPMonth' class="dv-tp-month">
+            <table id="tblTpApp" class="table table-bordered">
+                <tr>
+                    <td>
+                        <label style="float: right">Month/Year</label>
+                    </td>
+                    <td>
+                        <input id="txtTPMonth" style="width: 70%" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="float: right">Status</label>
+                    </td>
+                    <td>
+                        <select id="ddlStatus" class="selectboxwidth">
+                            <option value="2^">Applied</option>
+                            <option value="1^">Approved</option>
+                            <option value="0^">Unapproved</option>
+                            <option value="0^1^2^">All</option>
+                        </select>
+                        <input type="hidden" id="hdnUserCode" />
+                        <input type="hidden" id="hdnStatus" />
+                        <input type="hidden" id="hdnMonth" />
+                        <input type="hidden" id="hdnMode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="float: right;">Division</label>
+                    </td>
+                    <td>
+                        <select id="ddlDivision" style="width: 98%;"></select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <label style="float: right">User Selection</label></td>
+                    <td>
+                        <select id="ddlSelection" style="width: 80%;">
+                            <option value="M">My Direct Reporting Users</option>
+                            <option value="A">All Reporting Users</option>
+                        </select>
+
+                        <input type="hidden" id="hdnStatusName" />
+                        <input type="hidden" id="hdnUserName" />
+
+                        <button id="btnGo" type="button" class="btn btn-primary" onclick="fnGetUsers();" style="float: right;">Go</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="tree" style="height: auto; float: left; border: 1px solid gray; display: none;" class="col-lg-12">
+            <div id="divIndication" style="display: none;">The list does not include users who have not entered TP for the chosen month and status filters.</div>
+            <div class="dv-controls-load" id="divloading" style="display: none;">
+                <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                Loading users
+            </div>
+            <div id="divUserHeader" style="display: none;">
+                User Information : <a onclick="fnShowUserTree();" style="cursor: pointer;" title="Show Hierarchy for reference purpose only, not mandatory to click">Show user hierarchy</a>
+            </div>
+            <div id="divUserInfo" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div id="dvloading" style="display: none">
+        <img src="../../Content/images/loading.gif" />
+    </div>
+</div>
+<div class='col-lg-8 rghtInputandRpt inner-div-Tpapproval' style="overflow: auto; display: none;" id="divMain">
+
+    <div id="divHeader" class="divHeader">
+        <span id="spnName" style="font-weight: 500; font-size: initial; text-align: center;"></span>
+    </div>
+
+    <div id="btnSummary">
+        <input class="btn btn-primary btnCustom" id="btn_summary_Expanded" type="button" name="name" onclick="fnGetSummarDetails();" value="Show Summary" style="margin-top: 2%;font-size: 14px;font-weight: bold;" />
+        </a>
+    </div>
+    <div id="divConsolidate" class="card">
+        <div id="dvTpconsolidated"></div>
+        <div id="dvSummary">
+            <input class="btn btn-primary btnCustom" style="margin-bottom: 2%;font-size: 14px;font-weight: bold;" id="btn_SummaryTable_Expanded" type="button" name="name" onclick="fnshowTpDetails();" value="Show Tp Details" />
+            <div id="dvSummaryTable"></div>
+        </div>
+    </div>
+    <div id='dvTPApp'>
+    </div>
+    <div style="clear: both">
+    </div>
+    <br />
+    <div style="border: 1px solid #efefef; padding: 5px" id="dvshowbtn">
+        <div id="dvtpinitimation" style="color: #000066; font-size: 14px; font-weight: bold; padding: 5px">
+        </div>
+        <div id="dv-buttons">
+            <input type="button" value="Approve" class="btn small primary" id="btnApprove" onclick="fnBulkApprove(1)" />
+            <input type="button" value="Unapprove" class="btn small primary" id="btnUnApprove" onclick="fnBulkApprove(0)" />
+        </div>
+    </div>
+</div>
+<div style="clear: both">
+</div>
+</div>
+
+<div id="dvLoading" style="display: none">
+    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+</div>
+
+<div id="dvUserPopup">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('dvUserPopup'); return false;">X</span>
+    <div id="popTree" style="width: 100%">
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvDoctors">
+    <!-- image details -->
+    <div class="details" style="overflow: auto">
+        <div style="font-size: 20px">
+            Doctors & Samples
+        </div>
+        <hr />
+        <div class="group-exp-col">
+            (Click on doctor name to see the samples)
+        </div>
+
+        <div id="dvDoc" style="width: 98%; height: 420px">
+        </div>
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvTpHistory">
+    <!-- image details -->
+    <div class="details" style="overflow: auto">
+        <div style="font-size: 20px">
+            TP Approval History
+        </div>
+        <hr />
+        <div id="dvTPHistorySub" style="width: 98%; height: 420px">
+        </div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvTpReport">
+    <!-- image details -->
+    <div class="details" >
+        <div style="font-size: 20px">
+            TP Details
+        </div>
+        <hr />
+        <div id="dvTp" style="width: 98%; height: 420px; overflow-y:auto;">
+        </div>
+    </div>
+</div>
+
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/HD/TPApproval12.6.11.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+    var userCode = "", UnapprovalNeeded_g = "";
+    var treeExpandLevel = 0, currentUserCode_g = "";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#txtTPMonth').monthpicker();
+            var monthName = fnMonthName();
+            $("#txtTPMonth").val(monthName + '-' + curdate.split('.')[2]);
+            $("#dvAjaxLoad").hide();
+            DoctorHeader_g = fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+            $("#dvDoctors").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            $("#dvTpHistory").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            $("#dvTpReport").overlay({
+                onBeforeLoad: function () {
+                },
+                onLoad: function () {
+                }
+            });
+            fnsetPrivilegeValues();
+            fnGetDivisions();
+            $("#dvAjaxLoad").hide();
+            $(document).ajaxStop($.unblockUI);
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreePostInit() {
+    }
+
+
+    function fnShowUserTree() {
+        try {
+            fnBindUserTree("popTree");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+        ShowModalPopup('dvUserPopup');
+    }
+
+    function fnOpenTree() {
+        $("#tree").slideDown();
+        $("#imggr").hide();
+        $("#imgless").show()
+        $('#leftNav').addClass('col-lg-4')
+        $('#divMain').removeClass('col-lg-12')
+        $('#divMain').addClass('col-lg-8')
+
+        if ($('#leftNav') != null) {
+            $('#leftNav').css('display', '');
+        }
+    }
+    function fnCloseTree() {
+        $("#tree").slideUp();
+        $("#imggr").show();
+        $("#imgless").hide()
+        $('#leftNav').removeClass('col-lg-4')
+        $('#divMain').addClass('col-lg-12')
+        $('#divMain').removeClass('col-lg-8')
+        if ($('#leftNav') != null) {
+            $('#leftNav').css('display', 'none');
+        }
+    }
+    //Function based on MSDN tree format   
+    //function fnToggleTree() {
+    //    if ($("#spnTreeToggle").html() == "Hide Tree") {
+    //        // $('#tree').hide();
+    //        // $("#leftNav").hide();
+    //        $('#tree').hide();  
+    //        $('#leftNav').removeClass('col-xs-5');
+    //        $('#leftNav').removeClass('col-xs-4');
+    //        $('#leftNav').removeClass('col-xs-3');
+    //        $("#divMain").removeClass('col-xs-9');
+    //        $("#divMain").removeClass('col-xs-8');
+    //        $("#divMain").removeClass('col-xs-7');
+    //        $("#divMain").addClass('col-xs-11');            
+    //        $("#spnTreeToggle").html('Show Tree');
+
+    //        //Expand the Tree
+    //        $('#spnTreeResize').attr('title', 'Click here to expand tree');
+    //        $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+    //    }
+    //    else if ($("#spnTreeToggle").html() == "Show Tree") {                    
+    //        $('#tree').show();           
+    //        $('#leftNav').addClass('col-xs-3');
+    //        $('#divMain').removeClass('col-xs-7'); 
+    //        $('#divMain').removeClass('col-xs-8'); 
+    //        $('#divMain').removeClass('col-xs-9');   
+    //        $("#divMain").addClass('col-xs-9');            
+    //        $("#spnTreeToggle").html('Hide Tree');           
+    //    }
+    //}
+
+    //function fnToggleInput() {
+    //    if ($("#spnInputToggle").html() == "Hide Input") {
+    //        $("#divInput").slideUp();
+    //        $("#spnInputToggle").html("Show Input");
+    //    }
+    //    else if ($("#spnInputToggle").html() == "Show Input") {
+    //        $("#spnInputToggle").html("Hide Input");
+    //        $("#divInput").slideDown();
+
+    //    }
+    //}
+
+    //function fnTreeResize(obj) {        
+    //    if (treeExpandLevel == 2) {
+    //        treeExpandLevel = -1;            
+    //    }
+    //    else {
+    //        treeExpandLevel = parseInt(treeExpandLevel) + 1;
+    //        $('#dvTPMonth').show();
+    //    }
+    //    fnExpandCollapseUserTreeTPApproval(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'tree');
+    //}
+
+    //function fnExpandCollapseUserTreeTPApproval(treeExpandLevel, mainDivId, treeNavId, obj, mainReptId, treeId) {       
+    //    $('#' + treeNavId).show();
+
+    //    if (treeExpandLevel == 0) {
+    //        $('#' + mainDivId).show();
+    //        $(obj).removeAttr('title');
+    //        $('#' + mainDivId).removeClass('col-xs-5');
+    //        $('#' + mainDivId).addClass('col-xs-3');
+    //        $('#' + treeId).show();
+    //        $('#dvTPMonth').show();
+    //        $('#' + mainReptId).removeClass('col-xs-7');
+    //        $('#' + mainReptId).addClass('col-xs-9');
+    //        //$("#spnTreeToggle").html('Hide Tree');
+    //        treeExpandLevel = treeExpandLevel + 1;
+    //        $(obj).attr('title', 'Click here to expand tree');
+    //        $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+    //    }
+    //    else if (treeExpandLevel == 1) {
+    //        $('#' + mainDivId).show();
+    //        $(obj).removeAttr('title');
+    //        $('#' + mainDivId).removeClass('col-xs-3');
+    //        $('#' + mainDivId).addClass('col-xs-4');
+    //        $('#' + treeId).show();
+    //        $('#dvTPMonth').show();
+    //        $('#' + mainReptId).removeClass('col-xs-11');
+    //        $('#' + mainReptId).addClass('col-xs-8');
+    //        //$("#spnTreeToggle").html('Hide Tree');
+    //        treeExpandLevel = treeExpandLevel + 1;
+    //        $(obj).attr('title', 'Click here to expand tree');
+    //        $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+    //    }
+    //    else if (treeExpandLevel == 2) {
+    //        $('#' + mainDivId).show();
+    //        $(obj).removeAttr('title');
+
+    //        $('#' + mainDivId).removeClass('col-xs-4');
+    //        $('#' + mainDivId).addClass('col-xs-5');
+    //        $('#' + treeId).show();
+    //        $('#dvTPMonth').show();
+    //        $('#' + mainReptId).removeClass('col-xs-8');
+    //        $('#' + mainReptId).addClass('col-xs-7');
+    //        // $("#spnTreeToggle").html('Hide Tree');
+    //        treeExpandLevel = treeExpandLevel + 1;
+    //        $(obj).html('<i class="fa fa-chevron-circle-left fa-lg"></i>');
+    //        $(obj).attr('title', 'Click here to collapse tree');
+
+    //    }
+    //    else {
+    //        $('#' + mainDivId).removeClass('col-xs-5');
+    //        $('#' + mainDivId).removeClass('col-xs-4');
+    //        $('#' + mainDivId).removeClass('col-xs-3');
+
+    //        $('#' + treeId).hide();
+    //        $('#dvTPMonth').hide();
+
+    //        $('#' + mainReptId).removeClass('col-xs-7');
+    //        $('#' + mainReptId).removeClass('col-xs-8');
+    //        $('#' + mainReptId).removeClass('col-xs-9');
+    //        $('#' + mainReptId).addClass('col-xs-11');
+    //        //$("#spnTreeToggle").html('Show Tree');
+
+    //        $(obj).removeAttr('title');           
+    //        $(obj).removeAttr('title');
+    //        treeExpandLevel = -1;
+    //        $(obj).html('<i class="fa fa-chevron-circle-right fa-lg"></i>');
+    //        $(obj).attr('title', 'Click here to expand tree');
+    //    }
+    //}
+</script>

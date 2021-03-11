@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "UserPayrollMapping";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #dvUserTree {
+        height: 450px;
+        overflow: auto;
+    }
+
+    #spnTree {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+    }
+</style>
+<div class="col-lg-12">
+    <div class="col-lg-12"><span id="spnTree" onclick="fnHideTree();">Hide Tree</span></div>
+    <div class="">
+        <div class="col-sm-4" style="float: left;" id="dvLeftPanel">
+            <div id="dvUserTree">
+                <center>
+                <div id="loading"><img src="../../Content/images/loader1.gif" height="32px"></div>
+                </center>
+            </div>
+        </div>
+        <div class="col-lg-8" id="dvRightPanel">
+            <div class="col-lg-12" style="overflow: auto">
+                <div class="col-lg-6" style="float: right;">
+                    <div class="col-lg-12">
+                        <div style="width: 13%; float: left;">
+                            Search
+                        </div>
+                        <div style="width: 70%; float: left;">
+                            <input type="text" id="txtUserSearch" class="form-control" />
+                        </div>
+                        <div style="width: 10%; float: left; padding-left: 2%;">
+                            <input type="button" value="Go" onclick="fnGetSearchResult();" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 table-responsive clearfix" id="dvUsers">
+            </div>
+            <div class="col-lg-12">
+                <input type="button" class="btn small primary" id="dvBtnSubmit" value="Submit" onclick="fnSubmitMapping();" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+
+    </div>
+    <div style="clear: both;"></div>
+</div>
+<script lang="ja">
+    var pageSize = 20;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $.blockUI();
+        fnBindUserTree("dvUserTree");
+        $('#dvRightPanel').hide();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnUserTreePostInit() {
+    }
+    function fnUserTreeNodeClick() {
+        fnGetChildUsersWithPayrollId(1);
+        $('#dvRightPanel').show();
+    }
+
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-sm-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+
+    }
+    function fnHide() {
+        $("#spnTree").html('Hide Tree');
+        fnHideTree();
+    }
+    function fnGetChildUsersWithPayrollId(pageNumber) {
+        // $('#dvRightPanel').hide();
+        $('#dvUsers').html('');
+        var userCode = "";
+        var userTree = $("#dvUserTree").dynatree("getTree");
+        if (userTree.getActiveNode() != null) {
+            userCode = userTree.getActiveNode().data.key;
+        }
+        var searchName = "";
+        if ($.trim($("#txtUserSearch").val()) != '') {
+            searchName = $.trim($("#txtUserSearch").val());
+        }
+        $('#dvRightPanel').block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '../HiDoctor_Master/User/GetChildUsersWithPayrollId',
+            data: "pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&searchKey=" + searchName + "&userCode=" + userCode + "",
+            success: function (result) {
+                $('#dvUsers').html(result);
+                $('#dvRightPanel').show();
+                if ($('#tblUsers tr').length == "1") {
+                    $('#dvBtnSubmit').hide();
+                }
+                else {
+                    $('#dvBtnSubmit').show();
+                }
+                $("#dvRightPanel").unblock();
+            },
+            error: function () {
+                $("#dvRightPanel").unblock();
+            },
+            complete: function () {
+                $("#dvRightPanel").unblock();
+            }
+        });
+    }
+
+
+    function fnGoToPrevPage() {
+        if ($('#pageno').is(":visible")) {
+            var pno = parseInt($('#pageno').html()) - 1;
+            fnGetChildUsersWithPayrollId(pno);
+        }
+        else {
+            fnGetChildUsersWithPayrollId(1);
+        }
+    }
+    function fnGoToNextPage() {
+        
+        if ($('#pageno').is(":visible")) {
+            var pno = parseInt($('#pageno').html()) + 1;
+            fnGetChildUsersWithPayrollId(pno);
+        }
+        else {
+            fnGetChildUsersWithPayrollId(1);
+        }
+    }
+    function fnGoToPage() {
+        var pno = $('#drpPaging :selected').val();
+        if ($('#pageno').is(":visible")) {
+            fnGetChildUsersWithPayrollId(pno);
+        }
+        else {
+            fnGetChildUsersWithPayrollId(1);
+        }
+    }
+
+    function fnSubmitMapping() {
+        //txtPayrollId_
+        var tblLength = $('#tblUsers tr').length;
+        for (var i = 1; i < tblLength; i++) {
+            if ($('#txtPayrollId_' + i) != null) {
+                var payrollId = $('#txtPayrollId_' + i).val();
+                if ($.trim($('#txtPayrollId_' + i).val()) != '') {
+                    var specialCharregex = new RegExp("^[a-zA-Z0-9-]+$");
+                    // var specialCharregex = new RegExp("^[a-zA-Z0-9()' '._]+$");
+                    if (!specialCharregex.test(payrollId)) {
+                        //    return false;
+                        //}
+                        //else {
+                        //    return true;
+                        //}
+                        //var result = regExforAlphaNumeric(payrollId);
+                        //if (!result) {
+                        fnMsgAlert('info', 'Info', 'Please remove the special characters from the payroll user id. Error at row number ' + i);
+                        return;
+                    }
+                }
+            }
+        }
+        var userData = "";
+        for (var i = 1; i < tblLength; i++) {
+            if ($('#txtPayrollId_' + i) != null) {
+                if ($.trim($('#txtPayrollId_' + i).val()) != '') {
+                    userData += $('#hdnUserCode_' + i).val() + "|";
+                    userData += $.trim($('#txtPayrollId_' + i).val()) + "|";
+                    userData += $('#tdUserName_' + i).html() + "|";
+                    userData += "~";
+                }
+                else {
+                    if ($('#hdnMode_' + i).val() == "E") {
+                        userData += $('#hdnUserCode_' + i).val() + "|";
+                        userData += $.trim($('#txtPayrollId_' + i).val()) + "|";
+                        userData += $('#tdUserName_' + i).html() + "|";
+                        userData += "~";
+                    }
+                }
+            }
+        }
+        if ($.trim(userData) != '') {
+            $.ajax({
+                type: 'POST',
+                url: '../../HiDoctor_Master/User/InsertPayrollMapping',
+                data: "userCodes=" + userData + "",
+                success: function (result) {
+                    if (result.split(':')[0] == "SUCCESS") {
+                        fnMsgAlert('success', 'Success', result.split(':')[1]);
+                        fnGoToNextPage();
+                    }
+                    else {
+                        fnMsgAlert('info', 'Error', result.split(':')[1]);
+                        if ($('#pageno').length > 0) {
+                            fnGetChildUsersWithPayrollId($('#pageno').html());
+                        }
+                        else {
+                            fnGetChildUsersWithPayrollId(1);
+                        }
+                    }
+                },
+                error: function () {
+                    $("#dvRightPanel").unblock();
+                },
+                complete: function () {
+                    $("#dvRightPanel").unblock();
+                }
+            });
+        }
+        else {
+            fnMsgAlert('info', 'Info', 'No details found');
+            return;
+        }
+    }
+    function fnGetSearchResult() {
+        fnGetChildUsersWithPayrollId(1);
+    }
+</script>

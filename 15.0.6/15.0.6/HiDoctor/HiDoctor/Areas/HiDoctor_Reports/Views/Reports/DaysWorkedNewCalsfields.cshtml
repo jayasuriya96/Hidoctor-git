@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "DaysWorkedNewCalsfields";
+    Layout=null;
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div>
+    <td colspan="2" align="center">
+        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnGetFWADayWorkedAnalysis();" />
+    </td>
+</div>
+<div>
+    <div id="divheader"></div>
+    <div id="divdayanalysisReport"></div>
+</div>
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divPrint" style="display: none;"></div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/FWAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+    });
+
+
+</script>

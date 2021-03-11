@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "@*PrimarySalesParameters*@";
+    Layout=null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    #dvMenuItems a {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    #dvEdit a {
+        color: blue;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvInsert">Add Parameter</a></li>
+            <li><a href="#dvEdit">Edit Parameter</a></li>
+        </ul>
+        <div id="dvInsert" class="form-group">
+            <div class="col-lg-12 form-group clearfix">
+                <div class="col-sm-2 form-group">
+                    Parameter Name
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="text" id="txtParameterName" class="form-control" maxlength="50" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+
+            <div class="col-lg-12 form-group clearfix">
+                <div class="col-sm-2 form-group">
+                    Parameter Column Name
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="text" id="txtParameterColumnName" class="form-control" maxlength="50" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12 form-group clearfix">
+                <div class="col-sm-2 form-group">
+                    Flag
+                </div>
+                <div class="col-sm-4 form-group">
+                    <select id="cboFlag" class="form-control">
+                        <option value="D">Date</option>
+                        <option value="M">Month</option>
+                        <option value="Y">Year</option>
+                    </select>
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12 form-group clearfix">
+                <div class="col-sm-2 form-group">
+                </div>
+                <div class="col-sm-4 form-group">
+                    <input type="button" class="btn small primary" value="submit" onclick="fnParameterSubmit();" />
+                    <input type="button" class="btn small primary" value="Clear" onclick="fnClearAll();" />
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+        </div>
+
+        <div id="dvEdit" class="col-lg-12 form-group" style="overflow: auto;">
+            <div id="dvParam" class="table-responsive">
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<input type="hidden" id="hdnParameterCode" value="" />
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvPanel").tabs();
+        fnFillParameters();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnFillParameters() {
+        $('#main').block({
+            message: '<h3>Processing</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            url: '../HiDoctor_Master/ProductMaster/GetPrimarySalesParameters/',
+            type: "POST",
+            data: "A",
+            success: function (result) {
+                $('#dvParam').html(result)
+                $("#main").unblock();
+            },
+            error: function () {
+                $("#main").unblock();
+            },
+            complete: function () {
+                $("#main").unblock();
+            }
+        });
+    }
+    function fnEditParam(parameterCode, parameterName, columnName, flag) {
+        $('#hdnMode').val('EDIT');
+        $('#txtParameterName').val(parameterName);
+        $('#hdnParameterCode').val(parameterCode);
+        $('#txtParameterColumnName').val(columnName);
+        $('#cboFlag').val(flag);
+        $('#dvPanel').tabs('option', 'selected', 0);
+    }
+    function fnChangeParamStatus(parameterCode, recordStatus) {
+        if (confirm('Do you want to change the status')) {
+            $('#hdnMode').val('DELETE');
+            $('#main').block({
+                message: '<h3>Processing</h3>',
+                css: { border: '2px solid #ddd' }
+            });
+            var status = "";
+            if (recordStatus == "1") {
+                status = "0";
+            }
+            else {
+                status = "1";
+            }
+            $.ajax({
+                url: '../HiDoctor_Master/ProductMaster/InsertPSParameter/',
+                type: "POST",
+                data: "parameterCode=" + parameterCode + "&mode=" + $('#hdnMode').val() + "&status=" + status + "",
+                success: function (result) {
+                    if (result.split(':')[0] == 'SUCCESS') {
+                        fnMsgAlert('success', 'Success', result.split(':')[1]);
+                    }
+                    else {
+                        fnMsgAlert('info', 'Error', result.split(':')[1]);
+                    }
+                    fnFillParameters();
+                    $("#main").unblock();
+                },
+                error: function () {
+                    $("#main").unblock();
+                },
+                complete: function () {
+                    $("#main").unblock();
+                }
+            });
+        }
+    }
+
+    //Allowing Alphanumeric and Underscore with space
+    function fnValidateParamName(value) {
+        var specialCharregex = new RegExp("^[a-zA-Z0-9()%' ']+$");
+        if (!specialCharregex.test(value)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function fnValidateParamColumnName(value) {
+        var specialCharregex = new RegExp("^[a-zA-Z0-9_]+$");
+        if (!specialCharregex.test(value)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function fnParameterSubmit() {
+        
+        var paramName = $('#txtParameterName').val();
+        if ($.trim(paramName) != '') {
+            if (!fnValidateParamName(paramName)) {
+                fnMsgAlert('info', 'Validate', 'Please remove the special characters from the parameter name');
+                return;
+            }
+        }
+        else {
+            fnMsgAlert('info', 'Validate', 'Please enter parameter name');
+            return;
+        }
+        var paramColumnName = $('#txtParameterColumnName').val();
+        if ($.trim(paramColumnName) != '') {
+            if (!fnValidateParamColumnName(paramColumnName)) {
+                fnMsgAlert('info', 'Validate', 'Please remove the special characters from the parameter column name');
+                return;
+            }
+        }
+        else {
+            fnMsgAlert('info', 'Validate', 'Please enter parameter column name');
+            return;
+        }
+        $('#main').block({
+            message: '<h3>Processing</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            url: '../HiDoctor_Master/ProductMaster/InsertPSParameter/',
+            type: "POST",
+            data: "parameterName=" + $('#txtParameterName').val() + "&parameterCode=" + $('#hdnParameterCode').val()
+                        + "&mode=" + $('#hdnMode').val() + "&flag=" + $('#cboFlag').val() + "&status=1&columnName=" + $('#txtParameterColumnName').val() + "",
+            success: function (result) {
+                if (result.split(':')[0] == 'SUCCESS') {
+                    fnMsgAlert('success', 'Success', result.split(':')[1]);
+                    fnClearAll();
+                }
+                else {
+                    fnMsgAlert('info', 'Error', result.split(':')[1]);
+                }
+                fnFillParameters();
+                $("#main").unblock();
+            },
+            error: function () {
+                $("#main").unblock();
+            },
+            complete: function () {
+                $("#main").unblock();
+            }
+        });
+    }
+
+    function fnClearAll() {
+        $('#txtParameterName').val('');
+        $('#txtParameterColumnName').val('');
+        $('#hdnParameterCode').val('');
+        $('#hdnMode').val('INSERT');
+        $('#cboFlag').val('D');
+    }
+</script>
+

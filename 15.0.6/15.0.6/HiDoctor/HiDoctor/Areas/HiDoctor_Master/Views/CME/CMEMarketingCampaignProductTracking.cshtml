@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "MarketingCampaignProductTracking";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+
+</style>
+<div class="container">
+    <div class="col-lg-12 row">
+        <div class="col-lg-2">
+            <label>Region Name : </label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" tabindex="1" id='Region' />
+        </div>
+    </div>
+    <div class="col-lg-12 row cmename mt-3" style="display: flex !important;">
+        <div class="col-lg-2">
+            <label>Campaign Name : </label>
+        </div>
+        <div class="col-lg-3" id="cmeinput">
+            <input type='text' tabindex='1' id='CME' />
+        </div>
+    </div>
+    <div class="col-lg-12 mt-3">
+        <input type="button" id="go" value="Go" class="col-lg-0 offset-lg-2 btn btn-primary" />
+    </div>
+</div>
+<div class="col-lg-12 container" style="padding:0px 0px 0px">
+    <div id="DocName" style="padding:0px"></div>
+</div>
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/CME/CMECampaignProductTracking.js"></script>
+<script>
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        $('.cmename').hide();
+        CME.Init();
+        CME.defaults.CompanyCode= @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        CME.defaults.CompanyId= @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        CME.defaults.RegionCode= @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        CME.defaults.UserCode= @Html.Raw(Json.Encode(ViewBag.User_Code));
+        CME.defaults.UserTypeCode=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+        getAllCMERegion()
+
+    })
+    function getAllCME()
+    {
+        var region=$('#Region_hidden').val()
+        debugger;
+        Method_params = ["CMEApi/GetCampaignNameDetails", CME.defaults.CompanyCode,region];
+        CoreREST.get(null, Method_params, null, getAllCMESuccess,getAllCMESuccessFailure);
+    }
+    function getAllCMESuccess(response)
+    {
+        debugger;
+        var dropDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a Campaign Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Name', value: 'Code' },
+            popupHeight: '250px',
+            allowFiltering: true,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Name', 'startswith', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        $('.cmename').show();
+        $('#cmeinput').html('');
+        $('#cmeinput').html("<input type='text' tabindex='1' id='CME' />");
+        dropDownListObj.appendTo('#CME');
+    }
+    function getAllCMESuccessFailure(response)
+    {
+
+    }
+    function getAllCMERegion()
+    {
+        debugger;
+
+        Method_params = ["CMEApi/GetCMERegionNameDetails", CME.defaults.CompanyCode, CME.defaults.RegionCode];
+        CoreREST.get(null, Method_params, null, getAllCMERegionSuccess,getAllCMERegionSuccessFailure);
+    }
+    function getAllCMERegionSuccess(response)
+    {
+        debugger;
+        var dropDownListObj = new ej.dropdowns.DropDownList({
+            placeholder: 'Select a Region Name',
+            filterBarPlaceholder: 'Search',
+            dataSource: response.list,
+            fields: { text: 'Region_Name', value: 'Region_Code' },
+            popupHeight: '250px',
+            change:getAllCME,
+            allowFiltering: true,
+            filtering: function (e) {
+                var dropdown_query = new ej.data.Query();
+                dropdown_query = (e.text !== '') ? dropdown_query.where('Region_Name', 'startswith', e.text, true) : dropdown_query;
+                e.updateData(response.list, dropdown_query);
+            }
+        });
+        dropDownListObj.appendTo('#Region');
+    }
+    function getAllCMERegionSuccessFailure(response)
+    {
+
+    }
+</script>

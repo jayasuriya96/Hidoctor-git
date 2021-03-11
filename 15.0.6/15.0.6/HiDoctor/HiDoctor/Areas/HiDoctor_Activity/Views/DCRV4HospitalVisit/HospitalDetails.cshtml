@@ -1,0 +1,257 @@
+﻿
+<style type="text/css">
+    .cvImg {
+        padding-left: 6px;
+    }
+
+    #dvAllPro_Chemist {
+        overflow: auto;
+        height: 350px;
+    }
+
+    .doctorAccDetailsBox {
+        width: 98%;
+        border-bottom: 1px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="HospitalDetailsbox HospitalDay DetailsBox">
+    <div class="Hospitalheader">
+        @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgDoctorDetailed"> <span id="DoctorloadingTitle" class="loadingcaption"> <span class="spnDcoCuss">Customer</span> Details Settings...</span>*@
+        <span class="fontweightbold" style="float: left"><span class="spnhospital">Customer</span> Details</span>
+        <div class="helpIconmargin">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','CHECUSTDETAILS')" />
+        </div>
+    </div>
+    <input id="hdChemistVisitCode" type="hidden" />
+
+    <div class="rowdiv">
+        <div class="column1">
+            <label><span class="spnDcoCus1">Name</span></label>
+        </div>
+        <div class="column2">
+            <input type="text" id="txthsptlname" class="autoHospital" onblur="HospitalVisit.fngetcontact();" />
+            <input type="hidden" id="hdnHospitalCode" />
+            <input type="hidden" id="hdnDVHospitalCode" />
+        </div>
+
+    </div>
+
+    <div class="rowdiv" id="div_doc_visitmode_cv">
+        <div id="visitmode" style="display:none;">
+            <div class="column1">
+                <label>
+                    Visit Mode
+                </label>
+            </div>
+            <div class="column2">
+                <input type="radio" name="rdhsptlvisitmode_cv" value="AM" checked />
+                <span id="spnAM_cv">AM</span>
+                <input type="radio" name="rdhsptlvisitmode_cv" value="PM">
+                <span id="spnPM_cv">PM</span>
+                <label id="lblChevisitmode"></label>
+            </div>
+        </div>
+    </div>
+    <div id="div_doc_visittime_cv" class="rowdiv" style="display:none;">
+        <div class="column1">
+            <label>Visit Time</label>
+        </div>
+        <div class="column2">
+            <input type="text" id="timepicker_cv" />
+            @*onchange="fnSetFormMode(event)"*@
+            <label id="lbltimepicker_cv"></label>
+
+        </div>
+    </div>
+
+    <div class="rowdiv">
+        <div class="column1">
+            <label>
+                Remarks
+            </label>
+        </div>
+        <div class="column2">
+            <textarea id="txtHospitalRemarks" style="height: 20px;" class="setfocus"></textarea>
+        </div>
+    </div>
+</div>
+<div id="Contactdetails">
+    <center class="OTC/PharmaBlock" id="Contact" style="margin-left:-7px;">
+        <div class="listheaderbar" style="width:98%;" onclick="HospitalVisit.fnTableShowHide('divContact','spnContact')">
+            <div class="collapse" id="spnContact" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                <div style="float:left">Contact Details</div>
+            </div>
+            <div class="helpIconmargin">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+            </div>
+        </div>
+        <div class="doctorAccDetailsBox" id="divContact">
+            <div style="text-align: left;font-weight: 500;margin-left: 1%;">Contact Details</div>
+            <table id="tbl_Contacts" style="width: 98.5%;margin-bottom:5px;">
+                <thead>
+                    <tr>
+                        <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                            Name
+                        </td>
+                        @*<td class="dcr_product_header" style="text-align:left;width: 29px;">
+                                Title
+                            </td>*@
+                        <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                            Mobile
+                        </td>
+                        <td class="dcr_product_header" style="text-align:left;padding-left:19px">Email Id</td>
+                        <td></td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </center>
+</div>
+<div id="Activitydetails">
+    <center class="OTC/PharmaBlock" id="ACTIVITY" style="margin-left:-7px;">
+        <div class="listheaderbar" style="width:98%;" onclick="HospitalVisit.fnTableShowHide('divhsptlActivity','spnActivity')">
+            <div class="collapse" id="spnActivity" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                <div style="float:left">Activity</div>
+            </div>
+            <div class="helpIconmargin">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+            </div>
+        </div>
+        <div class="doctorAccDetailsBox" id="divhsptlActivity">
+            <div style="text-align: left;font-weight: 500;margin-left: 1%;">Call Activity</div>
+            <table id="tbl_HospitalActivity" style="width: 98.5%;margin-bottom:5px;">
+                <thead>
+                    <tr>
+                        <td class="dcr_product_header" style="text-align:left;width: 29px;">
+                            Type
+                        </td>
+
+                        <td class="dcr_product_header" style="text-align:left;padding-left:19px">Remarks</td>
+                        <td></td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </center>
+</div>
+<div id="Sampledetails">
+    <center class="PharmaBlock" id="SAMPLES" style="margin-left:-7px;">
+        <div class="listheaderbar" style="width:98%;" onclick="HospitalVisit.fnTableShowHide('divhsptlproducts', 'spnHsptlproducts')">
+            <div class="collapse" id="spnHsptlproducts" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                <div style="float:left">Samples / Promotional items / Activity</div>
+                @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloadInputs">*@
+                @*<span id="inputsLoadingTitle" class="loadingcaption"> Sample/Promotional items autofill setting</span>*@
+            </div>
+            <div class="helpIconmargin">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_DOCVISIT','INPUT')" />
+            </div>
+        </div>
+        <div class="doctorAccDetailsBox" id="divhsptlproducts">
+            <table id="tbl_HospitalProducts" style="width: 98.5%;margin-bottom:5px;">
+                <thead>
+                    <tr>
+                        <td class="dcr_Hopsitalproduct_header" style="text-align:left;">
+                            Input Name
+                        </td>
+                        <td class="dcr_Hopsitalproduct_header txtqty" style="text-align:left;padding-left:30px">
+                            Batch Number
+                        </td>
+                        <td class="dcr_Hopsitalproduct_header txtqty" style="text-align:left;padding-left:23px;">
+                            Quantity
+                        </td>
+                        <td class="dcr_Hopsitalproduct_header"></td>
+                    </tr>
+                </thead>
+                @*<tbody>
+                    </tbody>*@
+            </table>
+        </div>
+    </center>
+</div>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRAllowedSpecialCharacters.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4HospitalVisit.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    var DoctorHeader = '';
+    var chemistName = "";
+    var CompanyCode="";
+    var CompanyId="";
+    var UserCode="";
+    var UserName="";
+    var RegionCode="";
+    var RegionName="";
+    var Visitmode="";
+    var dcrActualDate_g;
+    var productBringType_g;
+    var flag_g;
+    var HospitalEntryMode_g;
+    var queryString_g;
+    var input_hsptlqty_default_g;
+    var CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var UserName=@Html.Raw(Json.Encode(ViewBag.UserName));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    var RegionName=@Html.Raw(Json.Encode(ViewBag.RegionName));
+    queryString_g =  @Html.Raw(Json.Encode(ViewBag.QueryString));
+    flag_g = queryString_g.split('&')[8];
+    dcrActualDate_g = queryString_g.split('&')[3];
+    // var dcrDate = dcrActualDate_g.split('-')[2] + "-" + dcrActualDate_g.split('-')[1] + "-" + dcrActualDate_g.split('-')[0];
+    HospitalEntryMode_g = fnGetPrivilegeValue('RIGID_HOSPITAL_ENTRY', 'YES');
+    input_hsptlqty_default_g = fnGetPrivilegeValue('INPUT_QTY_DEFAULT', '0');
+    DoctorHeader = fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+    $('.spnDcoCuss').text(DoctorHeader);
+    chemistName = fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+    $('.spnDcoCuss').text(chemistName);
+    $('.spnhospital').text('Hospital');
+    chemistName = fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+    Visitmode = fnGetPrivilegeValue("DCR_HOSPITAL_VISIT_MODE", "AM_PM");
+    var productBringType = fnGetPrivilegeValue('DCR_PRODUCTS_BRING_TYPE', '') + "^";
+    productBringType_g = productBringType.replace(/,/g, '^');
+    if(productBringType_g == "^")
+    {
+        $('#div_productdetails_entry').css('display','none');
+        $('#productHeader').css('display','none');
+    }
+    if (chemistName.length >= 20) {
+        chemistName = chemistName.substr(0, 20) + "...";
+    }
+    if (chemistName != '') {
+        $("#divChemist").text(chemistName);
+    }
+
+    $(document).ready(function () {
+        debugger;
+        try {
+            //function GetHospitalD()
+            //{
+            //    HospitalVisit.GetHospitaldetails();
+            //}
+            $('#timepicker_cv').timepicker({
+                showPeriod: true,
+                showLeadingZero: true
+            });
+            if (Visitmode=="AM_PM") {
+                $("#visitmode").show();
+                $("#div_doc_visittime_cv").hide();
+            }
+            else if (Visitmode=="VISIT_TIME") {
+                $("#visitmode").hide();
+                $("#div_doc_visittime_cv").show();
+            }
+            else if (Visitmode=="VISIT_TIME_MANDATORY"){
+                $("#visitmode").hide();
+                $("#div_doc_visittime_cv").show();
+            }
+
+            HospitalVisit.Onit();
+            // autoComplete(chemistAutoFill_g, "txtChemistName", "hdnChemistCode", "auto_Chemist_Visit");
+        }
+        catch (ex) {
+        }
+    });
+</script>

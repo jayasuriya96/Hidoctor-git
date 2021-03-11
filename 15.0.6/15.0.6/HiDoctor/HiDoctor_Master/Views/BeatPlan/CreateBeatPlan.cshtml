@@ -1,0 +1,487 @@
+﻿@{
+
+    ViewBag.Title = "CreateBeatPlan";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+    #dvMainBody {
+        height: 850px;
+    }
+
+    #dvTree {
+        height: 600px;
+        overflow: auto;
+        float: left;
+    }
+
+    #dvCreate {
+        display: none;
+        float: right;
+    }
+
+    .bg-info {
+        background-color: rgb(23, 162, 184) !important;
+    }
+
+    .token-input-list-facebook {
+        width: auto !important;
+    }
+
+    #dvButtons {
+        text-align: right;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    .e-grid .e-gridheader tr:first-child th {
+        background-color: gray;
+    }
+
+    span.e-headertext {
+        color: white;
+        text-align: center;
+    }
+
+    .localArea_label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .card-columns1 {
+        column-count: 1;
+    }
+
+    .form-group {
+        margin-bottom: unset;
+        font-size: 13px;
+    }
+
+    @@media only screen and (min-width: 992px) {
+
+        .card-columns {
+            column-count: 3;
+        }
+    }
+
+     /*.e-ddl .e-popup .e-multi-select-list-wrapper .e-content .e-popup-open {*/
+    #txtWorkArea_popup {
+        max-height: 300px !important;
+        width: 438px !important;
+    }
+</style>
+
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Beat/Patch Plan
+        </div>
+        <div class="card-body" id="dvMainBody">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><b>Create Beat/Patch Plan</b></a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><b>View/Edit Plan(s)</b></a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="flex-fill col-sm-3" id="idShowhidelink">
+                        <p class="text-primary mb-0 mt-1" style="cursor:pointer;text-decoration:underline;" id="showhide">Hide</p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 mt-3">
+                        <div class="col-sm-3 col-md-3" id="dvTree">
+
+                        </div>
+                        <div class="col-sm-12 col-md-12" id="dvCreate">
+                            <div class="form-row mt-3">
+                               
+                                <div class="col-sm-2">
+                                    <label for="CPName">Category :</label><span class="Mandatory">*</span>
+                                </div>
+                                <div class="col-sm-4" id="dvWorkCategory">
+                                    <select class="form-control" id="ddlWorkCategory">
+                                        <option value="-1" selected disabled>Select Work Category</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="CPName">Beat Name :</label><span class="Mandatory">*</span>
+                                </div>
+                                <div class="col-sm-4" id="dbbeatname">
+                                    <input type="text" id="txtBeatName" class="form-control" name="BeatName" maxlength=""  />
+                                </div>
+                            </div>
+                            <div class="form-row mt-3">
+                                <div class="col-sm-2">
+                                    <label for="CPName">Work Area :</label><span class="Mandatory">*</span>
+                                </div>
+                                <div class="col-sm-4" id="dvtxtWorkArea">
+                                    <input type="text" id="txtWorkArea" name="workarea" class="form-control" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="CPName">Week number:</label><span class="Mandatory">*</span>
+                                </div>
+                                <div class="col-sm-4" id="dvtxtWeeknum">
+                                        <select class="form-control" id="txtWeeknumber">
+                                            <option value="-1" selected disabled>Select Week Number</option>
+                                        </select>
+                                    @*<input type="text" id="txtWeeknumber" name="weeknumber" class="form-control" />*@
+                                </div>
+                            </div>
+                            @*<div class="form-row mt-3">
+                                <div class="col-sm-2">
+                                    <label for="CPName">Week number:</label><span class="Mandatory">*</span>
+                                </div>
+                                <div class="col-sm-4" id="dvtxtWeeknum">
+                                    <input type="text" id="txtWeeknumber" name="weeknumber" class="form-control" />
+                                </div>
+                            </div>*@
+                            <div class="form-row mt-3">
+                                <div class="col-sm-2">
+                                    <label for="CPName">Week day :</label>
+                                </div>
+                                <div class="col-sm-4" id="dvtxtWeekday">
+                                    <select class="form-control" id="txtWeekday">
+                                        <option value="-1" selected disabled>Select Week Day</option>
+                                    </select>
+                                    @*<input type="text" id="txtWeekday" name="weekday" class="form-control" />*@
+                                </div>
+                            </div>
+                            <div class="form-row mt-3">
+                                <div class="col-sm-2">
+                                    <label for="SFCDetails">SFC Details :</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <table class="table table-bordered" id="SFCMappingtable">
+                                        <thead class="bg-info text-white">
+                                            <tr>
+                                                <th>From Place</th>
+                                                <th>To Place</th>
+                                                <th>Travel Mode</th>
+                                                @* <th>Action</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodySFC">
+                                            <tr id="rowData_1">
+                                                <td id="fromPlace_1"><input type="text" id="FromPlace_1" class="form-control" /></td>
+                                                <td id="toPlace_1"><input type="text" id="ToPlace_1" class="form-control" /></td>
+                                                <td><input type="text" id="TravelMode_1" class="form-control" /></td>
+                                                @* <td><i class="fa fa-minus" aria-hidden="true" style="display:none;"></i><i class="fa fa-plus" aria-hidden="true"></i></td>*@
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mt-3" id="dvButtons">
+                                <button type="button" class="btn btn-info col-sm-1 mr-2" id="btnClear" onclick="CreateBeatPlan.fnClearControls();">Clear</button>
+                                <button type="button" class="btn btn-info col-sm-1" id="btnSubmit" onclick="CreateBeatPlan.fnSaveBeat();">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="display:none;">
+                    <div class="cols-m-12 col-md-12" style="display:none;" id="dvBeatDetailsGrid">
+                        <div class="col-xs-12 form-row">
+                            <div class="d-flex">
+                                <div class="p-2 bg-highlight">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input align-top" name="BeatPlansStatus" id="hdnHeaderId" value="-1">
+                                        <label class="custom-control-label" for="hdnHeaderId"><b>All</b></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 bg-highlight">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input align-top" name="BeatPlansStatus" id="hdnHeaderId_2" value="2">
+                                        <label class="custom-control-label" for="hdnHeaderId_2"><b>Applied</b></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 bg-highlight">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input align-top" checked="" name="BeatPlansStatus" id="hdnHeaderId_1" value="1">
+                                        <label class="custom-control-label" for="hdnHeaderId_1"><b>Approved</b></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 bg-highlight">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input align-top" name="BeatPlansStatus" id="hdnHeaderId_0" value="0">
+                                        <label class="custom-control-label" for="hdnHeaderId_0"><b>UnApproved</b></label>
+                                    </div>
+                                </div>
+                                <div class="p-2 bg-highlight">
+                                    <button type="button" id="dvbuttonGet" class="btn btn-info col-sm-12 btn-sm " onclick="CreateBeatPlan.fnGetBeatPlanDetails('S');">Show Details</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear: both;border-bottom: 1px solid darkgrey;padding-bottom: 10px;"></div>
+                        @*<div class="col-xs-12 form-row">
+
+                            </div>
+                            <div style="clear: both;border-bottom: 1px solid darkgrey;padding-bottom: 10px;"></div>*@
+                        <div class="d-flex flex-row bd-highlight justify-content-center mt-2" style="" id="dvCommonFunctions">
+                            <h6>Beat / Patch Plan Details of the Region "<span id="spanregionName"></span>" in "<span id="spanStatus"></span>" Status.</h6>
+                        </div>
+                        <div style="clear: both;border-bottom: 1px solid darkgrey;padding-bottom: 10px;"></div>
+                        <div id="divReport" class="mt-3">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<input type="hidden" id="hdnbeatCode" value="0" />
+
+
+<div class="modal fade bd-example-modal-xl show" tabindex="-1" role="dialog" data-backdrop="static" id="beatModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel">Beat / Patch Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="CreateBeatPlan.fnCloseBeatModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="beatPopBody" style="height: 550px;overflow-y: auto;">
+                <div class="" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl show" tabindex="-1" role="dialog" data-backdrop="static" id="EntityModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-xl" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel"><span id="spanEntity"></span> Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="CreateBeatPlan.fnCloseEntityModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="EntityPopBody" style="height: 550px;overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg show" tabindex="-1" role="dialog" data-backdrop="static" id="HistoryModal" aria-labelledby="myExtraLargeModalLabel" style="display: none; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myExtraLargeModalLabel">Beat Details</h5>
+                <button type="button" class="close" aria-label="Close" onclick="CreateBeatPlan.fnCloseHistoryModal();">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="HistoryPopBody" style="height: 550px;overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<link href="../../Content/token-input.css?v=@HiDoctor.BuildNo.Build_No" rel="stylesheet" type="text/css" />
+<link href="../../Content/token-input-facebook.css?v=@HiDoctor.BuildNo.Build_No" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery.tokeninput.js"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/BeatPlan/CreateBeatPlan.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script type="text/javascript">
+    var companyCode="";
+    var companyId="";
+    var loguserCode="";
+    var currentRegionCode_g = "";
+    var selectedRegionCode_g="";
+    var selectedRegionName="";
+    var loginusertypecode="";
+    //$(document).ajaxStart(function(){
+    //    $.blockUI();
+    //});
+    //$(document).ajaxComplete(function () {
+    //    $.unblockUI();
+    //});
+    //$(document).ajaxError(function () {
+    //    $.unblockUI();
+    //});
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        companyCode = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        companyId = @Html.Raw(Json.Encode(ViewBag.Company_Id));
+        loguserCode = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        loginusertypecode=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+        CreateBeatPlan.defaults.CompanyCode=companyCode;
+        CreateBeatPlan.defaults.CompanyId=companyId;
+        CreateBeatPlan.defaults.RegionCode=currentRegionCode_g;
+        CreateBeatPlan.defaults.UserCode=loguserCode;
+        CreateBeatPlan.defaults.UserTypeCode=loginusertypecode;
+        //fnRegionTreePosition("dvTree");
+        //fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");
+        fnBindRegionTree("dvTree");
+    });
+
+    function fnRegionTreeActivate(node) {
+        debugger;
+        $.blockUI();
+        selectedRegionCode_g=node.data.key;
+        selectedRegionName=node.data.title;
+        $('#spanregionName').html(selectedRegionName);
+        CreateBeatPlan.defaults.SelectedRegionCode=selectedRegionCode_g;
+        $('#dvCreate').show();
+       
+        $('#nav-profile').hide();
+        $('#ddlBeatStatus').val('1');
+        $('#dvBeatDetailsGrid').show();
+        $('input[name="BeatPlansStatus"]').attr('checked',false);
+        $('input[name="BeatPlansStatus"][value="1"]').attr('checked',true);
+        var beatStatus="";
+        $('input[name="BeatPlansStatus"]:checked').each(function () {
+            beatStatus+= $(this).next().text()+ ',';
+        });
+        beatStatus=beatStatus.slice(0,-1);
+        $('#spanStatus').html(beatStatus);
+        $('#txtBeatName').val('');
+        $('#ddlWorkCategory').val(-1)
+        $("#ddlWorkCategory option").each(function () {
+            if ($(this).text() == "HQ") {
+                $(this).attr('selected', 'selected');
+            }
+        });
+        $('#hdnHeaderId_1').attr('checked',true);
+        $('#hdnHeaderId_1').attr('disabled',false);
+        $('#hdnHeaderId_2').attr('disabled',false);
+        $('#hdnHeaderId_0').attr('disabled',false);
+        $('#tbodySFC').empty();
+        $('#hdnMode').val('INSERT');
+        $('#txtBeatName').attr('disabled', false);
+        $('#hdnbeatCode').val(0);
+        //CreateBeatPlan.fnClearControls();
+        //CreateBeatPlan.fnGetWorkCategories();
+        CreateBeatPlan.fnGetUserDetails(selectedRegionCode_g);
+        CreateBeatPlan.fnLoadDates();
+        CreateBeatPlan.fnGetBeatPlanDetails('S');
+        CreateBeatPlan.fnweeknumber();
+        CreateBeatPlan.fnweekday();
+        //var myData = ['string1', 'string2', 'string3'];
+        //$('#FromPlace_1').autoSuggestList({
+        //    list: myData,
+        //    displayProperty: 'name',
+        //});
+
+
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+ 
+    $('#showhide').click(function () {
+        if ($("#dvTree").css('display') == 'none') {
+            $('#showhide').html('Hide');
+            $("#dvTree").css('display', 'flex');
+            $('#dvCreate').css('float','right');
+            $('#dvCreate').removeClass('col-sm-12');
+            $('#dvCreate').removeClass('col-md-12');
+            $('#dvCreate').addClass('col-sm-9');
+            $('#dvCreate').addClass('col-md-9');
+        }
+        else {
+            $('#showhide').html('Show');
+            $("#dvTree").css('display', 'none');
+            $('#dvCreate').css('float','left');
+            $('#dvCreate').removeClass('col-sm-9');
+            $('#dvCreate').removeClass('col-md-9');
+            $('#dvCreate').addClass('col-sm-12');
+            $('#dvCreate').addClass('col-md-12');
+
+        }
+    });
+    $('#hdnHeaderId').on('click',function(e){
+        if($('#hdnHeaderId').is(':checked')){
+            $('#hdnHeaderId_1').attr('disabled',true);
+            $('#hdnHeaderId_2').attr('disabled',true);
+            $('#hdnHeaderId_0').attr('disabled',true);
+            $('#hdnHeaderId_1').attr('checked',false);
+            $('#hdnHeaderId_2').attr('checked',false);
+            $('#hdnHeaderId_0').attr('checked',false);
+        }else{
+            $('#hdnHeaderId_1').attr('checked',true);
+            $('#hdnHeaderId_1').attr('disabled',false);
+            $('#hdnHeaderId_2').attr('disabled',false);
+            $('#hdnHeaderId_0').attr('disabled',false);
+        }
+    });
+
+    //$('#nav-tab a').on('click', function (e) {
+    //    e.preventDefault()
+    //    $(this).tab('show')
+    //});
+
+    $('#nav-home-tab').on('click',function(e){
+        $('#nav-home').addClass('active');
+        $('#nav-home').addClass('show');
+        $('#nav-profile').removeClass('active');
+        $('#nav-profile').removeClass('show');
+        $('#nav-profile-tab').removeClass('active');
+        $('#nav-home-tab').addClass('active');
+        $('#nav-profile').hide();
+        $('#nav-home').show();
+    });
+    $('#nav-profile-tab').on('click',function(e){
+        $('#nav-profile').addClass('active');
+        $('#nav-profile').addClass('show');
+        $('#nav-home').removeClass('active');
+        $('#nav-home').removeClass('show');
+        $('#nav-home-tab').removeClass('active');
+        $('#nav-profile-tab').addClass('active');
+        $('#nav-home').hide();
+        $('#nav-profile').show();
+    });
+    $("#txtFrom").datepicker({
+        dateFormat: 'dd/mm/yy',
+        changeMonth: true,
+        changeYear: true,
+        maxDate: 0,
+        yearRange: "-100:+0",
+        // yearRange: (year - 150) + ':' + (year + 0)
+    });
+
+    $("#txtTo").datepicker({
+        dateFormat: 'dd/mm/yy',
+        changeMonth: true,
+        changeYear: true,
+        maxDate: 0,
+        yearRange: "-100:+0",
+        // yearRange: (year - 150) + ':' + (year + 0)
+    });
+    $('input[name="BeatPlansStatus"]').on('click',function(){
+        $('#divReport').hide();
+        var beatStatus="";
+        $('input[name="BeatPlansStatus"]:checked').each(function () {
+            beatStatus+= $(this).next().text()+ ',';
+        });
+        beatStatus=beatStatus.slice(0,-1);
+        if(beatStatus.toUpperCase()=="ALL"){
+            beatStatus="Applied,Approved,UnApproved";
+        }
+        $('#spanStatus').html(beatStatus);
+    });
+</script>
+

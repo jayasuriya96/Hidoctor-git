@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "ExcelBulkUploadMultiTerritory";
+    Layout = null;
+}
+<style>
+    .header {
+        width: 80%;
+        height: 35px;
+        background-color: #446CB3;
+        color: white;
+    }
+
+    .panel {
+        width: 80%;
+        height: 100px;
+        border: 1px solid skyblue;
+    }
+
+    .instructions {
+        width: 70%;
+        height: 20px;
+    }
+
+    .bulkuploadheader {
+        height: 30px;
+        background-color: #0866C6;
+        color: white;
+        padding-left: 2px;
+        font-size: 15px;
+    }
+
+    .uploadBtn {
+        background-color: #86D628;
+        color: #fff;
+        width: 94px;
+        height: 29px;
+        font-size: 14px;
+        margin: 5px;
+        border: 1px solid #6DB814;
+    }
+
+        .uploadBtn:hover {
+            background-color: #EDAE03;
+            border: 1px solid #DAA004;
+            cursor:pointer;
+        }
+
+    .submitbtn, #fileUpload {
+        background-color: #0866C6;
+        border: 1px solid #0A6BCE;
+        color: #fff;
+        height: 25px;
+        margin-bottom: 19px;
+        margin-top: 10px;
+    }
+
+    .submitbtn:hover, #fileUpload:hover {
+        background-color: #0044CC;
+        border: 1px solid #0A6BCE;
+        color: #fff;
+        cursor:pointer
+    }
+    .step1contanier {
+        float: left; 
+        width: 49%; 
+        height: 450px; 
+        border: 2px solid #0866C6;
+    }
+    .step2container {
+        float: left; 
+        width: 49%; 
+        height: 450px; 
+        border: 2px solid #0866C6; 
+        background-color: #fff
+    }
+    .margintop5 {
+        margin-top: 5px;
+    }
+    .margintop10 {
+        margin-top: 5px;
+    }
+    .centeralign {
+        margin: 0px auto; 
+        width: 95%;
+    }
+    .steps, .instruction {
+        border: 1px solid #ddd; 
+        padding: 5px;
+    }
+    .stepHeader, .instructionHeader {
+        font-weight:bold;
+    }
+</style>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<form class="frmAlign" method="post" id="frm1" onsubmit="return fnvalidateFile()" enctype="multipart/form-data" action="../HiDoctor_Master/DoctorMaster/UploadExcelFile" target="frameexcel" style="width: 100%; min-height: 400px;">
+    <div class="step1contanier">
+        <div class="bulkuploadheader">Step1: Download File</div>
+        <div class="centeralign">
+            <div class="margintop5">
+                <input type="button" class="submitbtn" value="Generate Excel File" id="btngenrate" onclick="GetCustomerMasterXLTemplate()" />
+                <div id="lnkExcelFile" style="display: none;">
+                    <a id="fileLink"  href="#">Download</a>
+                    <br />
+                    <a id="refersheetlink" href="#"></a>
+                </div>
+            </div>
+            <span id="spndownload" style="display: none">Generating the excel file...</span>
+            <div id="dvSteps" class="steps">
+                <span class="stepHeader" >Steps:</span>
+            </div>
+            <div id="dvInsts" class="instruction">
+                <span class="instructionHeader" >Instructions:</span>
+            </div>
+            <span id="spndownload" style="display: none">Preparing and Downloading the excel file...</span>
+            <div id="dvErrMsg" class="ErrorMSg" style="display: none">
+            </div>
+        </div>
+    </div>
+    <div class="step2container">
+        <div class="bulkuploadheader">Step2: Upload File</div>
+        <div class="centeralign margintop10">
+            File Upload<input type="file" id="fileUpload" name="fileUpload" />
+            <div style="margin: 5px;">
+                <input type="submit" class="uploadBtn" value="Upload" />
+            </div>
+            <div id="dvErrMsgFileUpload" class="ErrorMSg" style="display: none">
+            </div>
+            <br />
+            
+            <iframe style="width:100%;" id="frameExcel" name="frameexcel"></iframe>
+            <a href="#" id="lnkBP" style="display: none; float: left; margin-left: 12px;" onclick="fnRedirectToBatchProcessing()">Check my upload status.</a>
+        </div>
+    </div>
+    @Html.Hidden("txtEntityType");
+</form>
+<script>
+    var tType_g="";
+    $(document).ready(function () {
+       
+        $('#dvAjaxLoad').hide();
+        tType_g =@Html.Raw(Json.Encode(ViewBag.Master_Type));
+        if(tType_g == null)
+        {
+            $('#frm1').css('display','none');
+            alert("Invalid Menu. Please add Master Type in Menu");
+        }
+        else if($.trim(tType_g).length == 0)
+        {
+            $('#frm1').css('display','none');
+            alert("Invalid Menu. Please add Master Type in Menu");
+        }
+        else
+        {
+            $('#txtEntityType').val(tType_g);   
+            var t = tType_g.toUpperCase() == "D" ? "Doctor":tType_g.toUpperCase() == "C" ? "Chemist":tType_g.toUpperCase() == "S"?"Stockiest":"";
+            $('#btngenrate').val('Generate '+ t +' Excel Template');
+
+            var stepsHTML = $('#dvSteps').html()+'<br/>1. Click the button "Generate '+t+' Excel Template". <br />'
+            stepsHTML += '2. '+t+' link will be shown. <br />'
+            stepsHTML += '3. Click the link to download the excel file. <br />'
+            stepsHTML += '4. Enter the '+t+' details in the excel file, Save in .xls format and close the excel file.<br />'
+            stepsHTML += '5. Use the "Upload" button in step2 upload the excel file. <br />'
+            $('#dvSteps').html(stepsHTML);
+
+            var instHTML =$('#dvInsts').html()+ '<br />1. In excel file there is a column called as "Region Name".<br />'
+            instHTML +='2. if you do not enter data for the  "Region Name" column, the '+t+' will not be created.'
+            instHTML += ' you can use '+t+' reference sheet identify the region.<br /> ';
+            instHTML += '3. Please note that you can upload a maximum of 3000 '+t+'s at a time. if you have more than 3000 '+t+' you will have to perform the upload multiple times. ';
+            $('#dvInsts').html(instHTML);
+        }
+        //GetDoctorXLTemplate();
+    });
+
+</script>

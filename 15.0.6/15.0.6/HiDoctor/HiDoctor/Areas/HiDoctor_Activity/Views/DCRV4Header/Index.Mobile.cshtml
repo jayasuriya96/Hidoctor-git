@@ -1,0 +1,406 @@
+﻿<style type="text/css">
+    #trInterAuto {
+        background-color: #A5D16C;
+    }
+
+        #trInterAuto td label {
+            color: #fff !important;
+            font-weight: bold;
+        }
+
+    .lblRcHelp {
+        color: #1570A6;
+        padding: 5px 0px 5px 0px;
+        width: 100%;
+        float: left;
+    }
+
+    .table {
+        width: 100%;
+        padding: 5px;
+        font-size: 10px !important;
+    }
+
+    .cls_autoIntermediate {
+        background-color: #A5D16C;
+        color: #fff;
+    }
+
+    .table-stripped tr {
+        border-bottom: 1px solid #fafafa;
+    }
+
+    .ui-radio input {
+        position: static !important;
+    }
+
+    .cls_padding3px {
+        padding: 5px;
+    }
+
+    .cls_bottomrow {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .ui-title {
+        text-align: left !important;
+    }
+
+    .cls_popupbtnwidth {
+        margin: 5px;
+    }
+
+    .ui-simpledialog-container .ui-bar-a {
+        background-color: #5E87B0;
+    }
+
+    .ui-simpledialog-container {
+        border: 5px solid #ddd;
+    }
+
+        .ui-simpledialog-container .ui-btn-inner {
+            font-size: 10px !important;
+        }
+
+    .ui-simpledialog-container {
+        top: 45px !important;
+        width: 90% !important;
+        z-index: 500 !important;
+        position: absolute !important;
+        left: 3% !important;
+        margin: 0 auto !important;
+        padding: 3PX !important;
+    }
+
+    .ui-header .ui-btn-left, .ui-footer .ui-btn-left {
+        margin-left: 85%;
+    }
+
+    .ui-simpledialog-controls {
+    }
+
+    .empName {
+        margin-bottom: 25%;
+    }
+</style>
+<div class="clearboth"></div>
+
+<div class="menucontent">
+    <div class="homeicon"></div>
+    <a id="homelink" href="#" onclick="fnGoToHome()">Home
+    </a>
+    <a href="#" class="ui-icon-home" onclick="fnGoToCalendar()">Calendar
+    </a>
+</div>
+
+<div style="clear: both"></div>
+
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>DCR Date <span id="DCR_Date"></span>
+    </h3>
+</div>
+<div data-role="content" style="background-color:#fff;" data-theme="b">
+    <div class="ui-controlgroup-controls">
+
+      
+    </div>
+    <div data-role="collapsible-set" id="dvAccompanist-panel" data-mini="true" data-theme="b">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>DCR Header Details
+            </h3>
+            <table style="width: 100%">
+                <tr id="RowAccomp">
+               
+                    <td>
+                        <div data-role="header"  id="dvAccompanistContainer" data-mini="true" style="background-color:#fff;" >
+                                <h3>Accompanist Details
+                                </h3>
+                                <div >
+                                    <div id="dvAccompanist" >
+                                    </div>
+                                    <a href="" id="aAddAccomp" data-transition="fade" onclick="fnCreateNewRowInAccompanist()"
+                                        data-mini="true">Add Accompanist
+                                    </a>
+                                </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr id="trCP">
+                    <td>
+                        <div><h5>CP Name</h5></div>
+                         <div>
+                         <input type="text" id="txtCP" value="" onclick="fnEnableCPDetails()" />
+                         <input type="hidden" id="hiddenCP" value="" />
+                         @*<select name="" data-mini="true" id="drpCP" onchange="fnFillCpDetails()">
+                            
+                            <option value="0">Select CP
+                            </option>
+                            
+                        </select>*@
+
+                         </div>
+                    </td>
+                   
+                </tr>
+                <tr>
+                    <td>
+                       <div> <h5>Category</h5></div>
+                         <div><select name="" data-mini="true" data-theme="e" id="ddlCategory">
+                        </select></div>
+                    </td>
+                   
+                </tr>
+                <tr>
+                    <td>
+                        <div><h5>Work Place</h5></div>
+                          <div><input name="mode6" id="drpWorkPlace" type="text" /></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <div><h5>From Time</h5></div>
+                        <div style="width: 100%; float: left;">
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlStartHour">
+                                    <option value="">HH</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlStartMin">
+                                </select>
+                            </div>
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlStartMode">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                    <div><h5>To Time</h5></div>
+                        <div style="width: 100%; float: left;">
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlEndHour">
+                                    <option value="">HH</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlEndMin">
+                                </select>
+                            </div>
+                            <div style="width: 30%; float: left;">
+                                <select name="" data-inline="true" data-mini="true" id="ddlEndMode">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div data-role="collapsible-set" data-mini="true" data-theme="b">
+        <div data-role="collapsible" data-collapsed="false">
+            <h3>SFC Details
+            </h3>
+
+            <div id="dvSFC" data-inset="true">
+            </div>
+
+            <div id='trInterAuto' style="display: none;">
+                <table>
+                    <tr>
+                        <td style="padding-left: 10px !important;">From Place
+                            <br />
+                            <label id='lblFromPlace_Auto'></label>
+                            <input type='hidden' id='hdnFromPlace_Auto' />
+                            <br />
+                            To Place
+                            <br />
+                            <label id='lblToPlace_Auto'></label>
+                            <input type='hidden' id='hdnToPlace_Auto' />
+                            <br />
+                            Travel Mode
+                            <br />
+                            <label id='lblTravelMode_Auto'></label>
+                            <input type='hidden' id='hdnTravelMode_Auto' />
+                            <br />
+                            Distance
+                            <br />
+                            <label id='lblDistance_Auto'></label>
+                            <input type='hidden' id='hdnDistanceFareCode_Auto' />
+                            <input type='hidden' id='hdnRouteWay_Auto' />
+                            <input type='hidden' id='hdnSFCRegion_Auto' />
+                            <input type='hidden' id='hdnSFCVersion_Auto' />
+                            <input type='hidden' id='hdnSFCCategory_Auto' />
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <span id="lblRCHelp" class="lblRcHelp"></span>
+            <a href="" id="aAddSFC" data-transition="fade" onclick="fnCreateNewRowInIntermediate()"
+                data-mini="true">Add SFC
+            </a>
+        </div>
+    </div>
+    <div>
+      <div data-role="collapsible-set" id="dvActivity-panel" style="display: none" data-mini="true"
+            data-theme="b">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Activity Details
+                </h3>
+                <div id="dvActivity" data-inset="true">
+                </div>
+            </div>
+            <a href="" id="aAddActivity" data-transition="fade" onclick="fnAddNewActivity()">Add
+                Activity
+            </a>
+        </div>
+    </div>
+    <div id="dvSFCPopUp" data-theme="b" style="overflow: scroll; padding: 5px; display: none;" data-iconpos="right"
+        data-options='{"mode":"blank","headerText":"SFC Selection","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5,"iconpos":"right"}'>
+        <div id="dvAllSFC" style="margin: 3px; border: 1px solid #aaa;">
+        </div>
+    </div>
+    <div id="dvFullSFC" data-theme="b" style="overflow: scroll; padding: 5px; display: none;" data-iconpos="right"
+        data-options='{"mode":"blank","headerText":"SFC Selection","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5,"iconpos":"right"}'>
+        <ul id="ulSFCList" data-role="listview" style="margin: 3px; border: 1px solid #aaa;">
+        </ul>
+    </div>
+
+    <div id="dvCPList" data-theme="b" style="overflow: scroll; padding: 5px; display: none;" data-iconpos="right"
+        data-options='{"mode":"blank","headerText":"SFC Selection","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5,"iconpos":"right"}'>
+        <ul id="ulCP" data-role="listview" style="margin: 3px; border: 1px solid #aaa;">
+        </ul>
+    </div>
+
+    <input type="button" data-theme="b" value="Save" id="btnSave" onclick="fnSubmitHeader()" />
+    <input type="button" data-theme="d" value="Reset" id="btnClear" onclick="fnClear()" />
+
+    <input type="hidden" id="hdnAccompPopUP" />
+</div>
+
+<div data-role="footer"></div>
+
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/DCRV4/mDCRAllowedSpecialCharacters.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/DCRV4/mDCRV4Header12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+@*<script src="@Url.Content("~/Areas/HiDoctor_Activity/Content/Mobile/Dcr.css?v=@HiDoctor.BuildNumber.BuildNo")"></script>*@
+<link href="~/Areas/HiDoctor_Activity/Content/Dcr.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    var dcrDate = "";
+    var dcrStatus = "";
+    var currentRegion = "";
+    var currRegionName = "";
+    var cpNeed = "";
+    var isrcpa="";
+    var source="";
+    var sourceString="";
+    var flag_g="";
+    var actvistyJSON_g="";    
+    var dcrTimeGap_g="";
+    var acc_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $.mobile.loading('show');
+        
+
+        var category=@Html.Raw(Json.Encode(ViewBag.category));
+        
+        fnBindCategory(category);
+        fnGetTravelModes();
+
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        dcrTimeGap_g = @Html.Raw(Json.Encode(ViewBag.dcrTimeGap));
+        //function to include category       
+        fnBindTimeBox("ddlStartMin");
+        fnBindTimeBox("ddlEndMin");
+
+        $("#DCR_Date").html(dcrDate.split('-')[2] + '-' + dcrDate.split('-')[1] + '-' + dcrDate.split('-')[0]);
+        // set attendance controls
+        if(flag_g.toUpperCase() == "A")
+        {
+            $('#trCP').css('display','none');
+            $('#RowAccomp').css('display','none');
+            $("#dvActivity-panel").css('display','');
+        }
+        
+        if(flag_g.toUpperCase() == 'A')
+        {
+        }
+
+       
+        if(flag_g.toUpperCase() == "F")
+        {
+            $('#dvAccompanistContainer').css('display','');
+            cpNeed = fnGetPrivilegeValue("CAMPAIGN_PLANNER", "NO");
+            if (cpNeed == "NO") {
+                $("#trCP").css('display','none');
+            }
+            else {
+                if (cpNeed == "YES") {
+                    $("#trCP").css('display','');
+                }
+                if (cpNeed == "OPTIONAL") {
+                    $("#trCP").css('display','');
+                }
+            }
+        }
+
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        sourceString = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        source=sourceString.split('_')[0];
+        var region = "";
+        region=@Html.Raw(Json.Encode(ViewBag.regionCode));
+        currentRegion = region.split(',')[0];
+        currRegionName = region.split(',')[1];
+        $('span.cls_usernamespn').text(loginUserName_g);
+        // in page load the work place should be current region name, except in the case of drafted data.
+        //$("#drpWorkPlace").val(currRegionName);
+        //$("#txtWorkPlace").blur(function() { return fnCheckRemarksSpecialChar(this) });
+
+        $("#ddlCategory").val('0');
+
+        $("#ddlCategory").change(function () { fnCategorySelected(); });
+        if(dcrStatus == '1')
+        {
+            $('#homelink').css('display','none');
+            $('.homeicon').css('display','none');
+        }
+        fnSetHeaderPrivileges();
+        GetHeaderDetails();
+    });
+</script>

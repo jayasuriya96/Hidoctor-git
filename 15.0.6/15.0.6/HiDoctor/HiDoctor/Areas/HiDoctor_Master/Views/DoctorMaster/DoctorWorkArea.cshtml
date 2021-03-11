@@ -1,0 +1,431 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .docWorkTable {
+        margin-top: 4%;
+    }
+
+    .docBtn {
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    .cusBody {
+        height: 500px;
+        overflow: auto;
+        overflow-x: hidden;
+        display: block;
+        width: 100%;
+    }
+
+    .cusHead {
+        display: table;
+        width: 100%;
+    }
+
+    .docBtn > input {
+    }
+
+    #tbl_docDetails thead tr td:first-child {
+        width: 5%;
+        text-align: center;
+    }
+
+    #tbl_docDetails thead tr td:nth-child(2) {
+        width: 23%;
+    }
+
+    #tbl_docDetails thead tr td:nth-child(3) {
+        width: 10%;
+    }
+
+    #tbl_docDetails thead tr td:nth-child(4) {
+        width: 10%;
+    }
+
+    #tbl_docDetails thead tr td:nth-child(4) {
+        width: 12%;
+    }
+
+
+    #tbl_docDetails tbody tr td:first-child {
+        width: 6%;
+        text-align: center;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(2) {
+        width: 24%;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(3) {
+        width: 10%;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(4) {
+        width: 10%;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(5) {
+        width: 10%;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(6) {
+        width: 20%;
+    }
+
+    #tbl_docDetails tbody tr td:nth-child(7) {
+        width: 20%;
+    }
+
+    .btn {
+        margin-right: 1% !important;
+    }
+
+    # divDoc_map {
+        background: rgb(241, 241, 241);
+        height: 57px;
+        padding-top: 13px;
+    }
+</style>
+<link href="../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<div>
+    <div class="col-lg-12" id="divDoc_map">
+        <div class="col-lg-12" style="margin-top: 3%;">
+            <div class="col-lg-6" style="width: 39% !important; text-align: right; font-size: initial; font-weight: bold;">Select Region Name</div>
+            <div style="float: left; width: 34%;">
+                <input type="text" id="txtRegionName" class="form-control autoRegion" placeholder="Type to search the region " autocomplete="off" onblur="fnValidateRegion(this);" />
+                <input type="hidden" id="hdnregion_code" />
+            </div>
+        </div>
+        <div class="col-lg-12 docWorkTable">
+            <div id="tbl_docWorkArea" style="margin-top: 3%; margin-bottom: 3%; width: 74%; margin-left: 13%;"></div>
+        </div>
+        <div class="col-lg-12 docBtn">
+            <input type="button" onclick="fnDocPlaceMap();" class="btn btn-success" value="Map" />
+            <input type="button" value="Clear" class="btn btn-warning" onclick="fnClear();" />
+            <input type="button" onclick="fnDocPlaceUnMap();" class="btn btn-info" value="Un-Map" />
+        </div>
+    </div>
+</div>
+<script>
+    var doctorPlace_g;
+    var workCategory_g;
+    var regionCodes_g;
+    var title = "Doctor";
+    var DoctorHeader_g;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(".docBtn").hide();
+            fnGetChildRegions();
+            $("#dvAjaxLoad").hide();
+            DoctorHeader_g = fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+            var title = "DoctorHeader_g";
+        }
+        catch (err) {
+        }
+    });
+    function fnBindCustomerDetails() {
+        var region_code = $("#hdnregion_code").val();
+        $("#tbl_docWorkArea").html('');
+        $(".docBtn").hide();
+        if (region_code != '') {
+            $("#divDoc_map").block();
+            $.ajax({
+                url: '/HiDoctor_Master/DoctorMaster/GetDoctorWorkAreaDetails',
+                type: 'post',
+                data: 'regionCode=' + region_code,
+                success: function (result) {
+                    var doc_Details = result;
+
+                    var table = "<table class='main table table-hover' id='tbl_docDetails'><thead class='cusHead'><tr><td>S.NO<br/><input type='checkbox' id='chkSelectAll' onclick='fnSelectAllDoc();'</td><td>" + DoctorHeader_g + " Name</td><td>MDL Number</td><td>" + DoctorHeader_g + " Category</td>";
+                    table += "<td>Specialty</td><td>" + DoctorHeader_g + " Place</td><td>Work category</td><td style='display:none;'></td></tr></thead><tbody class='cusBody'>";
+                    var lsDoctorDetails = doc_Details.lsDoctorDetails;
+                    var count = 1;
+                    for (var i = 0; i < lsDoctorDetails.length; i++) {
+                        table += "<td>  " + count + "<br /> <input type='checkbox' id='chkDoc_" + count + "'</td>";
+                        table += "<td><lable id='lblCustomerName_" + count + "'>" + lsDoctorDetails[i].Customer_Name + "</lable></td>";
+                        table += "<td>" + lsDoctorDetails[i].MDL_Number + "</td>";
+                        table += "<td>" + lsDoctorDetails[i].Category_Name + "</td>";
+                        table += "<td>" + lsDoctorDetails[i].Speciality_Name + "</td>";
+
+                        table += "<td><input type='text' onblur='fnValidateDoctorPlace(this);' class='autoDocPlace' id='txtDocPlace_" + count + "' value='" + lsDoctorDetails[i].Local_Area + "' />";
+                        table += "<input ' type='hidden' id='hdnDocPlace_" + count + "' value='" + lsDoctorDetails[i].Local_Area + "'/></td>";
+
+
+                        table += "<td><input type='text' onblur='fnValidateWorkcategory(this);' class='autoWorkcategory_" + count + "' id='txtWorkcategory_" + count + "' value='" + lsDoctorDetails[i].Workcategory + "' />";
+                        table += "<input type='hidden' id='hdnWorkcategory_" + count + "' value='" + lsDoctorDetails[i].Workcategory + "' /></td>";
+
+                        table += "<td style='display:none;'><input type='hidden' id='hdnMappingID_" + count + "' value='" + lsDoctorDetails[i].Mapping_ID + "' />";
+                        table += "<input type='hidden' id='hdnCustomerCode_" + count + "' value='" + lsDoctorDetails[i].Customer_Code + "' />";
+                        table += "<input type='hidden' id='hdnStatus_" + count + "' value='" + lsDoctorDetails[i].Status + "' />";
+                        table += "<input type='hidden' id='hdnRegionCode_" + count + "' value='" + lsDoctorDetails[i].Region_Code + "' /> </td>";
+                        table += "</tr>";
+                        count++;
+                    }
+                    //Place
+
+                    //workCategory
+                    table += "</tbody></table>";
+                    $("#tbl_docWorkArea").html(table);
+                    debugger;
+                    doctorPlace_g = doc_Details.lsDoctorPlace;
+                    workCategory_g = doc_Details.lsDoctorWorkArea;
+                    autoComplete(doctorPlace_g, "txtDocPlace", "hdnDocPlace", "autoDocPlace");
+                    fnAssignWork();
+                    $(".docBtn").show();
+                    if (lsDoctorDetails.length < 10) {
+                        $('.cusBody').css('height', lsDoctorDetails.length * 60 + 'px');
+                    }
+                    $("#divDoc_map").unblock();
+                },
+                error: function (err) {
+                    $("#divDoc_map").unblock();
+                }
+            });
+        }
+    }
+    function fbUnmapworkArea() {
+    }
+    function fnClear() {
+        fnBindCustomerDetails();
+    }
+    function fnValidateRegion(obj) {
+        fnValidateAutofill(obj, regionCodes_g, "txtRegionName", "hdnregion_code");
+        fnBindCustomerDetails();
+    }
+    function fnValidateDoctorPlace(obj) {
+        debugger;
+        fnValidateAutofill(obj, doctorPlace_g, "txtDocPlace_", "hdnDocPlace_");
+        var id = obj.id.split('_')[1];
+        var doc_place = $("#hdnDocPlace_" + id).val();
+        var data = { "item": workCategory_g };
+        var WorkAreaData = $.grep(data.item, function (element, index) {
+            return element.Doctor_Place == doc_place;
+        });
+        var lsDoctorWorkcategory = new Array();
+        var cur_WorkArea = $("#hdnWorkcategory_" + id).val();
+        var status = true;
+        for (var i = 0; i < WorkAreaData.length; i++) {
+            if (cur_WorkArea == WorkAreaData[i].Workcategory)
+                status = false;
+            lsDoctorWorkcategory.push({
+                label: WorkAreaData[i].Workcategory, value: WorkAreaData[i].Workcategory
+            });
+        }
+        if (status) {
+            $("#txtWorkcategory_" + id).val('');
+            $("#hdnWorkcategory_" + id).val('');
+
+        }
+        autoComplete(lsDoctorWorkcategory, "txtWorkcategory", "hdnWorkcategory", "autoWorkcategory_" + id);
+
+    }
+    function fnValidateWorkcategory(obj) {
+        debugger;
+        var id = obj.id.split('_')[1];
+        var doc_place = $("#hdnDocPlace_" + id).val();
+        var data = { "item": workCategory_g };
+        var WorkAreaData = $.grep(data.item, function (element, index) {
+            return element.Doctor_Place == doc_place;
+        });
+        var lsDoctorWorkcategory = new Array();
+        for (var i = 0; i < WorkAreaData.length; i++) {
+            lsDoctorWorkcategory.push({
+                label: WorkAreaData[i].Workcategory, value: WorkAreaData[i].Workcategory
+            });
+        }
+        fnValidateAutofill(obj, lsDoctorWorkcategory, "txtWorkcategory_", "hdnWorkcategory_");
+    }
+    function fnAssignWork() {
+        var id = 0;
+        $('#tbl_docDetails > tbody  > tr').each(function () {
+            var doc_place = $("#hdnDocPlace_" + id).val();
+            if (doc_place != '') {
+                var data = { "item": workCategory_g };
+                var WorkAreaData = $.grep(data.item, function (element, index) {
+                    return element.Doctor_Place == doc_place;
+                });
+                var lsDoctorWorkcategory = new Array();
+                var cur_WorkArea = $("#hdnWorkcategory_" + id).val();
+                var status = true;
+                for (var i = 0; i < WorkAreaData.length; i++) {
+                    if (cur_WorkArea == WorkAreaData[i].Workcategory)
+                        status = false;
+                    lsDoctorWorkcategory.push({
+                        label: WorkAreaData[i].Workcategory, value: WorkAreaData[i].Workcategory
+                    });
+                }
+                if (status) {
+                    //$("#txtWorkcategory_" + id).val('');
+                    //$("#hdnWorkcategory_" + id).val('');
+
+                }
+                autoComplete(lsDoctorWorkcategory, "txtWorkcategory", "hdnWorkcategory", "autoWorkcategory_" + id);
+            }
+            id++;
+        });
+    }
+
+    function fnDocPlaceMap() {
+        debugger;
+        var doc_WorkPlace = new Array();
+        var count = 1;
+        $('#tbl_docDetails > tbody  > tr').each(function () {
+            if ($("#chkDoc_" + count).prop("checked")) {
+                doc_WorkPlace.push({
+                    Customer_Name: $("#lblCustomerName_" + count).text().trim(),
+                    Customer_Code: $("#hdnCustomerCode_" + count).val(),
+                    Region_Code: $("#hdnRegionCode_" + count).val(),
+                    Local_Area: $("#hdnDocPlace_" + count).val(),
+                    Workcategory: $("#hdnWorkcategory_" + count).val(),
+                    Mapping_ID: $("#hdnMappingID_" + count).val(),
+                    Control_ID: count
+                });
+            }
+
+            count++;
+        });
+
+        //Validation
+        if (doc_WorkPlace.length == 0) {
+            fnMsgAlert("info", title, "Please Select Atleast One " + DoctorHeader_g + " to Map");
+            return false;
+        }
+        for (var i = 0; i < doc_WorkPlace.length; i++) {
+            //----------------------------------
+            if (doc_WorkPlace[i].Local_Area.trim() == '') {
+                fnMsgAlert("info", title, "Please Enter " + DoctorHeader_g + " Place from List for " + doc_WorkPlace[i].Customer_Name);
+                return false;
+            } else {
+                //Check work place is avaliable or not
+                var data = { "item": doctorPlace_g };
+                var doctorPlace = $.grep(data.item, function (element, index) {
+                    return element.value == doc_WorkPlace[i].Local_Area;
+                });
+                if (doctorPlace.length == 0) {
+                    fnMsgAlert("info", title, "Please Enter " + DoctorHeader_g + " Place from List for " + doc_WorkPlace[i].Customer_Name);
+                    $("#txtDocPlace_" + doc_WorkPlace[i].Control_ID).val('');
+                    $("#txtDocPlace_" + doc_WorkPlace[i].Control_ID).focus('');
+                    $("#hdnDocPlace_" + doc_WorkPlace[i].Control_ID).val('');
+                    return false;
+                }
+            }
+            //---------------------------
+            if (doc_WorkPlace[i].Workcategory.trim() == '') {
+                fnMsgAlert("info", title, "Please Enter Work Category from List for " + doc_WorkPlace[i].Customer_Name);
+                return false;
+            }
+            else {
+                //Check work category is avaliable or not
+                var data = { "item": workCategory_g };
+                var WorkAreaData = $.grep(data.item, function (element, index) {
+                    return element.Doctor_Place == doc_WorkPlace[i].Local_Area;
+                });
+                var count = 0;
+                for (var j = 0; j < WorkAreaData.length; j++) {
+                    if (WorkAreaData[j].Workcategory == doc_WorkPlace[i].Workcategory)
+                        count++;
+
+                }
+                if (count == 0) {
+                    fnMsgAlert("info", title, "Please Enter Work Category from List for " + doc_WorkPlace[i].Customer_Name);
+                    $("#txtWorkcategory_" + doc_WorkPlace[i].Control_ID).val('');
+                    $("#txtWorkcategory_" + doc_WorkPlace[i].Control_ID).focus('');
+                    $("#hdnWorkcategory_" + doc_WorkPlace[i].Control_ID).val('');
+                    return false;
+                }
+            }
+        }
+        $("#divDoc_map").block();
+        console.log(doc_WorkPlace);
+        $.ajax({
+            url: '/HiDoctor_Master/DoctorMaster/SaveDoctorPlaceDetails',
+            data: JSON.stringify({ "lsDoctorPlace": doc_WorkPlace, "action": "1" }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function () {
+                $("#divDoc_map").unblock();
+                fnMsgAlert("success", title, DoctorHeader_g + " Place and Work Category Mapped Successfully");
+                fnBindCustomerDetails();
+            },
+            error: function () {
+                $("#divDoc_map").unblock();
+            }
+        });
+    }
+    function fnDocPlaceUnMap() {
+        var doc_WorkPlace = new Array();
+        var count = 1;
+        var rowCount = 0;
+        $('#tbl_docDetails > tbody  > tr').each(function () {
+            if ($("#chkDoc_" + count).prop("checked")) {
+                if (($("#hdnMappingID_" + count).val() != '0') && $("#hdnStatus_" + count).val() == '1') {
+                    doc_WorkPlace.push({
+                        Mapping_ID: $("#hdnMappingID_" + count).val()
+                    });
+                }
+                rowCount++;
+            }
+
+            count++;
+        });
+        if (doc_WorkPlace.length == 0) {
+            if (rowCount > 0) {
+                fnMsgAlert("info", title, " Please Select Atleast One Mapped " + DoctorHeader_g + " to Un-Map");
+                return false;
+            }
+            else {
+                fnMsgAlert("info", title, " Please Select Atleast One " + DoctorHeader_g + " to Un-Map");
+                return false;
+            }
+        }
+        $("#divDoc_map").block();
+        $.ajax({
+            url: '/HiDoctor_Master/DoctorMaster/SaveDoctorPlaceDetails',
+            data: JSON.stringify({ "lsDoctorPlace": doc_WorkPlace, "action": "0" }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function () {
+                $("#divDoc_map").unblock();
+                fnMsgAlert("success", title, DoctorHeader_g + " Place and Work Category Un-Mapped Successfully");
+                fnBindCustomerDetails();
+            },
+            error: function () {
+                $("#divDoc_map").unblock();
+            }
+        });
+    }
+    function fnSelectAllDoc() {
+        var count = 1;
+        var status = $("#chkSelectAll").prop('checked');
+        $('#tbl_docDetails > tbody  > tr').each(function () {
+            $("#chkDoc_" + count).prop("checked", status);
+            count++;
+        });
+    }
+    function fnGetChildRegions() {
+        $.ajax({
+            type: 'POST',
+            url: '../Region/GetChildRegions',
+            success: function (result) {
+                regionCodes_g = result;
+                debugger;
+                if (regionCodes_g.length == 1) {
+                    $("#txtRegionName").val(regionCodes_g[0].Region_Name);
+                    $("#txtRegionName").attr('disabled', true);
+                    $("#hdnregion_code").val(regionCodes_g[0].Region_Code);
+                    fnBindCustomerDetails();
+                }
+                else {
+                    autoComplete(regionCodes_g, "txtRegionName", "hdnregion_code", "autoRegion");
+                }
+
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

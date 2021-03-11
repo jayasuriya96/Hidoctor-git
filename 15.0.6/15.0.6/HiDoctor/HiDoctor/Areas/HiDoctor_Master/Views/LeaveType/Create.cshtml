@@ -1,0 +1,68 @@
+﻿@model HiDoctor_Master.Models.LeaveTypeMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+
+<div id="dvRules" class="col-lg-6 table-responsive">
+    <br/>
+    <table>
+        <tr>
+            <td>
+                <label for="txtleavetypename">Leave Type Name:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="hidden" name="LeaveTypecode" id="leavetypecodeval" />
+                <input type="text" id="txtleavetypename" class="input-large" />
+            </td>
+        </tr>
+        <tr>
+            <td style="margin-top: 10px">
+                <label class="control-label" for="chkcompoff">Is LOP?:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="checkbox" id="chkLop" value="Islop" />
+            </td>
+        </tr>
+        <tr id="trPayRoll" style="display: none;">
+            <td>
+                <label for="txtleavetypename">Payroll Leave Type Code:</label>
+            </td>
+            <td style="margin-top: 10px">
+                <input type="text" id="txtPayrollleavetypeCode" class="input-large" />
+            </td>
+        </tr>
+        <tr>
+            <td style="margin-top: 10px">
+                <input type="button" name="Save" value="Save" id="btnsave" onclick="fnSubmitLeaveType()" class="btn btn-primary" />
+                <input type="hidden" name="Update" value="I" id="hdnMode" />
+            </td>
+            <td>
+                <input type="button" name="Cancel" value="Cancel" id="btncancel" onclick="fnClearLeaveType()" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+    <br />
+    @Html.ActionLink("Download LeaveTypeMaster details", "PutLeaveTypeMasterIntoExcel",new {})
+    <br />
+    <div id="divleavetype"></div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/LeaveType.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var isPayrollUser = "";
+    var lopJson_g = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        isPayrollUser = @Html.Raw(Json.Encode(ViewBag.isPayrollUser));
+        if(isPayrollUser==true){
+            $("#trPayRoll").show();
+        }
+        $("#dvAjaxLoad").hide();
+        fnGetLeaveDetails();
+        fnGetLOPStatus();
+    });
+</script>

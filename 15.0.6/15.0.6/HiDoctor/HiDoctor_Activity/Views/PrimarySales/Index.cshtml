@@ -1,0 +1,1081 @@
+﻿
+@{
+    ViewBag.Title = "Primary Sales Upload";
+    Layout = null;
+}
+<style>
+    #dvRules a {
+        cursor: pointer;
+    }
+
+    #page-header {
+        margin-bottom: 15px;
+    }
+
+    .mtz-monthpicker {
+        color: black !important;
+    }
+
+    #txtRegiontName {
+        width: 175%;
+    }
+
+    .datepic {
+        cursor: auto !important;
+    }
+
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+    }
+
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+        .fileUpload.btn.btn-primary {
+            width: 400px;
+        }
+
+    .start, .stop {
+        display: inline !important;
+    }
+
+    form#uploader {
+        width: 500px;
+    }
+
+    input#txtStockiestName {
+        width: 221px;
+        margin-left: 52px;
+    }
+
+    input#btnclear {
+        width: 200px;
+    }
+
+    input#btngo {
+        width: 100px;
+    }
+
+    #dvdetailPopUp {
+        z-index: 9999;
+        background-color: #fff;
+        width: 800px;
+        height: 500px;
+        padding: 1%;
+        font-size: 14px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+
+<div class="panel panel-primary">
+    <div class="panel-heading" id="excel">
+        <h3 class="panel-title">Primary Sales - Excel Upload</h3>
+    </div>
+    <div class="panel-heading" id="upsummary">
+        <h3 class="panel-title">Primary Sales - Upload Summary</h3>
+    </div>
+    <div class="panel-body">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#upload" data-toggle="tab" onclick="changeheader()">Excel Upload</a></li>
+            <li><a href="#summary" data-toggle="tab" onclick="Changeheading()">Upload Summary</a></li>
+        </ul>
+        <div class="form-group row">
+            <label class="col-lg-4 col-form-label" style="margin-top: 13px;">Select Month & Year</label>
+            <div class="col-lg-3 input-group" style="margin-left: -277px;margin-top: 10px;">
+                <input type="text" class="form-control" id="Myear">
+                <span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>
+            </div>
+        </div>
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="upload" style="margin-bottom: 27px;">
+                <div id="dvRules" class="col-sm-6" style="border-right: 1px solid #ddd;">
+                    <table>
+                        <tr>
+                            <td style="font-weight: bold;">Step 1 : Download</td>
+                        </tr>
+                        <tr>
+                            <td>1.Please @Html.ActionLink("Download", "PrimarySales", "DownloadPrimarySalesMasterExcelTemplate", null, new { @id = "Downloadmasterdata" }) the primary sales Master Data's</td>
+                        </tr>
+                        <tr>
+                            <td>2.Please @Html.ActionLink("Download", "PrimarySales", "DownloadPrimarySalesExcelTemplate", null, new { @id = "Downloadexcelformat" }) the primary sales excel Template for upload</td>
+                        </tr>
+                        <tr>
+                            <td>3.Do not enter above 500 characters in Excel sheet columns on upload template</td>
+                        </tr>
+                        <tr>
+                            <td>4.Do not alter the excel file structure(i.e.adding or removing the column)</td>
+                        </tr>
+                        <tr>
+                            <td>5.Do not rename the columns</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                6.Click the “Choose/Browse file” button to get the file
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7.Click the upload button to upload the data</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                8.Please do not modify the Row_No column values
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                9.Enter Document Date in YYYY-MM-DD format.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                10.Please do not use WRAPTEXT/ALT+ENTER while enter the values. If you use then system will consider this as a special character.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-4">
+                    <div class="col-lg-10">
+                        <div style="font-weight: bold;" class="col-lg-12">
+                            Step 2 : Upload
+                            <br />
+                            <p>Select Upload Type:</p>
+                            <div>
+                                <input type="radio" id="Incremental" name="uplype" value="1" checked>
+                                <label for="Incremental">Incremental</label>
+                                <input type="radio" id="Cumulative" name="uplype" value="2">
+                                <label for="Cumulative">Cumulative</label>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-lg-12">
+                            <form method="post" id="uploader" enctype="multipart/form-data">
+
+                                <span class="btn btn-success fileinput-button">
+                                    <input type="file" id="PSFile" name="file" accept=".xls,.xlsx" />
+                                </span>
+                                <button class="btn btn-primary start" type="button" id="Submit_btn">
+                                    <i class="glyphicon glyphicon-upload"></i>
+                                    <span>Start upload</span>
+                                </button>
+                                <br />
+                                <br />
+
+                            </form>
+                            <div class="progress CustomProgress">
+                                <div id="FileProgress"
+                                     class="progress-bar" role="progressbar"
+                                     aria-valuenow="0" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 0%;">
+                                    <span></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div id="dv-Redirect">
+                        <a href="#" id="lnkBP" onclick="fnRedirectToBatchProcessing()" style="float:left;margin-left: 34px;">View upload status</a>
+                    </div>
+                </div>
+            </div>
+            <!--<div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>-->
+
+            <div class="tab-pane" id="summary">
+                <br />
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">
+                            You can search for Document_number or Region Name wise Stockiest or Depot Name. <br />
+                            These parameter can be entered ALL AT ONCE or ONE AT A TIME or IN COMBINATION. Depending upon the parameters and search matches, records will be found.
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <div class="row">
+                    <div id="dvRules" class="col-sm-6" style="border-right: 1px solid #ddd;">
+                        <div class="row">
+                            <div class="col-sm-4">Depot Name</div>
+                            <div class="col-lg-5"><div id="Depots"></div></div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-4">Region Name</div>
+                            <div class="col-lg-5"><div id="Regions"></div></div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-sm-4">Product Name</div>
+                            <div class="col-lg-5"><div id="Products"></div></div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-sm-3" id="">Stockist Name</div>
+                            <div class="col-lg-3">
+                                <input type='text' id='txtStockiestName' class='autoStockiest' />
+                                <input type='hidden' id='hdnStockiestRefKey' />
+                                <input type='hidden' id='hdnStatus' />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-sm-4">Document From Date</div>
+                            <div class="col-lg-5"><input type='text' id='txtFromDate' style="width: 222px;" autocomplete="off" class='datepicker' /></div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-sm-4">Document To Date</div>
+                            <div class="col-lg-5"><input type='text' id='txtToDate' style="width: 222px;" autocomplete="off" class='datepicker' /></div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-sm-4">Document Number</div>
+                            <div class="col-lg-5"><input type="text" class="form-control" id="txtDocument_number"></div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <button type="button" id="btngo" class="btn btn-primary" style="margin-left: 84px;">
+                                    Search
+                                </button>
+
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="button" id="btnclear" class="btn btn-primary">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="dvsummaryView">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-content" id="dvdetailPopUp">
+                <div class="modal-header">
+                    <button type="button" class="close" id="closepopup0" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">Product details</h3>
+                </div>
+                <span id="msgcontent"></span>
+                <div class="modal-body">
+                    <div id="dvitranDocuments" style="overflow:auto; height:300px; width:100%;">
+
+                    </div>
+                </div>
+                <div style="float:right;">
+                    <button type="button" class="btn btn-primary" id="btnclosepopup">Close</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div id="Approval" style="margin-top:1%">
+</div>
+<div id="dvloading" style="display: none">
+    <img src="../../Content/images/loader1.gif" />
+</div>
+@Html.Hidden("hdnTransType")
+
+
+
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+@*<script src="~/Scripts/jquery.mtz.monthpicker.js"></script>*@
+<script src="~/Scripts/HD/common12.7.0.js"></script>
+<script lang="ja">
+    $(document).ready(function () {
+
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+        $("#upsummary").hide();
+        HideModalPopup('dvdetailPopUp');
+
+        $('#Submit_btn').click(function () {
+            fnUpload();
+        });
+        fnMonthPickerDisableFutureMonths('Myear');
+        GetMonthandYear();
+        $('#btngo').click(function () {
+            fnGetUploadSummary();
+        });
+        $('#btnclear').click(function () {
+            fnClear();
+        });
+        $('#btnclosepopup').click(function () {
+            HideModalPopup('dvdetailPopUp');
+        });
+        $('#closepopup0').click(function () {
+            HideModalPopup('dvdetailPopUp');
+        });
+        fnGetDepots();
+        fnGetRegions();
+        fnGetProducts();
+    });
+
+    $(function () {
+        var currentYear = (new Date).getFullYear();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 1,
+            maxDate: "+4m"
+            //showButtonPanel: true
+            //    maxDate: new Date(currentDate),
+            //yearRange: (parseInt(currentDate.split('-')[0]) - 150) + ':' + (parseInt(currentDate.split('-')[0]) + 0)
+        });
+    });
+    //function fnGetUploadSummary() {
+
+    //    var region, depot, from, to;
+    //    region = $("#Regions option:selected").val();
+    //    depot = $("#drpDepot").val();
+    //    from = $('#txtFromDate').val();
+    //    to = $('#txtToDate').val();
+    //    ProductCode=$("#drpProducts option:selected" ).val();
+
+    //    if (region == "")
+    //    {
+    //        fnMsgAlert('info', 'Info', 'Please Select Region.');
+    //        return;
+    //    }
+
+    //    if (region == '0') {
+    //        region = "";
+    //    }
+    //    if (depot == '0') {
+    //        depot = "";
+    //    }
+
+    //    if (ProductCode == '0') {
+    //        ProductCode = "";
+    //    }
+
+    //    if ($("#txtStockiestName").val() == "") {
+    //        $("#hdnStockiestRefKey").val("");
+    //    }
+
+    //    if ($('#txtFromDate').val() == null || $('#txtFromDate').val() == "")
+    //    {
+    //        fnMsgAlert('info', 'Info', 'The Document From and To date should not empty');
+    //        return;
+    //    }
+    //    if ($('#txtToDate').val() == null || $('#txtToDate').val() == "") {
+
+    //        fnMsgAlert('info', 'Info', 'The Document From and To date should not empty');
+    //        return;
+    //    }
+    //    debugger;
+    //    ShowModalPopup("dvloading");
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "PrimarySales/GetUploadSummary",
+    //            data: "region=" + region + "&depot=" + depot + "&customer=" + $('#txtStockiestName').val() + "&document_no=" +
+    //                           $('#txtDocument_number').val() + "&from=" + $("#txtFromDate").val() + "&to=" + $("#txtToDate").val() + "&ProductCode=" + ProductCode +
+    //                           "&Mode=HEADER",
+    //            success: function (result) {
+    //                $("#dvAjaxLoad").show();
+    //                result = eval('(' + result + ')');
+    //                fnCreatetable(result);
+    //                HideModalPopup("dvloading");
+    //                $("#dvAjaxLoad").hide();
+    //            },
+    //            error: function () {
+    //                //fnMsgAlert('info', 'Report', 'Error.');
+    //                HideModalPopup("dvloading");
+    //            }
+    //        });
+
+    //}
+    function fnGetUploadSummary() {
+        var region, depot, from, to,DepotCode,DepotName,ProductCode;
+        regioncode = $("#Regions option:selected").val();
+        region=$("#Rname").val();
+        DepotName = $("#Dname").val();
+        DepotCode = $("#Depots option:selected").val();
+        from = $('#txtFromDate').val();
+        to = $('#txtToDate').val();
+        if($("#Pname").val()==""){
+            ProductCode="";
+        }
+        else{
+            ProductCode=$("#Products option:selected").val();
+        }
+        if (region == "")
+        {
+            fnMsgAlert('info', 'Info', 'Please Select Region.');
+            return;
+        }
+
+        if (region == '0') {
+            region = "";
+        }
+
+        if ($("#txtStockiestName").val() == "") {
+            $("#hdnStockiestRefKey").val("");
+        }
+
+        if ($('#txtFromDate').val() == null || $('#txtFromDate').val() == "")
+        {
+            fnMsgAlert('info', 'Info', 'The Document From and To date should not empty');
+            return;
+        }
+        if ($('#txtToDate').val() == null || $('#txtToDate').val() == "") {
+
+            fnMsgAlert('info', 'Info', 'The Document From and To date should not empty');
+            return;
+        }
+
+        $('#Approval').block({
+            message: '<h3>Loading...</h3>',
+            css: { border: '2px solid #ddd' }
+        });
+        $.ajax({
+            type: "POST",
+            url: "PrimarySales/GetUploadSummary",
+            data: "region=" + regioncode + "&depot=" + DepotName + "&customer=" + $('#txtStockiestName').val() + "&document_no=" +
+                           $('#txtDocument_number').val() + "&from=" + $("#txtFromDate").val() + "&to=" + $("#txtToDate").val() + "&ProductCode=" + ProductCode +
+                           "&Mode=HEADER",
+            success: function (response) {
+                response = eval('(' + response + ')');
+                if(response.Rows.length==0)
+                {
+                    $('#Approval').html('<div id="Approvaltable"></div>');
+                    $('#Approvaltable').html('<label>No Record Found</label>');
+                    $('#Approval').unblock();
+                    //  $('#AButton').html('');
+                }
+                else{
+                    Details = response.Rows;
+                    // $('#Summary').html('');
+                    grid = new ej.grids.Grid({
+                        dataSource: response.Rows,
+                        showColumnChooser: true,
+                        allowTextWrap: true,
+                        allowResizing: true,
+                        enableHover: true,
+                        gridLines:"Both",
+                        allowSorting: true,
+                        allowPaging: true,
+                        allowGrouping: true,
+                        allowScrolling: true,
+                        enableHover: true,
+                        allowScrolling: true,
+                        allowExcelExport: true,
+                        scrollSettings: { width: '100%', height: 300, allowVirtualScrolling: true },
+                        //selectionSettings: { checkboxOnly: true },
+                        pageSettings: { pageSize: 100, pageSizes: [20, 50, 100], pageCount: 100 },
+                        height: 500,
+                        //toolbar: ['Search', 'ColumnChooser'],
+                        filterSettings: { type: 'CheckBox' },
+                        toolbar: ['ExcelExport', 'Search', 'ColumnChooser'],
+                        columns: [
+                              { field: 'Depot_Name', headerText: 'Depot Name', textAlign: 'center',width:120},
+                              { field: 'Region_Name', headerText: 'Region Name', textAlign: 'center',width:120},
+                              { field: 'Region_Ref_Key1', headerText: 'Region Ref Key', textAlign: 'center',width:120},
+                              { field: 'Customer_Name', headerText: 'Stockist Name', textAlign: 'center'},
+                              { field: 'Stockiest_Ref_Key1', headerText: 'Stockist Ref Key', textAlign: 'center'},
+                              { field: 'Document_Type', headerText: 'Document Type', textAlign: 'center' },
+                              { field: 'Document_Number', headerText: 'Document Number', textAlign: 'center' },
+                              { field: 'Document_date', headerText: 'Document date', textAlign: 'center' },
+                              { field: 'Product_Name', headerText: 'Product Name', textAlign: 'center'},
+                              { field: 'Product_Ref_Key1', headerText: 'Product Ref Key', textAlign: 'center'},
+                               { field: 'Batch_Number', headerText: 'Batch Number', textAlign: 'center'},
+                              { field: 'Sales_Quantity', headerText: 'Net Quantity', textAlign: 'center',width:120},
+                              { field: 'Free_Quantity', headerText: 'Free Quantity', textAlign: 'center',width:120},
+                              { field: 'Net_Amount', headerText: 'Net Value', textAlign: 'center'},
+
+                              //{ field: 'Updated_By', headerText: 'Updated By', textAlign: 'center' },
+                        ],
+
+                    });
+                    $('#Approval').html('');
+                    $('#Approval').html('<div id="Approvaltable"></div>');
+                    grid.appendTo('#Approvaltable');
+                    grid.toolbarClick = function (args) {
+                        if (args.item.id === 'Approvaltable_excelexport') {
+                           grid.excelExport();
+                        }
+                    };
+                    $('#Approval').unblock();
+                    //$('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction()">Close</button>');
+                }
+
+            },
+            error: function () {
+                //fnMsgAlert('info', 'Report', 'Error.');
+                $('#Approval').unblock();
+            }
+        });
+
+    }
+
+    function fnViewSummaryDetails(Dno){
+        debugger;
+        fnUploadsummarydetails(Dno);
+    }
+    function fnCreatetable(data) {
+        debugger;
+        var tbl = "";
+        tbl += "<table class='data display datatable' id='tblDetails'>";
+        tbl += "<thead><tr><td>Product Name</td><td>Region Name</td><td>Depot Name</td><td>Stockist Name</td><td>Document Number</td><td>Document Type</td><td>Document date</td>";
+        tbl += "<td>Net Amount</td><td>Action</td></tr><thead>";
+        tbl += "<tbody>";
+        for (var c = 0; c < data.Rows.length; c++) {
+            var docdate = data.Rows[c].Document_date.split('T')
+            tbl += "<tr id='tr_" + c + "'>";
+            tbl += "<td>" + data.Rows[c].Product_Name + "</td>";
+            tbl += "<td>" + data.Rows[c].Region_Name + "</td>";
+            tbl += "<td>" + data.Rows[c].Depot_Name + "</td>";
+            tbl += "<td>" + data.Rows[c].Customer_Name + "</td>";
+            tbl += "<td>" + data.Rows[c].Document_Number + "</td>";
+            tbl += "<td>" + data.Rows[c].Document_Type + "</td>";
+            tbl += "<td>" + docdate[0] + "</td>";
+            //tbl += "<td>" + data.Rows[c].Gross_Amount + "</td>";
+            //tbl += "<td>" + data.Rows[c].Discount_Amount + "</td>";
+            //tbl += "<td>" + data.Rows[c].tax + "</td>";
+            tbl += "<td>" + data.Rows[c].Net_Amount + "</td>";
+            tbl += "<td class='tdAlignCenter'  id='txtDelete_" + c + "'><input type='hidden' id='spnDocumentNumber_" + c + "' value='" + data.Rows[c].Document_Number;
+            tbl += "'/><a href='#' id='viewdetails_" + c + "' onclick='javascript:fnUploadsummarydetails(this);'>View details</a></td>";
+            tbl += "</tr>";
+            //tbl += "<td style='display:none'><span id='spnDocumentNo_" + c + "'>" + data.Rows[c].Document_Number + "</span></td>";
+            //tbl += "<td><a href='#' id='viewdetails'" + c + " onlick='return fnUploadsummarydetails()'>View details</a></td>";
+            //tbl += "</tr>";
+        }
+        tbl += "</table>";
+        $('#dvsummaryView').html(tbl);
+
+    }
+
+    function fnUploadsummarydetails(Dno) {
+        debugger;
+        ShowModalPopup("dvloading");
+        //var id = e.id;
+        //var valu = $("#" + id.replace("viewdetails_", "spnDocumentNumber_")).val();
+
+        $.ajax({
+            type: "POST",
+            url: "PrimarySales/GetUploadSummary",
+            data: "region=''&depot=''&customer=''&document_no=" + Dno + "&from=''&to=''&Mode=DETAILS",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                if (result != '') {
+
+                    var tableContent = "", cssclass = "";
+                    tableContent += "<table style='width:100%;' class='data display datatable'>";
+                    tableContent += "<thead>";
+                    tableContent += "<tr>";
+                    tableContent += "<td style='width:12%;'>S.No</td>";
+                    tableContent += "<td style='width:50%;'>Product Name</td>";
+                    tableContent += "<td style='width:50%;'>Batch Number</td>";
+                    tableContent += "<td style='width:50%;'>Sales Quantity</td>";
+                    tableContent += "<td style='width:50%;'>Free Quantity</td>";
+                    tableContent += "<td style='width:50%;'>Net Amount</td>";
+                    tableContent += "<td style='width:50%;'>Document Date</td>";
+                    tableContent += "</tr>";
+                    tableContent += "</thead>";
+                    tableContent += "<tbody>";
+                    if (result != "") {
+
+                        for (var d = 0; d < result.Rows.length; d++) {
+                            var Sno = d + 1;
+                            var docdate = result.Rows[d].Document_Date.split('T')
+                            tableContent += "<tr>";
+                            tableContent += "<td>" + Sno + "</td>";
+                            tableContent += "<td>" + result.Rows[d].Product_Name + "</td>";
+                            tableContent += "<td>" + result.Rows[d].Batch_Number + "</td>";
+                            tableContent += "<td>" + result.Rows[d].Sales_Quantity + "</td>";
+                            tableContent += "<td>" + result.Rows[d].Free_Quantity + "</td>";
+                            tableContent += "<td>" + result.Rows[d].Net_Amount + "</td>";
+                            tableContent += "<td>" + docdate[0] + "</td>";
+                            tableContent += "</tr>";
+                        }
+
+                    }
+                    tableContent += "</tbody>";
+                    tableContent += " </table>";
+
+                    $('#dvitranDocuments').html(tableContent);
+                    HideModalPopup("dvloading");
+                    ShowModalPopup('dvdetailPopUp');
+                }
+
+            }
+        });
+
+    }
+
+    function fnClear() {
+        debugger;
+        $("#Dname").val('');
+        $('#txtDocument_number').val(''); //drpregion
+        $("#Rname").val('');
+        $('#txtFromDate').val('');
+        $('#txtToDate').val('');
+        $('#txtStockiestName').val('');
+        $("#Pname").val('');
+        $('#dvsummaryView').hide();
+    }
+
+    function fnGetDepots() {
+        $.ajax({
+            type: "POST",
+            url: "PrimarySales/GetDepots",
+            data: null,
+            success: function (response) {
+                    response = eval('(' + response + ')');
+                    var lstDepots = [];
+                    $('#Depots').html('');
+                    $('#Depots').html('<input id="Dname" style="width:100%;text-align:left;" />');
+                    atcObj3 = new ej.dropdowns.DropDownList({
+                        fields: { text: 'label', value: 'value' },
+                        popupHeight: '300px',
+                        allowFiltering: true,
+                        placeholder: 'Select Depot',
+                        showClearButton: true,
+                        //index: indexDet,
+                        filtering: function (e) {
+                            var dropdown_query = new ej.data.Query();
+                            dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                            e.updateData(lstDepots, dropdown_query);
+                        },
+                       });
+                    if (response.Rows.length > 0) {
+                        for (var i = 0; i < response.Rows.length; i++) {
+                            _objUserData = {};
+                            _objUserData.value = response.Rows[i].Depot_Code;
+                            _objUserData.label = response.Rows[i].Depot_Name;
+                            lstDepots.push(_objUserData);
+                        }
+                        atcObj3.dataSource = lstDepots;
+                    } else {
+                        atcObj3.dataSource = [];
+                    }
+                    atcObj3.appendTo('#Dname');
+                }
+            });
+
+    }//drpregion
+
+    function fnGetRegions() {
+        debugger;
+        var MonthaandYear=$("#Myear").val();
+        $.ajax({
+            type: "POST",
+            url: "PrimarySales/GetRegion",
+            data: null,
+            success: function (response) {
+                response = eval('(' + response + ')');
+                var lstRegions = [];
+                $('#Regions').html('');
+                $('#Regions').html('<input id="Rname" style="width:100%;text-align:left;" />');
+                atcObj3 = new ej.dropdowns.DropDownList({
+                    fields: { text: 'label', value: 'value' },
+                    popupHeight: '300px',
+                    allowFiltering: true,
+                    placeholder: 'Select Region',
+                    showClearButton: true,
+                    //index: indexDet,
+                    filtering: function (e) {
+                        var dropdown_query = new ej.data.Query();
+                        dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                        e.updateData(lstRegions, dropdown_query);
+                    },
+                    change: fngetstockiest,
+                });
+                if (response.Rows.length > 0) {
+                    for (var i = 0; i < response.Rows.length; i++) {
+                        _objUserData = {};
+                        _objUserData.value = response.Rows[i].Region_Code;
+                        _objUserData.label = response.Rows[i].Region_Name;
+                        lstRegions.push(_objUserData);
+                    }
+                    atcObj3.dataSource = lstRegions;
+                } else {
+                    atcObj3.dataSource = [];
+                }
+                atcObj3.appendTo('#Rname');
+            }
+        });
+        }
+
+    function fngetstockiest() {
+        debugger;
+        var region =$("#Regions option:selected").val();
+        if (region != "") {
+            $("#dvAjaxLoad").show();
+            $.ajax({
+                type: 'POST',
+                url: '../HiDoctor_Activity/PrimarySales/GetStockiest ',
+                data: 'region=' + region,
+                success: function (response) {
+                    stockiestjsonString = response;
+                    if (stockiestjsonString.length > 0) {
+                        var stockiest = "[";
+                        for (var i = 0; i < stockiestjsonString.length; i++) {
+                            stockiest += "{label:" + '"' + "" + stockiestjsonString[i].StockiestName + "" + '",' + "value:" + '"' + "" + stockiestjsonString[i].StockiestCode + "" + '"' + "}";
+                            if (i < stockiestjsonString.length - 1) {
+                                stockiest += ",";
+                            }
+                        }
+                        stockiest += "];";
+                        stockiestjsonString = eval(stockiest);
+                        if (stockiestjsonString.length > 0) {
+                            $("#txtStockiestName").unautocomplete();
+                            autoComplete(stockiestjsonString, "txtStockiestName", "hdnStockiestRefKey", 'autoStockiest');
+
+                        }
+
+                    }
+                },
+                error: function () {
+                    $("#dvAjaxLoad").hide();
+                },
+                complete: function () {
+                    $("#dvAjaxLoad").hide();
+                }
+            });
+        }
+        else {
+            fnMsgAlert('info', 'Info', 'Please select the region');
+        }
+
+    }
+
+
+    function fnUpload() {
+        debugger;
+
+        var fileVal = $('#PSFile').val();
+        if (fileVal == '') {
+            fnMsgAlert('Error', 'Error', 'Please select the file to upload.');
+            return;
+        }
+
+            var filesize = document.getElementById('PSFile').files[0].size/1024
+            var filesizemb = Math.round(filesize / 1024)
+            var fixedsize = @Html.Raw(Json.Encode(ViewBag.PS_filesize));
+            if (filesizemb > fixedsize) {
+                fnMsgAlert('Error', 'Error', 'Please select the file less than ' + fixedsize + 'MB');
+                return false;
+                $("#PSFile").val('')
+
+            }
+
+        $("#dvAjaxLoad").show();
+        // var form = $('#uploader')[0];
+        var upldata=$('input[name="uplype"]:checked').val();
+            var formdata = new FormData();
+            formdata.append('CalendarMonth', $("#Myear").val());
+            formdata.append('UploadType',upldata);
+            formdata.append($("#PSFile").get(0).files[0].name,$("#PSFile").get(0).files[0]);
+            $.ajax({
+                url: '../HiDoctor_Activity/PrimarySales/PrimarySalesUpload',  //Server script to process data
+                type: 'POST',
+                data: formdata,
+                cache: false,
+                contentType: false,
+                processData: false,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        //myXhr.upload.onprogress = progressHandlingFunction
+                        myXhr.upload.addEventListener('progress', progressHandlingFunction,
+                        false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                success: function (response) {
+                    debugger;
+
+                    if (response == 'Uploaded') {
+                        $('#uploader').val('');
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('success', 'Success', 'File uploaded successfully for processing the data...Please check the batch processing for the status.');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                        $('#dv-Redirect').show();
+                    }
+                    else if (response == 'Invalid File') {
+                        $('#uploader').val('');
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('Error', 'Error', 'Invalid File, file not uploaded for processing. Please download primary sales excel Template to upload the data.');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+                    else if(response=='empty') {
+                        $('#uploader').val('');
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('info', 'Error', 'Please browse the excel.');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+                    else if (response == 'FileExists') {
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('info', 'Error', 'The uploaded file already exists');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+                    else if (response == 'HeaderInvalidColumns') {
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('info', 'Error', 'The uploaded file have invalid column names in Primary sales header worksheet');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+                    else if (response == 'DetailInvalidColumns') {
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('info', 'Error', 'The uploaded file have invalid column names in Primary sales Details worksheet');
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+                    else {
+                        $('#uploader').val('');
+                        $("#dvAjaxLoad").hide();
+                        fnMsgAlert('info', 'Error', response);
+                        $('#main').load('../HiDoctor_Activity/PrimarySales/Index');
+                    }
+
+                }
+
+            });
+
+    }
+    function fnRedirectToBatchProcessing() {
+        debugger;
+        $("#dvAjaxLoad").show();
+        $('#main').load('../BatchProcessing/Index?bpType=PSU_UPLOAD');
+        $("#dvAjaxLoad").hide();
+    }
+    function progressHandlingFunction(e) {
+        if (e.lengthComputable) {
+            var percentComplete = Math.round(e.loaded * 100 / e.total);
+            $("#FileProgress").css("width",
+            percentComplete + '%').attr('aria-valuenow', percentComplete);
+            $('#FileProgress span').text(percentComplete + "%");
+        }
+        else {
+            $('#FileProgress span').text('unable to compute');
+        }
+    }
+    function Changeheading(){
+        debugger;
+        $("#excel").hide();
+        $("#upsummary").show();
+        $("#summary").show();
+        $("#Approval").show();
+    }
+    function changeheader(){
+        debugger;
+        $("#upsummary").hide();
+        $("#summary").hide();
+        $("#excel").show();
+        $("#Approval").hide();
+    }
+    function fncheckMonthandYearSelected() {
+        debugger;
+         var MonthYearSelected = $('#bday-month').val();
+        if (MonthYearSelected == '') {
+            fnMsgAlert('info', 'Error', 'Please Select Month and Year.');
+            return;
+        }
+    }
+    function fnLoadMonthAndYear() {
+        debugger;
+
+        var today = new Date();
+        today.setDate(today.getDate());
+        var pmm = today.getMonth() + 1;
+        var pyy = today.getFullYear();
+        var monthName = fnGetMonth(pmm);
+        var monthandyear = monthName + '-' + pyy;
+        return monthandyear;
+
+    }
+    function fnGetMonth(Month) {
+        var str;
+        switch (Month) {
+            case 1:
+                str = "Jan";
+                break;
+            case 2:
+                str = "Feb";
+                break;
+            case 3:
+                str = "Mar";
+                break;
+            case 4:
+                str = "Apr";
+                break;
+            case 5:
+                str = "May";
+                break;
+            case 6:
+                str = "Jun";
+                break;
+            case 7:
+                str = "Jul";
+                break;
+            case 8:
+                str = "Aug";
+                break;
+            case 9:
+                str = "Sep";
+                break;
+            case 10:
+                str = "Oct";
+                break;
+            case 11:
+                str = "Nov";
+                break;
+            case 12:
+                str = "Dec";
+                break;
+        }
+        return str;
+    }
+    function fnMonthPickerDisableFutureMonths(id) {
+        var months = new Array();
+        var CurrentMonth = (new Date().getMonth() + 1) + 1;
+        for (var i = CurrentMonth; i <= 12; i++) {
+            months.push(i);
+        }
+        $('#' + id).monthpicker({ startYear: new Date().getFullYear()-8, finalYear: new Date().getFullYear(), pattern: 'mmm-yyyy' }).bind('monthpicker-click-month', function (e, month) {
+            debugger;
+        });
+        for (var i = 0; i < $('#' + id).length; i++) {
+            $($('#' + id)[i]).monthpicker("disableMonths", months);
+            $($('#' + id)[i]).monthpicker().bind('monthpicker-change-year', function (e, year) {
+                var item = $(e.currentTarget);
+                if (parseInt(year) === new Date().getFullYear()) {
+                    $(item).monthpicker('disableMonths', months);
+                } else {
+                    $(item).monthpicker('disableMonths', []);
+                }
+            });
+        }
+
+     }
+    function GetMonthandYear(){
+        var month_year = fnLoadMonthAndYear();
+        $('#Myear').val(month_year);
+        var weekain_months = weeksinMonth();
+    }
+    function weeksinMonth() {
+        debugger;
+        var a = $('#Myear').val();
+        var monArray = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        var month = parseInt(monArray.indexOf(a.split('-')[0].toUpperCase())) + 1;
+
+        var year = $.trim(a.split('-')[1]);
+
+        year = year || new Date().getFullYear();
+        var d = new Date(year, month, 0);
+        var noOfWeeks= Math.floor((d.getDate() - 1) / 7) + 1;
+        var content=""
+        content += '<option>select Week</option>';
+        for (i = 1; i <= noOfWeeks; i++) {
+            content += '<option value="' + i + '">Week ' + i + '</option>';
+        }
+        $('#weeksinMonth').html(content);
+    }
+
+    $('#txtStockiestName').click(function () {
+        var region = $('#Rname').val();
+        if (region == "") {
+            fnMsgAlert('info', 'Info', 'Please select the region');
+            return;
+        }
+    });
+
+    $("#Rname").change(function() {
+        $('#txtStockiestName').val('');
+    });
+
+    $('#Downloadmasterdata').click(function () {
+        var ddlValue = $("#Myear").val();
+        var path = '@Url.Content("../PrimarySales/DownloadPrimarySalesMasterExcelTemplate")' + "?ddlValue=" + ddlValue
+        $(this).attr("href", path);
+    });
+    $('#Downloadexcelformat').click(function () {
+        var ddlValue = $("#Myear").val();
+        var path = '@Url.Content("../PrimarySales/DownloadPrimarySalesExcelTemplate")' + "?ddlValue=" + ddlValue
+        $(this).attr("href", path);
+    });
+    //To Get Product List
+    function fnGetProducts() {
+        debugger;
+       $.ajax({
+            type: "POST",
+            url: "PrimarySales/GetProducts",
+            data: null,
+            success: function (response) {
+                response = eval('(' + response + ')');
+                var lstProducts = [];
+                $('#Products').html('');
+                $('#Products').html('<input id="Pname" style="width:100%;text-align:left;" />');
+                atcObj3 = new ej.dropdowns.DropDownList({
+                    fields: { text: 'label', value: 'value' },
+                    popupHeight: '300px',
+                    allowFiltering: true,
+                    placeholder: 'Select Product',
+                    showClearButton: true,
+                    //index: indexDet,
+                    filtering: function (e) {
+                        var dropdown_query = new ej.data.Query();
+                        dropdown_query = (e.text !== '') ? dropdown_query.where('label', 'contains', e.text, true) : dropdown_query;
+                        e.updateData(lstProducts, dropdown_query);
+                    },
+
+                });
+                if (response.Rows.length > 0) {
+                    for (var i = 0; i < response.Rows.length; i++) {
+                        _objUserData = {};
+                        _objUserData.value = response.Rows[i].Product_Code;
+                        _objUserData.label = response.Rows[i].Product_Name;
+                        lstProducts.push(_objUserData);
+                    }
+                    atcObj3.dataSource = lstProducts;
+                } else {
+                    atcObj3.dataSource = [];
+                }
+                atcObj3.appendTo('#Pname');
+            }
+       });
+
+
+    }
+
+</script>

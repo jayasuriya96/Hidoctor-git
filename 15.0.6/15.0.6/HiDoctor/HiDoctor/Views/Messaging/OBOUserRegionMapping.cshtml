@@ -1,0 +1,299 @@
+﻿
+@model HiDoctor_Master.Models.Organogram
+@{
+    ViewBag.Title = "OBOUserRegionMapping";
+    Layout = null;
+}
+<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<style type="text/css">
+    ul.dynatree-container {
+        height: 97% !important;
+    }
+
+    #tblUsersPopUp thead th {
+        text-align: left !important;
+        font-weight: bold;
+    }
+
+    #tblUsersPopUp {
+        width: 100% !important;
+        padding: 10px;
+    }
+</style>
+
+<div id="dvRegionMaster" class="container">
+    <div id="dvUserType">
+        <label class="radio-inline">
+            <input type="radio" name="optradio" value="USER" checked onclick="OBOUserRegion.fnSelectUserType(this);">User
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="optradio" value="REGION" onclick="OBOUserRegion.fnSelectUserType(this);">Region
+        </label>
+
+    </div>
+
+    <div style="padding: 10px; width: 100%;">
+        <div id="divUser" style="float: left; width: 49%; border: 1px solid #EFEFEF !important;">
+            <div style="width: 100%; height: 35px; padding-top: 5px; background-color: #0072c6!important; color: White;"
+                 class="popUpTitle">
+                User Hierarchy
+            </div>
+
+            <div class='leftNav' id='leftNav' style="width:486px;margin-left:5px;min-height:487px; height:542px;">
+                <div id="usertree" style="float: left; height: auto; width: 100%; ">
+                </div>
+                <div style="width: 1px;"></div>
+            </div>
+
+            <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+                <div style="display: none;" id="divToggle">
+                    <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                          onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                            onclick="fnToggleInput()">Hide Input</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="divRegion" style="float: right; width: 49%; border: 1px solid #EFEFEF !important;">
+            <div style="width: 100%; height: 35px; padding-top: 5px; background-color: #0072c6!important; color: White;"
+                 class="popUpTitle">
+                User Hierarchy
+            </div>
+            <div class='leftNav' id='leftNav' style="width: 485px;margin-left: 5px">
+                <div id="regiontree" style="float: left; height: auto; width: 100%">
+                </div>
+                <div style="width: 1px;"></div>
+            </div>
+            <div class='col-xs-9 rghtInputandRpt' style="float: left" id="divMain">
+                <div style="display: none;" id="divToggle">
+                    <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                          onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                                                                            onclick="fnToggleInput()">Hide Input</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <input type="hidden" id="hndUserCode" value="" />
+    <div style="padding: 10px; width: 100%; clear: both;">
+        <div style="float: left; width: 50%;">
+            <input type="button" id="btnSubmit" value="Submit" class="btn small primary"
+                   onclick="OBOUserRegion.fnConfirmation();" />
+        </div>
+        @*<div style="float: left; width: 50%;">
+                <input type="button" id="btnRefUser" value="Refresh User" class="btn small primary"
+                       onclick="fnUpdateUserIndex();" style="margin-left: 10px" />
+            </div>*@
+    </div>
+</div>
+
+<div class="simple_overlay" id="dvUserSelection">
+    <a class="overlayclose" onclick="$('#dvUserSelection').overlay().close();"></a>
+    <div class="col-lg-12 form-group" style="height: 480px; overflow: auto;">
+        <div id="dvAllUsers" class="col-xs-12 table-responsive">
+        </div>
+        <div id="dvErrorMsg" style="display:none">
+            <span style="color:red">Warning: Please enter the display name.</span>
+
+        </div>
+        <div class="col-xs-12" style="padding-left: 50%;">
+            <input type="button" value="Save" class="btn small primary" onclick="OBOUserRegion.fnSubmit();" />
+        </div>
+    </div>
+</div>
+
+
+@*<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>*@
+@*<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+    <script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Organogram.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>*@
+<script src="../Scripts/HD/OBOUserRegionMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" language="javascript">
+    var currentUserCode_g = @Html.Raw(Json.Encode(ViewBag.Cur_User_Code));
+    var currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Cur_Region_Code));
+    var curUserCode_g= @Html.Raw(Json.Encode(ViewBag.Cur_User_Code));
+    var autocomplete, map, marker, geocoder, infoWindow, options, myLatlng, infoWindow,pinInfobox;
+    var curLat;
+    var curLng;
+    var currMap="";
+
+    OBOUserRegion.UserCode=currentUserCode_g;
+    OBOUserRegion.RegionCode=currentRegionCode_g;
+
+    function fnSearchUsersFromTree() {
+        debugger;
+        if ($.trim($('#txtUserSearchNode').val()) == '') {
+            fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvUserFilteredNode");
+        }
+        else {
+            fnGetUsersByUserNameEmployeeName($('#txtUserSearchNode').val(), "dvUserTree", "dvUserFilteredNode");
+        }
+    }
+
+    function fnShowFullUserTreeClick() {
+        debugger;
+        $('#dvUserPreviousNode').hide();
+        $('#dvUserFullTree').hide();
+        $('#dvUserLoadTree').show();
+        $('#dvUserLoadTree').attr("title", "Click here to show users");
+        fnShowFullTreeNew(currentUserCode_g, "dvUserTree", "dvUserFilteredNode", "NO");
+    }
+
+    function fnLoadInitialUserTree() {
+        debugger;
+        $('#dvUserFullTree').show();
+        $('#dvUserLoadTree').hide();
+        $('#dvUserFullTree').attr("title", "Click here to show all users");
+        fnGetUserTreeByUserNew(currentUserCode_g, "dvUserTree", "dvFilteredNode");
+
+    }
+
+    function fnLoadInitialRegionTree(){
+        _Region.fnGetRegionTree(OBOUserRegion.RegionCode, "dvRegionTree", "dvFilteredNode");
+    }
+
+    function fnSearchRegions(){
+        debugger;
+        var Select_TypeName = $("input[name=optradio]:checked").val();
+        if(Select_TypeName=="USER")
+        {
+            _UserTree.fnSearchUserCheckBox();
+        }else{
+            _Region.fnSearchRegionTree();
+        }
+    }
+
+
+
+
+    function fnBindTreeWithSelectedUserChecked(userCode,treeId,filterId){
+        debugger;
+
+        OBOUserRegion.fnSearchUserCheckboxTree(userCode, treeId,filterId);
+    }
+
+    var fnGetUserTreeByUserNew = function (userCode, treeId, filterId)
+    {
+        _MainUserTree.fnGetUserTreeByUserNew(userCode,treeId, filterId);
+    }
+
+
+    function fnBindUsersWithOneLevelParentNew() {
+        debugger;
+        var userCode = $("#dvUserTree").dynatree("getTree").tnRoot.childList[0].data.key;
+        _MainUserTree.fnGetUserTreeByUserWithOnelevelParentNew(userCode, "dvUserTree", "dvUserFilteredNode");
+    }
+
+
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+
+        $.blockUI();
+        OBOUserRegion.init();
+
+        $('#dvPreviousNode').click(function () {
+            var Select_TypeName = $("input[name=optradio]:checked").val();
+            if(Select_TypeName=="USER")
+            {
+                _UserTree.fnBindUserOneLevelParent();
+            }else{
+                fnBindRegionWithOneLevelParent();
+
+            }
+
+        });
+
+        $('#txtSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                fnSearchRegions();
+                return false;
+            }
+        });
+
+
+
+        $('#dvUserPreviousNode').click(function () { fnBindUsersWithOneLevelParentNew(); });
+        $('#txtUserSearchNode').bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                fnSearchUsersFromTree();
+                return false;
+            }
+        });
+
+        //$(".dvNewUserTree").css("height","510px");
+        $(".dvNewUserTree").css("height","478px");
+        $(".dvNewUserTree").css("min-height","400px");
+        $(".dvNewUserTree").css("width","100%");
+
+        $($("#dvUserNodeSearch").children(0)[0]).css("position","relative");
+        $($("#dvUserNodeSearch").children(0)[0]).css("width","width")
+        $($("#dvUserNodeSearch").children(0)[0]).css("clear","both");
+        $($("#dvUserNodeSearch").children(0)[0]).css("float","left");
+
+
+
+        $(".dvNewRegionTree").css("width","99%");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("width","400px");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("position","relative");
+        $($("#regiontree").find("#dvNodeSearch").children(0)[0]).css("float","left");
+        $("#divRegion").find("#dvFilteredNode").css("height","490px");
+        $("#divRegion").find("#dvFilteredNode").css("overflow","scroll");
+
+        $('#btnRefreshUser').hide();
+
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnUserTreePostInit() {
+      //  console.log("cols fnUserTreePostInit");
+    }
+    function fnRegionTreeActivate() {
+       // console.log("cols fnRegionTreeActivate");
+    }
+
+    function fnUserTreeResize(obj) {
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseUserTree(treeExpandLevel, 'leftNav', 'treeNav', obj, 'divMain', 'usertree');
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+    function fnUserTreeNodeClick(node) {
+       // console.log("cols fnUserTreeNodeClick");
+
+    }
+
+    function fnUserTreeNewNodeClick(node) {
+
+        $.blockUI();
+       // console.log("cols fnUserTreeNewNodeClick");
+        $("#hndUserCode").val("");
+        $("#hndUserCode").val(node.data.key);
+        OBOUserRegion.fnGetSelected();
+
+    }
+    function fnUserTreeSelect(node){
+        //console.log("cols fnUserTreeSelect");
+    }
+
+
+    ///****************Region Tree*****************
+    function fnRegionTreePostInit(node)
+    {
+        console.log("cols fnRegionTreePostInit");
+    }
+</script>

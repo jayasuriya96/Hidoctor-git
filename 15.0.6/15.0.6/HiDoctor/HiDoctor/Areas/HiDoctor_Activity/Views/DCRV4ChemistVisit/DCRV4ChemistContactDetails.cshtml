@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "DCRV4ChemistContactDetails";
+}
+<style>
+     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<center class="OTC/PharmaBlock">
+    <div id="div_DoctorContactDetails" class="chemistDay">
+        <div class="chemistheader" style="width:100%;" onclick="fnTableShowHide('tbl_DoctorContactDetails_Chemist', 'spnContactDetails_Chemist')">
+            <div class="collapse" id="spnContactDetails_Chemist" style="padding: 5px;text-align:left !important;font-family:Segoe UI;padding-left:15px;font-weight:bold;float:left">
+                Contact Details
+                @*<img src="/Images/load.gif" class="autofillLoadingIcon" id="imgloaddAcc"><span id="accLoadingTitle" class="loadingcaption"> Accompanist autofill setting</span>*@
+            </div>
+            <div class="helpIconmargin">
+                <img src="~/Images/HelpIcon.png" onclick="fnHelp('DCR_CHEVISIT','CHEVISITACCOMPANIST')" />
+            </div>
+        </div>
+        <table id="tbl_DoctorContactDetails_Chemist" class="cvtable" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <td class="dcr_Chemistproduct_header" style="text-align:left;width: 29px;">
+                        Name
+                    </td>
+                    @*<td class="dcr_product_header" style="text-align:left;width: 29px;">
+                        Title
+                    </td>*@
+                    <td class="dcr_Chemistproduct_header" style="text-align:left;width: 29px;">
+                        Mobile
+                    </td>
+                    <td class="dcr_Chemistproduct_header" style="text-align:left;padding-left:19px">Email Id</td>
+                    <td></td>
+                </tr>
+            </thead>
+        </table>
+        @*<table id="tbl_DoctorContactDetails_Chemist" class="cvtable" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>Contact Name</td>
+                <td>Mobile</td>
+                <td>Email</td>
+            </tr>
+        </table>*@
+    </div>
+</center>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/DCRV4/DCRV4ChemistContactdetails.js")?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Scripts/CoreREST.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+
+<script>
+    var CompanyCode = "";
+    var UserCode = "";
+    var RegionCode = "";
+    var CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    $(document).ready(function () {
+        Contact.initializing();
+        $(".numbersOnly").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+    });
+</script>

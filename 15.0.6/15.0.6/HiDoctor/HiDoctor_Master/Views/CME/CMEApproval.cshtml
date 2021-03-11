@@ -1,0 +1,512 @@
+﻿@{
+    ViewBag.Title = "CMEPlanning";
+    Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+}
+<style>
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #007bff !important;
+        border-top-color: #e0e0e0 !important;
+        color: white !important;
+    }
+      .modal-dialog {
+        max-width: 850px !important;
+    }
+
+    .modal-content {
+        border: none;
+    }
+</style>
+<div>
+    <form>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Planned Date</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="CMEStartDate">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Plan Applicable Till</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="CMEEndDate">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="Status">
+                    <option value="ALL" selected>ALL</option>
+                    <option value="1" selected>Applied</option>
+                    <option value="2">Approved</option>
+                    <option value="0">UnApproved</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-offset-2 col-md-8" style="margin-top:33px;">
+            <button type="button" class="btn btn-info btn-sm" id="btnGo" onclick="GetApprovalData();">Go</button>
+        </div>
+    </form>
+    <div id="Approval" style="margin-top:1%">
+
+    </div>
+    <div style="margin-top:2%" id="AButton">
+
+    </div>
+</div>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding:0px">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height:600px;overflow-y: auto; overflow-x: hidden;">
+                <div>
+                    <form>
+                        <div >
+                           
+                            <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Expense Details</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor Expense</th>
+                                        <th>Venue Expense</th>
+                                        <th>Marketing Expense</th>
+                                        <th>Travel Expense</th>
+                                        <th>Other Expense</th>
+                                        <th>Total Expense</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CMEBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Mapping Product Details</label>
+                            <div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Product Name</th>
+                                            <th>Current Sales</th>
+                                            <th>Potential Sales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="CMEProd"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <label for="exampleFormControlInput1" class="col-form-label" style="font-weight: 500;">Action Details</label>
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Action By</th>
+                                        <th>Action Date </th>
+                                        <th>Action Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CMEAction"></tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script>
+    var CompanyCode= @Html.Raw(Json.Encode(ViewBag.Company_Code));
+    var RegionCode= @Html.Raw(Json.Encode(ViewBag.Region_Code));
+    var UserCode= @Html.Raw(Json.Encode(ViewBag.User_Code));
+    var Company_Code= @Html.Raw(Json.Encode(ViewBag.Company_Code));
+    var User_Type_Code=@Html.Raw(Json.Encode(ViewBag.User_Type_Code));
+    var grid;
+    var CMEDetails=[];
+    var Product= [];
+    var Status='';
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        debugger
+        $("#CMEStartDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+        });
+        $("#CMEEndDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+        });
+        var today = new Date();
+        var cdd = today.getDate();
+        var cmm = today.getMonth() + 1;
+        var cyy = today.getFullYear();
+        var currentDate =cdd + '/' + ("0" + (cmm)).slice(-2) + '/' + cyy;
+        today.setDate(today.getDate() - 90);
+        var pdd = today.getDate();
+        var pmm = today.getMonth() + 1;
+        var pyy = today.getFullYear();
+        var prevDate =pdd + '/' + ("0" + (pmm)).slice(-2) + '/' +pyy ;
+        $('#CMEStartDate').val(prevDate);
+        $('#CMEEndDate').val(currentDate);
+        GetApprovalData()
+    });
+
+    function GetApprovalData()
+    {
+        var Start_Date = $('#CMEStartDate').val();
+        var date=Start_Date.split('/');
+        Start_Date=date[2]+'-'+date[1]+'-'+date[0];
+        var End_Date = $('#CMEEndDate').val();
+        var Edate=End_Date.split('/');
+        End_Date=Edate[2]+'-'+Edate[1]+'-'+Edate[0];
+        Status = $('#Status').val();
+        Method_params = ["CMEApi/GetCMEApprovalData",Company_Code,UserCode,Start_Date,End_Date,Status];
+        CoreREST.get(null, Method_params, null, getDataSuccess,getDataFailure);
+    }
+    function getDataSuccess(response)
+    {
+        debugger;
+        var result = response.list.lst;
+       Product=  response.list.lstProd;
+      if(response.list.lst==0)
+        {
+            $('#Approval').html('<div id="Approvaltable"></div>');
+            $('#Approvaltable').html('<label>No Record Found</label>');
+            $('#AButton').html('');
+        }
+      else{
+          CMEDetails = response.list.lst;
+          $('#Summary').html('');
+          var  grid2 = new ej.grids.Grid({
+              dataSource: result,
+              toolbar: ['Search'],
+              showColumnChooser: true,
+              allowTextWrap: true,
+              allowResizing: true,
+              //allowFiltering: true,
+              allowSorting: true,
+              allowPaging: true,
+              allowGrouping: true,
+              allowScrolling: true,
+              selectionSettings: { checkboxOnly: true },
+              pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+              height: 400,
+              columns: [
+                  { field: 'CME_Name', headerText: 'CME Name', textAlign: 'center' },
+                    { field: 'Region_Name', headerText: 'Region Name', textAlign: 'center' },
+                      { field: 'Status',width: 150, headerText: 'Status', textAlign: 'center' },
+                   { field: 'Start_Date',width: 150, headerText: 'Planned Date', textAlign: 'center' },
+                    { field: 'End_Date',width: 150, headerText: 'Plan Applicable Till', textAlign: 'center' },
+                  { field: 'Doctor_Name', headerText: 'Doctor Name', textAlign: 'center' },
+                  { field: 'No_Of_Doctor',width: 150, headerText: 'No of doctors participation', textAlign: 'center' },
+                   { field: 'CME Details', headerText: 'CME Details', textAlign: 'center' },
+                     { field: 'No_Of_Month', width: 150, headerText: 'No Of Month', textAlign: 'center' },
+                     { field: 'Remark', headerText: 'Remark', textAlign: 'center' },
+                       { field: 'Created_By', headerText: 'Created By', textAlign: 'center' },
+                         { field: 'Created_Date', headerText: 'Created Date', textAlign: 'center' },
+              ],
+              queryCellInfo: fnQueryCellInfo,
+          });
+          grid = new ej.grids.Grid({
+              dataSource: result,
+              toolbar: ['Search'],
+              showColumnChooser: true,
+              allowTextWrap: true,
+              allowResizing: true,
+              //allowFiltering: true,
+              allowSorting: true,
+              allowPaging: true,
+              allowGrouping: true,
+              allowScrolling: true,
+              selectionSettings: { checkboxOnly: true },
+              pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+              height: 400,
+              columns: [
+                   { type: "checkbox", headerText: 'Select', field: "", allowFiltering: false, allowSorting: false, width: '60' },
+                   { headerText: 'Action', width: 150, textAlign: 'center' },
+                  { field: 'CME_Name', headerText: 'CME Name', textAlign: 'center' },
+                    { field: 'Region_Name', headerText: 'Region Name', textAlign: 'center' },
+                   { field: 'Start_Date',width: 150, headerText: 'Planned Date', textAlign: 'center' },
+                    { field: 'End_Date',width: 150, headerText: 'Plan Applicable Till', textAlign: 'center' },
+                  { field: 'Doctor_Name', headerText: 'Doctor Name', textAlign: 'center' },
+                  { field: 'No_Of_Doctor',width: 150, headerText: 'No of doctors participation', textAlign: 'center' },
+                   { field: 'CME Details', headerText: 'CME Details', textAlign: 'center' },
+                     { field: 'No_Of_Month', width: 150, headerText: 'No Of Month', textAlign: 'center' },
+                     { field: 'Remark', headerText: 'Remark', textAlign: 'center' },
+                       { field: 'Created_By', headerText: 'Created By', textAlign: 'center' },
+                         { field: 'Created_Date',width: 150, headerText: 'Created Date', textAlign: 'center' },
+              ],
+              checkBoxChange: (args) => {
+                  var customselect = [];
+                  if (args.checked && args.target.classList.contains('e-checkselectall')) {
+                      for (var i = 0; i < args.selectedRowIndexes.length; i++) {
+                          var row = grid.getRowByIndex(args.selectedRowIndexes[i]);
+                          if (!row.querySelector('.disablecheckbox')) {
+                              customselect.push(args.selectedRowIndexes[i])
+                          }
+                      }
+                      grid.selectRows(customselect)
+                  }
+              },
+              queryCellInfo: fnQueryCellInfo,
+          });
+          if(Status=='1' || Status=="2")
+          {
+            
+              if(Status=="2")
+              {
+                  var value= fnprivilege();
+                  if(value !=null ||value !=''  )
+                  {
+                      var result=value.split(',');
+                      result=result.indexOf('CME');
+                      if(result !=-1)
+                      {
+                          $('#Approval').html('');
+                          $('#Approval').html('<div id="Approvaltable"></div>');
+                          grid.appendTo('#Approvaltable');
+
+                          $('#AButton').html('<button type="button" class="btn btn-danger ml-2" onclick="fnAction(0)">UnApprove</button>');
+                      }
+                      else{
+                          $('#Approval').html('');
+                          $('#Approval').html('<div id="Approvaltable"></div>');
+                          grid2.appendTo('#Approvaltable');
+                      }
+                  }
+                  else{
+                      $('#Approval').html('');
+                      $('#Approval').html('<div id="Approvaltable"></div>');
+                      grid2.appendTo('#Approvaltable');
+                  }
+              }
+              else{
+                  $('#Approval').html('');
+                  $('#Approval').html('<div id="Approvaltable"></div>');
+                  grid.appendTo('#Approvaltable');
+
+                  $('#AButton').html('<button type="button" class="btn btn-success" onclick="fnAction(2)">Approve</button><button type="button" class="btn btn-danger ml-2" onclick="fnAction(0)">UnApprove</button>');
+              }
+             
+          }
+          else
+          {
+          
+              $('#Approval').html('');
+              $('#Approval').html('<div id="Approvaltable"></div>');
+              grid2.appendTo('#Approvaltable');
+              $('#AButton').html('');
+          }
+          }
+
+
+
+
+    }
+    function getDataFailure()
+    {
+
+    }
+    function fnQueryCellInfo(args) {
+        if (args.column.headerText == 'Action') {
+            args.cell.innerHTML = '<textarea class="form-control" rows="1" id="remark_'+args.data.P_ID+'"></textarea>';
+        }
+        else if(args.column.headerText =="CME Details")
+        {
+            args.cell.innerHTML = "<a herf=# style='cursor:pointer;color:blue;' onclick='fnVeiwDetails(\"" + args.data.P_ID + "\");'>View Details</a>";
+        }
+    }
+    function fnAction(Action)
+    {
+        var Message='';
+        if(Action==2)
+        {
+            Message='approve';
+        }
+        else{
+            Message='unapprove';
+        }
+        debugger;
+        var response=grid.getSelectedRecords();
+        var arr=[];
+        var error=true;
+        for (var i=0;i<response.length;i++)
+        {
+            if(Action==0)
+            {
+                if($('#remark_'+response[i].P_ID+'').val()=='')
+                {
+                    swal("", "Enter Remark", "");
+                    error=false;
+                    return false;
+                }
+                var Value=regExforAlphaNumericSpecificRemarks($('#remark_'+response[i].P_ID+'').val());
+                if(Value==false)
+                {
+                    swal("", "Only (a-z A-Z 0-9 (){}[]\/.,-_:;!?) special characters are allowed in the Remark", "");
+                    error=false;
+                    return false;
+                }
+            }
+            var obj = {
+                "Action": Action,
+                "P_Id":response[i].P_ID,
+                "Remark":$('#remark_'+response[i].P_ID+'').val(),
+            }
+            arr.push(obj);
+
+        }
+
+        if(error=true)
+        {
+            var objects={
+                "lstApproval":JSON.stringify(arr),
+            }
+            swal({
+                text: "Are you Sure? Do you want to "+Message+" the CME Planning",
+                buttons: true,
+                dangerMode: true,
+            })
+    .then((willDelete) => {
+        if (willDelete) {
+            Method_params = ["CMEApi/InsertCMEApproval", Company_Code,UserCode];
+            CoreREST.post(null, Method_params, objects,fnStatusChangeSuccessCallback,fnStatusChangeFailureCallback);
+
+        }
+    });
+        }
+    }
+    function fnStatusChangeSuccessCallback(response)
+    {
+        if(response==1)
+        {
+            swal({
+                title: "Success",
+                text: 'CME Planning status changed sucessfully.',
+            });
+            GetApprovalData();
+        }
+        else {
+            fnMsgAlert('error', 'CME', 'Error while saving the CME Planning.');
+        }
+    }
+    function fnStatusChangeFailureCallback(response)
+    {
+
+    }
+    function fnVeiwDetails(P_ID)
+    {
+        debugger;
+        var Details = $.grep(CMEDetails, function (v) {
+            return v.P_ID == P_ID;
+        });
+        var   table = '';
+        table += '<tr>';
+        table += '<td>';
+        table += Details[0].Doctor_Expense == null ? '-' : Details[0].Doctor_Expense;
+        table +='</td>';
+        table += '<td>'
+        table +=Details[0].Venu_Expense == null ? '-' : Details[0].Venu_Expense;
+        table +='</td>';
+        table += '<td>';
+        table +=Details[0].Marketing_Expense == null ? '-' : Details[0].Marketing_Expense;
+        table +='</td>';
+        table += '<td>' ;
+        table +=Details[0].Travel_Expense == null ? '-' : Details[0].Travel_Expense;
+        table +='</td>';
+        table += '<td>';
+        table +=Details[0].Other_Expense == null ? '-' : Details[0].Other_Expense;
+        table +='</td>';
+        table += '<td>';
+        table +=Details[0].Total_Expense == null ? '-' : Details[0].Total_Expense;
+        table +='</td>';
+        table += '<tr>';
+        $('#CMEBody').html(table);
+        table = '';
+        if(Details[0].Approved_By!=null)
+        {
+            table += '<tr>';
+            table += '<td style="min-width:100px">' + Details[0].Approved_By + '</td>';
+            table += '<td style="min-width:168px;">' + Details[0].Approved_Date+ '</td>';
+            table += '<td style="min-width:168px;">' +  Details[0].Approval_Remark+ '</td>';
+            table += '<tr>';
+
+        }
+        else{
+            table += '<tr>';
+            table += '<td colspan = "3">No Record Found</td>';
+            table += '</tr>';
+        }
+        $('#CMEAction').html(table);
+        var So = 0;
+         table = '';
+        var response = $.grep(Product, function (v) {
+            return v.P_ID == P_ID;
+        });
+        if(response.length >0)
+        {
+            for (var i = 0; i < response.length; i++) {
+                So++;
+                table += '<tr>';
+                table += '<td style="min-width:100px">' + So + '</td>';
+                table += '<td style="min-width:168px;">' + response[i].Product_Name + '</td>';
+                table += '<td style="min-width:168px;">'
+                table += response[i].Current_Sales == null ? '-' : response[i].Current_Sales;
+                table +='</td>';
+                table += '<td style="min-width:168px;">'
+                table += response[i].Potential_Sales == null ? '-' : response[i].Potential_Sales;
+                table += '</td>';
+              //  table += '<td style="min-width:168px;">' + response[i].No_Of_Month + '</td>';
+                table += '</tr>';
+            }
+        }
+        else{
+            table += '<tr>';
+            table += '<td colspan = "5">No Record Found</td>';
+            table += '</tr>';
+        }
+
+        $('#CMEProd').html(table);
+        $('#myModal').modal('show');
+
+    }
+    function  regExforAlphaNumericSpecificRemarks(value) {
+        var specialCharregex = new RegExp(/[*&%$^#<>+=~`""|]/g);
+        if (specialCharregex.test(value) == true) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function fnprivilege() {
+        debugger;
+        var value='CAN_UNAPPROVE_AN_APPROVED_ENTRY_OF';
+        var privilege='';
+        $.ajax({
+            url: '../HiDoctor_Master/CME/GetPrivilegeValue',
+            type: "POST",
+            async: false,
+            data: "userCode=" + UserCode+"&privilegeName="+value,
+            success: function (result) {
+                debugger;
+                privilege= result;
+
+            }
+        });
+        return privilege;
+    }
+</script>

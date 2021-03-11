@@ -1,0 +1,243 @@
+﻿@{
+    ViewBag.Title = "DoctorsReason";
+    Layout = null;
+    }
+    <style>
+        #panel, #flip {
+            padding: 5px;
+            text-align: center;
+            background-color: #fff;
+            border: solid 1px #c3c3c3;
+        }
+
+        #panel {
+            padding: 50px;
+            display: none;
+        }
+
+        @@media (min-width: 576px) {
+            .card-column {
+                column-count: 3;
+                orphans: 1;
+                column-gap: 1.25rem !important;
+                widows: 1;
+            }
+
+                .card-column .panel {
+                    display: inline-block;
+                    width: 100%;
+                }
+        }
+        @@media (min-width: 576px) {
+            .card-columns {
+                column-count: 4;
+                orphans: 1;
+                column-gap: 1.25rem !important;
+                widows: 1;
+            }
+
+                .card-columns .panel {
+                    display: inline-block;
+                    width: 100%;
+                }
+        }
+    </style>
+    <div class="panel panel-default list"id="reasonlist" style="padding:30px 9px 30px">
+    <div class="panel-body">
+        <div id="dvPinCodeSearch" class="col-xs-12 col-sm-12 clearfix" style="padding:0px;">
+           
+            <form>
+                <div class="col-xs-12 col-sm-12 clearfix">
+                    <div class="form-group col-sm-5" id="TypMap">
+                        <div class="form-group col-sm-3">
+                            <label for="">Region Name :</label>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="" id="dvtxtregionName">
+                                <input type="text" class="" id="regionname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4" id="TypMap">
+                        <div class="form-group col-sm-4">
+                            <label for="">Month & Year</label>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <input type="text" class="form-control" id="Myear">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button type="button" class="btn btn-primary input-sm" id="btnGo" onclick="DoctorCount.fnstart();">GO</button>
+                    </div>
+                </div>
+</form>
+
+
+        </div>
+    </div>
+</div>
+<div id="load" style="text-align: center;"> </div>
+
+    <div class="panel panel-default list" id="DocRegioList" style="padding:30px 9px 30px;display:none">
+        <div class="panel-body col-xs-12 col-sm-12 clearfix">
+
+            <div class="form-group row clearfix">
+                <form>
+
+                    <div class="form-group col-sm-3">
+                        <label id="regName" for="">Region Name :</label>
+
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label id="emplname" for="">Employee Name :</label>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="">Month & Year :</label>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-xs-10 col-sm-10 clearfix" style="padding:0px;">
+                <form>
+
+                    <div class="form-group col-sm-3">
+                        <label for="">Manger Region Name :</label>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label for="">Manager Name :</label>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    @*<div class="listMisDoctor" style="padding-left: 20px;display:none">List Of Doctors</div>*@
+    <div class="col-lg-12 col-md-12 col-sm-12 clearfix" id="Doctormislist" style="padding:0px;display:none">
+        <div class="panel panel-default list" style="padding:30px 9px 30px">
+            <div class="panel-body" style="height:400px;overflow:auto;">
+                <div id="prodheading" class="clearfix" style="margin-bottom: 5px;"></div>
+
+                <div class="card-column" id="Doctorslst">
+                </div>
+                <div class="" id="norecordsfound">
+                </div>
+
+            </div>
+            <div class="btns" style="padding-left:30px">
+                <input type="button" class="btn btn-primary" id="btnsave" value="Save" onclick="DoctorCount.fnsave(3)" />
+                <input type="button" class="btn btn-primary" id="btnsumbmit" value="Submit" onclick="DoctorCount.fnsave(1)" />
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="margin-top: 20px; padding: 0px;">
+        <div id="detailedlist" class="col-lg-12 col-md-12 col-sm-12 clearfix"></div>
+    </div>
+
+
+
+
+
+
+
+    <div class="modal" id="Missedlist" role="dialog" style="opacity: 1; background: lightgray;">
+        <div class="modal-dialog modal-lg" style="padding:0px;width: 97% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Missed Doctors</h4>
+                    <button type="button" class="close" id="closemodel" onclick="$('#Missedlist').hide();">&times;</button>
+                </div>
+                <div class="modal-body" style="max-height: 600px;overflow:auto;">
+
+                    <div class="panel-body col-xs-12 col-sm-12 clearfix" id="DocRegioList">
+                        <div id="prefildetailedlist" class="col-lg-12 col-md-12 col-sm-12 clearfix"></div>
+                    </div>
+                    <div class="panel-body col-xs-12 col-sm-12" style="height:400px;overflow:auto;">
+                        <div id="prodheading" class="clearfix" style="margin-bottom: 5px;"></div>
+
+                        <div class="card-columns" id="lstdocadetails">
+                        </div>
+                        <div class="" id="norecordsfound">
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="~/Scripts/sweetalert.min.js"></script>
+
+    <script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/DoctorsReason.js?v=@HiDoctor.BuildNo.Build_No"></script>
+    <link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+    <script src="~/Scripts/jquery.mtz.monthpicker.js"></script>
+    <script src="~/Scripts/HD/common12.7.0.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            debugger;
+            fnMonthPickerDisableFutureMonths('Myear');
+
+            subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+            LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+            CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+            LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+            CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+            isResponsive=@Html.Raw(Json.Encode(ViewBag.IsResponsive));
+            $('#dvAjaxLoad').hide();
+
+            DoctorCount.initialize();
+
+
+
+        });
+
+        function fnMonthPickerDisableFutureMonths(id) {
+            var months = new Array();
+            var CurrentMonth = (new Date().getMonth() + 1) + 1;
+            for (var i = CurrentMonth; i <= 12; i++) {
+                months.push(i);
+            }
+            $('#' + id).monthpicker({ startYear: new Date().getFullYear()-8, finalYear: new Date().getFullYear(), pattern: 'mmm-yyyy' }).bind('monthpicker-click-month', function (e, month) {
+                debugger;
+
+            });
+            for (var i = 0; i < $('#' + id).length; i++) {
+                $($('#' + id)[i]).monthpicker("disableMonths", months);
+                $($('#' + id)[i]).monthpicker().bind('monthpicker-change-year', function (e, year) {
+                    var item = $(e.currentTarget);
+                    if (parseInt(year) === new Date().getFullYear()) {
+                        $(item).monthpicker('disableMonths', months);
+                    } else {
+                        $(item).monthpicker('disableMonths', []);
+                    }
+                });
+
+            }
+
+
+        }
+    </script>
+
+
+   

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<div id="dvTabs">
+    <ul>
+        <li><a href="#dvDefiner">Definer</a></li>
+        <li><a href="#dvDefinerReport" id="advReportTab">Report</a></li>
+        <li><a href="#dvDefinertedit" id="editTab">Edit</a></li>
+    </ul>
+    <div id="dvDefiner" style="min-height: 500px; overflow: auto;">
+        <div style="width: 80%; margin: 2% 0%; float: left;">
+            <div class="WInputRow">
+                <div class="WInptuLeft WInputLeftHeader">Weekend Group Name</div>
+                <div class="WInptuRight">
+                    <input type="text" id="txtWeekEndGroupName" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="dvWeekendDetail">
+        </div>
+
+        <div id="dvAnotherYear" style="float: left; width: 100%;">
+            <input type="button" class="btn small primary" value="Add another year" onclick="fnBindYearlyInputSelection();" style="float: right; padding: 0.5% 2%;" />
+        </div>
+        <div id="dvSubmitButton" style="float: left; width: 100%; text-align: center;">
+            <input type="button" class="btn small primary" value="Submit" onclick="fnSubmitWeekEndGroup();" style="padding: 0.5% 4%;" />
+            <input type="button" class="btn small primary" value="Reset" onclick="fnResetWeekEndGroup();" style="padding: 0.5% 4%;" />
+        </div>
+
+    </div>
+
+    
+
+    <div id="dvDefinerReport" style="min-height: 500px; overflow: auto;">
+
+    </div>
+
+    <div id="dvDefinertedit" style="min-height: 1000px; overflow: auto;">
+
+    </div>
+   
+    
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/WeekendGroup.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+    var todayDate ="";
+    var holidayMethodArr="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            todayDate = @Html.Raw(Json.Encode(ViewBag.todayDate));   
+            holidayMethodArr = @Html.Raw(Json.Encode(ViewBag.holidayMethod));   
+            fnBindYearlyInputSelection();
+            fnBindMonthDetailForAYear("");
+            $("#dvTabs").tabs();
+            
+            $("#advReportTab").click(function () {
+                $("#dvDefinerReport").load("../HiDoctor_Master/WeekendGroup/WeekendGroupDefinerReport");
+            }); 
+            $("#editTab").click(function () {
+                $("#dvDefinertedit").load("../HiDoctor_Master/WeekendGroup/WeekendEdit");
+            }); 
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+
+</script>
+
+

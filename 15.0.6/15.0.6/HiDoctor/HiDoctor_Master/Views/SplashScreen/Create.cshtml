@@ -1,0 +1,899 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+<style>
+    label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: normal !important;
+    }
+
+    .CheckBoxStyle {
+        border: 1px dotted gray;
+        width: 100%;
+    }
+
+    .form-wizard {
+        background-color: #f2f7f9;
+        padding: 5px 12px 23px;
+        border: 1px solid #d0dde1;
+        min-height: 100px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .form-container {
+        width: 965px;
+        margin: 0 auto;
+    }
+
+    .radio label::after {
+        top: 1px !important;
+    }
+
+    .clsAllHierarchy {
+        border-radius: 50%;
+        background: url("../../Areas/HiDoctor_Master/Content/images/Hierarchy.jpg") no-repeat;
+        width: 200px;
+        height: 200px;
+        background-size: 100% 100%;
+        float: left;
+        position: relative;
+        right: 3%;
+        margin: 0px 10px;
+        /*margin-right: 26%;*/
+    }
+
+    .clsSpecificGroup {
+        border-radius: 50%;
+        background: url("../../Areas/HiDoctor_Master/Content/images/group-hierarchy.png")no-repeat;
+        width: 200px;
+        height: 200px;
+        background-size: 100% 100%;
+        background-color: white;
+        float: left;
+        position: relative;
+        right: 3%;
+        margin: 0px 9px;
+    }
+
+    .clsSpecific {
+        border-radius: 50%;
+        background: url("../../Areas/HiDoctor_Master/Content/images/User.jpg") no-repeat;
+        width: 200px;
+        height: 200px;
+        background-size: 100% 100%;
+        float: left;
+        position: relative;
+        right: 3%;
+        margin: 0px 10px;
+    }
+
+    .cls-show-map-msg {
+        min-height: 100px;
+        overflow: auto;
+        /*text-align: center;*/
+        padding-left: 18% !important;
+    }
+
+    .clsSuccMsg {
+        text-align: center;
+        font-size: 18px;
+        color: green;
+        padding: 30px;
+    }
+
+    .checkbox label::after {
+        margin-top: -4px !important;
+    }
+
+    .clsDivisions {
+        border: 3px solid #d0dde1;
+        padding: 10px;
+        margin-bottom: 6px;
+        min-height: 200px;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    .clsUserTypes {
+        border: 3px solid #d0dde1;
+        padding: 10px;
+        min-height: 200px;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+     .clsUserGroups {
+        border: 3px solid #d0dde1;
+        padding: 10px;
+        min-height: 200px;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    #tree {
+        float: left;
+        height: 510px !important;
+        width: 100%;
+    }
+
+    #dvusertree {
+        float: left;
+        height: 510px !important;
+        width: 100%;
+    }
+    #tblSplashScreen thead {
+        background: #5E87B0 !important;
+        color: #fff;
+        text-align: left;
+    }
+
+     #tblSplashScreen thead th, #tblSplashScreen tbody tr {
+            padding: 8px;
+            line-height: 1.428571429;
+        }
+
+    .clsPaddingNone {
+        padding: 0px !important;
+    }
+
+    #splashPreview {
+        top: 50px !important;
+        left: 0px !important;
+        margin-left: 0px !important;
+        margin-top: 0px !important;
+        height: 485px !important;
+        overflow: hidden;
+    }
+
+        #splashPreview .modal-content {
+            height: 100%;
+        }
+
+        #splashPreview .modal-dialog {
+            /*width: 900px !important;*/
+            padding: 0px !important;
+            /*height: auto;*/
+        }
+
+        #splashPreview img {
+            /*width: 150px;
+            height: 150px;
+            float: right;*/
+            width: 100%;
+            height: 100%;
+            float: right;
+        }
+
+        #splashPreview .modal-header {
+            border-bottom: 0px !important;
+        }
+
+        #splashPreviewtxt {
+        top: 50px !important;
+        left: 0px !important;
+        margin-left: 0px !important;
+        margin-top: 0px !important;
+        /*height: 600px !important;*/
+        overflow: hidden;
+        }
+
+        #splashPreviewtxt .modal-content {
+            height: 100%;
+        }
+
+        #splashPreviewtxt .modal-dialog {
+            /*width: 100% !important;*/
+            padding: 0px !important;
+            /*height: 475px;*/
+        }
+        #splashPreviewtxt .modal-header {
+            border-bottom: 0px !important;
+        }
+      #splashPreviewtxt .splashContent {
+        width: 95%;
+        float: left;
+        margin-left: 15px;
+        text-align: justify;
+        word-wrap: normal;
+    }
+      #lbltext {
+        position: relative;
+        top: 500px;
+        left: 50%;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 999;
+       }
+       #splashPreviewimg {
+        top: 50px !important;
+        left: 0px !important;
+        margin-left: 0px !important;
+        margin-top: 0px !important;
+        /*height: 600px !important;*/
+        overflow: hidden;
+        }
+
+        #splashPreviewimg .modal-content {
+            height: 100%;
+        }
+        #splashPreviewimg .modal-body {  
+                padding: 0px;
+            }
+
+        #splashPreviewimg .modal-dialog {
+            /*width: 900px !important;*/
+            padding: 0px !important;
+            /*height: 475px;*/
+        }
+        #splashPreviewimg .modal-header {
+            border-bottom: 0px !important;
+        }
+        #splashPreviewimg .splashImg {
+        width: 100%;
+        float: left;
+        top: 0px;
+        }
+       .splashImg {
+        width: 100%;
+        float: right;
+        top: 0px;
+         }
+
+    .splashContent {
+        width: 95%;
+        float: left;
+        margin-left: 15px;
+        text-align: justify;
+        word-wrap: normal;
+    }
+
+    .splashTitle {
+        text-align: center;
+        font-size: 15px;
+        text-decoration: underline;
+    }
+
+    /*#splashTitletxtimg {
+        position: relative;
+        text-align: center;
+        font-size: 15px;
+        text-decoration: underline;
+        top: 60px;
+        color: #ffff;
+    }*/
+    /*#dvPreviewSplash {
+        height: 300px;
+        overflow: auto;
+    }*/
+
+     #dvPreviewSplashtxt {
+        /*height: 300px;*/
+        overflow: auto;
+    }
+
+      #dvPreviewSplashimg {
+          padding: 0px !important;
+        /*height: 100%;*/
+        /*overflow: auto;*/
+    }
+
+    .close {
+        z-index: 4000000;
+        color: red !important;
+        position: absolute;
+        top: -6px;
+        right: 8px;
+        font-size: 30px !important;
+    /*top: -10px;
+    right: -5px;
+    
+    position: relative;*/
+    }
+   
+    .mandatory {
+        color: red;
+    }
+</style>
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+
+<div id="dvloading" style="display: none">
+    <img src="../../Content/images/loader1.gif" />
+</div>
+<div class="form-container">
+    <div class="form-wizard clsSplashCreation">
+        <div id="divInputControls">
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                </div>
+                <div class="col-lg-7 form-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" id="txt" value="txtonly">Message
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" id="img" value="imgonly">Attachment
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" id="txtimg" checked="checked" value="txtimg">Message & Attachment
+                    </label>     
+                   </div>
+                <div class="col-lg-5"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    Title 
+                </div>
+                <div class="col-lg-4 form-group">
+                    <input type="text" id="txtTitle" class="form-control" maxlength="150" style="width: 267% !important;"/>
+                </div>
+                <div class="col-lg-8"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="lbldesc">
+                <div class="col-lg-2 form-group">
+                    Description<span class="mandatory" id="descmnd">*</span>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <textarea id="txtDescription" rows="2" cols="20"></textarea>
+                    @*
+                    <textarea id="txtDescription" class="form-control"></textarea>*@
+                </div>
+                <div class="col-lg-8"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    Date From <span class="mandatory">*</span>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <input type="text" id="txtValidFrom" class='datepicker form-control' style='cursor:pointer;' readonly />
+                </div>
+                <div class="col-lg-6"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group">
+                    Date To <span class="mandatory">*</span>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <input type="text" id="txtValidTo" class='datepicker form-control' style='cursor:pointer;' readonly />
+                </div>
+                <div class="col-lg-6"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="attachmnt">
+                <div class="col-lg-2 form-group">
+                    Attachment <span class="mandatory">*</span>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <input type="file" name="fileUploader" id="fileUploader" class="form-control" />
+                    <span style="font-size: 12px; font-style: italic;">(Can upload .JPG, .JPEG, .BMP, .GIF, .PNG format only)</span>
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="col-lg-12 form-group clsMobileAttachment" style="display: none;">
+                <div class="col-lg-2 form-group">
+                    Attachment(Mobile)
+                </div>
+                <div class="col-lg-4 form-group">
+                    <input type="file" name="mobileFileUploader" id="mobileFileUploader" class="form-control" />
+                    <span style="font-size: 12px; font-style: italic;">(Can upload jpg,jpeg,bmp,gif,png format only)</span>
+                </div>
+                <div class="col-lg-6 form-group"></div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="col-lg-12 form-group clsAttachment" style="display: none;">
+                <div class="col-lg-2 form-group">
+                </div>
+                <div class="col-lg-10 form-group">
+                    <div class="radio radio-info radio-inline">
+                        <input type="radio" name="rdAttachment" id="rdSame" value="0" checked>
+                        <label for="rdSame">
+                            Use the same image in mobile browser also
+                               
+                        </label>
+                    </div>
+                    <div class="radio radio-info radio-inline">
+                        <input type="radio" name="rdAttachment" id="rdAnother" value="1">
+                        <label for="rdAnother">
+                            Let me choose another image for mobile browser
+                               
+                        </label>
+                    </div>
+                </div>
+
+                <div style="clear: both"></div>
+            </div>
+
+
+
+            <div id="link" class="col-lg-12 form-group" style="display: none">
+                <div class="col-lg-2 form-group"></div>
+                <div class="col-lg-8 form-group">
+                    <a id="editfilepathlink" href="#">Edited Web File path</a>
+                    <br />
+                    <a style="display:none" id="editMobilefilepathlink" href="#">Edited Mobile File path</a>
+                </div>
+
+                <div style="clear: both"></div>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                <div class="col-lg-2 form-group"></div>
+                <div class="col-lg-8 form-group">
+                    <input type="button" id="btnSave" value="Save" class="btn btn-primary" onclick="fnValidateAndSave();" />
+                    <input type="button" id="btnPreview" value="Preview" class="btn btn-primary" />
+                    <input type="button" id="btnClear" value="Clear" class="btn btn-primary" onclick="fnClearForm();" />
+                </div>
+                <div class="col-lg-2"></div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <div id="divSummaryGrid" class="table-responsive">
+        </div>
+        <div id="dvOverlay" style="display: none; z-index: 10000; background-color: #fff; width: 980px; min-height: 585px; border: 1px solid #666; -moz-box-shadow: 0 0 90px 5px #000; -webkit-box-shadow: 0 0 90px #000;">
+            <div style="position: absolute; font-size: 11px; width: 98%; padding: 10px;">
+                <span style="float: right; cursor: pointer; color: white" onclick="$('#dvOverlay').overlay().close();;">
+                    <img src="~/Images/close.png" />
+                </span>
+                <h2 id="popheader" class="popheader"></h2>
+                <div id="divModel" style="height: 500px; overflow: auto" class="table-responsive">
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-wizard clsUserMap" style="display: none;">
+        <p><a href="#" class="lnkOpenCreate"><< Back to Creation</a> </p>
+        <span class="clsSuccMsg">
+            <p>Splash message created successfully.</p>
+            <p>Please select any one option to map this splash message to user</p>
+        </span>
+
+        <div class="col-xs-12 form-group cls-show-map-msg">
+
+            <div class="clsAllHierarchy">
+            </div>
+            <div class="clsSpecificGroup">
+            </div>
+            <div class="clsSpecific"></div>
+        </div>
+        <div class="col-lg-12 form-group cls-show-map-msg">
+            <input type="button" value="Assign to all users" class="btn btn-primary" style="margin-left:1px;position: relative;left: 2%;" id="btnAssignToAll">
+            <input type="button" value="Assign to specific group" class="btn btn-primary" style="margin-left: 35px;position: relative;left: 5%;" id="btnAssignToGrp">
+            <input type="button" value="Assign to specific users" class="btn btn-primary" style="margin-right: 20%; margin-left: 44px;position: relative;left: 5%;" id="btnAssignToSpecific">
+        </div>
+    </div>
+    <div class="form-wizard clsSpecUser" style="display: none;">
+        <p><a href="#" class="lnktomap"><< Back to Mapping Screen</a> </p>
+        <div class="col-lg-12" style="min-height: 100px; overflow: auto;">
+            <div class="col-lg-6 clsPaddingNone" >
+                <div id="divisionmapping">
+                    <div class="col-lg-12 clsPaddingNone">
+                        <p style="font-weight: bold; font-size: 15px;">
+                            Divisions
+                        </p>
+
+                        <div class="col-lg-12 clsDivisions">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 clsPaddingNone">
+                        <p style="font-weight: bold; font-size: 15px;">
+                            User Types
+                        </p>
+                        <div class="col-lg-12 clsUserTypes">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <p style="font-weight: bold; font-size: 15px;" id="spnSelectedUsers">
+                    No of selected users : 0
+                </p>
+                <div id="tree" style="float: left; height: 530px; width: 100%">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-6 clsPaddingNone">
+                <br />
+                <input type="button" value="Select Users" class="btn btn-primary" id="btnSelectUsers" onclick="fnGetSelectedUserTypes();"/>
+            </div>
+            <div class="col-lg-6 clsPaddingNone">
+                <br />
+                @* 
+                <input type="button" value="Reassign Users" class="btn btn-primary" id="btnReAssign" />*@
+                <input type="button" value="Assign Users" class="btn btn-primary" id="btnAssign" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="form-wizard clsSpecGroup" style="display: none;">
+        <p><a href="#" class="lnktomap"><< Back to Mapping Screen</a> </p>
+        <div class="col-lg-12" style="min-height: 100px; overflow: auto;">
+            <div class="col-lg-6 clsPaddingNone">
+                <div class="col-lg-12 clsPaddingNone">
+                    <p style="font-weight: bold; font-size: 15px;">
+                        Groups
+                    </p>
+                    <div class="col-lg-12 clsUserGroups">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <p style="font-weight: bold; font-size: 15px;" id="spnSelectedGrpUsers">
+                    No of selected users : 0
+                </p>
+                <div id="dvusertree" style="float: left; height: 530px; width: 100%">
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-6 clsPaddingNone">
+                <br />
+                <input type="button" value="Select Groups" class="btn btn-primary" id="btnSelectGroup" onclick="fnGetSelectedGroups();" />
+            </div>
+            <div class="col-lg-6 clsPaddingNone">
+                <br />
+                <input type="button" value="Assign Users" class="btn btn-primary" id="btnAssignGrp" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        @*<div class="col-lg-12">
+            <div class="col-lg-6 clsPaddingNone">
+                <br />
+                <input type="button" style="text-align:center" value="Assign Users" class="btn btn-primary" id="btnAssignGrp" />
+            </div>
+            <div class="clearfix"></div>
+        </div>*@    
+
+    </div>
+
+    </div>
+
+<div class="modal" id="splashPreview" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content clearfix" style="width: 600px; height: 568px; overflow: hidden;">
+            @*<div class="modal-header" style="padding:0px" id="modalhdr">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreview');"><span aria-hidden="true">&times;</span></button>
+            </div>*@
+            <div class="modal-body" style="padding: 0px;">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreview');"><span aria-hidden="true">&times;</span></button>
+                <div class="col-lg-12 cls-padding-none" id="dvPreviewSplash" style="padding:0px;">
+                    <div class="col-lg-12" style="padding:0px;">
+                        <p class="splashTitle" id="splashTitletxtimg"></p>                        
+                        @*<div><label id="splashShowHideBtn" style="display:none;">Tap to see Img</label></div>*@
+                        <div style="margin-left: 10px;"><i class="fa fa-angle-double-down" id="splashShowHideBtn" style="display:none;font-size:36px;"></i></div>
+                        <div style="position: absolute;left: 46%;"id="lbltext"><i class="fa fa-angle-double-up" style="font-size:36px;color: #000000;"></i></div>
+                        <div class="splashContent" style="display:none;height: 568px!important;"></div>
+                        <div class="splashImg" style="margin-top: -10px!important;display: block;">
+                            <img class="img-responsive" style="max-width: 100%;width: 100%;position: relative;top: -1px;height:485px" id="imgSplash" src="" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="splashPreviewtxt" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content clearfix" style="width: 600px; height: 568px; overflow: hidden; overflow-y: scroll;">
+            @*<div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreviewtxt');"><span aria-hidden="true">&times;</span></button>
+            </div>*@
+            <div class="modal-body">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreviewtxt');"><span aria-hidden="true">&times;</span></button>
+                <div class="col-lg-12 cls-padding-none" id="dvPreviewSplashtxt">
+                    <div class="col-lg-12">
+                        <p class="splashTitle"></p>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="splashContent"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="splashPreviewimg" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content clearfix" style="width: 600px; height: 568px; overflow: hidden;">
+            @*<div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreviewimg');"><span aria-hidden="true">&times;</span></button>
+            </div>*@
+            <div class="modal-body" style="padding: 0px;">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button" onclick="HideModalPopup('splashPreviewimg');"><span aria-hidden="true">&times;</span></button>
+                <div class="col-lg-12" style="padding: 0px" id="dvPreviewSplashimg">
+                    <div class="col-lg-12">
+                        <p class="splashTitle" style="padding: 0px"></p>
+                    </div>
+                    <div class="col-lg-12"style="padding:0px;">
+
+                        <div class="splashImg" style="margin-top: -10px!important;display: block;">
+                            <img class="img-responsive" style="max-width: 100%;width: 100%;position: relative;height:485px";top: -1px;" id="imgSplash" src="" />
+                        </div>
+
+                        @*<div class="splashImg">
+                            <img id="imgSplash" src="" />
+                        </div>*@
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="hdnSplashId" />
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor/Scripts/HD/common.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/SplashScreen.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="~/Content/jquery-te-1.4.0.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-te-1.4.0.min.js"></script>
+<script type="text/javascript">
+    var selectedKeys = "";
+    var saveMode = "NEW";
+    var splashScreenId_Edit = "";
+    var todaysDate = '@(ViewBag.TodaysDate)';
+    var attachment_FileName = '@(ViewBag.FileName)';
+    var editFileName = new Array();
+    var editFilePath = new Array();
+    var description = "";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnLoadControls();
+
+        fnBindUserTreeWithCheckBoxDoubleClick("tree");
+        fnBindUserTreeWithCheckBoxDoubleClick("dvusertree");
+        $('#txtDescription').jqte({
+            status: true,
+            fsize: true,
+            fsizes: ['10', '12', '16', '18', '20', '24', '28'],
+            funit: 'px',
+            format: true,
+            formats: [
+            ["p", "Normal"], ["h1", "Header 1"], ["h2", "Header 2"], ["h3", "Header 3"], ["h4", "Header 4"], ["h5", "Header 5"],
+            ["h6", "Header 6"], ["pre", "Preformatted"]
+            ],
+            link: true,
+            b: true,
+            center: true,
+            color: true,
+            i: true,
+            indent: true,
+            left: true,
+            ol: true,
+            outdent: true,
+            remove: true,
+            right: true,
+            rule: true,
+            source: true,
+            sub: true,
+            strike: true,
+            sup: true,
+            u: true,
+            ul: true,
+            unlink: true,
+            title: true,
+            placeholder: "",
+            br: true,
+            p: true,
+            button: "OK",
+        });
+
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 2
+            });
+        });
+        var Splashtype = '';
+        var SplashtypeString = '';
+        $("#dvAjaxLoad").hide();
+    });
+
+    $("input[name='optradio']").change(function () {
+        // Do something interesting here
+    Splashtype = $("input[name='optradio']:checked").val();
+    if (Splashtype == "txtonly")
+    {
+        $("#attachmnt").hide();
+        $("#lbldesc").show();
+    }
+    if (Splashtype == "imgonly") {
+        $("#lbldesc").hide();
+        $("#attachmnt").show();
+    }
+    if (Splashtype == "txtimg") {
+        $("#lbldesc").show();
+        $("#attachmnt").show();
+    }
+    });
+
+    $('#fileUploader').unbind('change').bind('change', function () {
+        //attachmentFileSize = this.files[0].size;
+        var fileControl = document.getElementById("fileUploader");
+        if (fileControl.files != undefined && fileControl.files != null && fileControl.files[0] != null) {
+            attachmentFileSize = fileControl.files[0].size;
+
+            validateFileExtenstion();
+        }
+        $('input[type=radio][name=rdAttachment][value=0]').prop('checked', true);
+        fnShowImagePreview(document.getElementById("fileUploader"));
+    });
+    $('#mobileFileUploader').unbind('change').bind('change', function () {
+        //attachmentFileSize = this.files[0].size;
+        var fileControl = document.getElementById("mobileFileUploader");
+        if (fileControl.files != undefined && fileControl.files != null && fileControl.files[0] != null) {
+            attachmentFileSize = fileControl.files[0].size;
+
+            validateMobileFileExtenstion();
+        }
+        // $('input[type=radio][name=rdAttachment][value=0]').prop('checked', true);
+    });
+    $('input[type=radio][name=rdAttachment]').bind('change', function () {
+        if ($('input[type=radio][name=rdAttachment]:checked').val() == 1) {
+            $('.clsMobileAttachment').show();
+        }
+        else {
+            $('.clsMobileAttachment').hide();
+            $('#mobileFileUploader').val('');
+        }
+    });
+
+    function fnUserTreePostInit() {
+    }
+    var selKeys = new Array();
+    var selKeys_ls = new Array();
+    function fnUserTreeSelect(select, node) {
+        var lastSelectedNode = node.data.key;
+        selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+        selKeys_ls = selKeys;
+        $('#spnSelectedUsers').html('No of selecetd users : ' + selKeys.length);
+        $('#spnSelectedGrpUsers').html('No of Selected users : ' + selKeys.length);
+    }
+    //$('#btnSelectUsers').unbind('click').bind('click', function () {
+    //    if (selKeys.length > 0) {
+    //        if (confirm('Previously selected users will be removed. Do you want to continue?')) {
+    //            var divisionCode = $('input[name=divisonCheck]:checked').map(function () {
+    //                return $(this).val();
+    //            }).get();
+    //            var userTypeCodes = $('input[name=utCheck]:checked').map(function () {
+    //                return $(this).val();
+    //            }).get();
+    //            if (divisionCode.length > 0) {
+    //                if (userTypeCodes.length > 0) {
+    //                    $.blockUI();
+    //                    // $('#btnReAssign').hide();
+    //                    $('#btnAssign').show();
+    //                    selectUsers();
+    //                }
+    //                else {
+    //                    fnMsgAlert('info', 'Info', 'Please select any one user type');
+    //                    return;
+    //                }
+    //            }
+    //            else {
+    //                fnMsgAlert('info', 'Info', 'Please select any one division');
+    //                return;
+    //            }
+    //        }
+    //    }
+    //    else {
+    //        var divisionCode = $('input[name=divisonCheck]:checked').map(function () {
+    //            return $(this).val();
+    //        }).get();
+    //        var userTypeCodes = $('input[name=utCheck]:checked').map(function () {
+    //            return $(this).val();
+    //        }).get();
+    //        if (divisionCode.length > 0) {
+    //            if (userTypeCodes.length > 0) {
+    //                $.blockUI();
+    //                // $('#btnReAssign').hide();
+    //                $('#btnAssign').show();
+    //                selectUsers();
+    //            }
+    //            else {
+    //                fnMsgAlert('info', 'Info', 'Please select any one user type');
+    //                return;
+    //            }
+    //        }
+    //        else {
+    //            fnMsgAlert('info', 'Info', 'Please select any one division');
+    //            return;
+    //        }
+    //    }
+
+    //});
+
+    $('#btnAssignToAll').unbind('click').bind('click', function () {
+        assignToAllUsers();
+        $('.clsUserMap').hide();
+        $('.clsSplashCreation').show();
+        $('.clsSpecUser').hide();
+        $('.clsSpecGroup').hide();
+    });
+    $('#btnAssignToSpecific').unbind('click').bind('click', function () {
+        $.blockUI();
+        getChildUsers();
+    });
+    $('#btnAssignToGrp').unbind('click').bind('click', function () {
+        debugger;
+        $.blockUI();
+        getGroupDetails();
+    });
+    //$('#btnReAssign').unbind('click').bind('click', function () {
+    //    if (selKeys.length == 0) {
+    //        fnMsgAlert('info', 'Info', 'Please select any one user');
+    //        return;
+    //    }
+    //    assignToSleectiveUsers('R');
+    //});
+    $('#btnAssign').unbind('click').bind('click', function () {
+        if (selKeys.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select atleast one user');
+            return;
+        }
+        assignToSleectiveUsers('A');
+    });
+
+    $('#btnAssignGrp').unbind('click').bind('click', function () {
+        if (selKeys.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select atleast one group');
+            return;
+        }
+        assignToSleectiveUsers('A');
+    });
+
+    $('.lnkOpenCreate').unbind('click').bind('click', function () {
+        $('.clsUserMap').hide();
+        $('.clsSplashCreation').show();
+        $('.clsSpecUser').hide();
+        $('.clsSpecGroup').hide();
+        $('#spnSelectedGrpUsers').html('No of Selected Users: 0');
+    });
+
+    $('.lnktomap').unbind('click').bind('click', function () {
+        $('.clsUserMap').show();
+        $('.clsSplashCreation').hide();
+        $('.clsSpecUser').hide();
+        $('.clsSpecGroup').hide();
+        $('#spnSelectedGrpUsers').html('No of Selected Users: 0');
+    });
+    $('#btnPreview').unbind('click').bind('click', function () {
+        previewSplash();
+    });
+
+    $("#lbltext").click(function () {
+        debugger
+        $('.splashImg').slideUp("normal").promise().done(function () {
+            $('.splashContent').show();
+            $('#splashShowHideBtn').show();
+        });
+    });
+    $("#splashShowHideBtn").click(function () {
+            $('.splashImg').slideDown();
+            $('.splashContent').hide();
+            $('#splashShowHideBtn').hide();
+
+    });
+</script>

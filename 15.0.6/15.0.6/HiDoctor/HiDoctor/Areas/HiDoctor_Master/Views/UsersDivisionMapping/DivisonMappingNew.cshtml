@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "DivisonMappingNew";
+    Layout = null;
+}
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    
+    #dvEntityDetails {
+        height: 350px;
+        overflow: auto;
+    }
+
+    #dvDivisionMapping a {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .dvTitleHeader {
+        font-weight: bold;
+        font-size: 14px;
+        padding-top: 1%;
+        background-color: #efefef;
+    }
+</style>
+
+<div class="col-sm-12">
+    <div id="dvDivisionMapping">
+        <div id="dvEntity" class="table-responsive"></div>
+    </div>
+</div>
+<div class="simple_overlay" id="dvEntityMapping">
+    <a class="overlayclose" onclick="$('#dvEntityMapping').overlay().close();"></a>
+    <div class="col-lg-12 form-group dvTitleHeader">
+        <div class="col-lg-12">
+            <div class="col-lg-3">Division Name : </div>
+            <div class="col-lg-9" id="dvSelectedDivName"></div>
+        </div>
+        <div class="col-lg-12 form-group">
+            <div class="col-lg-3">Entity Name : </div>
+            <div class="col-lg-9" id="dvSelectedEntityName"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+    <div class="col-lg-12 form-group" id="dvEntityDetails">
+    </div>
+    <div class="col-lg-12 form-group">
+        <input type="button" class="btn btn-primary btn-xs" onclick="fnSubmitMapping();" value="Submit" />
+    </div>
+</div>
+<input type="hidden" id="hdnEntity" />
+<input type="hidden" id="hdnDivisionCode" />
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/DivisionMappingNew.js"></script>
+<script>
+    var selectedRegionCodes, selectedUserCodes;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+
+         $("#dvAjaxLoad").hide();
+        //$("#dvRightPanel").tabs();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvEntityMapping").overlay().load();
+        fnGetDivisionsByRegions();
+    });
+    function fnRegionTreePostInit (node) {
+        debugger;
+        if (entityDetails_g != '' &&entityDetails_g != undefined && $("#hdnEntity").val() != "DOCTOR") {
+            $("#dvEntityDetails").dynatree("getRoot").visit(function (node) {
+                var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                if (disJson != false && disJson != undefined) {
+                    node.select(true);
+                }
+            });
+        }
+    }
+
+    function fnRegionTreeSelect(select, node) {
+       selectedRegionCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreeNodeClick(node) {
+    }
+    function fnUserTreeSelect(select, node) {
+        debugger;
+        selectedUserCodes = $.map(node.tree.getSelectedNodes(), function (node) {
+            return node.data.key;
+        });
+    }
+    function fnUserTreePostInit(node) {
+        debugger;
+        if (entityDetails_g!= '' && entityDetails_g != undefined) {
+            $("#dvEntityDetails").dynatree("getRoot").visit(function (node) {
+                var disJson = jsonPath(entityDetails_g, "$.[?(@@.Entity_Code=='" + node.data.key + "')]");
+                if (disJson != false && disJson != undefined) {
+                    node.select(true);
+                }
+            });
+        }
+    }
+
+
+</script>

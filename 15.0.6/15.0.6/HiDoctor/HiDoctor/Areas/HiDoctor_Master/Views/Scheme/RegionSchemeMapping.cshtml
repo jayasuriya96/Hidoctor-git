@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "RegionSchemeMapping";
+   Layout=null;
+}
+
+<div style="width: 100%;">
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 10%; float: left;">Scheme Name </div>
+        <div style="width: 85%; float: left;">
+            <select id="cboScheme" onchange="fnGetMappedSchemes();">
+            </select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 10%; float: left;">Mapping Details </div>
+        <div style="width: 85%; float: left;">
+            <input type="radio" name="rdMap" value="1" checked="checked" onchange="fnShowRegions();" />Map this to all region
+        <input type="radio" name="rdMap" value="2" onchange="fnShowRegions();" />Map this to selective region
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none; " id="dvRegionType">
+        <div style="width: 10%; float: left;">Region Type</div>
+        <div style="width: 90%; float: left;" style="width: 20%;">
+            <select id="cboRegionType" multiple="multiple" style="width: 25%;">
+            </select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px; display: none;" id="dRegClassi">
+        <div style="width: 10%; float: left;">Region Classification</div>
+        <div style="width: 90%; float: left;" style="width: 20%;">
+            <select id="cboRegionClassification" multiple="multiple" style="width: 25%;"></select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none;" id="dvBtnRegions">
+        <div style="width: 85%; padding-left: 10%;">
+            <input type="button" id="btnGetRegion" value="Get Regions" onclick="fnGetRegions();" />
+        </div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;display:none;" id="dvMainRegion">
+        <div style="width: 10%; float: left;">Region Tree</div>
+        <div style="width: 90%; float: left;">
+            <select id="cboRegion" multiple="multiple" style="width: 25%;"></select>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; padding-top: 5px;">
+        <div style="width: 90%; padding-left: 5%;">
+            <input type="button" id="btnSave" value="Save" class="btn small primary" onclick="fnSchemeMapping();" />
+            <input type="button" id="btnReset" value="Reset" class="btn small primary" onclick="fnClearMapping();" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/SchemeMapping.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetSchemes();
+        $("#dvAjaxLoad").hide();
+        //document.getElementsByTagName('iframe')[0].contentWindow.document.getElementById('dvData').innerHTML
+    });
+
+
+
+</script>

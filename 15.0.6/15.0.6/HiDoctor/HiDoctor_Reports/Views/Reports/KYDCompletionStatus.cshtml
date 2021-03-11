@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Title = "KYDCompletionStatus";
+    Layout = null;
+}
+ 
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<style type="text/css">
+    tfoot {
+        display: table-footer-group;
+    }
+
+    .TableTools_print {
+        display: none !important;
+    }
+
+    #dvTree {
+        width: 20%;
+        float: left;
+    }
+
+    /*#divMain {
+        width: 78%;
+        float: left;
+    }*/
+
+    #dvNetTotal {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    /*.clsExpense thead th {
+        background-color: #0A0A62;
+    }*/
+
+    .cls_DisplayColumn {
+        display: none;
+    }
+
+    .cls_Vacant {
+        border: 1px solid red;
+        width: 77%;
+        margin-left: 1%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .clsExpense td {
+        text-align: left;
+        border-right: 1px dotted #efefef;
+    }
+
+    #tree {
+        height: 550px;
+        float: left;
+        width: 100%;
+    }
+
+    #tblUserInfo {
+        font-size: 13px;
+        width: 100%;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        padding: 1%;
+    }
+
+        #tblUserInfo table tr td {
+            border-bottom: 1px solid #efefef;
+        }
+
+    .tdHeader {
+        background-color: #0A0A62 !important;
+        color: white;
+        width: 9%;
+        font-weight: bold;
+    }
+
+    #dvReportPeriod {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 1%;
+        float: left;
+    }
+
+    #tblDoctorPopUp td {
+        border: 1px solid #efefef;
+        padding: 5px;
+    }
+
+    #tblDoctorPopUp th {
+        border: 1px solid #efefef;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    #testTable {
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination {
+        background: #F1F1F1;
+        font-size: 14px;
+        padding: 0px 5px;
+        height: 35px;
+    }
+
+    #tablePagination_paginater {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #tablePagination img {
+        padding: 0px 2px;
+    }
+
+    #tablePagination_perPage {
+        float: left;
+    }
+
+    #tablePagination_paginater {
+        float: right;
+    }
+
+    .totaltr {
+        color: #0F7B0F;
+        font-size: 15px;
+    }
+
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .listheaderbar1 {
+        background-color: #3B6792 !important;
+        color: #fff;
+        height: 28px !important;
+        padding: 8px;
+        font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial,Helvetica, sans-serif !important;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<div class='col-xs-12'>
+    <div class='col-xs-3 leftNav' id='leftNav'>
+        <div id="regiontree" style="float: left; height: auto; width: 100%">
+        </div>
+        <span id="spnTreeResize" onclick="fnRegionTreeResize(this);"><i class="fa fa-chevron-circle-right fa-lg"></i></span>
+        <div style="width: 1px;"></div>
+    </div> 
+
+    <div class='col-xs-9 rghtInputandRpt' float: left" id="divMain">     
+        <div style="display: none;" id="divToggle">
+            <span id="spnTreeToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                onclick="fnToggleTree()">Hide Tree</span> | <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+                    onclick="fnToggleInput()">Hide Input</span>
+        </div>
+        <div id="divInput" style="display: none; padding: 5px;">
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="btnShow" name="Show" value="Show Report" onclick="fnKYDCompletionStatus();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </br>
+         <div id="dvPrint" onclick='fnPrint("divdocMasterprint","ifrmPrint");' title="Print Table" class="TableTools_button" style="background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right; margin-right: 4%; display: none"></div>
+        <div id="divReport">
+        </div>     
+        <br />
+        <div style="clear: both">
+        </div>
+        <div class="listheaderbar1" id="divHideHeader1" onclick="fnTableShowHide('divmainSummary','spnHeader','dvSubprint')">
+            <span id="spnHeader" style="padding: 15px;">Doctor Details<span style="font-size: 11px; font-style: italic">(Click to Expand/Collapse!)</span></span>
+        </div>
+        <div id="divmainSummary">        
+            <div id="dvExcelPrint" style='float: left; width: 100%; display: none;'>
+                <div style="float: right;padding: 3px; background-color: #efefef; border: 1px solid #d3d3d3; margin-bottom: 10px; margin-right: 4%;">
+                    <div id='dvSubprint' onclick='fnPrint("divdocdetalsprint","ifrmsubPrint");' title='Print Table' class='TableTools_button' style='background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right;'></div>
+                    <input type="button" id="CA_Excel" value="" />                   
+                </div>                
+                <div id="dvExceldwn" style="float:right;padding-right:8px;"></div>
+                @Html.Hidden("regionCode")
+                @Html.Hidden("category")
+                @Html.Hidden("docCount") 
+                @Html.Hidden("categoryName")
+            </div>
+       
+      
+     <div id="dvSubprint" onclick='fnPrint("divdocdetalsprint","ifrmsubPrint");' title="Print Table" class="TableTools_button" style="background: url(../Content/DataTable/media/images/print.png) no-repeat center center; border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer; float: right; margin-right: 4%; display: none"></div>
+            <div id="divSummary">
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <div id="divImport" style="width: 100%;"></div>
+    </div>
+</div>
+
+   
+
+
+<input type="hidden" id="hdnRegionCode" />
+<iframe id="ifrmPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divdocMasterprint" style="display: none;"></div>
+
+<iframe id="ifrmsubPrint" style="height: 0px; width: 0px;"></iframe>
+<div id="divdocdetalsprint" style="display: none;"></div>
+
+ <iframe id="ifrmExcel" style="display: none;" name="ifrmExcel"></iframe>       
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/Reports.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    var currentRegionCode_g = "";
+    var treeExpandLevel = 0;   
+    var dcrDate = "",flag_g="",jsonDisplayColumns_g="",jsonCheckDuplicate_g="",jsonMandatory_g="",showDoctorPercentage_g=0,prividotorpercentage_g="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            currentRegionCode_g = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+            if(currentRegionCode_g != null && currentRegionCode_g != '')
+            {      
+                $("#leftNav").show();
+                fnRegionTreePosition("regiontree");                                         
+                fnGetRegionTreeByRegion(currentRegionCode_g, "dvRegionTree", "dvFilteredNode");       
+                $('#dvPreviousNode').click(function () { fnBindRegionWithOneLevelParent(); });
+                $('#txtSearchNode').bind("keypress", function (e) {
+                    if (e.keyCode == 13) {                       
+                        fnSearchRegions();
+                        return false;
+                    }
+                });
+                // $("#dvTree").show();
+                $('#divInput').hide();
+                $('#divToggle').hide();
+                $("#divMain").addClass('col-xs-9');         
+             
+                $("#divHideHeader").hide();
+                $('#divHideHeader1').hide();
+                //$("#dvTree").show();                             
+            }
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    var RegionNameTitle="";
+    function fnRegionTreeNodeClick(node){   
+        $("#divReport").html("");      
+        $("#divSummary").html("");       
+        $('#hdnRegionCode').val(node.data.key);       
+        $('#divInput').show();
+        $("#leftNav").show();
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');       
+        $('#dvPrint').hide();
+        $('#dvSubprint').hide();
+        $('#dvExcelPrint').hide();
+        $('#dvExceldwn').hide();
+        //$('#CA_Excel').hide();
+        $("#divHideHeader").hide();
+        $('#divHideHeader1').hide();
+        $('#divImport').html('');  
+        RegionNameTitle = (node.data.title);
+        fnGetKYDConfigValues();
+    }
+
+    function fnRegionTreeActivate(node) { 
+        $("#divReport").html("");      
+        $("#divSummary").html("");       
+        $('#hdnRegionCode').val(node.data.key);       
+        $('#divInput').show();
+        $("#leftNav").show();
+        $('#divToggle').show();      
+        $("#divMain").addClass('col-xs-9');       
+        $('#dvPrint').hide();
+        $('#dvSubprint').hide();
+        $('#dvExcelPrint').hide();
+        $('#dvExceldwn').hide();
+        //$('#CA_Excel').hide();
+        $("#divHideHeader").hide();
+        $('#divHideHeader1').hide();
+        $('#divImport').html('');      
+        //$("#divReport").html('');
+        //// $("#divHeader").html('');
+        //$("#divSummary").html('');
+        //$("#dvTree").hide();
+        //$('#hdnRegionCode').val(node.data.key);
+        //$('#divToggle').show();
+        //$("#spnTreeToggle").html('Show Tree');
+        //$("#divMain").css('width', '100%');
+        //$('#divInput').show();
+        //$('#dvPrint').hide();
+        //$('#dvSubprint').hide();
+    }  
+
+    function fnToggleTree() {
+        if ($("#spnTreeToggle").html() == "Hide Tree") {           
+            $('#regiontree').hide();  
+            $('#leftNav').removeClass('col-xs-5');
+            $('#leftNav').removeClass('col-xs-4');
+            $('#leftNav').removeClass('col-xs-3');
+            $("#divMain").removeClass('col-xs-9');
+            $("#divMain").removeClass('col-xs-8');
+            $("#divMain").removeClass('col-xs-7');
+            $("#divMain").addClass('col-xs-12');            
+            $("#spnTreeToggle").html('Show Tree');
+
+            //Expand the Tree
+            $('#spnTreeResize').attr('title', 'Click here to expand tree');
+            $('#spnTreeResize').html('<i class="fa fa-chevron-circle-right fa-lg"></i>');   
+        }
+        else if ($("#spnTreeToggle").html() == "Show Tree") {
+            $('#regiontree').show();           
+            $('#leftNav').addClass('col-xs-3');
+            $('#divMain').removeClass('col-xs-7'); 
+            $('#divMain').removeClass('col-xs-8'); 
+            $('#divMain').removeClass('col-xs-9');   
+            $("#divMain").addClass('col-xs-9');  
+            $("#spnTreeToggle").html('Hide Tree');
+        }
+    }
+
+    function fnToggleInput() {
+        if ($("#spnInputToggle").html() == "Hide Input") {
+            $("#divInput").slideUp();
+            $("#spnInputToggle").html("Show Input");
+        }
+        else if ($("#spnInputToggle").html() == "Show Input") {
+            $("#spnInputToggle").html("Hide Input");
+            $("#divInput").slideDown();
+        }
+    }
+
+    function fnRegionTreePostInit() {
+
+    }
+
+    //Used To Resize the Tree
+    function fnRegionTreeResize(obj) { 
+        if (treeExpandLevel == 2) {
+            treeExpandLevel = -1;
+        }
+        else {
+            treeExpandLevel = parseInt(treeExpandLevel) + 1;
+        }
+        fnExpandCollapseRegionTree(treeExpandLevel, 'leftNav', 'treeNav', obj,'divMain', 'regiontree');
+    }
+
+</script>

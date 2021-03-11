@@ -1,0 +1,319 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    #dvCPMain #dvRegionTree {
+        height: 450px;
+    }
+
+    #dvCPMain #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+    .dvCommon {
+        min-height: 35px !important;
+    }
+
+    #dvSFC {
+        padding-top: 1%;
+    }
+
+    #tblSFC thead {
+        color: #fff;
+        background-color: #428bca;
+        border-color: #428bca;
+        text-align: center;
+    }
+
+    #tblDoctors thead {
+        text-align: center;
+    }
+
+    .docProDelete {
+        background: url('../Content/images/cross.png') no-repeat !important;
+        height: 20px;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    #dvEditCP {
+        height: 450px;
+        overflow: scroll;
+    }
+
+        #dvEditCP a {
+            color: blue;
+        }
+
+    #spnTree {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+    }
+</style>
+<div class="col-lg-12 form-group" id="dvCPMain">
+    <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()">Hide Tree</span></div>
+    <div class="col-lg-12">
+        <div class="col-lg-4 form-group" id="dvLeftPanel">
+            <div id="dvRegionTree"></div>
+        </div>
+        <div class="col-lg-8  form-group" id="dvRightPanel">
+            <ul class="nav nav-pills">
+                <li><a href="#dvInsertCP">New Campaign Plan</a></li>
+                <li><a href="#dvEdit">Edit Campaign Plan</a></li>
+            </ul>
+            <div id="dvInsertCP">
+                <div class="col-lg-12  form-group dvCommon">
+                    <div class="col-lg-2  form-group">
+                        CP Name
+                    </div>
+                    <div class="col-lg-4  form-group">
+                        <input type="text" id="txtCPName" maxlength="48" class="form-control" onblur="fnValidateCPName();" />
+                        *  CP will be added as prefix
+                        <input type="hidden" id="hdnCPCode" />
+                        <input type="hidden" id="hdnMode" value="INSERT" />
+                    </div>
+                    <div class="col-lg-6 form-group" style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12  form-group dvCommon" style="clear: both;">
+                    <div class="col-lg-2  form-group">
+                        Category
+                    </div>
+                    <div class="col-lg-4 form-group dropdown">
+                        <select id="cboCategory" onchange="fnFilterCategoryBasedSFC();" class="form-control"></select>
+                    </div>
+                    <div class="col-lg-6 form-group" style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12  form-group dvCommon" style="clear: both;">
+                    <div class="col-lg-2  form-group">
+                        Work Area
+                    </div>
+                    <div class="col-lg-4 form-group dropdown">
+                        <input type="text" id="txtWorkArea" class="form-control autoWorkArea" />
+                        <input type="hidden" id="hdnWorkArea" />
+                    </div>
+                    <div class="col-lg-6 form-group" style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12  form-group dvCommon" style="clear: both;">
+                    <div class="col-lg-2">
+                        SFC Details
+                    </div>
+                    <div class="col-lg-10  form-group">
+                        <div id="dvSFC" class="table-responsive">
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12  form-group dvCommon">
+                    <div class="col-lg-2 form-group">
+                        Doctor Details
+                    </div>
+                    <div class="col-lg-10 form-group">
+                        <div class="form-group showDoc" style="min-height: 20px; overflow: auto;">
+                            <button type="button" class="btn btn-primary btn-xs" onclick="fnBindAllDoctor();" style="float: right;">Show Doctors</button>
+                        </div>
+                        <div>
+                            <div id="dvDoctors" class="table-responsive form-group">
+                            </div>
+                        </div>
+                        <div class="form-group showDoc" style="clear: both; min-height: 20px; overflow: auto;">
+                            <button type="button" class="btn btn-primary btn-xs" style="float: right;" onclick="fnBindAllDoctor();">Show Doctors</button>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="col-lg-12 form-group" id="dvSubmitButton">
+                    <button type="button" onclick="fnSubmit('2');" class="btn btn-primary btn-xs">Submit</button>
+                    <button type="button" onclick="fnSubmit('3');" class="btn btn-primary btn-xs">Save as Draft</button>
+                    <button type="button" onclick="fnClearAllData();" class="btn btn-primary btn-xs">Clear</button>
+                </div>
+            </div>
+            <div id="dvEdit">
+                <div class="col-lg-12 form-group">
+                    <a id="lnkExcel" title="Excel Export" style="float: right;">
+                        <img src="../Content/DataTable/media/images/xls.png" style='border: 1px solid #f0f0f0; height: 30px; width: 30px; cursor: pointer;' /></a>
+                </div>
+                <div id="dvEditCP" class="table-responsive form-group" style="clear: both;">
+                </div>
+                @*
+                <div style="clear: both;"></div>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvAllDoctors" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvAllDoctors').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>Doctors</span>
+        </div>
+        <br />
+        <div style="height: 325px; overflow: auto;" class="col-lg-12">
+            <div class="col-lg-12">
+                <button type="button" onclick="fnGetSelectedDoctors();" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+            <div id="dvAllDoc" class="col-lg-12">
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+                <button type="button" onclick="fnGetSelectedDoctors();" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvSFCPopUp" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvSFCPopUp').overlay().close();"></a>
+    <div>
+        <div class="popUpTitle" style="height: 45px;">
+            <span>SFC</span>
+        </div>
+        <br />
+        <div style="height: 325px; overflow: auto;" class="col-lg-12">
+            <div id="dvAllSFC" class="col-lg-12 table-responsive">
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+                <button type="button" onclick="fnBindSelectedSFCCode();" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnErrorSFCRowNo" />
+<script src="../Areas/HiDoctor_Activity/Scripts/HD/CampaignPlanner.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var vacant_PriCampaignPlanner_g = "", vacant_PriInterPlace_g = "", vacant_PriFareEdit_g = "", vacant_PriCategoryCheck_g = "", categoryCheckNeeded="";
+    vacant_PriCampaignPlanner_g = jsonPath(privilegeContainer_g, "$[?(@@.PrivilegeName=='CAMPAIGN_PLANNER')]");
+    vacant_PriInterPlace_g = jsonPath(privilegeContainer_g, "$[?(@@.PrivilegeName=='DCR_INTERMEDIATE_PLACES ')]");
+    vacant_PriFareEdit_g = jsonPath(privilegeContainer_g, "$[?(@@.PrivilegeName=='FARE_FROM_TO_PLACES_EDIT ')]");
+    vacant_PriCategoryCheck_g = jsonPath(privilegeContainer_g, "$[?(@@.PrivilegeName=='SFC_CATEGORY_DONT_CHECK ')]");
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvRightPanel").hide();
+        $("#dvRightPanel").tabs();
+        fnBindRegionTree("dvRegionTree");
+        fnGetExpenseEntity();
+        fnGetTravelModes();
+        $("#dvSFCPopUp").overlay().load();
+        $('.timepicker').timepicker({
+            showPeriod: true,
+            showLeadingZero: true
+        });
+        $("#dvAllDoctors").overlay().load();
+        $('#dvSubmitButton').hide();
+        $('.showDoc').hide();
+        $("#dvAjaxLoad").hide();
+    });
+    function fnRegionTreeActivate(node) {
+        $('#dvRightPanel').tabs('option', 'selected', 0);
+        $("#txtCPName").val('');
+        // $("#txtCPName").focus();
+        $("#hdnMode").val("INSERT");
+        $("#cboCategory option").each(function () {
+            if ($(this).text() == "HQ") {
+                $(this).attr('selected', 'selected');
+            }
+        });
+        $.ajax({
+            url: '../CampaignPlanner/GetRegionwiseUser/',
+            type: "POST",
+            data: "DateTime=" + new Date().getTime() + "&RegionCode=" + node.data.key + "",
+            success: function (jsData) {
+                if (jsData != '') {
+                    jsData = eval('(' + jsData + ')');
+                    if (jsData.Tables[0].Rows.length > 0) {
+                        var userCode = jsData.Tables[0].Rows[0].User_Code;
+                        fnGetUserPrivileges(userCode, "LOAD");
+                    }
+                    else {
+                        if (vacant_PriCampaignPlanner_g != null && vacant_PriCampaignPlanner_g != false && vacant_PriCampaignPlanner_g.length > 0) {
+                            if (vacant_PriCampaignPlanner_g[0].PrivilegeValue == "YES" || vacant_PriCampaignPlanner_g[0].PrivilegeValue == "OPTIONAL") {
+                                fnGetSFC();                               
+                                fnGetCPDetails();
+                                $("#dvRightPanel").show();
+                                $("#dvLeftPanel").hide();
+                                $("#dvRightPanel").removeClass('col-lg-8');
+                                $("#dvRightPanel").addClass('col-lg-12');
+                                $("#spnTree").html('Show Tree');
+                            }
+                            else {
+                                fnMsgAlert('info', 'Information', 'User details not found for the selected region');
+                                $("#dvRightPanel").hide();
+                                return;
+                            }
+                        }
+                        else {
+                            fnMsgAlert('info', 'Information', 'User details not found for the selected region');
+                            $("#dvRightPanel").hide();
+                            return;
+                        }
+                        //fnMsgAlert('info', 'Information', 'User details not found for the selected region');
+                        //$("#dvRightPanel").hide();
+                        //return;
+                    }
+                }
+                else {
+                    if (vacant_PriCampaignPlanner_g != null && vacant_PriCampaignPlanner_g != false && vacant_PriCampaignPlanner_g.length > 0) {
+                        if (vacant_PriCampaignPlanner_g[0].PrivilegeValue == "YES" || vacant_PriCampaignPlanner_g[0].PrivilegeValue == "OPTIONAL") {
+                            fnGetSFC();
+                            fnGetCPDetails();
+                            $("#dvRightPanel").show();
+                            $("#dvLeftPanel").hide();
+                            $("#dvRightPanel").removeClass('col-lg-8');
+                            $("#dvRightPanel").addClass('col-lg-12');
+                            $("#spnTree").html('Show Tree');
+                        }
+                        else {
+                            fnMsgAlert('info', 'Information', 'User details not found for the selected region');
+                            $("#dvRightPanel").hide();
+                            return;
+                        }
+                    }
+                    else {
+                        fnMsgAlert('info', 'Information', 'User details not found for the selected region');
+                        $("#dvRightPanel").hide();
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-lg-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+    }
+</script>

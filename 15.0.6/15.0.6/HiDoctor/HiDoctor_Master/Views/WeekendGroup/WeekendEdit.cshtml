@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "WeekendEdit";
+    Layout = null;
+}
+<div class="col-xs-12 col-sm-12  form-group clearfix">
+    <div class="col-xs-12 col-sm-12  form-group clearfix">
+        <div class="col-xs-6 col-sm-6 form-group clearfix">
+            <div style="width: 95%; float: left; background-color: #efefef; padding: 2%; margin-bottom: 10px;">
+
+                <div style="float: left; font-size: 19px; margin-left: 18%; margin-top: 5px;">
+                    Weekend Off Group Name
+                </div>
+                <div style="float: left; margin-left: 2%;">
+                    <input type="text" id="txtWeekendOffDefiner" class="autoWeekEndReport" style="width: 275px; height: 25px;" />
+                    <input type="hidden" id="hdnWeekendOffDefinerName" />
+                </div>
+                <div style="float: left; margin-left: 1%; margin-top: 5px;">
+                    <input type="button" class="btn small primary" value="Submit" onclick="fnBindWeekendGroup();" />
+                </div>
+
+            </div>
+        </div>
+            <div>
+                <div class="col-xs-6 col-sm-6 form-group clearfix" id="AddWeekend" style="display:none">
+                    <div style="width: 95%; float: left; background-color: #efefef; padding: 2%; margin-bottom: 10px;">
+
+                        <div style="float: left; font-size: 19px; margin-left: 18%; margin-top: 5px;">
+                            Add Weekend
+                        </div>
+                        <div style="float: left; margin-left: 2%;">
+                            <input type="text" class="form-control" placeholder="select Date" id="Frmdate" style="" readonly>
+                            @*<span class="input-group-addon datepic"><i class="fa fa-calendar calendars"></i></span>*@
+                        </div>
+                        <div style="float: left; margin-left: 1%; margin-top: 5px;">
+                            <input type="button" class="btn small primary" value="Add" onclick="fnAddnewWeekend();" />
+                        </div>
+
+                    </div>
+                </div>
+                    <div id="detailedlist" style="width: 50%; margin-top: 1%;">
+                    </div>
+                    @*<div class="col-lg-12 col-md-12 col-sm-12 clearfix" style="margin-top: 20px; padding: 0px;">
+                <div id="detailedlist" class="col-lg-12 col-md-12 col-sm-12 clearfix"></div>
+            </div>*@
+                </div>
+        </div>
+</div>
+    <script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/WeekendEdit.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+@*<script src="~/Scripts/ej2/ej2.min.js"></script>
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />*@
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+            AjaxGlobalHandler.Initiate();
+            try {
+               
+                todayDate = @Html.Raw(Json.Encode(ViewBag.todayDate));   
+                holidayMethodArr = @Html.Raw(Json.Encode(ViewBag.holidayMethod));
+                fnGetWeekendGroupsedit();
+                $("#dvAjaxLoad").hide();
+            }
+            catch (err) {
+                $("#dvAjaxLoad").hide();
+            }
+        });
+        $("#Frmdate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            //numberOfMonths: 1,
+            //maxDate: 0,
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date('01-01-2020')
+        });
+    </script>

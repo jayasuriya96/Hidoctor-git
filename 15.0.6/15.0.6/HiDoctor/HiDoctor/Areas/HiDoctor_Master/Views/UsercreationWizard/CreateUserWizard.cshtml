@@ -1,0 +1,535 @@
+﻿@{
+    ViewBag.Title = "CreateUserWizard";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+
+<div class="co1-sm-12 col-md-12 cls_nomargin_nopadding" id="dvPanel" style="margin-top:1rem;">
+    <div class="col-sm-12 col-md-12 cls_nomargin_nopadding">
+        <div class="cls_div_header">SETUP WIZARD FOR USER TO BE HIDOCTOR ENABLED</div>
+    </div>
+    <div class="col-sm-12 col-md-12 cls_nomargin_nopadding">
+        <ul id='ullist' class="cls_profile_wizard_header">
+            <li class="cls_up_stpe1 cls_up_active">
+                <a href="#">
+                    Step - 1/5
+                    <br />
+                    <span>Employee Details</span>
+                </a>
+            </li>
+            <li class="cls_up_step2 cls_up_inactive">
+                <a href="#">
+                    Step - 2/5
+                    <br />
+                    <span>Leave Details</span>
+                </a>
+            </li>
+            <li class="cls_up_step3 cls_up_inactive">
+                <a href="#">
+                    Step - 3/5
+                    <br />
+                    <span>Product Mapping</span>
+                </a>
+            </li>
+            <li class="cls_up_step4 cls_up_inactive">
+                <a href="#">
+                    Step - 4/5
+                    <br />
+                    <span>Other Mappings</span>
+                </a>
+            </li>
+            @*<li class="cls_up_step5 cls_up_inactive" id="edetailing" style="display:none;">
+                <a href="#">Step - 5/6
+                <br />
+                    <span>Edetailing</span>
+                </a></li>*@
+            <li class="cls_up_step5 cls_up_inactive">
+                <a class="cls_cut" href="#">
+                    Step - 5/5
+                    <br />
+                    Launch Hidoctor
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="divMaininputs" class="col-md-12 cls_nomargin_nopadding form-group">
+        <div class="divNew">
+            If Employee already available,Select Employee Name and click Go.
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Select the Employee Name</label>
+            </div>
+            <div class="col-xs-12 col-sm-3 control-section">
+                <input type="hidden" id="hdnEmployeeCode" />
+                <input type="text" id="txtsearchEmployeeName" autocomplete="off" placeholder="Enter Employee Name..">
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <input type="button" id="btnGo" value="Go" class="btn btn-info input-sm" autocomplete="off" onclick="fnGetEmployeeDetails()" />
+            </div>
+        </div>
+        <div class="divNew clearfix">
+            New Employee to be created here? Enter details here.
+            <span class="mandatory">*</span> fields are mandatory.
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Employee Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtempName" autocomplete="off" class="form-control" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Employee No<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtempNo" autocomplete="off" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Email<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtemail" autocomplete="off" class="form-control" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Mobile<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtMobile" autocomplete="off" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Date of Joining<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtDOJ" autocomplete="off" class="datepicker form-control" onchange="fnChangeDOC(this)" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>HiDoctor Start Date<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txthidoctorstartdate" autocomplete="off" class="datepicker form-control" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Division<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <select multiple="multiple" id="ddlDivision" onchange="fnGetReportingManagerRegion()">
+                    <option value="0">-Select Division-</option>
+                </select>
+                @*<div class="dropdown bootstrap-select show-tick show" id="ddlDivision" onchange="fnGetReportingManagerRegion()">
+                    </div>*@
+                <input type="hidden" id="hdnDivisionCode" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Designation<span class="mandatory">*</span></label>
+            </div>
+            @*<div class="col-xs-12 col-sm-3">
+                <select class="selectboxWidth form-control" id="ddlDesignation">
+                    @*<option value="0">-Select Designation-</option>*@
+            @*</select>
+                    <input type="hidden" id="hdnUserTypeCode" />
+                </div>*@
+            <div class="col-xs-12 col-sm-3 control-section">
+                <input type="hidden" id="hdnUserTypeCode" />
+                <div id="dvDesignation">
+                    <input type="text" id="ddlDesignation" autocomplete="off" placeholder="Select Designation..">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Reporting to Region<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <div id="dvReportingManagerRegion">
+                    <input type="text" id="ddlreportingManagerregion" autocomplete="off" placeholder="Reporting to Region">
+                </div>
+
+                <input type="hidden" id="hdnReportingtoRegioncode" />
+            </div>
+
+            @*<div class="col-xs-12 col-sm-3">
+                    <label>Reporting to Manager<span class="mandatory">*</span></label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <select class="selectboxWidth form-control" id="ddlReportingManager" onchange="fnOnchangeReportingtoManager()">
+                        <option value="0">-Select Reporting Manager-</option>
+                    </select>
+                    <input type="hidden" id="hdnReportingtoManagerCode" />
+
+                </div>*@
+            <div class="col-xs-3">
+                <label>Reporting Manager Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-3">
+                <div id="dvManagerChange">
+                    <input type="text" id="ddlReportingManager" onchange="fnOnchangeReportingtoManager()">
+                </div>
+                <input type="hidden" id="hdnReportingtoManagerCode" />
+
+            </div>
+
+
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>User's Region<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <div id="dvUsersRegion">
+                    <input type="text" id="ddlUserRegion" autocomplete="off">
+                </div>
+                @*<option value="0">-Select Region-</option> onchange="fnChangeUserregion();"
+                    </select>*@
+                @*<span style="font-size: 11px; font-style: italic;">(Region that the User belongs to which Region)</span>*@
+                <input type="hidden" id="hdnUserRegion" />
+            </div>
+            <div class="col-xs-12 col-sm-6" id="showtree" style="display:none;">
+                <a style="cursor: pointer; text-decoration: underline;" onclick="fnShowTree();"><span class="mandatory">Show in Tree</span></a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Reporting User's</label>
+            </div>
+            <div class="col-xs-12 col-sm-3" id="bindreportingusers" style="border: 1px solid;overflow-y: auto;height: 80px;">
+                <input type="hidden" id="hdnUserreportee" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Proposed Date Of Confirmation</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="txtDOC" autocomplete="off" class="form-control DOCdatepicker" style="cursor:pointer" readonly />
+                @* <input type="text" id="txtDOC" autocomplete="off" class="form-control" readonly/>*@
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Project Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <select class="selectboxWidth form-control" id="ddlprojectName" onchange="fnGetActivityName()">
+                    <option value="0">-Select Project-</option>
+                </select>
+                <input type="hidden" id="hdnProjectCode" />
+                <span id="spnActivityName" style="font-style: italic;"></span>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Expense Group</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <div id="dvExpenseGrp">
+                    <input type="text" id="ddlExpemseGroup" placeholder="Select Expense Group">
+                </div>
+                @*<option value="0">-Select Expense Group Header-</option>
+                    </select>*@
+                <input type="hidden" id="hdnExpenseGroupCode" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Assign a User ID<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" class="form-control" autocomplete="off" id="txtAssignuserid" />
+                <input type="hidden" id="hdnUserCode" />
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Password<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="password" id="txtPwd" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Ref Key1</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+
+                <input type="text" id="ref1" class="form-control" placeholder="Ref Key1">
+
+
+                @*<input type="hidden" id="hdnReportingtoRegioncode" />*@
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <label>Ref Key 2</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="ref2" class="form-control" placeholder="Ref Key2" />
+            </div>
+        </div>
+
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-12 col-sm-3">
+                <label>Actual Reporting Manager</label>
+            </div>
+            <div class="col-xs-12 col-sm-3"id="dvddlActualreport">
+                @*<input type="text" id="txtsearchUserName" class="form-control Groupnameuser" />
+                    <input type="hidden" id="hdnUserCode" />*@
+                <input type="hidden" id="hdnUserCode" />
+                <input type="text" id="ddlActual" placeholder="Select Actual Reporting Manager..">
+            </div>
+
+        </div>
+
+        @*<div class="col-xs-12 col-sm-3">
+                <label>Ref Key 2</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input type="text" id="ref2" class="form-control" placeholder="Ref Key2" />
+            </div>*@
+        @*</div>*@
+
+
+        <div class='col-sm-12 dcrConsTabHeader dcrconscollapse' style='font-size: 14px; font-weight: 600;'>
+            <p>More Fields+</p>
+            <span>
+                These fields are non mandatory fields.(If you wish to enter them now,click
+                to expand this section.Or you can fill these values later using Employee Master in HiDoctor.)
+            </span>
+        </div>
+        <div class="col-md-12 table-responsive cls_nomargin_nopadding form-group" id="tblmorefield" style="display: none;">
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>Gender</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <select id="ddlGender" class="selectboxWidth form-control">
+                        <option value="0">-Select a Gender-</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>Date of Birth</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtDOB" autocomplete="off" class="datepicker form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>Address</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <textarea id="txtAddress" cols="26" rows="3"></textarea>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>Phone</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtPhoneNo" autocomplete="off" class="form-control" />
+                </div>
+            </div>
+
+            <div class="divNew">Statutory Information</div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>PF Number</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtPFNO" autocomplete="off" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>PAN Number</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtpanNo" autocomplete="off" class="form-control" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>Bank Account 1</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtbankAct1" autocomplete="off" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>Bank Account 2</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="txtbankAct2" autocomplete="off" class="form-control" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>EDN Proof Submitted</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="radio" value="1" name="rdnEdn" id="rdnEdnYes" />Yes
+                    <input type="radio" value="0" name="rdnEdn" checked="checked" id="rdnEdnNo" />No
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>Salary Proof</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="radio" value="1" name="rdnSal" id="rdnSalYes" />Yes
+                    <input type="radio" value="0" name="rdnSal" checked="checked" id="rdnSalNo" />No
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>Resume Given</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="radio" value="1" name="rdnRes" id="rdnResYes" />Yes
+                    <input type="radio" value="0" name="rdnRes" checked="checked" id="rdnResNo" />No
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label>Resignation Submitted</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="radio" value="1" name="rdnResignation" id="rdnResignationYes" />Yes
+                    <input type="radio" value="0" name="rdnResignation" checked="checked" id="rdnResignationNo" />No
+                </div>
+            </div>
+            <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <label>Appointed</label>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="radio" value="1" name="rdnAppointed" id="rdnAppointedYes" />Yes
+                    <input type="radio" value="0" name="rdnAppointed" checked="checked" id="rdnAppointedNo" />No
+                </div>
+            </div>
+        </div>
+        <div id="dvLoading" style="text-align: center">
+            <img src="../../Content/themes/base/images/hd/loader.gif" />
+        </div>
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div>
+                <input type="button" id="btnBackEmployee" value="Back" class="btn btn-primary input-sm" onclick="fnBackEmployee();" />
+                <input type="button" id="btnNextEmployee" value="Next" class="btn btn-success input-sm" onclick="fnNextEmployee();" />
+                <input type="hidden" id="hdnMode" value="I" />
+            </div>
+        </div>
+    </div>
+
+    @*<div id="dvShowTreepopup" style="padding-top: 5px; padding-right: 10px; display: none; width: 400px; height: 350px; border: 4px solid #CCCCCC; overflow: scroll; background-color: #FFFFFF;">
+            <span style="float: right; cursor: pointer" onclick="HideModalPopup('dvShowTreepopup'); return false;">X</span>
+            <div id="divShowTree" style="width: 100%">
+            </div>
+        </div>*@
+
+    <div id="dvquitPopup" title="New User Creation Wizard">Do you wish to quit the wizard?All data entered will be lost.Click Yes/No</div>
+    <div id="dvActivemsg"></div>
+</div>
+
+<div class="modal fade" id="dvShowTreepopup" role="dialog">
+    <div class="modal-dialog modal-lg" style="padding:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Region Hierarchy</h4>
+            </div>
+            <div class="modal-body" style="height:500px;overflow:auto;">
+                <div id="divShowTree" style="width: 100%">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../Scripts/HD/KangleIntegration.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/ej2/ej2.min.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    ShowModalPopup('dvLoading');
+    var userCreationWiz = "";
+    var edetailing='';
+    var Empdetails = [];
+    var unassignedAllemployeedetails="", Json_regions = "", Json_userTypes = "", Json_Divisions = "", Json_Users = "", Json_projects = "", Json_Expensegroup = "", Json_reportingtoRegions = "", Json_projects = "",Json_Assignemp_g="";
+    var Employeedetails_Sess = "",Json_sessEmployeedetails = "";
+    $(document).ready(function () {
+        try
+        {
+            debugger;
+            $(document).ajaxStop($.unblockUI);
+            debugger;
+            $("#ddlDivision").multiselect().multiselectfilter();
+            var curdate = @Html.Raw(Json.Encode(ViewBag.Current_Date));
+
+            var year=new Date(curdate.split('.')[2]+'-'+curdate.split('.')[1]+'-'+curdate.split('.')[0]).getFullYear();
+
+
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                yearRange: (year - 150) + ':' + (year + 0)
+            });
+            $(".DOCdatepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                yearRange: (year - 100) + ':' + (year + 1),
+            });
+            $(".DOBdatepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                yearRange: (year - 18) + ':' + (year + 0),
+                maxDate: '0'
+            });
+            //$(".datepicker").datepicker({ "dateFormat": "dd/mm/yy", "changeMonth": true, "changeYear": true })
+            fnGetEmployee();
+            //fngetActualReporting();
+            fnGetActiveEmployeedetails();
+            fnGetUserTypes();
+            fnGetDivisions();
+            fngetreportingusers();
+            fnGetReportingtoRegions();
+            fnGetReportingtoUsers();
+            fnGetRegions();
+            fnGetProjectMaster();
+            fnGetExpenseGroupHeader();
+            //fngetActualReportingmanager();
+            //var smspolicy = fnGetPrivilegeVal("CAMPAIGN_PLANNER", "NO")
+            debugger;
+            //Get Session Values
+                CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+            Employeedetails_Sess = @Html.Raw(Json.Encode(ViewBag.SessionEmployeedetails));
+            userCreationWiz = @Html.Raw(Json.Encode(ViewBag.userCreationWiz));
+            Json_sessEmployeedetails = eval('(' +Employeedetails_Sess+')');
+            if(Json_sessEmployeedetails != null && Json_sessEmployeedetails != '' && Json_sessEmployeedetails != undefined){
+                if(Json_sessEmployeedetails.length > 0){
+                    fnPrefillSessionEmployeeDetails(Json_sessEmployeedetails)
+                }
+            }
+            $("#txtDOB").bind("paste", function(){ return false; } );
+            $("#txtDOJ").bind("paste", function(){ return false; } );
+            $("#txthidoctorstartdate").bind("paste", function(){ return false; } );
+            $('#txtAddress').keypress(function(){ if(event.keyCode == 13) return false});
+            HideModalPopup('dvLoading');
+            // $('#dvAjaxLoad').hide();
+        }
+        catch (err) {
+            HideModalPopup('dvLoading');
+            alert("fnSet"+e.message);
+            // $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnRegionTreePostInit() {
+    }
+</script>
+

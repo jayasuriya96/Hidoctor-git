@@ -1,0 +1,131 @@
+﻿<div class="headercontent">
+    <span id="dcrstockiestloginUserName"></span>
+    <a id="lnklogout" href="#" onclick="fnLogOut()">Logout</a>
+</div>
+<div class="clearboth"></div>
+<div class="menucontent">
+   <div class="homeicon"></div><a href="#" onclick="fnGoToHome()">Home
+    </a>
+   <a href="#" class="ui-icon-home" onclick="fnGoToCalendar()">Calendar
+    </a>
+ </div>
+<div data-role="header" data-theme="b">
+    <h3>Stockist & Expenses
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <div class="ui-controlgroup-controls">
+        <div data-role="collapsible-set" id="stockiestDetails" data-mini="true" data-theme="b">
+            <div data-role="collapsible" data-collapsed="false" data-mini="true">
+                <h3>Stockist Details
+                </h3>
+                <div id="divStockist" data-inset="true">
+                </div>
+                <a href="" id="aAddStockist" data-transition="fade" onclick="fnCreateNewRowInStockiest()">Add Stockist
+                </a>
+                <input type="hidden" id="hdnSC" />
+            </div>
+        </div>
+        <div data-role="collapsible-set" id="expenseDetails" data-mini="true" data-theme="b">
+            <div data-role="collapsible" data-collapsed="false" data-mini="true">
+                <h3>Expense Details
+                </h3>
+
+                <div id="divExpense" data-inset="true">
+                </div>
+                <a href="" id="aAddExpense" data-transition="fade" onclick="fnCreateNewRowInExpense()">Add Expense
+                </a>
+                <input type="hidden" id="hdnEC" />
+            </div>
+        </div>
+        <div data-role="content" style="display: none;">
+            <a href="#" onclick="fnOpenDCROldRemarksInExpense()">Show Old Remarks</a>
+            <div data-role="fieldcontain">
+                <label for="txtDCRCommonRmrksInExpense">
+                    Common Remarks
+           
+                </label>
+                <textarea name="" id="txtDCRCommonRmrksInExpense" placeholder=""></textarea>
+            </div>
+        </div>
+
+        <input type="button" id="btnSaveMobExp" value="Save" onclick="$(this).hide();fnSubmit(3);" data-theme="b" />
+
+    </div>
+</div>
+
+<div id="dvOpenDCROldRemarksInExpenseMain" style="display: none;" data-options='{"mode":"blank","headerText":"General Remarks","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div data-role="content" id="dvOpenDCROldRemarksInExpense">
+    </div>
+</div>
+<div data-role="footer"></div>
+
+
+@Scripts.Render("~/bundles/dcrstockiestexpensejs");
+<script type="text/javascript">
+    var intermediatePlace = "";
+    var dailyAllowance = "";
+    var dcrDate = "";
+    var dcrStatus = "";
+    var dcrCode = "";
+    var isrcpa = "";
+    var userCode = "";
+    var entity = "";
+    var travelKm = "";
+    var accRegions = "";
+    var hideExpense_g = false;
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dcrstockiestloginUserName").html(loginUserName_g);
+        $.mobile.loading('show');
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        dcrCode = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.isrcpa));
+        entity= @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+        travelKm = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        accRegions = @Html.Raw(Json.Encode(ViewBag.accRegions));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[5]));
+        activity_g=  @Html.Raw(Json.Encode(ViewBag.activity));
+       
+        if(flag_g == "A")
+        {
+            var hideActivities = fnGetPrivilegeValue("DAILY_ALLOWANCE_TO_HIDE_FOR_ACTIVITIES", "");
+            if(activity_g != null && activity_g.length >0 && hideActivities.length > 0 )
+            {
+                var hideActivitiesLength = hideActivities.split(',');
+                var activityLength = activity_g.split(',');
+                if((activityLength.length == hideActivitiesLength.length) || (activityLength.length < hideActivitiesLength.length))
+                {
+                    var count  = 0;
+                    for(var i=0;i<activityLength.length;i++)
+                    {
+                        for(var j=0;j<hideActivitiesLength.length;j++)
+                        {
+                            if(activityLength[i].toUpperCase() == hideActivitiesLength[j].toUpperCase())
+                            {
+                                count++;
+                            }
+                        }
+                    }
+
+                    if(hideActivitiesLength.length == count)
+                    {
+                        hideExpense_g = true;
+                    }
+                }
+            }
+            $('#stockiestDetails').css('display','none');            
+        }
+        intermediatePlace = fnGetPrivilegeValue("DCR_INTERMEDIATE_PLACES", "");
+        dailyAllowance = fnGetPrivilegeValue("FARE_DAILY_ALLOWANCE", "");
+        if(flag_g != "A")
+        {
+            GetStockiest();
+        }
+        fnGetExpense(entity,travelKm);    
+    });
+</script>

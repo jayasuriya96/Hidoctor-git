@@ -1,0 +1,391 @@
+﻿@{
+    ViewBag.Title = "PlaceOrderForm";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Areas/HiDoctor_Master/Content/PurchaseRequisition.css" rel="stylesheet" />
+
+
+
+<div></div>
+<div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top create" id="prmaster">
+            <a href="#POForm" data-toggle="tab"><b>Place Order Form</b></a>
+        </li>
+        <li class="ui-state-default ui-corner-top create" id="prmaster">
+            <a href="#OrdersForm" data-toggle="tab"><b>Receipt Form</b></a>
+        </li>
+        
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="POForm">
+            <div class="form-group">
+                <div class="dvSubHeader">
+                    <b>List of Purchase Requisition(s)</b>
+                </div>
+                <div class="col-xs-12" id="PRList">
+
+                </div>
+            </div>          
+        </div>
+
+        <div class="tab-pane active" id="OrdersForm">
+            <div class="form-group" id="POList">
+                <div class="dvSubHeader">
+                    <b>List of Placed Order(s)</b>
+                </div>
+                <div class="col-xs-12" id="tblPOlist">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="simple_overlay" id="dvOverLay">
+    <a class="overlayclose" onclick="$('#dvOverLay').overlay().close(); PlaceOrder.fnClearForm();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Place Order</span>
+    </div>
+    <div  id="OverlayPO">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Line Item Name</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="ItemName"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Total Quantity Requested</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="POtotQtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Ordered Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="POordrdqtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Balance Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="BalPOQtity"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Form</span>
+    </div>
+    <div id="Overlayplaceorder">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Order Date</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                   <input type="text" readonly="readonly" id="OrdrdOn" class="form-control"  style="cursor:pointer;" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Vendor Name</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" id="vndrName" maxlength="200"/>
+                </div>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Quantity</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                   <input type="number" class="form-control" id="Qntity" min="1" max="99999" onpaste="return false;" onkeypress="return PlaceOrder.fnValidateNumberQty(this, event);"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Remarks</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <textarea rows="3" maxlength="500" id="POremarks" style="width:100%;resize:none;" class="form-group"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="col-xs-6"></div>
+        <div class="col-xs-6">
+            <input type="button" id="btnSaveOrder" style="margin:10px;float:right;" class="btn" value="Save" onclick="PlaceOrder.fnSavePlaceOrder();" />
+            <input type="button" id="btncancelPO"  style="margin:10px;float:right;" class="btn" value="Cancel" onclick="$('#dvOverLay').overlay().close(); PlaceOrder.fnClearForm();" />
+        </div>
+    </div>
+</div>
+
+
+
+<div class="simple_overlay" id="dvReceiptOverLay">
+    <a class="overlayclose" onclick="$('#dvReceiptOverLay').overlay().close(); PlaceOrder.fnClearReceiptForm();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Receipt</span>
+    </div>
+    <div id="RecOverlay">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Line Item Name</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="RItemname"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Total Quantity Ordered</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="pototQtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Received Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="recvdqtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Balance Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="BalpoQtity"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Form</span>
+    </div>
+    <div id="OverlayReceipt">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Invoice Date</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <input type="text" readonly="readonly" id="IvoceOn" class="form-control"  style="cursor:pointer;" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Invoice Number</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" id="InvoceNum" maxlength="50" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Quantity</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <input type="number" class="form-control" id="RQntity" min="1"  max="99999"  onpaste="return false;" onkeypress="return PlaceOrder.fnValidateNumberQty(this, event);"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Remarks</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <textarea rows="3" maxlength="500" style="resize:none;width:100%" id="Rremarks" class="form-group"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="col-xs-6"></div>
+        <div class="col-xs-6">
+            <input type="button" id="btnSaveReceipt" style="margin:10px;float:right;" class="btn" value="Save" onclick="PlaceOrder.fnSaveReceipt();" />
+            <input type="button" id="btncancelRecpt" style="margin:10px;float:right;" class="btn" value="Cancel" onclick="$('#dvReceiptOverLay').overlay().close(); PlaceOrder.fnClearReceiptForm();" />
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="simple_overlay" id="dvRecOverLay">
+    <a class="overlayclose" onclick="$('#dvRecOverLay').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Order Details</span>
+    </div>
+    <div id="OverlayRECE">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Line Item Name</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="RECItemName"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Total Quantity Ordered</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="ordtotQtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Received Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="RECvdqtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Balance Quantity</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="BalrecQtity"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popUpTitle" style="height: 45px;">
+        <span>Form</span>
+    </div>
+    <div id="Overlayreceiptdet">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Order Date</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="ordrdon"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Vendor Name</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="vndrname"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Quantity</span><label class="Mandatory">*</label></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="qtity"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-5">
+                    <p><span style="font-weight:bold;">Remarks</span></p>
+                </div>
+                <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                <div class="col-xs-6">
+                    <p><span id="rmrks">Remarks</span></p>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+
+
+
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/PlaceOrderForm.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dvAjaxLoad').hide();
+        $('#dvTab').tabs();
+    });
+    $("#dvOverLay").overlay().load();
+    $("#dvReceiptOverLay").overlay().load();
+    $("#dvRecOverLay").overlay().load();
+
+   
+    PlaceOrder.Init();
+</script>

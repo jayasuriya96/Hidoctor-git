@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "SessionExpiry";
+    
+}
+<style>
+    .freshwidget-theme {
+        display: none;
+    }
+</style>
+<script src="~/Scripts/jquery-1.8.3.min.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<div style="height: 100px; padding-left: 10px; text-align: center; margin-top: 15%">
+    <img src="~/Images/hi-doctor.png" alt="HiDoctor" />
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 20px; color: #DA4937">
+    Sorry! Your session expired
+</div>
+<div style="text-align: center; font-family: Tahoma,Verdana,sans-serif; font-size: 12px;">
+    <a href="#" onclick="gotoLogin()">Relogin</a>
+</div>
+<script type="text/javascript">
+    function gotoLogin() {
+        var url = window.location.href.replace('/Home/SessionExpiry/', '');
+        window.location.href = url;
+    }
+</script>
+

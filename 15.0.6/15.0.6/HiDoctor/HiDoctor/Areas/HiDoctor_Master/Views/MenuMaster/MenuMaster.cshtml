@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "MenuMaster";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    #dvMenuItems a {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .expandMenu {
+        cursor: pointer !important;
+        font-weight: bold !important;
+    }
+
+    .collapseHeader {
+        cursor: pointer !important;
+        font-weight: bold !important;
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-12" id="dvPanel">
+        <ul class="nav nav-tabs">
+            <li><a href="#dvInsertMenu">Add Menu</a></li>
+            <li><a href="#dvEditMenu">Edit Menu</a></li>
+        </ul>
+        <div id="dvInsertMenu" class="form-group">
+            <div class="col-lg-12 form-group">
+                <div class="col-xs-2 form-group">
+                    Menu Title 
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="text" id="txtMenuText" class="form-control" maxlength="200" />
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Parent Menu Title
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboParentMenu" class="form-control"></select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    File Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="text" id="txtMenuURL" class="form-control" maxlength="200" />
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    MM & SM Orders
+                </div>
+                <div class="col-xs-4 form-group">
+                    <div class="col-xs-3" style="margin-left: -4%;">
+                        <input type="text" id="txtMMOrder" class="form-control" maxlength="10" />
+                    </div>
+                    <div class="col-xs-1" style="padding-top: 1%; margin-right: 2%;">
+                        &
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="text" id="txtSMOrder" class="form-control" maxlength="10" />
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Is Report? 
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="radio" value="1" name="rdIsReport" onchange="fnShowReportDetails();" />
+                    Yes
+                    <input type="radio" value="0" name="rdIsReport" checked="checked" onchange="fnShowReportDetails();" />
+                    No
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12" id="dvReportDetails" style="display: none; clear: both;">
+                <div class="form-group" style="clear: both;">
+                    <div class="col-xs-2 form-group">
+                        Is Print
+                    </div>
+                    <div class="col-xs-4 form-group">
+                        <input type="radio" value="Y" name="rdIsPrint" />
+                        Yes
+                    <input type="radio" value="N" name="rdIsPrint" checked="checked" />
+                        No
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div class=" form-group" style="clear: both;">
+                    <div class="col-xs-2 form-group">
+                        Is Excel Export
+                    </div>
+                    <div class="col-xs-4 form-group">
+                        <input type="radio" value="Y" name="rdIsExcel" />
+                        Yes 
+                    <input type="radio" value="N" name="rdIsExcel" checked="checked" />
+                        No
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div class="form-group" style="clear: both;">
+                    <div class="col-xs-2 form-group">
+                        Is Chart
+                    </div>
+                    <div class="col-xs-4 form-group">
+                        <input type="radio" value="Y" name="rdIsChart" />
+                        Yes
+                    <input type="radio" value="N" name="rdIsChart" checked="checked" />
+                        No
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div class="form-group" style="clear: both;">
+                    <div class="col-xs-2 form-group">
+                        Is Drill Down
+                    </div>
+                    <div class="col-xs-4 form-group">
+                        <input type="radio" value="Y" name="rdIsDrillDown" />
+                        Yes
+                    <input type="radio" value="N" name="rdIsDrillDown" checked="checked" />
+                        No
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div class="form-group" style="clear: both;">
+                    <div class="col-xs-2 form-group">
+                        Is Multi User
+                    </div>
+                    <div class="col-xs-4 form-group">
+                        <input type="radio" value="Y" name="rdIsMultiUser" />
+                        Yes
+                    <input type="radio" value="N" name="rdIsMultiUser" checked="checked" />
+                        No
+                    </div>
+                    <div class="col-xs-6" style="clear: both;"></div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Report Category
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboReportCategory" class="form-control">
+                        <option value="">-Select Report Category-</option>
+                        <option value="C">Compliance</option>
+                        <option value="M">Administration</option>
+                        <option value="R">MarketingAnalysis</option>
+                        <option value="A">FieldAnalysis</option>
+
+                    </select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Description
+                </div>
+                <div class="col-xs-4 form-group">
+                    <textarea id="txtDescription" maxlength="255" class="form-control" style="min-height: 55px;"></textarea>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Feature Name
+                </div>
+                <div class="col-xs-4 form-group">
+                    <select id="cboFeatureName" class="form-control"></select>
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+            <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Menu Key Words
+                </div>
+                <div class="col-xs-4 form-group">
+                    <input type="text" id="txtMenuKeyWords" class="form-control" maxlength="1000" />
+                </div>
+                <div style="clear: both;" class="col-xs-6"></div>
+            </div>
+                <div class="col-lg-12 form-group" style="clear: both;">
+                <div class="col-xs-2 form-group">
+                    Project Name 
+                </div>
+                <div class="col-xs-4 form-group">
+                    @*<input type="radio" value="1" name="rdProjopt" id="rdhidoctor" checked="checked"/> Hidoctor
+                    <input type="radio" value="2" name="rdProjopt" id="rdedetailing"> EDetailing*@
+                    <input type="radio" value="HIDOCTOR" name="rdprojopt" checked="checked" />
+                        HIDOCTOR
+                    <input type="radio" value="EDetailing" name="rdprojopt" />
+                        EDetailing
+                </div>
+                <div style="clear: both;" class="col-lg-6"></div>
+            </div>
+            <div class="col-lg-12" style="clear: both;">
+                <div class="col-xs-2 form-group"></div>
+                <div class="col-xs-4 form-group">
+                    <input type="button" class="btn small primary" id="btnSave" value="Save" onclick="fnSubmit();" />
+                    <input type="button" class="btn small primary" value="Reset" onclick="fnClearAll();" />
+                </div>
+                <div class="col-xs-6" style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="dvEditMenu" class="col-lg-12 form-group" style="overflow: auto;">
+            <div id="dvMenuItems" class="table-responsive"></div>
+        </div>
+
+    </div>
+</div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+<input type="hidden" id="hdnMenuId" />
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/MenuMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $("#dvPanel").tabs();
+        fnFillParentMenu();
+        fnFillFeatureNames();
+        fnFillMenuDetails();
+        //txtMMOrder
+        $("#txtMMOrder").keypress(function () { return fnIsNumeric(event) });
+        $("#txtSMOrder").keypress(function () { return fnIsNumeric(event) });
+
+        $("#txtMMOrder").blur(function () { fnValidateInteger(this) });
+        $("#txtSMOrder").blur(function () { fnValidateInteger(this) });
+        $("#dvAjaxLoad").hide();
+    });
+
+
+</script>
+

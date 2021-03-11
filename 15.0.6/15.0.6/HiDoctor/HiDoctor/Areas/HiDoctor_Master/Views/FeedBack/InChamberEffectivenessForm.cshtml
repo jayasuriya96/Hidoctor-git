@@ -1,0 +1,592 @@
+﻿@{
+    ViewBag.Title = "InChamberEffectivenessForm";
+    Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+
+<div class="col-xs-12" style="padding: 12px; overflow: auto;" id="ICEForm">
+    <div id="divInput" style="padding: 20px;background: rgb(241, 241, 241);">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-4 clearfix">
+                    <h3 style="padding-top: 10px;"><b>Select user from tree / Enter the user name:</b></h3>
+                </div>
+                <div class="col-xs-3" style="padding:5px;">
+                    <input style="width:100%; " type="text" class="auto_Tree_List" id="usertree" placeholder="Enter Text Here" /> 
+                    @*onchange="fnUsersICEFroms(this);"*@
+                    <input type="hidden" id="hdnusercode" />
+                   
+                </div>      
+                <div class="col-xs-1" style="padding:5px;">
+                    <input type="button" class="btn btn-default" value="Go"  id="btnGo" onclick="fnUsersICEForms();" />
+                </div>
+                <div class="col-xs-0" style="padding:5px">
+                    <input type="button" class="btn btn-default" value="Select User Hierarchy" tooltip="Click to Select From User Tree" onclick="fnShowTreeModal();" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ICEslctformhdr" class="row" style="display:none; padding-left: 8px;padding-top: 12px;">
+    <div class="col-xs-12" style="padding-left:20px;">
+        <p><span style="font-weight:bold;font-size:15px;">In-Chamber Effectiveness For the user:</span><b><span style="margin:0px 5px;font-size:15px;" id="FdBckFor"></span></b></p>
+    </div>
+</div>
+<div class="col-xs-12" style="padding: 12px;display:none; overflow: auto;" id="divInputform">
+    <div class="col-xs-12" style="padding: 12px;background: rgb(241, 241, 241);" id="Form">
+        <div id="ICEFormInpt">          
+            <div class="row" style="padding:10px;" id="Feedbackform">
+                <div class="col-xs-12" style="padding-top:30px;">
+                    <div class="col-xs-4" id="Evaldate" style="padding-left:30px;">
+                        <p><b>Please select the date to give feedback:<label id="mandatory" style="color:red">*</label></b></p>
+                    </div>
+                    <div class="col-xs-2" id="inptdate">
+                        <input type="text" id="dtpckr" readonly="readonly" />
+                    </div>
+                    <div class="col-xs-2" id="refDates">
+                        <input type="button" id="Refdates" value="View Joint Working Dates" readonly="readonly" class="btn btn-default" onclick="fnShowDCRRefDates();" />
+                    </div>
+                    <div class="col-xs-4" id="fdbckhsitorylnk" style="padding-left:250px;">
+                        <b><a href="#" id="ICEFormHistory" style="text-underline-position:below;" onclick="fnShowICEHistory();">Show list of feedback</a></b>
+                    </div>
+                </div>
+                <div id="Qstnslist" style="padding:30px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="padding: 12px;background: rgb(241, 241, 241);text-align:center; display:none;" id="formhdn">
+        <p><b style="font-size:15px;">No competencies for the selected User.</b></p>
+    </div>
+</div>
+<div id="Taskslctformhdr" class="row" style="display:none; padding-left: 8px;padding-top: 12px;">
+    <div class="col-xs-12">
+        <p><span style="font-weight:bold;margin:0px 5px;font-size:15px;">Tasks For the User:</span><b><span style="margin:0px 5px;font-size:15px;" id="TaskFor"></span></b></p>
+    </div>
+</div>
+<div class="col-xs-12" style="padding: 12px;display:none; overflow: auto;" id="divAddTask">
+    <div class="col-xs-12" style="padding: 12px;background: rgb(241, 241, 241);">
+        <div id="TaskInpts">
+            <div class="row" id="TaskAddHeader">
+                <div class="col-xs-12">
+                    <div class="col-xs-6">
+                        <h2><b>Add Task</b></h2>
+                    </div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="row" style="padding:10px;">
+                <div class="col-xs-12">
+                    <div class="col-xs-5" id="tsklbl1">
+                        <label>
+                            <b>Task Name</b>
+                        </label>
+                    </div>
+                    <div class="col-xs-1">
+                        <label>
+                            <b>:</b>
+                        </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="TskName" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding:10px;">
+                <div class="col-xs-12">
+                    <div class="col-xs-5">
+                        <label>
+                            <b>Task Description:</b>
+                        </label>
+                    </div>
+                    <div class="col-xs-1">
+                        <label>
+                            <b>:</b>
+                        </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <textarea id="tskdscrptn" rows="3" style="resize:none;width:100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding:10px;">
+                <div class="col-xs-12">
+                    <div class="col-xs-5">
+                        <label>
+                            Task Due Date:
+                        </label>
+                    </div>
+                    <div class="col-xs-1">
+                        <label>
+                            <b>:</b>
+                        </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="tskduedte" readonly="readonly"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"style="padding:10px;">
+                <div class="col-xs-12">
+                    <div class="col-xs-1" style="margin-left:85%;">         
+                        <input type="button" id="AssgnTask" class="btn btn-default" value="Assign" onclick="fnAssignTask();" />             
+                    </div>
+                    <div style="padding-left:93%;">                        
+                        <input type="button" id="hdetaskinpt" class="btn btn-default" value="Close" onclick="fnHideTask();" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Tasklstformhdr" class="row" style="display:none;padding-left: 8px;padding-top: 12px;">
+    <div class="col-xs-12">
+        <p><span style="font-weight:bold;margin:0px 5px;font-size:15px;">Tasks assigned for user:</span><b><span style="margin:0px 5px;font-size:15px;" id="Tasksof"></span></b></p>
+    </div>
+</div>
+<div class="col-xs-12" style="padding: 12px;display:none; overflow: auto;" id="divTask" data-toggle="collapse" data-target="#Tasks">
+    <div class="col-xs-12" style="padding: 12px;background: rgb(241, 241, 241);">
+        <div id="TaskInpt">
+            <div class="row" id="TaskHeader">
+                <div class="col-xs-12">
+                    <div class="col-xs-6">
+                        <h2><b>Tasks</b></h2>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><a href="#" id="TaskHistory" style="margin-left:72%;text-underline-position:below;" onclick="fnShowTaskHistory();">Show Reviewed Task History</a></b>
+                    </div>
+                </div>
+            </div>
+            <div id="AddTaskbtn">
+                <div class="row" id="Taskbtn">
+                    <div class="col-xs-12">
+                        <div class="col-xs-1" style="padding-top:6px;">
+                            <label>Filter:</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <select id="filtertsks" style="width:45%;text-align:left" onchange="fnGetOpenTasks(this.value);">
+                                <option maxlength="25" value="ME" style="text-align:left;">Assigned By Me</option>
+                                <option maxlength="25" value="ALL" style="text-align:left;">Assigned By All</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6" style="padding-left: 50%;">
+                            <input type="button" id="Addtaskbtn" class="btn btn-default" value="Add Task" onclick="fnShowAddTask();" />
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div id="TasksOpen" style="padding:15px;"></div>
+        <div style="padding: 15px; text-align:center; display:none;" id="notsk"><b>No Open & Completed Tasks</b></div>
+       
+    </div>    
+</div>
+
+
+
+@*PopUp For User Tree*@ 
+<div id="myModaltree" class="modal fade" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User Tree</h4>
+            </div>
+            <div class="modal-body" id="treebody" style="width:100%;height:500px;overflow: auto;">
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*PopUp For DCR Referrence Dates*@ 
+<div id="ModalDCRRef" class="modal fade" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-left:230px;">
+        <div class="modal-content" style="width:800px;">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">DCR Reference Dates</h4>
+            </div>
+            <div class="modal-body" id="jointDatesbody" style="width:100%;overflow: auto; height:500px;">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6" id="Mnthpkrhdr" style="padding-top:3px;">
+                            <p><b>Select Month and Year:</b></p>
+                        </div>
+                        <div class="col-xs-2" id="mnthpckrinpt">
+                            <input type="text" id="mnthpckr" style="width:135%;" />
+                         
+                        </div>
+                        <div class="col-xs-3" style="padding-left: 30px;">
+                            <input type="button" id="getjntdtes" value="Go" class="btn btn-default" onclick="fnGetJointWorkingDates();" />
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="row" style="padding-top:20px;" >
+                    <div class="col-xs-12" id="wrkdates">
+                        <div class="col-xs-5" id="parentdates">
+                            <div id="Parenthdr">
+                                <h4>My<b>(<span style="margin:0px 5px;font-size:15px;" id="mangwith"></span>)</b> Joint Working Date(s) with<b>(<span style="margin:0px 5px;font-size:15px;" id="ofDates"></span>)</b></h4>
+                            </div>
+                            <div id="ParentData" style="padding-top: 11px;">
+
+                            </div>
+                        </div>
+                        <div class="col-xs-7" id="childdates" style="padding-left:40px;">
+                            <div id="Childhdr">
+                                <h4>Selected User <b>(<span style="margin:0px 5px;font-size:15px;" id="Datesof"></span>)</b> Joint Working Dates with<b>(<span style="margin:0px 5px;font-size:15px;" id="withmang"></span>)</b></h4>
+                            </div>
+                            <div id="ChildData" style="padding-top:11px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*PopUp For Feedback History*@
+<div id="ModalICEFormHistory" class="modal fade " role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-left:150px;">
+        <div class="modal-content" style="width:1055px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">List of Feedback History</h4>
+            </div>
+            <div class="modal-body" id="HistoryICEbody" style="width:100%;height:500px;overflow: auto;">
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--PopUp For Detailed View Of Selected Feedback-->
+
+<div id="ModalICEFormHstrydetails" class="modal fade" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px; margin:0px;margin-left:130px;">
+        <div class="modal-content" style="width:1055px;">
+            <div class="modal-header">                
+                <h4 class="modal-title">In-Chamber Effectiveness</h4>
+            </div>
+            <div class="modal-body" id="ICEHistoryDetailsbody" style="width:100%;height:450px;overflow: auto;">
+                <div class="col-xs-12 clearfix">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Evaluated For(User Name)</span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6">
+                                <p><span id="EvalFor"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Evaluated By(User Name)</span></p>
+
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span id="EvalBy"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Evaluated For Date</span></p>
+                                
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span  id="EvalDateFor"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Evaluated On</span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span id="EvalOn"></span></p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p><span style="font-weight:bold;">Over All Feedback Remarks</span></p>
+                            </div>
+                            <div class="col-xs-1"><p><span style="text-align:center;"><label>:</label></span></p></div>
+                            <div class="col-xs-6"><p><span style="white-space: normal;word-wrap: break-word;" id="ovrallrmrks"></span></p></div>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-xs-12 clearfix">
+                    <div id="DetHstry">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnBacktoICEHistory();">Close</button>
+            </div>
+        </div>     
+    </div>
+</div>
+
+
+
+
+
+<div id="ModalTaskHistory" class="modal fade " role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-left:130px;">
+        <div class="modal-content" style="width:1055px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">List of Reviewed Tasks History</h4>
+            </div>
+            <div class="modal-body" id="TaskHistorybody" style="width:100%;height:500px;overflow: auto;">
+            </div>
+            <div class="modal-footer" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/InChamberEffectivenessForm.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script>
+        var userCode='';
+        var userName='';
+        //var usercode='';
+        var username='';
+        var Current_userCode= '';
+        var selectedMonth='';
+        var selectedYear='';
+        var childUserName='';
+        var Current_User_Name='';
+
+
+        var today=new Date();
+        var mm =fngetMonthName(today.getMonth()+1);
+        var yyyy=today.getFullYear();
+        var current_month=mm+'-'+yyyy;
+
+
+
+        Current_userCode= @Html.Raw(Json.Encode(ViewBag.User_Code));
+        Current_User_Name= @Html.Raw(Json.Encode(ViewBag.User_Name));
+        $(function () {
+            $("#tskduedte").datepicker({
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                minDate: 0,
+               // startDate:'+1d'
+            });
+        });
+
+
+        $(document).ready(function () {
+            AjaxGlobalHandler.Initiate();
+
+            if(userCode!=null)
+            {
+                //fnGetUserTreeByUser(Current_userCode, "treebody", "dvFilteredNode");
+                //$('#dvPreviousNode').click(function () { fnBindUsersWithOneLevelParent(); });
+                //$('#txtSearchNode').bind("keypress", function (e) {
+                //    if (e.keyCode == 13) {
+                //        fnSearchUsers();
+                //        return false;
+                //    }
+                //});
+                fnfullUsertreeWithoutPrivilege("treebody");
+            }
+            else{
+                alert('Error.');
+                return false;
+            }
+            if(Current_userCode!=null){
+                fnGetUserTree(Current_userCode);
+
+            }
+            $('#mnthpckr').val(current_month);
+
+
+            $( "#mnthpckr" ).change(function() {
+               fnGetJointWorkingDates();
+            });
+
+
+        });
+        $('#dvAjaxLoad').hide();
+
+        function fnShowTreeModal(){
+            $('#myModaltree').modal('show');
+
+        }
+        function fnUsersICEForms() {
+            debugger;
+            $('#Tasks').removeClass('in').addClass('collapse');
+            var flag=false;
+            
+                //userCode= $('#hdnusercode').val();
+            usercode=$('#hdnusercode').val();
+            if(usercode!=''){            
+                userCode=usercode;
+            }
+            var username=$.trim($('#usertree').val());
+            if(username!=''){
+                for (var i = 0; i < Userlst.length; i++) {
+                    if(username==Userlst[i].label){
+                        flag=true;
+                    }
+                }
+            }
+            else{
+                fnMsgAlert('info', 'In-Chamber Effectiveness','Please select user to give Feedback');
+                return false;
+            }  
+            if(flag==true){
+                 
+          
+                if($('#hdnusercode').val()!=''){
+                    userCode = $('#hdnusercode').val();
+                }
+                    
+                username=$('#usertree').val();
+
+                if(Current_userCode==userCode){
+                    fnMsgAlert('info', 'In-Chamber Effectiveness',"You can't select yourself for In-Chamber Effectiveness Feedback.Please select your reporting user.");
+                    return  false;
+                }
+                $('#mnthpckr').val(current_month);
+                $('#Feedbackform').show();
+                $('#hdnbtn').hide();
+                fnclearICEForm();
+                fnClearTask();
+                $('#divAddTask').hide();
+                $('#Taskslctformhdr').hide();
+                fnGetJointWorkingDates();
+                
+                $("#Tasklstformhdr").show();
+                $('#ICEslctformhdr').show();
+                fnGetICEQuestions(userCode);
+                fnGetOpenTasks();
+                fnGetEvaluatedDates();
+                fnGetJointWorkingDates();
+                $('#divTask').show();
+                childUserName=username.split(',')[0];
+                $("#FdBckFor").html(username);
+                $("#TaskFor").html(username);
+                $("#Tasksof").html(username);
+                $('#Datesof').html(childUserName);
+                $('#withmang').html(Current_User_Name);
+                $('#ofDates').html(childUserName);
+                $('#mangwith').html(Current_User_Name);
+            }
+  
+            else {
+                fnMsgAlert('info', 'In-Chamber Effectiveness','Please enter valid user details.');
+                return false;
+                $('#usertree').val('');
+            }
+        }
+
+
+        function fnUserTreeNodeClick(node) {
+            debugger;
+            //if(Current_userCode==node.data.key){
+            //    fnMsgAlert('info', 'InChamber Effectiveness',"You can't select yourself for In-Chamber Effectiveness Feedback.Please select your reporting user.");
+            //    return  false;
+            //}
+            if(userCode!=node.data.key){
+                fnclearICEForm();
+                fnClearTask();
+                $('#divAddTask').hide();
+                $('#Taskslctformhdr').hide();
+            }
+            //childUserName=username.split(',')[0];
+            userCode = node.data.key;
+            userName = node.data.title;
+            $('#usertree').val(userName);
+            $('#myModaltree').modal('hide');
+            $('#hdnusercode').val('');
+            //fnGetICEQuestions(userCode);
+            //fnGetOpenTasks();
+            //fnGetEvaluatedDates();
+             //fnGetJointWorkingDates();
+            //$('#divTask').show();
+            //childUserName=userName.split(',')[0];
+            //$("#Tasklstformhdr").show();
+            //$('#ICEslctformhdr').show();
+            //$("#FdBckFor").html(userName);
+            //$("#TaskFor").html(userName);
+            //$("#Tasksof").html(userName);
+            //$('#Datesof').html(userName);
+        }
+
+        function fnUserTreePostInit() {
+
+        }
+        function fnShowDCRRefDates(){
+            debugger;
+            $('#ModalDCRRef').modal('show');
+            fnGetJointWorkingDates();
+          
+        }
+        function fnShowAddTask(){
+            $('#Taskslctformhdr').show();
+            $('#divAddTask').show();
+
+        }
+        function fnBacktoICEHistory(){
+            debugger;
+            $('#ModalICEFormHistory').modal('show');
+        }
+
+
+
+        $(function () {
+            $('#mnthpckr').monthpicker();
+        });
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+        function fnHideTask(){
+            debugger;
+            $('#Taskslctformhdr').hide();
+            $('#divAddTask').hide();
+            fnClearTask();
+        }
+        function fnshowICEFormAgain(){
+            $('#Feedbackform').show();
+            $('#hdnbtn').hide();
+        }
+</script>
+ 
+
+
+

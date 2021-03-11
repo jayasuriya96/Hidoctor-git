@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "ICEQuestionsMapping";
+    Layout = null;
+}
+
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<div></div>
+<div class="container" style="width:100%;padding:20px;" id="IceQuestionsMappingMain">
+    <div id="divInput" style="padding: 15px;background: rgb(241, 241, 241);">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-2">
+                    <h3 style="padding-top: 10px;"><b>Select User Type:</b></h3>
+                </div>
+                <div class="col-xs-6">
+                    <div class="dropdown" style="padding-top:4px;">
+                        <select id="usertype" style="width:40%;text-align:left;"onchange="fnGetMappedQstns(this.value);">
+                            <option maxlength="25" style="text-align:left;" value="0">Please Select User Type</option>
+                        </select>
+                    </div>
+                </div>                 
+                <div class="col-xs-3">
+                    <div id="dvaddqstn"style="padding-top:4px; margin-left: 190px; display:none;">
+                        <input class="btn btn-sm" type="button" id="addqstns" value="Add Question" onclick="fnaddQstnTextArea(1);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xs-12" id="dvInputarea" style="display:none;">
+            
+            <div id="inputtextarealist">
+                <table id="dvtxtareainpt" style="width:100%;">
+                    <tbody id="dvtblbody" style="width:100%;">
+                        <tr id="tableRow1" class="RowData" style="Width:100%">
+                            <td style="width: 90%;">
+                                <label id="lblqstn1">Parameter</label>
+                                <textarea id="inpttextarea1" rows="4" style="width:100%; resize:none;" placeholder="Please Enter Competencies Here..."></textarea>
+                            </td>
+                            <td id="RemoveRow1" style="display:none;width: 5%;">
+                                <br /><br />
+                                <span class="close_btn" id="Removerow1">        
+                                    <i style="font-size:22px; color:red;padding:10px;" onclick="RemoveRow(1)" id="remove1" title="Remove Row" class="fa fa-times-circle"></i>                          
+                                    
+                                </span>
+                            </td>
+                            <td>
+                                <br /><br />
+                                <span class="close_btn" id="Add1"sstyle="width: 5%;">
+                                    <i Onclick="AddRow(1)" title="Add Row" class="fa fa-plus-circle" style="font-size:22px;padding:10px;" id="add1"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
+            <div id="saveqstns">
+                <input style="margin-left:79.4%;" type="button" class="btn btn-sm" id="svQstns" value="Save Competencies" onclick="fnSaveQuestion();" />
+            </div>        
+        </div>  
+       
+    </div>
+</div>   
+<div class="modal fade" id="mycnfrmtnModal" role="dialog" style="display:none;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">       
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Change Status</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to inactive the Competence?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnChangeStatus(QuestionID);">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="mycnfrmtnActvModal" role="dialog" style="display:none;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Change Status</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to active the Competence?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnChangeStatusActive(QuestionID);">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <div style="display:none;" id="ActiveQstns">
+    <div class="row">
+        <div style="padding-left:35px;">
+            <p>Active Competencies<b><span id="mapActdata"></span></b></p>
+        </div>
+    </div>
+    <div id="qstnstable"></div>
+</div>
+
+
+ <div style="display:none;" id="InActiveQstns">
+    <div class="row">
+        <div style="padding-left:35px;">
+            <p>In-Active Competencies<b><span id="mapinActdata"></span></b></p>
+        </div>
+    </div>   
+    <div id="qstnsInActivetable"></div>
+</div>
+   
+
+
+
+
+    <script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/ICEQuestionMapping.js"></script>
+    <script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+    <script>
+        var usertypecode = '';
+        var Values = '';
+        $(document).ready(function () {
+            AjaxGlobalHandler.Initiate();
+            GetActiveUserTypes();
+        });
+        
+        $('#dvtxtareainpt').keypress(function (event) {
+            if (event.keyCode == 13) {
+                fnMsgAlert('info', 'ICE Competencies Mapping', 'Please dont give Enter Key');
+                flag = false;
+                return;
+            }
+        });
+        
+
+
+
+
+        //function fnaddQstnTextArea(data) {
+        //    $('#dvInputarea').show();
+        //    $('#tableRow1').show();
+        //    $('#inpttextarea1').show();
+        //    $('#Removerow1').hide();
+        //    $('#add1').show();
+        //}
+    </script>
+
+
+
+
+
+

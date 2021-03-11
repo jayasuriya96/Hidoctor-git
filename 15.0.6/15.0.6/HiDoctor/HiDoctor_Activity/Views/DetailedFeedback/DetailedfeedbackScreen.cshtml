@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "DetailedfeedbackScreen";
+    Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+}
+<style>
+
+     </style>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary" style="background-color: khaki;">
+            Detailed Feedback
+        </div>
+
+        <div class="card-body py-1 mx-1">
+            <div class="d-flex flex-wrap mt-2">
+                <div class="p-2 flex-fill col-sm-1">
+                    <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">User Name</label>
+                </div>
+                <div class="p-2 flex-fill col-sm-3" id="user">
+                    <input type="text" id="ddluser" tabindex="1" />
+                </div>
+                <div class="p-2 flex-fill col-sm-1">
+                    <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">DCR Date</label>
+                </div>
+                <div class="p-2 flex-fill col-sm-3" id="dcrdate">
+                    <input type="text" id="ddldcrdate" tabindex="1" />
+                </div>
+                @* <div class="p-2 flex-fill col-sm-1">
+                        <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">Doctor Name</label>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-3" id="doctorname">
+                        <input type="text" id="ddldoctorname" tabindex="1" />
+                    </div>
+                    <div class="p-2 flex-fill col-sm-1">
+                        <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">Speciality :</label>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-3">
+                        <input type="hidden" class="form-control form-control-sm" id="txthdnspeciality" autocomplete="off">
+                        <span id="txtspeciality" autocomplete="off"></span>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-1">
+                        <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">Category :</label>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-3">
+                        <input type="hidden" class="form-control form-control-sm" id="txthdncategory" autocomplete="off">
+                        <span id="txtcategory" autocomplete="off"></span>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-1">
+                        <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">MDL Number :</label>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-3">
+                        <span id="txtmdl" autocomplete="off"></span>
+                    </div>*@
+                @*<div class="p-2 flex-fill col-sm-1">
+                        <label for="MasterSelectionDrpDwn" id="labelforSelectedMaster">Disease Flag :</label>
+                    </div>
+                    <div class="p-2 flex-fill col-sm-3">
+                        <span id="txtDF" autocomplete="off"></span>
+                    </div>*@
+            </div>
+            <div class="p-2 flex-fill col-sm-12" style="text-align:right;">
+                <button type="button" class="btn btn-primary" onclick="Detailedfeedbackscreen.fngetdcrdoctors();">GO</button>
+            </div>
+            @*<div style="overflow-y:scroll;height:500px;">
+                <div id="tbl" class="card-columns" style="column-count:5"></div>
+            </div>*@
+            @*<div id="tbl" class="clearfix">
+
+            </div>*@
+           
+        </div>
+    </div>
+  
+</div>
+                       @*For Cards *@ 
+<div class="col-lg-12 col-md-12 col-sm-12 clearfix" id="Doctormislist" style="padding:0px;display:none">
+    <div class="panel panel-default list" style="padding:30px 9px 30px">
+        <div class="panel-body" style="height:400px;overflow:auto;">
+            <div id="prodheading" class="clearfix" style="margin-bottom: 5px;"></div>
+
+            <div class="card-column" id="tbl">
+            </div>
+            <div class="" id="norecordsfound">
+            </div>
+
+        </div>
+        <div class="p-2 flex-fill col-sm-12" style="text-align:right;display:none;" id="btn">
+            <button type="button" class="btn btn-primary" onclick="Detailedfeedbackscreen.fnsave();">Submit</button>
+        </div>
+
+
+    </div>
+
+</div>
+
+@*<div class="p-2 flex-fill col-sm-12" style="text-align:right;display:none;" id="btn">
+    <button type="button" class="btn btn-primary" onclick="Detailedfeedbackscreen.fnsave();">Submit</button>
+</div>*@
+
+
+
+@*<div class="modal fade" id="doctormodal" tabindex="-1" role="dialog" aria-labelledby="MasterBandModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLongTitle">Doctor Profiling Details</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:550px;overflow:auto;">
+                <div class="" id="data">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+<div class="modal" tabindex="-1" role="dialog" id="doctorprofilingmodal">
+    <div class="modal-dialog" style="max-width:92%;">
+        <div class="modal-content" style="overflow-x:scroll;">
+            <div class="modal-header">
+                <h5 class="modal-title">Doctor Profiling Details</h5>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body" id="dvdp">
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Detailedfeedbackscreen.fnclosemodal();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/RPACoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/DetailedFeedback/Detailedfeedbackscreen.js"></script>
+
+<script>
+    var CompanyCode = "";
+    var RegionCode = "";
+    var UserCode = "";
+    var UserTypeCode="";
+    var companyCode="";
+    var regionCode="";
+    var userCode="";
+    var userTypeCode="";
+    var RegionName="";
+    $(document).ready(function () {
+        debugger;
+        //AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        RegionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+        UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+        UserName = @Html.Raw(Json.Encode(ViewBag.UserName));
+        UserTypeCode=@Html.Raw(Json.Encode(ViewBag.UserTypeCode));
+        RegionName=@Html.Raw(Json.Encode(ViewBag.RegionName));
+        Detailedfeedbackscreen.defaults.companyCode=CompanyCode;
+        Detailedfeedbackscreen.defaults.regionCode=RegionCode;
+        Detailedfeedbackscreen.defaults.userCode=UserCode;
+        Detailedfeedbackscreen.defaults.userTypeCode=UserTypeCode;
+        Detailedfeedbackscreen.Init();
+    });
+</script>

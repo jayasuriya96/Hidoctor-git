@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "DieticianAPPLanding";
+    Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+}
+<div class="mt-3">
+    @*<h4> Dietician Landing</h4>*@
+    <form>
+        <div class="form-row" style="padding:22px;">
+            <div class="form-group col-md-3">
+                <label for="startdate">Start Date</label>
+                <input type="date" class="form-control" id="stardate">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="enddate">End Date</label>
+                <input type="date" class="form-control" id="enddate">
+            </div>
+            <div class="form-group col-md-5" style="margin-top:30px;">
+                <button type="button" class="btn btn-primary" onclick="DieticianAPPLanding.fnbinddates();">GO</button>
+            </div>
+        </div>
+        <div id="binddates"></div>
+    </form>
+</div>
+@*<link href="../../Content/token-input.css?v=@HiDoctor.BuildNo.Build_No" rel="stylesheet" type="text/css" />
+<link href="../../Content/token-input-facebook.css?v=@HiDoctor.BuildNo.Build_No" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery.tokeninput.js"></script>*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/RPACoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/DieticianReporting/DieticianAPPLanding.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script type="text/javascript">
+    var CompanyCode = "";
+    var RegionCode = "";
+    var UserCode = "";
+    var UserTypeCode="";
+    var companyCode="";
+    var regionCode="";
+    var userCode="";
+    var userTypeCode="";
+    var dcrdate="";
+    var UserName="";
+    var RegionName="";
+    var DoctorEntryMode_g="";
+    var latitude="";
+    var longitude="";
+    var SubDomainName="";
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        $('#dvAjaxLoad').hide();
+        SubDomainName=@Html.Raw(Json.Encode(ViewBag.SubDomainName));
+        CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        RegionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+        UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+        UserTypeCode=@Html.Raw(Json.Encode(ViewBag.UserTypeCode));
+        dcrdate=@Html.Raw(Json.Encode(ViewBag.dcrdate));
+        UserName=@Html.Raw(Json.Encode(ViewBag.Username));
+        RegionName=@Html.Raw(Json.Encode(ViewBag.RegionName));
+        latitude=@Html.Raw(Json.Encode(ViewBag.latitude));
+        longitude=@Html.Raw(Json.Encode(ViewBag.longitude));
+        DieticianAPPLanding.defaults.companyCode=CompanyCode;
+        DieticianAPPLanding.defaults.regionCode=RegionCode;
+        DieticianAPPLanding.defaults.userCode=UserCode;
+        DieticianAPPLanding.defaults.userTypeCode=UserTypeCode;
+        DieticianAPPLanding.defaults.latitude=latitude;
+        DieticianAPPLanding.defaults.longitude=longitude;
+        DieticianAPPLanding.Init();
+
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        // var sdate=today-30;
+        date.setDate(date.getDate()-30);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var previousDate=year+'-'+month+'-'+day;
+        $("#stardate").val(previousDate);
+        $("#enddate").val(today);
+    });
+</script>

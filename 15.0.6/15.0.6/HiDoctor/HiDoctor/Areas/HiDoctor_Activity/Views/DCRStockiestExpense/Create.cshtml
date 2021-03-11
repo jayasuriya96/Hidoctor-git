@@ -1,0 +1,142 @@
+﻿@model HiDoctor_Activity.Models.DCRStockiestModel
+@{
+    Layout = null;
+}
+<link href="../Areas/HiDoctor_Activity/Content/Activity.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)   
+    <div id="div_stockiestexpense">
+        <div id="prog-bar-field">
+            <div class="stepno1  ">
+                <a href="#" id="aDCR" onclick="javascript:fnRedirectToHeader()"></a>
+            </div>
+            <div style="width: 17%; float: left;">
+                &nbsp
+            </div>
+            <div class="stepno2 ">
+                <a href="#" onclick="javascript:fnRedirectToDoctorVisit();">Doctors/Customers & Sample/Promotional items</a>
+            </div>
+            <div style="width: 12.5%; float: left;">
+                &nbsp
+            </div>
+            <div class="stepno3 step3Selected">
+                Stockist - Expense
+            </div>
+        </div>
+        <div id="prog-bar-att" style='display: none'>
+            <div class="stepno1 ">
+                <a href="#" id="aADCR" onclick="javascript:fnRedirectToHeader()"></a>
+            </div>
+            <div style="width: 28.5%; float: left;">
+                &nbsp
+            </div>
+            <div class="stepno2 step2Selected">
+                Expense 
+            </div>
+        </div>
+        <div id="dvLoading" style="display: none">
+            <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/loader.gif" />
+        </div>
+        <div id="divStockiestLoad" style="display: none;">
+            <div style="width: 100%; height: 20px;">
+            </div>
+            <div style="clear: both"></div>
+            <div id="stockiestDetails">
+            </div>
+            <div style="clear: both"></div>
+            <div id="expenseDetails">
+            </div>
+            <div id="dvMainOldRemarks" style="float: left; width: 100%; padding-top: 20px; color: #000011; display: none;">
+                <div style="width: 10%; float: left;">Old Remarks</div>
+                <div id="dvOldRemarks" style="width: 40%; float: left;">
+                </div>
+            </div>
+            <div style="float: left; width: 100%; padding-top: 20px; color: #000011; display: none;">
+                <div style="width: 10%; float: left;">Common Remarks</div>
+                <div style="width: 40%; float: left;">
+                    <textarea id="txtCommonRemarks"></textarea>
+                </div>
+            </div>
+            <br />
+            <p style="text-align: center;">
+                <input type="button" class="btnSave" value="Save as Draft" onclick="$('.btnSave').hide(); fnSubmit(3);" />
+                <input type="button" class="btnSave" value="Save and Submit" onclick="$('.btnSave').hide(); fnSubmit(1);" />
+            </p>
+        </div>
+    </div>
+}
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/HD/StockiestExpense.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script type="text/javascript" language="javascript">
+    var intermediatePlace = "";
+    var dailyAllowance = "";
+    var dcrDate = "";
+    var dcrStatus = "";
+    var dcrCode = "";
+    var isrcpa = "";
+    var userCode = "";
+    var entity = "";
+    var travelKm = "";
+    var accRegions = "";
+    var hideExpense_g = false;
+    var cpCode_g = "";
+    var tpCode_g = "";
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        ShowModalPopup('dvLoading');
+        dcrDate = @Html.Raw(Json.Encode(ViewBag.viewArray[0]));
+        dcrStatus = @Html.Raw(Json.Encode(ViewBag.viewArray[1]));
+        dcrCode = @Html.Raw(Json.Encode(ViewBag.viewArray[4]));
+        isrcpa = @Html.Raw(Json.Encode(ViewBag.isrcpa));
+        entity= @Html.Raw(Json.Encode(ViewBag.viewArray[2]));
+        userCode = @Html.Raw(Json.Encode(ViewBag.userCode));
+        travelKm = @Html.Raw(Json.Encode(ViewBag.viewArray[3]));
+        accRegions = @Html.Raw(Json.Encode(ViewBag.accRegions));
+        flag_g = @Html.Raw(Json.Encode(ViewBag.viewArray[5]));
+        activity_g=  @Html.Raw(Json.Encode(ViewBag.activity));
+        cpCode_g = @Html.Raw(Json.Encode(ViewBag.CPCode));
+        tpCode_g = @Html.Raw(Json.Encode(ViewBag.TPCode));
+        var activityFullName = fnGetSelectedActivityFullName(flag_g, isrcpa);
+        $('#aDCR').html('DCR-' + new Date(dcrDate.split('-')[1] + '/' + dcrDate.split('-')[2] + '/' + dcrDate.split('-')[0]).toDateString() + " " + activityFullName);
+        if (flag_g == "A") {
+            $('#aADCR').html('DCR-' + new Date(dcrDate.split('-')[1] + '/' + dcrDate.split('-')[2] + '/' + dcrDate.split('-')[0]).toDateString() + " " + activityFullName);
+            var hideActivities = fnGetPrivilegeValue("DAILY_ALLOWANCE_TO_HIDE_FOR_ACTIVITIES", "");
+            if (activity_g != null && activity_g.length > 0 && hideActivities.length > 0) {
+                var hideActivitiesLength = hideActivities.split(',');
+                var activityLength = activity_g.split(',');
+                if ((activityLength.length == hideActivitiesLength.length) || (activityLength.length < hideActivitiesLength.length)) {
+                    var count = 0;
+                    for (var i = 0; i < activityLength.length; i++) {
+                        for (var j = 0; j < hideActivitiesLength.length; j++) {
+                            if (activityLength[i].toUpperCase() == hideActivitiesLength[j].toUpperCase()) {
+                                count++;
+
+                            }
+                        }
+                    }
+
+                    if (hideActivitiesLength.length == count) {
+                        hideExpense_g = true;
+                    }
+                }
+            }
+            $('#stockiestDetails').css('display', 'none');
+            $('#prog-bar-att').css('display', '');
+            $('#prog-bar-field').css('display', 'none');
+        }
+        intermediatePlace = fnGetPrivilegeValue("DCR_INTERMEDIATE_PLACES", "");
+        dailyAllowance = fnGetPrivilegeValue("FARE_DAILY_ALLOWANCE", "");
+
+        //if(dcrStatus!="1")
+        //{
+        //    fnGetCommonRemarks();
+        //}
+        if (flag_g != "A") {
+            GetStockiest();
+        }
+        GetExpense(entity, travelKm);
+    });
+
+</script>

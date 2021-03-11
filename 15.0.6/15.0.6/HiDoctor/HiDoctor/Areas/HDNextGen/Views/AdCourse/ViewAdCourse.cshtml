@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "View Course";    
+}
+
+<style>
+    #dvImgSurImg {
+        min-height: 50px;
+        max-height: 150px;
+    }
+</style>
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/Course.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdminMaster.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/bootstrap.min.css" rel="stylesheet" />
+
+<script src="../../Areas/HDNextGen/Scripts/Bootstrap/jquery.bootpag.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Plugins/circles.min.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Bootstrap/jquery.bootpag.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Plugins/circles.min.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/Course/FileUpload.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+
+<div class="panel panel-default clearfix" id="dvSurResponseView">
+    <div id="dvViewCourse">
+        <div class="col-lg-12 clsPaddingNone clearfix" id="dvViewHeader">
+            <div class="col-md-4 img_left ">
+                <img class="clsCompLogo img-responsive thumnail" id="imgComLogo" />
+            </div>
+            <div class="col-md-8 clsPaddingNone count_right" style="text-align: right;">
+                <div class="col-lg-12 clsPaddingNone" id="dvPageInfo">
+                    <div class="col-lg-12 page_div" style="display: none;">
+                        <div class="col-lg-12" id="dvQuesPagePer">
+                            <div class="col-xs-1 clsFloatRight">
+                                <select id="cboPageNo"></select>
+                            </div>
+                            <div class="col-xs-5 clsFloatRight" id="dvQ">
+                                Questions per page
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="dvTotalQues" style="padding: 16px; font-weight: bold;"></div>
+
+            </div>
+        </div>
+        <div class="col-lg-12 clsPaddingNone clearfix" id="dvViewMid">
+            <div class="col-md-9">
+                <div id="dvCourseName" class="col-lg-12"></div>
+                <div id="dvCourseDesc" class="col-lg-12"></div>
+            </div>
+            <div class="col-md-3" id="dvSurImage">
+                <img id="dvImgSurImg" class="thumbnail img-responsive" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-12" id="dvViewQuestions"></div>
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-6" id="dvViewAction">
+                <div class="col-lg-12">
+                    <a class="btn btn-primary" id="btnBack"></a>
+                </div>
+                <div class="col-lg-12" id="dvResInfo"></div>
+            </div>
+            <div class="col-lg-6" id="dvViewPagination" style="display: none;">
+                <div class="clsDvPage col-lg-12">
+                    <p class="bootPage"></p>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="col-lg-12" id="dvPubInfo"></div>
+    <div id="dvCoursePubContent" style="display: none;" class="clearfix">
+        <div class="col-lg-12 clearfix" id="dvViewPubCourse"></div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CreateQuestion.js?" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    var viewCourseID_g = "";
+    var contentID_g="";
+    var viewMode_g = "";
+    var pageSelection_g="";
+    var currrentDate_g="";
+    
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+    });
+    $("#divPageHeader").html("Preview Course"); 
+    var param =  @Html.Raw(Json.Encode(ViewBag.Course_ID));
+    contentID_g= @Html.Raw(Json.Encode(ViewBag.Content_ID));
+    cname_g= @Html.Raw(Json.Encode(ViewBag.Cname));
+    pageSelection_g =@Html.Raw(Json.Encode(ViewBag.PageSelection));
+    currrentDate_g= @Html.Raw(Json.Encode(ViewBag.CurrrentDate)); 
+    var DATE_FORMAT = "dd/mm/yyyy";
+    
+    QUESTIONS.fnInitializeQuestionPerPage();
+    viewCourseID_g = param.split('~')[0];
+    viewMode_g =  @Html.Raw(Json.Encode(ViewBag.MODE));
+    var viewPageNo = "@Resources.AdCourse.Course_View_Page_No";
+    var viewNoOfQuest = "@Resources.AdCourse.Course_View_Total_No_Of_Quest";
+    var viewAnswered = "@Resources.AdCourse.Course_View_Quest_Answered";
+   
+    var userSubmit = "@Resources.AdCourse.Course_View_Submit";
+    var userPublish = "@Resources.AdCourse.Course_View_Publish";
+    var surResMandaText = "@Resources.AdCourse.Course_Response_Mand_Valid";
+    var ThankYouMsg = "@Resources.AdCourse.Course_Response_Thank_Msg";
+    
+    $('#btnSPubSubmit').html("@Resources.AdCourse.Course_Pub_Save");
+    $('#btnSPubPreview').val("@Resources.AdCourse.Course_Pub_Preview");
+    $('#btnSurPublish').val("@Resources.AdCourse.Course_Pub_Publish_button");
+    var surPubEffecFromEmpty = "@Resources.AdCourse.Course_Pub_EffecFrom_Empty";
+    var surPubEffecToEmpty = "@Resources.AdCourse.Course_Pub_EffecTo_Empty";
+    var Course_Resp_Quest_Speci_Msg= "@Resources.AdCourse.Course_Resp_Quest_Speci_Msg";
+
+    var Course_Res_Save_Next ="@Resources.AdCourse.Course_Res_Save_Next";
+    
+    $('#dvPageNo').html(viewPageNo);
+    
+    QUESTIONS.fnGetCourseView(viewCourseID_g,contentID_g,viewPageNo_g,'');   
+    $('#btnBack').html('<i class="fa fa-arrow-circle-left"></i> Back to Section Home');
+    $('#btnBack').click(function () {    
+        var courseDet = viewCourseID_g + "^" + encodeURIComponent(cname_g);
+        $("#main").load('/HDNextGen/AdCourse/SectionHome/'+ courseDet);        
+    });
+</script>

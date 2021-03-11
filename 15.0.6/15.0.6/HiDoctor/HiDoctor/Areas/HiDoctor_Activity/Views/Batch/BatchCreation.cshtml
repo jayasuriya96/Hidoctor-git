@@ -1,0 +1,506 @@
+﻿@{
+    ViewBag.Title = "BatchCreation";
+    Layout = null;
+}
+<style>
+    .text-line {
+        background-color: transparent !important;
+        outline: none !important;
+        outline-style: none !important;
+        outline-offset: 0;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: solid #eeeeee 2px !important;
+        padding: 10px 7px !important;
+    }
+
+    /*.buttonCancel {
+        background: #fff;
+        border: 1px solid #d3d3d3;
+        color: #000;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+        cursor: pointer;
+        padding: 7px 15px;
+        outline: none;
+        border-radius: 2px;
+    }
+
+    .buttonSave {
+        background: #3276b1;
+        border: 1px solid #d3d3d3;
+        color: white;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+        cursor: pointer;
+        padding: 7px 15px;
+        outline: none;
+        border-radius: 2px;
+    }*/
+
+    .batch {
+        font-size: 14px;
+        line-height: 1.25;
+        margin-bottom: 1.25em;
+        font-weight: bold;
+    }
+
+    select:required:invalid {
+        color: gray;
+    }
+
+    option[value=""][disabled] {
+        display: none;
+    }
+
+    option {
+        color: black;
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+        background-color: limegreen;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .Indot {
+        height: 10px;
+        width: 10px;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .DeleteProduct, .AddProduct {
+        cursor: pointer;
+    }
+
+    .list {
+        height: 550px;
+        overflow-y: scroll;
+    }
+
+    .calendars {
+        position: relative;
+        right: 14px;
+    }
+
+    .collapsebatch,.collapsebatchs {
+        cursor: pointer;
+    }
+
+    .batchlable {
+        margin-bottom: 0px;
+        position: relative;
+        top: 10px;
+    }
+
+    #CreateBatchEdit {
+        cursor: pointer;
+    }
+
+    .editdelete {
+        color: blue;
+        text-align: right;
+        /*cursor: pointer;*/
+        font-weight: bold;
+        padding: 12px;
+    }
+
+    .information {
+        cursor: pointer;
+        color: blue;
+        font-size: 18px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    .status
+    {
+            position: relative;
+    bottom: 5px;
+    float: right;
+    }
+</style>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active container-fluid" id="home">
+        <div class="row flex-row">
+            <div class="col-md-4">
+                <div class="panel panel-default list">
+                    <div class="panel-body">
+                        <div class="col-md-12 clearfix">
+                            <h4>Batch List</h4>
+
+                            <form>
+                                <div class="form-group row" style="margin-top:10px">
+                                    <label class="col-sm-5 col-form-label batchlable">Status :</label>
+                                    <div class="col-sm-7">
+                                        <select class="text-line" id="status" style="width: 74%;">
+                                            <option value="2">All</option>
+                                            <option value="1">Prevailing</option>
+                                            <option value="0">Sculled</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-top:10px;">
+                                    <label for="inputEmail3" class="col-sm-5 col-form-label batchlable">Region Name :</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="text-line BatchRegion" id="txtRegionBatch" style="">
+                                        <input type="hidden" id="hdnRegionBatch" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword3" class="col-sm-5 col-form-label batchlable">Customer Name : </label>
+                                    <div class="col-sm-7" id="auto">
+                                        <input type="text" class="text-line BDoctName" id="txtDoctorBatch">
+                                        <input type="hidden" id="hdnDotorBatch" />
+                                    </div>
+                                </div>
+                                <button type="button" id="BatchD" class="btn btn-primary buttonSave" onclick="Batch.GetDetailsOfBatch();" style="float: right;">Go</button>
+                            </form>
+
+                        </div>
+                        <div id="batchDetails" class="col-md-12 clearfix" style="margin-top:10px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="panel panel-default" id="create">
+                    <div class="panel-body">
+                        <h4>Create Batch</h4>
+                        <div class="col-md-12 clearfix">
+                            <div class="col-md-4" id="Cregion" >
+                                <input type="text" class="text-line BRegion" placeholder="Region Name" id="txtRegion">
+                                <input type="hidden" id="hdnRegion" />
+
+                            </div>
+                            <div class="col-md-4" id="regauto">
+                                <input type="text" class="text-line CName" placeholder="Customer Name" id="txtDoctor">
+                                <input type="hidden" id="hdnDotor" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" placeholder="Batch Name" id="BatchName">
+                            </div>
+                        </div>
+                        <div class="col-md-12 clearfix" style="margin-top:4%">
+                            <div class="col-md-4">
+                                <input type="number" class="text-line" placeholder="No Of Chicks" id="NoOfChicks" min="1">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" placeholder="Start Date" id="Start" readonly><span class="fa fa-calendar calendars"></span>
+
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" placeholder="End Date" id="End" readonly> <span class="fa fa-calendar calendars"></span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-12 clearfix" style="margin-top:4%">
+                            <label style="margin-left: 18px;">Status:</label>
+                            <input type="radio" class="statusofbatch" name="Bstatus" value="1" style="margin-left: 18px;" checked="checked" /><label>Active</label>
+                            <input type="radio" class="statusofbatch" name="Bstatus" value="0" style="margin-left: 18px;" /><label>In Active</label>
+                        </div>*@
+                        <div class="col-md-12 clearfix" style="margin-top: 4%;">
+                            <div class="col-md-6" style="text-align:right;">
+                                <button type="button" id="createBatch" class="btn btn-primary buttonSave">Create</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" id="cancel" class="btn btn-primary buttonCancel">Cancel</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="fullEdit">
+                    <div id="Edit">
+                        <div class="panel panel-default" id="CreateBatchEdit">
+                            <div class="panel-heading">Create New Batch</div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-md-12 clearfix">
+                                    <div class="col-md-7" id="BatchDetails">
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h4 id="EditBatch" style="color:blue;text-align:right;cursor:pointer;">Edit</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix">
+                                    <div class="col-md-4">
+                                        <lable>Region Name</lable>
+                                        <h4 id="EDRegion"></h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Customer Name</lable>
+                                        <h4 id="EDCustomerName"></h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Batch Number</lable>
+                                        <h4 id="EDBNumber"></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix" style="margin-top:4%;">
+                                    <div class="col-md-4">
+                                        <lable>No Of Chicks</lable>
+                                        <h4 id="EDNChicks"></h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Start Date</lable>
+                                        <h4 id="EDSDate"></h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>End Date</lable>
+                                        <h4 id="EDEDate"></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ProductAdd">
+                        <div class="panel panel-default">
+                            <div class="panel-body col-md-12">
+                                <div class="col-md-12 clearfix">
+                                    <div id="editschedule"></div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="text-line" placeholder="Schedule Name" id="ScheduleName" style="width: 88%;">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix">
+                                    <div class="col-md-12 clearfix">
+                                        <input type="text" class="text-line" placeholder="Start Date" id="ScheduleSDate" readonly style="width: 30%;"><span class="fa fa-calendar calendars"></span>
+                                        <input type="text" class="text-line" placeholder="End Date" id="ScheduleEDate" readonly style="width: 30%;"><span class="fa fa-calendar calendars"></span>
+                                        <input type="number" class="text-line" placeholder="No. of Weeks" id="ScheduleNumofWeeks" min="1" max="9999" style="width: 30%" onkeypress="return fnValidateWeek(this,event)"; />
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix" style="margin-top:3%">
+                                    <div class="col-md-8 clearfix" id="pro">
+                                        @*<div class="col-md-6 clearfix" id="pro">*@
+                                        <h4>Product Name</h4>
+                                        <div class="col-md-12 clearfix Add_1" style="padding:0px;">
+                                            <span><i class="fa fa-search" aria-hidden="true" style="color: #09e5da;"></i></span>
+                                            <input type="text" name="product" class="text-line product" placeholder="Select" id="productName_1" style="width:55%" onclick="Batch.AutoProduct(1);"/>
+                                            <input type="hidden" class="hdprod" name="hdproduct" id="hdnproductcode_1" />
+                                            <input type="text" name="dose" class="text-line dose" placeholder="Dose" id="dose_1" style="width:20%;margin-left: 17px;"/>
+                                            <span id="firstpluse"><i class="fa fa-plus AddProduct" aria-hidden="true" style="color:#09e5da; margin-left: 5px;" onclick=Batch.AutoProduct(1)></i></span>
+
+                                            @*<span><i class="fa fa-trash DeleteProduct" id="delete_1" onclick="Batch.fnDeleteProduct(1)" aria-hidden="true" style="color:red;margin-left: 5px;"></i></span>*@
+                                        </div>
+                                        <div class="col-md-12 clearfix Add_2" style="padding:0px;">
+                                            <span><i class="fa fa-search" aria-hidden="true" style="color: #09e5da;"></i></span>
+                                            <input type="text" name="product" class="text-line product" placeholder="Select" id="productName_2" style="width:55%" onclick="Batch.AutoProduct(2);"/>
+                                            <input type="hidden" class="hdprod" name="hdproduct" id="hdnproductcode_2" />
+                                            <input type="text" name="dose" class="text-line dose" placeholder="Dose" id="dose_2" style="width:20%;margin-left: 17px;"/>
+                                            @*<span><i class="fa fa-trash DeleteProduct" id="delete_2" onclick="Batch.fnDeleteProduct(2)" aria-hidden="true" style="color:red;margin-left: 5px;"></i></span>*@
+                                            <span><i class="fa fa-plus AddProduct" aria-hidden="true" style="color:#09e5da; margin-left: 5px;" onclick=Batch.AutoProduct(2)></i></span>
+
+                                        </div>
+
+                                        <div id="addingproduct"></div>
+                                     
+                                    </div>
+
+                                    <div class="col-md-4 clearfix" style="padding:0px;">
+                                        <h4>Notes</h4>
+                                        <div class="col-md-12 clearfix" style="padding:0px;">
+                                            <textarea rows="5" cols="35" id="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix" style="margin-top: 4%;">
+                                    <div class="col-md-6" style="text-align:right;">
+                                        <button type="button" id="SaveSchedule" class="btn btn-primary buttonSave">Save</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="CancelSchedule" class="btn btn-primary buttonCancel">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SchDetails">
+                        <div class="panel panel-default">
+                            <div class="panel-body col-md-12">
+                                <div id="schDetailBind"></div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default" id="Update">
+                    <div class="panel-body">
+                        <h4>Update Batch</h4>
+                        <div class="col-md-12 clearfix">
+                            <div class="col-md-4" id="autoregion">
+                                <input type="text" class="text-line BRegion" id="UPtxtRegion">
+                                <input type="hidden" id="UPhdnRegion" />
+                            </div>
+                            <div class="col-md-4" id="upauto">
+                                <input type="text" class="text-line UPCName" id="UPtxtDoctor" placeholder="Customer Name">
+                                <input type="hidden" id="UPhdnDotor" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" id="UPBatchName" placeholder="Batch Name">
+                            </div>
+                        </div>
+                        <div class="col-md-12 clearfix" style="margin-top:4%">
+                            <div class="col-md-4">
+                                <input type="number" class="text-line" id="UPNoOfChicks" placeholder="No Of Chicks">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" id="UPStart" placeholder="Start Date" readonly><span class="fa fa-calendar calendars"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="text-line" id="UPEnd" placeholder="End Date" readonly> <span class="fa fa-calendar calendars"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 clearfix" style="margin-top:4%">
+                            <label style="margin-left: 18px;">Status:</label>
+                            <input type="radio" class="statusUpdate" id="status1" name="status" value="1" style="margin-left: 18px;" checked="checked" /><label>Prevailing</label>
+                            <input type="radio" class="statusUpdate" id="status0" name="status" value="0" style="margin-left: 18px;" /><label>Sculled</label>
+                        </div>
+                        <div class="col-md-12 clearfix" style="margin-top: 4%;">
+                            <div class="col-md-5" style="text-align:right;">
+                                <button type="button" id="UPDateBatch" class="btn btn-primary buttonSave">Update</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" id="UPDatecancel" class="btn btn-primary buttonCancel">Cancel</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="BatchQuality">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        @*<div class="modal" id="BatchQuality">
+            <div class="modal-dialog" id="batchProductInfo">*@
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Information</h4>
+                        <button type="button" class="close" id="closemodel" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div id="tblProductBatchInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<div class="modal" id="Remark">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Information</h4>
+                <button type="button" class="close" id="closemodel" onclick="Batch.fnRemarkClose();">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body clearfix">
+                <div class="col-md-12 clearfix" >
+                    <div class="col-md-2">
+                        <label>Remarks:</label>
+                    </div>
+                    <textarea rows="5" cols="35" id="RemarkNotes"></textarea>
+                </div>
+                <div style="float:right" class="col-md-12 clearfix" >
+                    <button type="button" id="SaveRemark" class="btn btn-primary buttonSave" onclick="Batch.fnRemarkStatusChange();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+        <link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+        <script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+        @*<script src="~/Scripts/HD/Batch.js"></script>*@
+        <script src="~/Areas/HiDoctor_Activity/Scripts/HD/Batch.js?v=@DateTime.Now.Ticks"></script>
+        <script type="text/javascript">
+            var subDomainName = '';
+            var LoginRegionCode = '';
+            var LoginUserCode = '';
+            var CompanyCode='';
+            $(document).ready(function () {
+                subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+                LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+                LoginUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+                CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+                debugger;
+                $("#fullEdit").hide();
+                $("#UpDate").hide();
+                $('#SchDetails').hide();
+                $('#firstpluse').hide();
+                Batch.initialize();
+                $('.AddProduct').click(function () {
+                    Batch.fnAddProduct();
+                });
+                $('#Start').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    onSelect: function (selected) {
+                        var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                        var dt = new Date(dates);
+                        dt.setDate(dt.getDate() + 1);
+                        $("#End").datepicker("option", "minDate", dt);
+                    }
+                });
+                $('#End').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    onSelect: function (selected) {
+                        debugger;
+                        var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                        var dt = new Date(dates);
+                        dt.setDate(dt.getDate() - 1);
+                        $("#Start").datepicker("option", "maxDate", dt);
+                    }
+                });
+                $('#UPStart').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    onSelect: function (selected) {
+                        var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                        var dt = new Date(dates);
+                        dt.setDate(dt.getDate() + 1);
+                        $("#UPEnd").datepicker("option", "minDate", dt);
+                    }
+                });
+                $('#UPEnd').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    onSelect: function (selected) {
+                        debugger;
+                        var dates = selected.split('-')[2] + '-' + selected.split('-')[1] + '-' + selected.split('-')[0];
+                        var dt = new Date(dates);
+                        dt.setDate(dt.getDate() - 1);
+                        $("#UPStart").datepicker("option", "maxDate", dt);
+                    }
+                });
+
+            });
+
+        </script>

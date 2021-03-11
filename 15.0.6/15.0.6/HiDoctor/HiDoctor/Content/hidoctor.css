@@ -1,0 +1,581 @@
+﻿body {
+}
+
+/*******STRAT: Overlay Box*******/
+/** This class used to Batch processing overlay box****/
+.simple_overlay {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 10000; /* styling */
+    background-color: #fff;
+    width: 700px;
+    min-height: 530px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+}
+/*********END : Overlay box ************/
+
+
+/******START: Batch Processing ********/
+
+#dvBpTypes {
+    /*border: 1px solid #0072c6;*/
+    background-color: #fff;
+    width: 25%;
+}
+
+.uploadBtn {
+    background-color: #cc0000;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 1;
+    width: 75px;
+    height: 25px;
+    font-size: 12px;
+    margin: 5px;
+}
+
+.bpHeader {
+    background: #4393BB;
+    background: -moz-linear-gradient(top, #73b8db 0, #4393bb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #73b8db), color-stop(100%, #4393bb));
+    background: linear-gradient(top, #73b8db 0%,#4393bb 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#73B8DB', endColorstr='#4393BB',GradientType=0 );
+    color: #fff;
+    /*background-color: springgreen;*/
+    width: 24.5%;
+    border: 1px solid #ddd;
+    height: 20px;
+    padding: 3px;
+    font-size: 13px;
+    border-bottom: none;
+}
+
+.bpTable {
+    background-color: #fafafa;
+    border-bottom: 1px solid cornflowerblue;
+    border-right: 1px solid cornflowerblue;
+    width: 80%;
+    margin: 0px auto;
+}
+
+    .bpTable thead tr th {
+        /*background: #4393BB;
+        background: -moz-linear-gradient(top, #73b8db 0, #4393bb 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #73b8db), color-stop(100%, #4393bb));
+        background: linear-gradient(top, #73b8db 0%,#4393bb 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#73B8DB', endColorstr='#4393BB',GradientType=0 );*/
+        background-color: #66AADD;
+        padding: 3px;
+        color: #fff;
+    }
+
+    .bpTable tbody tr td {
+        padding: 3px;
+        border-top: 1px solid cornflowerblue;
+        border-left: 1px solid cornflowerblue;
+    }
+
+/*.ERR_ROW {
+        background-color: darkgoldenrod;
+        color: #fff;
+    }*/
+
+.Err_header_info {
+    height: 160px;
+    width: 95%;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+    .Err_header_info table tbody tr td {
+        white-space: nowrap;
+        padding: 3px;
+    }
+
+.Err_detailsGrd {
+    margin-top: 10px;
+}
+
+.BPErrMsg {
+    background-color: lightpink;
+    border: 1px solid red;
+    color: red;
+    min-height: 10px;
+    margin: 0px auto;
+    width: 60%;
+    padding: 5px;
+}
+
+.popUpTitle {
+    font-family: Segoe UI Light, Tahoma, Arial, Verdana;
+    font-size: 18px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    height: 55px;
+    background-color: #F3F3F3;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 15px;
+    padding-right: 20px;
+    padding-top: 15px;
+}
+
+/******END: Batch Processing ********/
+
+/*********STRAT: Genie **************/
+#dvGenieHelp {
+    /*float: right;
+    margin-right: 2%;*/
+    cursor: pointer;
+}
+
+#divGenieReportMain {
+    height: 600px;
+    width: 80%;
+    background-color: #fff;
+}
+
+#divGenieReport {
+    font-size: 10px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+    min-height: 550px;
+    overflow: auto;
+}
+
+.simple_overlayGeneie {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 999; /* styling */
+    background-color: #fff;
+    width: 500px;
+    min-height: 150px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+    top: 6px !important;
+    right: 10px !important;
+    float: right;
+    left: 49% !important;
+    height: auto;
+}
+
+.detailsGenie {
+    font-size: 10px;
+    width: 97%;
+    padding: 10px;
+    font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif !important;
+}
+
+.simple_overlayGeneie .close {
+    background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}
+
+#divGenieSearch {
+    float: left;
+    width: 97%;
+    margin-left: 10px;
+}
+
+    #divGenieSearch input[type="text"] {
+        width: 80%;
+    }
+
+    #divGenieSearch a {
+        float: right;
+        margin-right: 5%;
+        margin-top: 1.5%;
+    }
+
+#divGenieNote {
+    float: left;
+    width: 96%;
+    font-size: 9px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+    #divGenieNote a {
+        float: right;
+    }
+
+        #divGenieNote a:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+#divGenieResult {
+    float: left;
+    width: 97%;
+    font-size: 10px;
+}
+
+#imgGene {
+    position: absolute;
+    left: -80px;
+    opacity: 0.9;
+    width: 95px;
+    height: 175px;
+}
+
+.simple_overlayGeneie_Help {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 999; /* styling */
+    background-color: #fff;
+    width: 650px;
+    min-height: 150px;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+    top: 6px !important;
+    right: 10px !important;
+    float: right;
+    left: 34% !important;
+    height: auto;
+}
+
+    .simple_overlayGeneie_Help img {
+        width: 650px;
+    }
+
+    .simple_overlayGeneie_Help .close {
+        background-image: url(/Areas/HiDoctor_Activity/content/images/Web/hd/close.png);
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        cursor: pointer;
+        height: 35px;
+        width: 35px;
+    }
+
+@media screen and (min-width:1230px) {
+    .simple_overlayGeneie {
+        width: 550px;
+        min-height: 180px;
+        left: 55% !important;
+        top: 8px !important;
+        height: auto;
+    }
+
+    .detailsGenie {
+        font-size: 11px;
+    }
+
+    #imgGene {
+        width: 110px;
+        height: 180px;
+        left: -95px;
+    }
+
+    #divGenieSearch {
+        margin-top: 3px;
+    }
+
+    #divGenieNote {
+        font-size: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .simple_overlayGeneie_Help {
+        width: 700px;
+        left: 43% !important;
+    }
+
+        .simple_overlayGeneie_Help img {
+            width: 700px;
+        }
+
+    #divGenieResult {
+        font-size: 11px;
+    }
+}
+
+/********** END : STRAT: Genie****************/
+
+/************START: Report Menu Css*****************************/
+#dvRptMenu {
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+    border-top: 1px solid #aaa;
+    font-size: 11px;
+}
+
+#dvSideMenu {
+    width: 24.5%;
+    height: auto;
+    border-right: 1px solid #aaa;
+    min-height: 1000px;
+    float: left;
+    background-color: #f3f3f3;
+}
+
+#dvDesc {
+    width: 75%;
+    height: auto;
+    /*border: 1px solid blue;*/
+    float: right;
+    min-height: 1000px;
+}
+
+#divPageHeader {
+    padding-left: 12px;
+}
+
+#dvSideMenuContent ul {
+    list-style-type: none;
+}
+
+    #dvSideMenuContent ul li {
+        padding: 5px;
+    }
+
+        #dvSideMenuContent ul li:hover {
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+.parentMenu {
+    color: #06C;
+    width: 90%;
+    float: left;
+}
+
+.childCnt {
+    width: 15px;
+    height: 17px;
+    background: #aaa;
+    float: right;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 9px;
+    padding-bottom: 2px;
+}
+
+.descMain {
+    width: 100%;
+    padding-bottom: 20px;
+    clear: both;
+    margin-bottom: 30px;
+}
+
+    .descMain ul {
+        list-style-type: none;
+    }
+
+        .descMain ul li {
+            border-bottom: 1px dotted #d3d3d3;
+            line-height: 4;
+            padding-left: 3px;
+        }
+
+            .descMain ul li:hover {
+                border-bottom: 1px solid #f7c37a;
+                cursor: pointer;
+            }
+
+.childText {
+    color: #06C;
+    float: left;
+}
+
+
+.liLeft {
+    float: left !important;
+    width: 45%;
+    margin-left: 2%;
+}
+
+.liRight {
+    float: right !important;
+    width: 45%;
+    margin-right: 3%;
+}
+
+.descTitle {
+    font-weight: bold;
+    border-bottom: 1px solid #06C;
+    font-size: 12px;
+}
+
+.divdescIcon {
+    width: 16px;
+    height: 100%;
+    min-height: 16px;
+    float: right;
+    margin-top: 3.5%;
+    margin-left: 2%;
+}
+
+.divdescexcel {
+    background-image: url("images/report_menuexcel.jpg");
+}
+
+.divdescprint {
+    background-image: url("images/report_menu_print.png");
+}
+
+.divdescchart {
+    background-image: url("images/report_menu_chart.png");
+}
+
+.divdescuser {
+    background-image: url("images/report_menu_user.png");
+}
+
+.divdescdrildown {
+    background-image: url("images/report_menu_drillDown.png");
+}
+
+.scrollup {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+    display: none;
+    text-indent: -9999px;
+    background: url("images/scrollUp.jpg") no-repeat;
+}
+
+
+@media screen and (min-width:1230px) {
+    #dvRptMenu {
+        font-size: 12px;
+    }
+
+    .descTitle {
+        font-size: 14px;
+    }
+
+    .childCnt {
+        width: 15px;
+        height: 17px;
+        font-size: 11px;
+    }
+
+    .descMain ul li {
+        line-height: 3.5;
+    }
+
+    .divdescIcon {
+        margin-top: 3%;
+    }
+
+    .liLeft {
+        width: 40%;
+        margin-left: 4%;
+    }
+
+    .liRight {
+        width: 40%;
+        margin-right: 5%;
+    }
+}
+/**********END: Report Menu Css************************/
+/* Help Item CSS stars here  */
+.helpIcon {
+    cursor: pointer;
+    float: left;
+    margin-left: 5px;
+}
+
+.helpIconmargin {
+    cursor: pointer;
+    float: right;
+    margin: 5px;
+}
+
+.helpIconright {
+    cursor: pointer;
+    float: right;
+    margin-left: 5px;
+}
+
+.helpIconRpt {
+    cursor: pointer;
+    margin-left: 5px;
+}
+/* Help Item CSS ends here */
+
+/**********BOOTSTRAP TABLE CSS********************/
+.table thead {
+    background: #5E87B0 !important;
+    color: #fff;
+    text-align: left;
+}
+
+
+.errorIndicator {
+    background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px;
+    border: 1px solid red !important;
+    text-align: left !important;
+    cursor: pointer;
+}
+
+.selectNode {
+    background-color: #3169C6 !important;
+    color: white !important;
+}
+
+.dvDisableUser {
+    padding: 2px;
+}
+
+    .dvDisableUser:hover {
+        background-color: #F3F3F3;
+        border: 1px solid #d3d3d3;
+        cursor: pointer;
+    }
+
+.splashTitle {
+    text-align: center;
+    vertical-align: top;
+    font-weight: bold;
+    width: 100%;
+    font-size: 17px;
+}
+
+.splashDescription {
+    text-align: left;
+    vertical-align: top;
+    width: 30%;
+}
+
+.splashImage {
+    vertical-align: top;
+    width: 70%;
+    text-align: center;
+}
+
+.splash_popup {
+    /* must be initially hidden */
+    display: none; /* place overlay on top of other elements */
+    z-index: 10000; /* styling */
+    background-color: #fff;
+    min-height: 70%;
+    border: 1px solid #666; /* CSS3 styling for latest browsers */
+    -moz-box-shadow: 0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+    width: 85%;
+}

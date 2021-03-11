@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "DieticianAPPReportingView";
+    Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+}
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary" style="background-color: khaki;">
+            Dietician App Reporting
+        </div>
+        <div class="card-body" id="dvMainBody">
+            <form>
+                <div class="form-group row">
+                    <label for="FilledBy" class="col-sm-2 col-form-label"><b>Filled By</b></label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="filledby">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="For" class="col-sm-2 col-form-label"><b>For</b></label>
+                    @*<div class="col-sm-4" id="division">
+                            <select class="form-control" id="ddldivision">
+                                <option value="-1" selected disabled>Select Division</option>
+                            </select>
+                        </div>*@
+                    <div class="col-sm-4" id="dvusers">
+                        <select class="form-control" id="ddluser">
+                            <option value="-1" selected disabled>Select Region</option>
+                        </select>
+                    </div>
+                    @*<input type="email" class="form-control" id="user">*@
+                </div>
+                <div class="form-group row">
+                    <label for="Additionalusers" class="col-sm-2 col-form-label"><b>Additional Users</b></label>
+                    <div class="col-sm-4" id="dvadditionalusers">
+                        <input type="text" id="additionalusers" name="additionalusers" class="form-control" maxlength="" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date" class="col-sm-2 col-form-label"><b>Date of Camp</b></label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="startdate">
+                    </div>
+                    @*<div class="col-sm-4">
+                            <input type="date" class="form-control" id="enddate">
+                        </div>*@
+                </div>
+                <div class="form-group row">
+                    <label for="time" class="col-sm-2 col-form-label"><b>Time of Camp</b></label>
+                    <div class="col-sm-2">
+                        <label><b>Start Time</b></label>
+                        <input type="time" class="form-control" id="starttime">
+                    </div>
+                    <div class="col-sm-2">
+                        <label><b>End Time</b></label>
+                        <input type="time" class="form-control" id="endtime">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="camptype" class="col-sm-2 col-form-label"><b>Camp Type</b></label>
+                    <div class="col-sm-4" id="Activity">
+                        <select class="form-control" id="ddlActivity">
+                            <option value="-1" selected disabled>Select Activity</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="spinner-border text-primary" id="loader" style="display:none;"></div>
+                <div class="form-group row">
+                    <label for="campsubtype" class="col-sm-2 col-form-label"><b>Camp Sub Type</b></label>
+                    <div class="col-sm-4" id="subactivity">
+                        <select class="form-control" id="ddlsubActivity">
+                            <option value="-1" selected disabled>Select SubActivity</option>
+                        </select>
+                    </div>
+                </div>
+                @*<div class="form-group row">
+                        <label for="Location" class="col-sm-2 col-form-label">Location</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="Location">
+                        </div>
+                    </div>*@
+                <div class="form-group row">
+                    <label for="doctorcount" class="col-sm-2 col-form-label"><b>Doctor Attendees(count)</b></label>
+                    <div class="col-sm-4">
+                        <input type="number" min="0" class="form-control" id="doctorcount" onkeypress="return DieticianAPPReporting.isNumber(event)" maxlength="10000">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="patientcount" class="col-sm-2 col-form-label"><b>Patient Attendees(count)</b></label>
+                    <div class="col-sm-4">
+                        <input type="number" min="0" class="form-control" id="patientcount" onkeypress="return DieticianAPPReporting.isNumber(event)" maxlength="10000">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Prescription" class="col-sm-2 col-form-label"><b>Prescription(value)</b></label>
+                    <div class="col-sm-4">
+                        <input type="number" min="0" class="form-control" id="Prescription" onkeypress="return DieticianAPPReporting.isNumberKey(event,this)" maxlength="1000000">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Doctor Details
+        </div>
+        <div class="card-body" id="dvMainDoctorBody">
+
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Patient Details
+        </div>
+        <div class="card-body" id="dvMainPatientdetBody">
+
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            Prescription Details
+        </div>
+        <div class="card-body" id="dvMainprescriptionBody">
+
+        </div>
+    </div>
+</div>
+<div class="form-group row" style="margin-top: 10px;">
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-primary mb-2" onclick="DieticianAPPReporting.fnsubmit(2);" id="save">Save</button>
+        <button type="button" class="btn btn-primary mb-2" style="margin-left: 56%;" onclick="DieticianAPPReporting.fnsubmit(1);" id="submit">Submit</button>
+    </div>
+    @*<div class="col-sm-4">
+            <button type="button" class="btn btn-primary mb-2" style="margin-left: 4%;" onclick="DieticianAPPReporting.fnsubmit(1);" id="submit">Submit</button>
+        </div>*@
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/RPACoreREST.js?v=@HiDoctor.BuildNo.Build_No"></script>
+@*<script src="~/Scripts/HD/common.js"></script>*@
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/DieticianReporting/DieticianAPPReporting.js?v=@HiDoctor.BuildNo.Build_No"></script>
+@*<script src = "~/Areas/HiDoctor_Activity/Scripts/HD/DieticianReporting/DieticianAPPReporting.js"></script>*@
+<script type="text/javascript">
+    var CompanyCode = "";
+    var RegionCode = "";
+    var UserCode = "";
+    var UserTypeCode="";
+    var companyCode="";
+    var regionCode="";
+    var userCode="";
+    var userTypeCode="";
+    var RegionName="";
+    var dcrdate="";
+    var activitycode="";
+    var subactivitycode="";
+    var loc="";
+    var selectedregionname="";
+    var headerid="";
+    var DoctorEntryMode_g="";
+    var latitude="";
+    var longitude="";
+    $(document).ready(function () {
+        debugger;
+        //AjaxGlobalHandler.Initiate();
+        //$('#dvAjaxLoad').hide();
+        CompanyCode = @Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        RegionCode = @Html.Raw(Json.Encode(ViewBag.RegionCode));
+        UserCode = @Html.Raw(Json.Encode(ViewBag.UserCode));
+        UserName = @Html.Raw(Json.Encode(ViewBag.UserName));
+        UserTypeCode=@Html.Raw(Json.Encode(ViewBag.UserTypeCode));
+        RegionName=@Html.Raw(Json.Encode(ViewBag.RegionName));
+        dcrdate=@Html.Raw(Json.Encode(ViewBag.dcrdate));
+        activitycode=@Html.Raw(Json.Encode(ViewBag.activitycode));
+        subactivitycode=@Html.Raw(Json.Encode(ViewBag.subactivitycode));
+        loc=@Html.Raw(Json.Encode(ViewBag.loc));
+        selectedregionname=@Html.Raw(Json.Encode(ViewBag.selectedregionname));
+        headerid=@Html.Raw(Json.Encode(ViewBag.headerid));
+        latitude=@Html.Raw(Json.Encode(ViewBag.latitude));
+        longitude=@Html.Raw(Json.Encode(ViewBag.longitude));
+        DieticianAPPReporting.defaults.companyCode=CompanyCode;
+        DieticianAPPReporting.defaults.regionCode=RegionCode;
+        DieticianAPPReporting.defaults.userCode=UserCode;
+        DieticianAPPReporting.defaults.userTypeCode=UserTypeCode;
+        DieticianAPPReporting.defaults.latitude=latitude;
+        DieticianAPPReporting.defaults.longitude=longitude;
+      //  DoctorEntryMode_g = fnGetPrivilegeValue('RIGID_DOCTOR_ENTRY', 'YES');
+        DieticianAPPReporting.Init();
+    });
+</script>

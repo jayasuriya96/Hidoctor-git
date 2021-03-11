@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "CreateNewUser";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/UsercreationWizard.css" rel="stylesheet" />
+
+<div class="col-md-12 cls_nomargin_nopadding">
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <div class="cls_div_header">SETUP WIZARD FOR USER TO BE HIDOCTOR ENABLED</div>
+    </div>
+
+    <div class="col-md-10 cls_nomargin_nopadding">
+        <ul id='ullist' class=" cls_profile_wizard_header">
+            <li class="cls_up_stpe1 cls_up_inactive tick_img"><a href="#">Step - 1/5
+            <br />
+                <span>Employee Details</span>
+            </a></li>
+            <li class="cls_up_step2 cls_up_inactive tick_img"><a href="#">Step - 2/5
+            <br />
+                <span>Leave Details</span>
+            </a></li>
+            <li class="cls_up_step3 cls_up_inactive tick_img"><a href="#">Step - 3/5
+            <br />
+                <span>Product Mapping</span>
+            </a></li>
+            <li class="cls_up_step4 cls_up_inactive tick_img"><a href="#">Step - 4/5
+            <br />
+                <span>Other Mappings</span>
+            </a></li>
+            <li class="cls_up_step5 cls_up_active"><a class="cls_cut" href="#">Step - 5/5
+            <br />
+                Launch Hidoctor
+            </a></li>
+        </ul>
+        <div class="clearboth">&nbsp;</div>
+    </div>
+     <div id="dvLoading" style="text-align: center">
+        <img src="../../Content/themes/base/images/hd/loader.gif" />
+    </div>
+    <div id="divMaininputs" class="col-md-10 cls_nomargin_nopadding form-group">
+        <div class="cls-divNew" style="font-style: italic;">This User is now ready to be Hidoctor Enabled.</div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew" id="divSMS">Click on Send SMS to send these credentials to the user via SMS.</div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew" id="divkangle">Click on Kangle Access to give Kangle Access to user.</div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew">His/Her User ID is <span id="snpUserId" style="font-weight: bold;"></span></div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew">Password is <span id="snpPassword" style="font-weight: bold;"></span></div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew">You can change your Password by using the Change Password in the Hidoctor Website.</div>
+        <div style="clear: both;"></div>
+        <div class="cls-divNew" style="font-style: italic;">Click on finish to check if the User has been able to get created successfully.</div>
+        <div style="clear: both;"></div>
+        <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowsmsbtn" style="display: none;">
+            <div class="col-xs-1">
+                <input type="checkbox" checked="checked" id="chksms" value="1" />
+            </div>
+            <div class="col-xs-5">
+                <label>Send SMS</label>
+            </div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowkanglebtn"  style="display:none;">
+            <div class="col-xs-1">
+                <input type="checkbox" name="kangleaccess" checked="checked" id="chkkangle"/>
+            </div>
+            <div class="col-xs-2">
+                <label>Kangle Access</label>
+            </div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowtpbtn" style="display:none;">
+            <div class="col-xs-1">
+                <input type="checkbox" name="TPaccess" checked="checked" id="TPkangle" />
+            </div>
+            <div class="col-xs-3">
+                <label>Enable TP lock immediately</label>
+            </div>
+        </div>
+        <div class="col-md-10 cls_nomargin_nopadding form-group clearfix" id="btnShowtmailbtn" style="display:none;">
+            <div class="col-xs-1">
+                <input type="checkbox" name="Mailaccess" id="Mailchk" checked="checked"/>
+            </div>
+            <div class="col-xs-3">
+                <label>Send Mail</label>
+                <span style="margin-left:20px;cursor:pointer;color:#428bca;text-decoration: underline;" onclick="javascript:return fnGetRegionTree(0);"> Copy Holders </span>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="col-md-10 cls_nomargin_nopadding form-group">
+        <div class="col-md-12 cls_nomargin_nopadding form-group clearfix">
+            <div class="col-xs-2">
+                <input type="button" id="btnBackfinish" value="Back" class="btn btn-primary" onclick="fnBackfinish(doj_g,hiDoctorStartDate_g);" />
+            </div>
+            <div class="col-xs-2">
+                <input type="button" id="btnfinish" value="Finish" class="btn btn-success" onclick="fncheckmaildetails();" style="float: right;" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModalregion" class="modal" role="dialog" style="overflow-y:hidden;">
+    <div class="modal-dialog" style="background: none;border: none;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Copy Holders</h4>
+            </div>
+            <div class="modal-body" style="height:400px;overflow:auto;">
+                <div id="regionTreeNew"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnccsave" onclick="fnSaveCCUsers(1);">Save</button>
+                <button type="button" class="btn btn-primary" style="display:none" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/UsercreationWizard.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Notification.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Scripts/CompanyEmail.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    ShowModalPopup('dvLoading');
+    var employeeName_g = "", userTypename_g = "", divisionName_g = "", regionName_g = "", Usertypecode_g = "", divisionCode_g = "", userRegionCode_g = "",mobileNO_g="",userCode_g="",reportingmanagerUsercode_g="";
+    var smsconfigValue = "";
+    var Templatedetails = '';
+    var MailUsername='';
+    var Mailpassword='';
+    var MailEmpname='';
+    var CCMailarr='';
+    $(document).ready(function () {
+        debugger;
+        try {
+            $(document).ajaxStop($.unblockUI);
+            var username = @Html.Raw(Json.Encode(ViewBag.User_Name));
+            var password = @Html.Raw(Json.Encode(ViewBag.Pass_Word));
+            mobileNO_g = @Html.Raw(Json.Encode(ViewBag.Mobile_No));
+            userCode_g = @Html.Raw(Json.Encode(ViewBag.User_Code));
+            if(username != "null"){
+                $('#snpUserId').html(username);
+            }
+            if(password != "null"){
+                $('#snpPassword').html(password);
+            }
+            employeeName_g = @Html.Raw(Json.Encode(ViewBag.Employee_Name));
+            userTypename_g = @Html.Raw(Json.Encode(ViewBag.User_Type));
+            divisionName_g = @Html.Raw(Json.Encode(ViewBag.Division_Name));
+            regionName_g = @Html.Raw(Json.Encode(ViewBag.Region_Name));
+            Usertypecode_g = @Html.Raw(Json.Encode(ViewBag.UserType_Code));
+            divisionCode_g = @Html.Raw(Json.Encode(ViewBag.Division_Code));
+            userRegionCode_g = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+            smsconfigValue = @Html.Raw(Json.Encode(ViewBag.Sms_Alert));
+            kangle = @Html.Raw(Json.Encode(ViewBag.GetIsKangleIntegrated));
+            reportingmanagerUsercode_g = @Html.Raw(Json.Encode(ViewBag.Reporting_Manager_User_Code));
+            hiDoctorStartDate_g = @Html.Raw(Json.Encode(ViewBag.hiDoctorStartDate));
+            doj_g = @Html.Raw(Json.Encode(ViewBag.doj));
+
+            debugger;
+            fnprivilege();
+            fnmailprivilege();
+            fngetCompanyEmail();
+            fnGetTemplateDetails();
+                //var TpLock=fnGetPrivilegeValue("TP_LOCK_DAY","");
+                //debugger;
+                //if(TpLock !='')
+                //{
+                //    $("#btnShowtpbtn").show();
+                //}
+                //else
+                //{
+                //    $("#btnShowtpbtn").hide();
+                //}
+
+            if(smsconfigValue.toUpperCase() == "YES"){
+                $('#btnShowsmsbtn').show();
+            }
+            else{
+                $('#btnShowsmsbtn').hide();
+            }
+            if (kangle==true) {
+                debugger;
+                $("#btnShowkanglebtn").show();
+            }
+            HideModalPopup('dvLoading');
+        }
+        catch (e) {
+            HideModalPopup('dvLoading');
+            alert(e.message());
+        }
+    });
+</script>
+

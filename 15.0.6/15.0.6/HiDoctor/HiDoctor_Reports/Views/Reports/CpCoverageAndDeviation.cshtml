@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "CpCoverageAndDeviation";
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<style>
+    .dvHeader {
+        font-weight: bold;
+        font-size: large;
+        border-bottom: 1px solid #01B7E9;
+        background: #efefef;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .dvheader-inner {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+
+<div id="dvcpCoverage">
+    <div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="col-lg-12" style="min-height: 260px; overflow: auto;">
+        <div id="dvTree" class="col-sm-3">
+
+            <div style="clear: both"></div>
+            <div id="dvUserTree" style="height: 630px;">
+                <div class="dv-controls-load">
+                    <img src="../Areas/HiDoctor_Activity/Content/images/Web/hd/load.gif" />
+                    Loading tree
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <div id="dvdata" class="col-lg-9" style="display: none">
+            <div>
+                <span onclick="fnToggleTree()" class="shInput" id="lnkTree" style="margin-right: 3px;">Hide Tree</span>
+                |
+                <span onclick="fnToggleInputs()" class="shInput" id="lnkInput" style="margin-left: 5px">Hide Input</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div id="rptInputs" class="col-lg-12 dvRptInput">
+                <div style="clear: both"></div>
+                <div style="float: right">
+                    <img src='../Images/HelpIcon.png' onclick="fnHelp('CP_COVERAGE_AND_DEVIATION','PAGE_HEADER')" />
+                </div>
+                <div style="clear: both"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        Month and Year:
+                    </div>
+                    <div class="col-lg-5">
+                        <input type="text" id="txtFrom"/>
+                        <input type="hidden" id="hdnUserCode" />
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        Order By:
+                    </div>
+                    <div class="col-lg-5">
+                        <input type="radio" value="Day" id="optDayWise" name="rptOptionswiseDayandDate" checked="checked"/>
+                        <label for="optViewInScreen">Day Wise</label>
+                        <input type="radio" value="Date" id="optDateWise" name="rptOptionswiseDayandDate"/>
+                        <label for="optExportToExcel">Date Wise</label>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        DCR Status:
+                    </div>
+                    <div class="col-lg-5">
+                        <input type="checkbox" name="chkstatus"  class="clsCheck" id="chkApplied" value="1" onclick="chkAllChecked();"/><label for="chkApplied">Applied</label>
+
+                        <input type="checkbox" name="chkstatus"  class="clsCheck" id="chkApproved" value="2" checked="checked" onclick="chkAllChecked();"/><label for="chkApproved">Approved</label>
+
+                        <input type="checkbox" name="chkstatus"  class="clsCheck" id="chkUnapproved" value="0" onclick="chkAllChecked();"/><label for="chkUnapproved">Unapproved</label>
+
+                        <input type="checkbox" name="chkstatus" id="chkAll" value="1,2,0" onclick="checkAll();"/><label for="chkAll">All</label>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="col-lg-12">
+                    <div style="margin-left: 26%;">
+                        <input type="radio" value="1" id="optViewInScreen" name="rptOptions" checked="checked" />
+                        <label for="optViewInScreen">View in-screen</label>
+                        <input type="radio" value="2" id="optExportToExcel" name="rptOptions" />
+                        <label for="optExportToExcel">Export to excel</label>
+                    </div>
+                    <input type="button" class="btn btn-primary" style="margin-left: 26%;" value="View" onclick="fnGetCpcoverageandDeviationreport()" />
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <br />
+            <div id="divCpCoverageandDeviation"></div>
+        </div>
+        <div style="clear: both"></div>
+        <div style="clear: both"></div>
+        <div id="dvloading" style="display: none">
+            <img src="../../Content/images/loader1.gif" />
+        </div>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/CpCoverageandDeviation.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $('#dvcpCoverage').block({
+                message: 'Loading data...',
+                css: { border: '1px solid #ddd' }
+            });
+            fnBindUserTree("dvUserTree") //To Bind The UserTree
+            $("#dvTree").show();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvcpCoverage").unblock();
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    // Default function for toggling tree and inputs
+    $(function () {
+        $('#txtFrom').monthpicker();
+    });
+
+    function fnToggleTree() {
+        if ($('#dvTree').hasClass('col-sm-3')) {
+            fnCloseTree();
+        }
+        else {
+            fnOpenTree();
+        }
+    }
+
+    function fnUserTreePostInit() {
+        $("#dvcpCoverage").unblock();
+    }
+
+    function fnOpenTree() {
+        $('#lnkTree').html('Hide Tree')
+        $("#dvUserTree").slideDown();
+        $('#dvTree').addClass('col-sm-3')
+        $('#dvdata').removeClass('col-lg-12')
+        $('#dvdata').addClass('col-lg-9')
+    }
+
+    function fnCloseTree() {
+        $('#lnkTree').html('Show Tree')
+        $("#dvUserTree").slideUp();
+        $('#dvTree').removeClass('col-sm-3')
+        $('#dvdata').addClass('col-lg-12')
+        $('#dvdata').removeClass('col-lg-9')
+    }
+    function fnToggleInputs() {
+        if ($("#rptInputs").hasClass('col-lg-12')) {
+            $('#lnkInput').html('Show Inputs')
+            $("#rptInputs").hide();
+            $("#rptInputs").removeClass('col-lg-12')
+        }
+        else {
+            $('#lnkInput').html('Hide Inputs')
+            $("#rptInputs").show();
+            $("#rptInputs").addClass('col-lg-12');
+        }
+    }
+    function fnUserTreeNodeClick(node) {
+        fnCloseTree();
+        $("#dvdata").show();
+        $('#hdnUserCode').val(node.data.key);
+        $('#divCpCoverageandDeviation').html('');
+    }
+
+    function fnUserTreeActivate(node) {
+    }
+    function fnUserTreeSelect(node) {
+    }
+</script>
+

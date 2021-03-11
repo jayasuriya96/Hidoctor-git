@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "SFCExcelUpload";
+    Layout = null;
+}
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<form action="../HiDoctor_Master/SFCRegion/SFCExcelUploadResult" onsubmit="return fnValidateUploadedFile()" method="post" enctype="multipart/form-data" target="ifrmExcel">
+    <div class="form-group panel panel-primary" id="dvUserExcelMain">
+        <div class="col-lg-12 panel-heading">
+            SFC - Excel Upload
+        </div>
+
+        <div class="form-group panel-body">
+            <div id="dvRules" class="col-sm-6 table-responsive form-group">
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">Step 1 : Download</td>
+                    </tr>
+                    <tr>
+                        <td>1.Please @Html.ActionLink("Download", "DownloadSFCExcelTemplate", "SFCRegion", new { }, null) the SFC Master excel upload template</td>
+                    </tr>
+                    <tr>
+                        <td>2.Update the SFC details in the template</td>
+                    </tr>
+                    <tr>
+                        <td>3.Do not alter the excel file structure(i.e.adding or removing the column)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4.Do not rename the excel file name and the sheet name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5.Do not rename the columns
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6.Click the “Choose/Browse file” button to get the file
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7.Click the upload button to upload the data
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8. Below mentioned fields are mandatory <span class="Mandatory">*</span>
+                            <div class="col-lg-12 table-responsive">
+                                <table>
+                                    <tr>
+                                        <td>1.Region_Name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.From_Place</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.To_Place</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.Distance</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.Travel_Mode</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.Category
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7.Date_From
+                                        </td>
+                                    </tr>
+                             
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9.Please do not modify the Row_No column values
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10.Please do not use WRAPTEXT/ALT+ENTER while enter the values. If you use then system will consider this as a special character.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11.Please enter the mentioned date format (yyyy-MM-dd)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-6 form-group">
+                <div style="font-weight: bold;" class="col-lg-12">
+                    Step 2 : Upload
+                </div>
+                <div class="col-lg-12 form-group">
+                    <input type="file" id="file" name="file" accept=".xlsx" />
+                    <br />
+                    <input type="submit" id="btnUp" value="Upload" class="btn btn-primary" />
+                </div>
+                <div id="dvFrame" class="form-group col-lg-12">
+                    <iframe name="ifrmExcel"></iframe>
+                </div>
+                <div id="dvRedirect" class="form-group col-lg-12">
+                    <br />
+                    <a href="#" onclick="fnRedirectToBP('SFC_UPLOAD');">>>Go to Batch processing</a>
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</form>
+
+
+<script lang="ja">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dvRedirect").hide();
+        $("#dvAjaxLoad").hide();
+    });
+
+    function fnRedirectToBP(page) {
+        $('#main').load('../BatchProcessing/Index?bpType=' + page);
+    }
+
+    function fnValidateUploadedFile() {
+        $("#dvRedirect").hide();
+        $("#dvMsgSuccess").hide();
+        $("#dvMsgError").hide();
+        $("#dvMsgError").html('');
+        $("#dvMsgSuccess").html('');
+        var fileName = $('#file').val();
+        if (fileName.length == 0) {
+            fnMsgAlert('info', 'Info', 'Please select any excel file then click the upload button');
+            return false;
+        }
+        else {
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "xlsx") {
+                return true;
+            }
+            else {
+                fnMsgAlert('info', 'Info', 'Please select xlsx file only');
+                return false;
+            }
+        }
+    }
+</script>

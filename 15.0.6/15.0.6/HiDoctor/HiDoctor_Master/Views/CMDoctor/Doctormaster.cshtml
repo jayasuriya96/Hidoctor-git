@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "Doctormaster";
+    Layout = null;
+}
+
+
+@*<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />*@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="~/Content/Bootstrap/font-awesome.min.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+<link href="../../Content/all.css?v=12.8.6.5" rel="stylesheet" type="text/css" />
+<link href="~/Areas/HiDoctor_Master/Content/doctormasternew.css" rel="stylesheet" />
+
+
+<div id="load" style="position: absolute;height:23%;width: 100%;text-align: center;z-index: 50 ;opacity: 1;margin-top:19%;">
+    <img src="~/Images/Loader.gif" id="loaderimage" style="height: 100%;background-color: #48414100; margin-top: 0%;opacity: 0.3" />
+</div>
+<div class="container-fluid">
+
+    <div class="row">
+
+
+
+        <div class="col-xs-12 col-sm-12 body " style="padding-top:21px;">
+            <h4 style="border-bottom:1px solid;">Customer details</h4>
+
+            <div class="form-group col-xs-12 col-sm-4" id="customergroup" style="padding-left:2px;">
+
+                <div id="customer"></div>
+
+            </div>
+            <div class="form-group col-xs-12 col-sm-4" id="surnamegroup" style="padding-left:2px;">
+
+                <div id="SurName"></div>
+            </div>
+
+        </div>
+        <div class="col-xs-12 col-sm-12 body " style="padding-top:0px;clear:both;">
+
+            @*<div class="form-group col-xs-12 col-sm-6" style="padding-left:2px;">*@
+            <div class="form-group col-xs-12 col-sm-4" id="mdlgroup" style="padding-left:2px;">
+                @*<label style="display:none;" class="MDLN"><b>MDL Number</b><i class="fa fa-star" id="starm" style="color:red;font-size:9px;margin-left:5px;display:none;"></i></label>*@
+                <div id="mdl"></div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-4 clearfix" id="regnogroup" style="padding-left:2px;">
+
+                <div id="RegistrationNo"></div>
+
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 body " style="padding-top:0px;clear:both;">
+            <div class="form-group col-xs-12 col-sm-12" id="gendergroup" style="padding-left:2px;clear:both;">
+
+                <div id="Gender" style="padding-left:34px;"></div>
+
+            </div>
+
+        </div>
+        <div class="col-xs-12 col-sm-12 body " id="dcsp" style="padding-top:0px;">
+
+
+            <div class="form-group col-xs-12 col-sm-4" id="specialgroup" style="padding-left:2px;clear:both;">
+                <div id="Specialty"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4" id="categorygroup" style="padding-left:2px;">
+
+                <div id="Category"></div>
+            </div>
+        </div>
+
+
+
+        @*<div class="col-xs-12 col-sm-12 body " id="source" style="padding-top:0px;border-bottom:1px solid;">
+            </div>*@
+
+
+        <div class="col-xs-12 col-sm-12 body " style="padding-top:23px;clear:both;border-top:thin;" id="addhide">
+
+
+            <div class="form-group col-xs-12 col-sm-6" style="padding-left:2px;clear:both;">
+                <label style="font-size:15px;">
+                    <b>Address</b>
+                </label>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6" id="Addbtn" style="font-size:24px;cursor:pointer;">
+                <a href="#" id="ad" value="0" onclick="fnadd();">Add New</a>
+            </div>
+            <div id="add" style="margin-left:-11px;"></div>
+
+        </div>
+        <div class="col-sm-12 col-xs-12 addcls" style="display:none;padding-left:6px;">
+            <h4 style="border-bottom:1px solid;">Location Details</h4>
+            <div class="form-group col-sm-4" style="clear:both;">
+
+                <label for="exampleInputEmail1"><b>Address</b><i class="fa fa-star" id="starc" style="color:red;font-size:9px;margin-left:5px;"></i></label>
+                <textarea class="form-control" maxlength="500" id="ads" style="resize: none;font-size:16px;" onkeypress="javascript:return fnvalidateregedit(this,event);"></textarea>
+
+
+            </div>
+
+            <div class="form-group col-sm-4">
+
+                <label for="exampleInputPassword1"><b>City</b><i class="fa fa-star" id="starc" style="color:red;font-size:9px;margin-left:5px;"></i></label>
+                <label type="text" id="cts" onkeypress="return false;" onclick="fnBindcities();" data-disabled-touch-keyboard class="citylist form-control" />
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                @*<i onclick="fnaddcity();" class="fa fa-plus"></i>*@
+                <a href="#!" onclick="fnaddcity()">Add City</a>
+
+            </div>
+            <div id="addcity" class="col-sm-4 col-xs-12">
+
+            </div>
+            <div class="form-group col-sm-4" style="clear:both;">
+
+                <label for="exampleInputEmail1"><b>Local Area</b><i class="fa fa-star" id="starc" style="color:red;font-size:9px;margin-left:5px;"></i></label>
+                <input type="email" class="form-control" id="las" style="font-size:16px;" onkeypress="javascript:return fnvalidatenameedit(this,event);">
+
+            </div>
+
+            <div class="form-group col-sm-4">
+
+                <label for="exampleInputEmail1"><b>Mobile</b><i class="fa fa-star" id="starc" style="color:red;font-size:9px;margin-left:5px;"></i></label>
+
+                <input type="number" id="ms" maxlength="12" class="form-control" style="font-size:16px;" onkeypress="javascript:return fnvalidatephnoedit(this,event);">
+
+            </div>
+            <div class="form-group col-sm-4" style="clear:both;">
+                <label for="exampleInputPassword1"><b>Email</b></label>
+                <input id="es" onblur="validateEmailedit();" style="font-size:16px;" type="text" class="form-control">
+            </div>
+            <div class="col-sm-12"><button type="button" id="btnshow" class="btn btn-default" onclick="fnsave(Source);">SAVE</button></div>
+        </div>
+
+        @*<div class="col-xs-12 col-sm-12 body">*@
+
+        @*</div>*@
+        <div class="col-xs-12 col-sm-12 body">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="myModaltree" class="modal" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Speciality</h4>
+            </div>
+            <div class="modal-body" id="splist" style="height:300px;overflow:auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="float:left;" onclick="fnclose();" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" onclick="fndone();" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModaltreecat" class="modal" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Category</h4>
+            </div>
+            <div class="modal-body" id="categorylist" style="height:121px;overflow:auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="float:left;" onclick="fnclcat();" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" onclick="fndonecat();" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModaltreecity" class="modal" role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog" style="-webkit-box-shadow:none;background:none;border:0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">City</h4>
+            </div>
+            <div class="modal-body" id="citlist" style="height:108px;overflow:auto; width:40%!important;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="float:left;" onclick="fnclcity();" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" onclick="fndonecity();" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Images"></script>
+<script src="~/Scripts/jsonpath-0.8.0.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="/Scripts/bootbox.min.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+@*<script src="~/Scripts/Bootstrap/bootstrap.js?v=12.8.6.5"></script>
+    <script src="~/Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+    <script src="~/Scripts/Bootstrap/jquery.bootpag.js?v=@HiDoctor.BuildNumber.BuildNo"></script>*@
+<script src="~/Scripts/autocomplete.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="~/Scripts/msg-box.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/CMDoctor.js?v=@DateTime.Now.Ticks.ToString();"></script>
+<script src="../../Scripts/ej2/ej2.min.js"></script>
+<link href="../../Content/ej2/material.css" rel="stylesheet" />
+<script type="text/javascript">
+    var CompanyCode='';
+    var UserCode='';
+    var RegionCode='';
+    var Source='';
+    var DoctorName='';
+    var SpecialityCode='';
+
+    $(document).ready(function () {
+        debugger;
+        // AjaxGlobalHandler.Initiate();
+        $('#load').show();
+        $(".addcls").hide();
+        $("#addhide").hide();
+        $("#btnshow").hide();
+        $("#cusname").attr("enabled", "enabled");
+        $("#cusname").val('');
+        $("#spclbind").val('');
+        CompanyCode = @Html.Raw(Json.Encode(ViewBag.Company_Code));
+        UserCode = @Html.Raw(Json.Encode(ViewBag.User_Code));
+        RegionCode = @Html.Raw(Json.Encode(ViewBag.Region_Code));
+        Source = @Html.Raw(Json.Encode(ViewBag.Source));
+        DoctorName = @Html.Raw(Json.Encode(ViewBag.DoctorName));
+        SpecialityCode = @Html.Raw(Json.Encode(ViewBag.SpecialityCode));
+
+
+        fnGetCMDoctor();
+        if (DoctorName!=null || SpecialityCode!=null) {
+            debugger;
+            ////$("#cusname").attr("disabled", "disabled")
+            ////$("#cusname").val(DoctorName);
+            //////$("#slname").val(SpecialityCode);
+        }
+
+
+        if (Source==1 || Source==2) {
+            $("#ad").hide();
+            //$(".addcls").show();
+        }
+        else{
+            $(".addcls").hide();
+            $("#addhide").show();
+        }
+        // fngetdoctor();
+
+
+    });
+</script>

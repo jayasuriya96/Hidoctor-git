@@ -1,0 +1,201 @@
+﻿.view-switcher {
+    padding: 0.5em;
+    font-weight: normal;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input[type="text"].input-validation-error,
+input[type="password"].input-validation-error {
+    border: solid 1px #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.logo {
+    background: url(/Content/images/Mobile/hi-doctor-logo.png) no-repeat left top;
+}
+
+.spn-menu {
+    position: absolute;
+    top: 58%;
+    left: -6%;
+    margin-left: 64px;
+    margin-top: -18px;
+    color: white;
+    font: 100 33px/1.167 'Segoe UI Light','Segoe UI',Helvetica,Garuda,Arial,sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+}
+
+li {
+    font-weight: normal !important;
+    font-size: 12px !important;
+    border: 1px solid hsl(0, 0%, 80%) /*{c-bup-border}*/;
+}
+
+    li a {
+        font-weight: normal !important;
+        font-size: 12px !important;
+    }
+
+.clearboth {
+    clear: both;
+}
+
+label {
+    font-size: 12px !important;
+}
+
+input[type="text"] {
+    font-size: 12px !important;
+    height: 25px !important;
+}
+/********************* START: Mobile HOME**********************/
+#dvmobileHome {
+    font-weight: normal !important;
+    font-size: 12px !important;
+}
+
+.home_placelabel {
+    width: 35%;
+    text-align: right;
+    float: left;
+}
+
+.homeplace_value {
+    width: 60%;
+    text-align: left;
+    float: left;
+    padding-left: 5px;
+}
+
+.dvchemlist {
+    padding: 3px;
+}
+/* Force table to not be like tables anymore */
+table, thead, tbody, th, td, tr {
+    display: block;
+    padding: 0px !important;
+}
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+tr {
+}
+
+td {
+    /* Behave  like a "row" */
+    border: none;
+    position: relative;
+}
+
+    td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+.tick {
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-top: 8px;
+    margin-left: 8px;
+    background: url(/Content/images/Mobile/tick-icon.png) no-repeat left top;
+}
+
+.delete {
+    float: right;
+    margin-right: 30px;
+    /*background:url(/Content/images/Mobile/Delete.gif) no-repeat left top;*/
+    vertical-align: top;
+    margin-top: 0px;
+    color: #0094ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+/********************* END: Mobile HOME**********************/
+/***************************** Mobile Leave *********************/
+
+.leaveLink {
+    color: Blue;
+    text-decoration: underline;
+}
+
+    .leaveLink:hover {
+        color: #0033CC;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+/***************************** Mobile Leave-end *********************/
+
+/***************************** Mobile DCR Doctor Visit *********************/
+#doctor label {
+    font-size: 12px !important;
+}
+
+#doctor label {
+    font-size: 12px !important;
+}
+/***************************** Mobile DCR Doctor Visit *********************/
+/***************************** Dcr Approval Start ******************/
+.dv-bold-width {
+    width: 100% !important;
+    font-weight: bold;
+}
+
+.dv-product {
+    width: 100% !important;
+    padding: 2px 0px 2px 15px !important;
+}
+
+.dv-comp-border {
+    width: 90% !important;
+    border: 1px solid gray;
+    padding: 3px;
+    margin: 3px;
+}
+/***************************** Dcr Approval End ******************/
+
+
+/**************** Reports Start*******************/
+.dvWidth {
+    width: 100% !important;
+}
+
+.dvPadding {
+    padding-left: 5% !important;
+      font-size: 12px !important;
+}
+
+.fontBold {
+    font-weight: bold !important;
+}
+
+
+/**************** Reports End*******************/

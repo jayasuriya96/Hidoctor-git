@@ -1,0 +1,100 @@
+﻿@*<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/mDoctorSelection.js")"></script>*@
+@Scripts.Render("~/bundles/DCRV4doctorselectionjs")
+<script src="@Url.Content("~/Areas/HiDoctor_Activity/Scripts/Mobile/DCRV4/mDCRAllowedSpecialCharacters.js?v=@HiDoctor.BuildNumber.BuildNo")"></script>
+<script>
+    var doctorEntryMode_g = "";
+    var querystring = "";
+    var accUsers_g="";
+    var dcodes_g = "";
+    var dcrDate_g="";
+    var flagRCPA = "";
+    var accChemistPri_g ="";
+    var distance_g="";
+    var doctor_header="";
+    var chemist_header="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#dcrchoosedoctorloginUserName").html(loginUserName_g);
+        query= @Html.Raw(Json.Encode(ViewBag.mString));
+        dcodes_g= query.split('&')[0];
+        dcrDate_g= query.split('&')[1];
+        accUsers_g = query.split('&')[2];
+        flagRCPA = query.split('&')[3];
+        distance_g = query.split('&')[6];
+        doctorEntryMode_g = fnGetPrivilegeValue('RIGID_DOCTOR_ENTRY', 'YES');
+        //doctorEntryMode_g = "NO";
+        accChemistPri_g = fnGetPrivilegeValue('SHOW_ACCOMPANISTS_DATA', 'false');
+        doctor_header=fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "Doctor ");
+        if (doctor_header.length >= 20) {
+            doctor_header = doctor_header.substr(0, 20) + "...";
+        }
+        chemist_header=fnGetPrivilegeValue("CHEMIST_CAPTION_DISPLAY_NAME", "Chemist ");
+        if (chemist_header.length >= 20) {
+            chemist_header = chemist_header.substr(0, 20) + "...";
+        }
+        $('#choosetitle').text("Choose "+doctor_header+" Selection");
+        $('#docnamelab').text( doctor_header+" Name");
+        $('#btnGoFlexi').text("Go To "+doctor_header+" Visit");
+        $('#inputdoc').text(doctor_header+" Name(Enter first 3 letters then click Go)");
+        if (doctorEntryMode_g.toUpperCase() == "YES") {
+            $('#dvspeciality').css('display', 'none');
+            $('#dvFlexiDoctors').css('display', 'none');
+            
+            
+        }
+        fnGetDoctors();
+    });
+</script>
+
+
+<div class="clearboth"></div>
+<div class="menucontent">
+   <div class="homeicon"></div><a href="#" onclick="fnGoToHome()">Home
+    </a>
+ </div>
+<div data-role="header" data-theme="b">
+    <h3 id="choosetitle">Choose Doctors Selection
+    </h3>
+</div>
+
+    <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-mini="true">
+            <label for="textinput1" id="inputdoc">
+                Doctor Name(Enter first 3 letters then click Go)
+            </label>
+            <input name="txtDocName1" id="txtDocName1" placeholder="ABC" value="" type="text">
+            <span>OR</span>
+            <label for="textMDL">
+                MDL Number
+            </label>
+            <input name="" id="txtMDL" placeholder="ABC" value="" type="text">
+            <br />
+<br />
+                 <a data-role="button" href="#page1" data-mini="true" id="btnGo" data-theme="b" onclick="fnShowDoctors()">Go
+        </a>
+        </fieldset>
+        <br />
+        <br />
+        <ul data-role="listview" data-divider-theme="b" data-inset="true"  id="uldoctorlist">
+         
+        </ul>
+   
+    </div>
+    <div data-role="fieldcontain" id="dvFlexiDoctors">
+        <fieldset data-role="controlgroup" data-mini="true">
+            <lable>if not listed type here</lable>
+            <label for="txtFlexi" id="docnamelab">
+                Doctor Name
+            </label>
+            <input name="" id="txtFlexi" placeholder="" value="" type="text" maxlength="50">
+        </fieldset>
+    </div>
+    <div data-role="fieldcontain" id="dvspeciality">
+        <label for="selectSpeciality">
+            Speciality
+        </label>
+        <select name="" data-mini="true" id="selectSpeciality">
+        </select>
+         <a data-role="button" href="#page1" data-mini="true" id="btnGoFlexi" data-theme="b" onclick="fnFlexiDoctors()" >Go To Doctor Visit
+        </a>
+    </div>

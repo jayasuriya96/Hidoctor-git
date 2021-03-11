@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CCC44559-D1AC-4246-B469-E03E0DDA91E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataControl</RootNamespace>
+    <AssemblyName>DataControl</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\SharedDlls\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\..\SharedDlls\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\SharedDlls\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ElmahWrapper">
+      <HintPath>..\..\SharedDlls\ElmahWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\SharedDlls\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\..\SharedDlls\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="HDQueueService">
+      <HintPath>..\..\SharedDlls\HDQueueService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\SharedDlls\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging.Database">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\..\SharedDlls\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceBus">
+      <HintPath>..\..\SharedDlls\Microsoft.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration">
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics.StorageUtility, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Diagnostics.StorageUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage">
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient">
+      <HintPath>..\..\SharedDlls\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>..\..\SharedDlls\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\SharedDlls\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenExcel">
+      <HintPath>..\..\SharedDlls\OpenExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedDlls\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstraction\IConfigProvider.cs" />
+    <Compile Include="Abstraction\IConfigSettings.cs" />
+    <Compile Include="Abstraction\ICustomerMaster.cs" />
+    <Compile Include="Abstraction\IExcelFactory.cs" />
+    <Compile Include="Abstraction\IFileProvider.cs" />
+    <Compile Include="AjaxSessionActionFilter.cs" />
+    <Compile Include="ASPNETCacheProvider.cs" />
+    <Compile Include="AsynTableConvert.cs" />
+    <Compile Include="CurrentInfo.cs" />
+    <Compile Include="DAL_KangleIntegration.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="EnumType\CustomerMasterEntityType.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLApproval.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLDepot.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLDivision.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLDoctor.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_BeatPlan.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_DcrStatusMaster.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_DoctorsBirthday.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_FormControls.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLLeave.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLMarketingCampaign.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLMaster.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLOrder.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLProduct.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLRegion.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLUser.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BLWeekendGroup.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_Customer.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_LockRelease.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_MasterDataDownload.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_MissedDoctorsEntry.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_ProductMapping.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_PSAndSSSalesEntry.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_PurchaseRequisition.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_RegionCreation.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_Setting.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_SplashScreen.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_StockiestInheritance.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_TravelMode.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_UsercreationWizard.cs" />
+    <Compile Include="HD_MasterFactoryClasses\BL_WorkCategoryRule.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALApproval.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALDepot.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALDivision.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALDoctor.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALLeave.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALMarketingCampaign.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALMaster.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALOrder.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALProduct.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALRegion.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALUser.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DALWeekendGroup.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_BeatPlan.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_Customer.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_DcrStatusMaster.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_DoctorsBirthday.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_LockRelease.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_MasterDataDownload.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_MissedDoctorsEntry.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_ProductMapping.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_PurchaseRequisiton.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_RegionCreation.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_Setting.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_SplashScreen.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_StockiestInheritance.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_TravelMode.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_UsercreationWizard.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_FormControls.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DAL_WorkCategoryRule.cs" />
+    <Compile Include="HD_MasterFactoryClasses\DL_PSAndSSSalesEntry.cs" />
+    <Compile Include="HD_MasterFactoryClasses\_objDL_PSAndSSSalesEntry.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLAdminDashboard.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLDashboard.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLDashBoardLanding.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLDashBoardV2.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLHome.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLInfrastructure.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BLMessaging.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BL_CCM.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BL_ChangePassword.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BL_OneLib.cs" />
+    <Compile Include="HiDoctorFactoryClasses\BL_WideAngle.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALAdminDashboard.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALDashboard.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALDashBoardLanding.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALDashBoardV2.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALHome.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALInfrastructure.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DALMessaging.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DAL_CCM.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DAL_ChangePassword.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DAL_OneLib.cs" />
+    <Compile Include="HiDoctorFactoryClasses\DAL_WideAngle.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BALHelp.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BAL_OTC.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BLCampaignPlanner.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BLDCRLock.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BLPrimarySales.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BLPromotionalInput.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_AllowPreviousDayDCR.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_Batch.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_CPD.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_DepotMaster.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_ExpenseClaim.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_ICE.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_MTO.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_NoticeBoard.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_OrderFulfillment.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_PTS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_RCPACompetator.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_SecondarySales.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_ShieldRCPA .cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_SMS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\Bl_SSCustomer.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_STOS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\BL_TP.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DALCampaignPlanner.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DALDCRLock.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DALHelp.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DALPrimarySales.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DALPromotionalInput.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_Allow_PreviousDayDCR.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_Batch.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_CPD.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_Depot.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_ExpenseClaim.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_ICE.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_MTO.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_NoticeBoard.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_OrderFulfillment.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_OTC.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_PTS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_RCPACompetator.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_SecondarySales.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_ShieldRCPA.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_SMS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_SSCustomer.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_STOS.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DAL_TP.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_DCRChemistVisit.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_DCRDoctorVisit.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_DCRHeader.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_DCRReport.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_DCRStockiestExpense.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\BL_KYD.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DAL_DCRHeader.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DAL_DCRReport.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DAL_DCRStockiestExpense.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DAL_DoctorVisit.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DAL_KYD.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\DCR V4\DL_DCRChemistVisit.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\ICampaignPlanner.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\IDCRLock.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\IOTC.cs" />
+    <Compile Include="HiDoctor_ActivityFactoryClasses\SMSSender.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BAL_DoctorVisitAnalysis.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BLCodeofConduct.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BLExpense.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BLFieldWorkAnalysis.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BL_DCRConsolidated.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BL_DoctorChemistMetTabular.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BL_Report.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BL_ReportRegion.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\BL_EdReports.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DALCodeofConduct.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DALExpense.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DALFieldWorkAnalysis.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_DCRConsolidated.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_DoctorChemistMetTabular.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_DoctorVisitAnalysis.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_EdReports.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_Report.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_ReportRegion.cs" />
+    <Compile Include="HiDoctor_ReportsFactoryClasses\DAL_Reports_CategoryWiseDrVisitAnalysis.cs" />
+    <Compile Include="Impl\ConfigProvider.cs" />
+    <Compile Include="Impl\Config_Settings.cs" />
+    <Compile Include="Impl\ErrorHandler.cs" />
+    <Compile Include="Impl\ExcelFactory.cs" />
+    <Compile Include="Impl\ExceptionHandler.cs" />
+    <Compile Include="Impl\FileSystemProvider.cs" />
+    <Compile Include="JSONConverter.cs" />
+    <Compile Include="LargeJsonResult.cs" />
+    <Compile Include="Pager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AsyncReportRepository.cs" />
+    <Compile Include="Repository\AzureBlobUpload.cs" />
+    <Compile Include="Repository\DALAPI.cs" />
+    <Compile Include="Repository\DapperRepository.cs" />
+    <Compile Include="Repository\ExcelPackageExtensions.cs" />
+    <Compile Include="Repository\FileDownload.cs" />
+    <Compile Include="Repository\OutputJsonRepositry.cs" />
+    <Compile Include="SPData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="obj\Debug\build.force" />
+    <None Include="obj\Debug\DataControl.csprojResolveAssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="obj\Debug\DataControl.csproj.FileListAbsolute.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MVCModels\MVCModels.csproj">
+      <Project>{7f1d03a7-4c34-4368-83ae-039f1795d700}</Project>
+      <Name>MVCModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

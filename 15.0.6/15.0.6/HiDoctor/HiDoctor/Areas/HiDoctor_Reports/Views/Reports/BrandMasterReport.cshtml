@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "BrandMasterReport";
+    Layout = null;
+}
+
+<link href="../Areas/HiDoctor_Reports/Content/Reports.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<div style="width: 80%; float: left" id="divMain">
+    <div style="display: none;" id="divToggle">
+        <span id="spnInputToggle" style="text-decoration: underline; cursor: pointer; padding: 5px"
+            onclick="fnToggleInput()">Hide Input</span>
+        <div class="helpIconright">
+            <img src="~/Images/HelpIcon.png" onclick="fnHelp('BrandMaster','PAGE')" />
+        </div>
+    </div>
+    <div id="divInput" style="padding: 5px; width: 100%;">
+        <div style="width: 100%;">
+            <table>
+                <tr>
+                    <td>Month
+                    </td>
+                    <td>
+                        <input type="text" id="txtMonth" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Region Type
+                    </td>
+                    <td>
+                        <select id="ddlRegionType" onchange="OnSelectedIndexChanged()">
+                        </select>
+                    </td>
+                </tr>
+                <tr id="trRegionName">
+                    <td>Region Name
+                    </td>
+                    <td>
+                        <select id="ddlRegionName" multiple="multiple" style="width: 375px;">
+                        </select>
+                    </td>
+                </tr>
+                <tr id="trUserType">
+                    <td>User Type
+                    </td>
+                    <td>
+                        <select id="ddlUserTypeName">
+                        </select>
+                    </td>
+                </tr>
+                <tr id="trStatus">
+                    <td>DCR Status
+                    </td>
+                    <td>
+                        <input type="checkbox" id="chkApproved" value="2" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="2">
+                            Approved</label>
+                        <input type="checkbox" id="chkApplied" value="1" name="dcrStatus" onclick="fnChangeRadioDCR();" checked="checked" />
+                        <label for="1">
+                            Applied</label>
+                        <input type="checkbox" id="chkUnApproved" value="0" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                        <label for="0">
+                            Unapproved</label>
+                        <input type="checkbox" id="chkDrafted" value="3" name="dcrStatus" onclick="fnChangeRadioDCR();" />
+                        <label for="3">
+                            Drafted</label>
+                        <input type="checkbox" id="rbAllWOD" name="dcrStatusAllWOD" value="0,1,2" onclick="fnChangeCheckWithoutDraft();" /><label
+                            for="0">
+                            All without draft</label>
+                        <input type="checkbox" id="rbAllWD" name="dcrStatusAllWD" value="0,1,2,3" onclick="fnChangeCheckWithDraft();" /><label
+                            for="0">
+                            All with draft</label>
+                    </td>
+                </tr>
+                <tr id="trbutton">
+                    <td colspan="2">
+                        <input type="button" value="Show Report" onclick="fnBrandMasterReport();" />
+
+                    </td>
+                </tr>
+                <tr id="trUrl">
+                    <td colspan="2" style="text-align: center">
+                        <a id="aURL" target="_blank"></a>
+                    </td>
+                </tr>               
+            </table>
+            <div id="dvloading" style="display: none">
+                <img src="../../Content/images/loader1.gif" />
+            </div>
+        </div>
+    </div>
+    <div class="helpIconright" id="dvTblHelpIcon" style="display: none">
+        <img src="~/Images/HelpIcon.png" onclick="fnHelp('BrandMaster','TABLE')" />
+    </div>
+
+</div>
+
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/ReportsCommonFiles.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script src="../../Areas/HiDoctor_Reports/Scripts/HD/SpecialityWiseAnalysis.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#txtMonth').monthpicker();
+
+    });
+
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $("#trbutton").hide();
+            $("#trUrl").hide();
+            $("#trStatus").hide();
+            $("#trUserType").hide();
+            $("#trRegionName").hide();
+            $('#divInput').show();
+            $('#divToggle').show();
+            fnLoadTypes();
+            $("#dvAjaxLoad").hide();
+            //$('table').tablePagination({});
+        }
+        catch (err) {
+        }
+    });
+
+
+    function fnChangeCheckWithDraft() {
+        if ($(":checkbox[name=dcrStatusAllWD]:checked").length > 0) {
+            //uncheck all without draft
+            $("input:checkbox[name=dcrStatusAllWOD]").removeAttr('checked');
+
+            //Check All other status
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                $(this).attr('checked', 'checked');
+            });
+            return;
+        }
+    }
+
+    function fnChangeCheckWithoutDraft() {
+        if ($(":checkbox[name=dcrStatusAllWOD]:checked").length > 0) {
+            // uncheck all with draft
+            $("input:checkbox[name=dcrStatusAllWD]").removeAttr('checked');
+
+            // uncheck Draft and check Applied, Approved, Unappreved
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                if ($(this).val() == '3') {
+                    $(this).removeAttr('checked');
+                }
+                else {
+                    $(this).attr('checked', 'checked');
+                }
+            });
+            return;
+        }
+    }
+
+    // for dcr status
+    function fnChangeRadioDCR() {
+        //uncheck all without draft
+        $("input:checkbox[name=dcrStatusAllWOD]").removeAttr('checked');
+        // uncheck all with draft
+        $("input:checkbox[name=dcrStatusAllWD]").removeAttr('checked');
+
+        if ($(":checkbox[name=dcrStatus]:checked").length > 0) {
+            var dcrStatus = "";
+            $('input:checkbox[name=dcrStatus]').each(function () {
+                if ($(this).is(':checked')) { dcrStatus += $(this).val(); }
+            });
+            if (dcrStatus == '210') {
+                // check All without draft
+                $("input:checkbox[name=dcrStatusAllWOD]").attr('checked', 'checked');
+            }
+            if (dcrStatus == '2103') {
+                // check All with draft
+                $("input:checkbox[name=dcrStatusAllWD]").attr('checked', 'checked');
+            }
+        }
+    }
+
+</script>

@@ -1,0 +1,135 @@
+﻿@model HiDoctor_Master.Models.DoctorMasterModel
+@{
+    ViewBag.Title = "HDDataQuality";
+    Layout = null;
+}
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />
+<link type="text/css" href="../../Areas/HiDoctor_Master/Content/DoctorMaster.css" rel="stylesheet" />
+<div style="width: 100%;">
+    <div id="imgScroll" class="ScrollDown" style="cursor: pointer"></div>
+    <div style="width: 15%; float: left; border: 1px solid #f2f2f2; height: 725px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;"
+        id="dvLeftPanel">
+        <div id="dvRegionTree" style="height: 100%;">
+        </div>
+    </div>
+    <div style="width: 81%; float: left; display: none; border: 1px solid #EFEFEF; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;"
+        id="dvCenterPanel">
+        <br />
+        <span style="font-size: 19px; margin: 10px; font-weight: bold" id="spnEntity"></span>
+        <br />
+        <div style="float: right; padding-right: 3px; width: 25%;">
+            <div id="dvOptions" class="dvOptions" onclick="fnOpenOptions('DATA QUALITY');"></div>
+            <div id="dvPages" style="display: none;">
+            </div>
+        </div>
+        <input type="hidden" id="seletedRegionCodedataQuality" />
+        <div id="dvDataQuality" style="width: 70%; border: 1px solid #efefef; margin-left: 5px"></div>
+        <div style="clear: both"></div>
+        <br />
+        <span style="font-size: 19px; margin: 10px; font-weight: bold">Data Quality Chart</span>
+        <div id="dvDataQualtityChart" style="width: 1000px; height: 1000px;"></div>
+    </div>
+</div>
+@Html.HiddenFor(model => model.Entity)
+@Html.HiddenFor(model => model.Region_Code)
+ @Html.HiddenFor(model => model.Table_Name)
+
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/CustomerMaster.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var entityColumns_g = "";
+    var customerDtlJson = "";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try
+        {
+            $("#spnEntity").html($("#Entity").val() + " - Data Quality");
+            entityColumns_g = @Html.Raw(Json.Encode(ViewBag.Entity))
+            entityColumns_g = eval('(' + entityColumns_g.Data + ')')
+            fnBindRegionTree("dvRegionTree");
+            var viewbag = @Html.Raw(Json.Encode(ViewBag.sessionRegionCode))
+            var regionCode= viewbag.split('^')[0] ;
+            var regionName=viewbag.split('^')[1];
+            //   var selectedRegionCode =@Html.Raw(Json.Encode(ViewBag.SelectedRegion_Code));
+            $("#Region_Code").val(regionCode);
+            $("#seletedRegionCodedataQuality").val(regionCode);
+        }
+        catch(err)
+        {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+    function fnRegionTreePostInit(node) {
+        var treeobj = $("#dvRegionTree").dynatree("getTree")
+        var childCount = treeobj.tnRoot.countChildren();
+        if (childCount == 1) {
+            $("#Region_Code").val(treeobj.tnRoot.childList[0].data.key);
+            $("#seletedRegionCodedataQuality").val(treeobj.tnRoot.childList[0].data.key);
+            $("#dvRegionTree").dynatree("getTree").activateKey(treeobj.tnRoot.childList[0].data.key);
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '45%');
+            $("#dvRightPanel").css('width', '48%');
+            fnDataQuality();
+        }
+        else
+        {
+            $("#dvCenterPanel").css('width', '95%');
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvCenterPanel").css('display','');
+            // $("#Region_Code").val(node.data.key);
+            $("#dvRegionTree").dynatree("getTree").activateKey($("#Region_Code").val());
+        }
+        fnSelectedregionCode();
+    }
+
+    function fnRegionTreeActivate(node) {
+        if ($('#imgScroll').hasClass("ScrollDown")) {
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvLeftPanel").show();
+            $("#dvCenterPanel").css('width', '81%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '95%');
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+        }
+        $("#dvCenterPanel").css('display','');
+        $("#Region_Code").val(node.data.key);
+       
+        $("#seletedRegionCodedataQuality").val(node.data.key);
+        fnDataQuality();
+        fnSelectedregionCode();
+    }
+    $("#imgScroll").click(function () {
+        if ($('#imgScroll').hasClass("ScrollDown")) {
+            $('#imgScroll').removeClass("ScrollDown");
+            $('#imgScroll').addClass("ScrollUp");
+            $("#dvLeftPanel").show();
+            $("#dvCenterPanel").css('width', '35%');
+            $("#dvRightPanel").css('width', '48%');
+        }
+        else {
+            $("#dvLeftPanel").hide();
+            $("#dvCenterPanel").css('width', '45%');
+            $("#dvRightPanel").css('width', '48%');
+            $('#imgScroll').removeClass("ScrollUp");
+            $('#imgScroll').addClass("ScrollDown");
+        }
+    });
+
+    function fnSelectedregionCode(){
+        $.ajax({
+            url: '../HiDoctor_Master/DoctorMaster/SetSession/',
+            type: "POST",
+            data: "selectedRegionCode=" +  $("#seletedRegionCodedataQuality").val(),
+            success: function (result) {
+                result = eval('('+result+')');
+         
+            },
+            error: function () {
+            }
+        });
+    }
+</script>

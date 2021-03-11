@@ -1,0 +1,32 @@
+﻿.details{
+    margin-top: 8px;
+    /*margin-left: 15px;*/
+    border: none;   
+    font-size: 12px;
+}
+.reporting_input>tbody>tr>td {
+    border: none;
+}
+.ReportHeading{
+    margin-top:10px;
+    text-align:center;
+}
+.ReportHeading span{
+    font-size: 18px;
+    border-bottom: 1px solid;
+}
+.reporting_input{
+    margin-left: 15px;   
+    width: 20%;
+    font-size: 12px;
+    margin-top: 10px;
+}
+.reportHeader{
+    background: #5E87B0; 
+    color: #fff;
+}
+.tbl_heading{
+    border-bottom: 1px solid;
+    font-size: 16px;
+    font-weight: 600;
+}

@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Request";
+    Layout = null;
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="../../Areas/HiDoctor_Activity/Content/Stos.css" rel="stylesheet" />
+<style>
+    .charts-modalpopup, .modal-dialog {
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        box-shadow: none !important;
+        background: none !important;
+        background-clip: unset !important;
+        border: none !important;
+        border: none !important;
+        outline: 0;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" style="text-align: left;margin-bottom: 10px;padding: 0px;">
+            <span class="MyTeam" id="Backindex">Back</span>           
+        </div>
+        <div class="col-xs-12 Add_product_btn">
+            <div class="col-xs-6" style="padding: 0px;">
+                <p style="text-align:left;" id="BindUserDetails"></p>
+            </div>
+            <div class="col-xs-6" style="padding: 0px;">
+                <p style="text-align:right;"><span class="MyTeam" onclick="STOS.addProductDr();"><i style="margin-right:5px" class="fa fa-plus" aria-hidden="true"></i> Choose Doctor for STOS</span></p>
+                <input type="hidden" id="hdnAddProduct" />
+            </div>
+            <div class="col-xs-12" id="CreateStosMsg">
+                <p style="text-align:center;text-align: center;position: relative;top: 125px;background: #ddd;padding: 40px;"><b><i class="fa fa-info-circle" aria-hidden="true" style="margin-right:5px;"></i>Please choose a doctor to create a new STOS</b></p>
+            </div>
+        </div>
+        <div class="col-xs-12 Add_Product_Table" id="Bindproductdata">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div id="ViewAddProductDR" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" style="overflow: auto;">
+    <div class="modal-dialog modal-lg" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Doctor / Product</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-xs-12 PopupHeaderBox">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group ui-widget">
+                            <label for="usr">Name of the Doctor:</label>
+                            <input type="text" class="form-control clsCustomer" id="txtDoctorName" onblur="STOS.fnDoctorLocation()" placeholder="Start typing doctor name">
+                            <input type="hidden" id="hdnDoctorName">
+                            <input type="hidden" id="hdnDoctorCode">
+                            <input type="hidden" id="hdnCategoryName">
+                            <input type="hidden" id="hdnCategoryCode">
+                            <input type="hidden" id="hdnSTOSDoctorId">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label for="usr">Town:</label>
+                            <input type="text" class="form-control" id="Town" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label for="usr">Speciality:</label>
+                            <input type="text" class="form-control clsspeciality" id="Speciality" onblur="STOS.fnSpeciality()" placeholder="Start typing speciality"disabled>
+                            <input type="hidden" id="hdnSpecialityCode">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 Add_Product_Table" id="AddProductDR">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="SaveDetails">Apply</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modal -->
+<div id="ViewAlertMsg" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-sm" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-xs-12" id="AlertMsg">
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            *@
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modal -->
+<div id="ViewEditDetails" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Details</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-xs-12" id="ViewDetails" style="padding:0px;">
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            *@
+        </div>
+    </div>
+</div>
+
+<!-- Remarks Modal -->
+<div id="RemarkMsg" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Request Cancel</h4>
+            </div>
+            <div class="modal-body clearfix">
+                @*<div class="col-xs-12" id="conformMSG">
+                        <h5>Do you want to cancel this request</h5>
+                        <p style="text-align:center;"><span class="MyTeam" onclick="STOS.fnCancelConform();">OK</span></p>
+                    </div*@
+                <div class="col-xs-12" id="RemarkTextMsg">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="STOS.fnCancelConform(1);">Cancel STOS</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/Stos.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/FileUpload.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/Stos/STOSService.js"></script>
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var companyCode = "@ViewBag.CompanyCode";
+        var regionCode = "@ViewBag.RequestRegionCode";
+        // var regionCode = "REC00000486"
+        var regionName = "@ViewBag.RequestRegionName";
+        var userCode = "@ViewBag.RequestUserCode";
+        var userName = "@ViewBag.RequestUserName";
+        var usertypeName = "@ViewBag.RequestUserTypeName";
+        var selectedUser = "@ViewBag.SelectedUser";
+        var userTypeCode = "@ViewBag.RequestUserTypeCode";
+        var UrlSTOSID = "@ViewBag.StosId";
+
+        STOS.defaults.CompanyCode = companyCode;
+        STOS.defaults.RequestUserCode = userCode;
+        STOS.defaults.RequestRegionCode = regionCode;
+        STOS.defaults.RequestUserName = userName;
+        STOS.defaults.RequestRegionName = regionName;
+        STOS.defaults.RequestUserTypeName = usertypeName;
+        STOS.defaults.RequestUserTypeCode = userTypeCode;
+        STOS.defaults.SelectedUser = selectedUser;
+        STOS.defaults.UrlStosID = UrlSTOSID;
+      
+        //  $("LINK[href*='../../Content/all.css']").remove();
+        // $("LINK[href*='/Content/hidoctor.css']").remove();
+        //$("LINK[href*='https://www.google.com/uds/api/visualization/1.0/40ff64b1d9d6b3213524485974f36cc0/ui+en,table+en,controls+en,charteditor+en.css']").remove();
+        AjaxGlobalHandler.Initiate();
+        try {
+
+            $('#divInput').hide();
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+
+        $("#Backindex").unbind('click').bind('click', function () {
+            fnLoadBody('HiDoctor_Activity/Stos/Index');
+        });
+
+        STOS.RequestInit();
+        GetConfitValueForSize();
+
+    });
+</script>

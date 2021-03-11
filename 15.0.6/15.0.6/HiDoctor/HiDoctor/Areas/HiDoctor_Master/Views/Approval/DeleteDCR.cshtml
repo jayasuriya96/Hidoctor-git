@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "DeleteDCR";
+    Layout = null;
+}
+ <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<style type="text/css">
+    #inputtbl tr td {
+        padding: 5px;
+    }
+
+    #tblDCRDelete tr th {
+        background-color: #428bca;
+        color: #fff;
+        border-right: 1px solid #fff;
+    }
+
+    .ddUnapproved {
+        background-color: red !important;
+    }
+
+    .ddDrafted {
+        background-color: #F9A5D6 !important;
+    }
+
+    .tree-node-active {
+        font-style: italic !important;
+        background-color: #E8F1FF !important; /* reddish */
+    }
+</style>
+
+<div class="col-lg-12">
+    <div class="col-lg-12">
+        <span style="text-decoration: underline; cursor: pointer; padding: 5px" onclick="fnToggleTreeDeleteDCR(this);" id="spnTreeToggleDeleteDCR">Hide Tree</span>
+    </div>
+    <div id="dvInput" class="col-lg-4">
+
+        <div class="col-lg-12 table-responsive">
+            <table id="inputtbl" cellspacing='0' cellpadding='0'>
+                <tr>
+                    <td>Month Year</td>
+                    <td>
+                        <input type="text" id="txtMonth" class="form-control" /></td>
+                    <input type="hidden" id="hdnUserCodeDeleteDCR" />
+<input type="hidden" id="hdnUserName" />
+                </tr>
+                <tr>
+                    <td>DCR Status</td>
+                    <td>
+                        <select id="ddlStatus">
+                            <option value="0">Unapproved</option>
+                            <option value="3">Drafted</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>DCR Activity</td>
+                    <td>
+                        <select id="ddlFlagDeleteDCR" onchange="HighlightTree();">
+                            <option value="F">Field</option>
+                            <option value="A">Attendance</option>
+                            <option value="L">Leave</option>
+                            <option value="F,A,L">All</option>
+                        </select></td>
+                </tr>
+            </table>
+        </div>
+        <div id="usertree" class="col-lg-12" style="height: 500px; overflow: auto;"></div>
+    </div>
+
+    <div class="col-lg-6" id="dvMain">
+
+        <div class="col-lg-12" id="dvContent"></div>
+    </div>
+</div>
+<div style="clear: both;"></div>
+
+<div id="dvReportTwo" style="border: 5px solid #676A72; background: #fff; padding: 5px; font-size: 13px; display: none; margin-left: -390px; width: 90%; height: 600px; overflow: auto; left: 33%; z-index: 9999; top: 40%; margin-top: -240px; position: fixed; overflow: auto">
+    <span style="float: right; cursor: pointer" onclick="HideModalPopup('dvReportTwo');$('#dvUserPerDay').html('');">X</span>
+    <h2 style="font-size: 15px; border-bottom: 1px solid #efefef; color: #039">Delete DCR </h2>    
+    <div style="width: 100%; overflow: auto;" id="dvUserPerDay">
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Approval12.7.0.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#txtMonth').monthpicker();
+    });
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try {
+            $(document).ajaxStop($.unblockUI);
+            var month = parseInt(curdate.split('.')[1]);
+            $('#txtMonth').val(shortMonthArray[month - 1] + '-' + curdate.split('.')[2]);
+            fnBindUserTree("usertree");
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            $("#dvAjaxLoad").hide();
+        }
+    });
+
+    function fnUserTreeNodeClickDeleteDCR(node) {
+        $('#hdnUserCodeDeleteDCR').val(node.data.key);
+        $('#hdnUserName').val(node.data.title);
+        $("#dvContent").html();
+        fnShowDeleteDCR();
+        //fnGetDCRLeavePrivilege($('#hdnUserCodeDeleteDCR').val(), $("#ddlFlagDeleteDCR").val());
+        $('#spnTreeToggleDeleteDCR').html("Show Tree");
+        $("#dvInput").hide();
+        $("#dvMain").removeClass("col-lg-6");
+        $("#dvMain").addClass("col-lg-12");
+    }
+
+    function fnToggleTreeDeleteDCR(id) {
+        if ($(id).html() == "Hide Tree") {
+            $(id).html("Show Tree");
+            $("#dvInput").hide();
+            $("#dvMain").removeClass("col-lg-6");
+            $("#dvMain").addClass("col-lg-12");
+
+        }
+        else {
+            $(id).html("Hide Tree");
+            $("#dvInput").show();
+            $("#dvMain").removeClass("col-lg-12");
+            $("#dvMain").addClass("col-lg-6");
+        }
+    }
+
+    function fnUserTreePostInit() {
+        $("#usertree").dynatree({
+            checkbox: false,
+            onActivate: function (node) {
+                fnUserTreeNodeClickDeleteDCR(node);
+            }
+        });
+        HighlightTree();
+    }
+</script>

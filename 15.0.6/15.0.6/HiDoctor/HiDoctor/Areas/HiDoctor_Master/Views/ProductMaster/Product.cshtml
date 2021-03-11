@@ -1,0 +1,429 @@
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = null;
+}
+<style>
+    #dvProd select {
+        width: 95%;
+    }
+
+    #idFullSize {
+        margin-top: 24px;
+    }
+
+    .divNew {
+        margin-left: 28px;
+        border-bottom: 3px solid #5c9ccc;
+        margin-bottom: 10px;
+        padding: 5px 5px;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        color: #ffffff;
+        background-color: #428bca;
+    }
+
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    #modal {
+        left: 43% !important;
+        top: 105px !important;
+        height: 89% !important;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+</style>
+<style id="customSyncStyle" type="text/css">
+    #dvAllProducts .e-frozenheader > .e-table, #dvAllProducts .e-frozencontent > .e-table {
+        border-right: none;
+    }
+</style>
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<script src="../../Scripts/popup.js" type="text/javascript" language="javascript"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div style="font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif" id="dvPanel">
+
+    <div id="dvTab" class="form-group ui-tabs ui-widget ui-widget-content ui-corner-all" style="height:650px;">
+
+        <ul class="nav nav-pills ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top">
+                <a href="#ProductInfo" data-toggle="tab"><b>Product Creation</b></a>
+            </li>
+            <li class="ui-state-default ui-corner-top">
+                <a href="#ProductDetails" data-toggle="tab" id="proddetails"><b>Product Summary</b></a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="ProductInfo">
+                <div style="float: left; width: 75%;" id="dvProd">
+                    <div class="col-xs-12 clearfix" style="margin-top:20px;">
+                        <div class="col-xs-3">
+                            <label>Product Name</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtProductName" class="form-control" onblur="fnCheckAvailabilty()" />
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="hidden" id="hdnProductCode" />
+                            <input type="hidden" id="hdnProductName" />
+                            <input type="hidden" id="hdnmode" />
+                        </div>
+                    </div>
+                    <div class="divNew" style="margin-top:5px;width:95%"></div>
+                    <div style="padding-bottom: 1%; padding-top: 1%; color: #378FD0;margin-left:12px;" class="col-xs-12">
+                        <b>Product Attributes</b>
+                    </div>
+                    <div class="col-xs-12 clearfix">
+                        <div class="col-xs-3">
+                            <label>Product Type</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpProType" class="form-control" onchange="fnProductTypeChange()">
+                                <option>--Choose Product Type --</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>Product Group</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpProGroup" class="form-control" onchange="fnProductGroupChange()">
+                                <option>--Choose Product Group--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="display:none;margin-top:10px;" id="trCompetitor">
+                        <div class="col-xs-3">
+                            <label>Competitor Name</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpComp" class="form-control" onchange="fnCompChange()">
+                                <option>--Choose Competitor--</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6"></div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Brand</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpBrand" class="form-control" style="" onchange="fnBrandChange()">
+                                <option>--Choose Brand--</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>Speciality</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpSpeciality" tabindex="2" class="form-control" onchange="fnSpecialityChange()">
+
+                                <option>--Choose Speciality--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Category</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpCategory" class="form-control" onchange="fnCategoryChange()">
+                                <option>--Choose Category--</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>UOM Type</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpUOMType" class="form-control" onchange="fnUOMTypeChange()">
+                                <option>--Choose UOM Type--</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>UOM</label>
+                            <span><i class="fa fa-star" id="star" style="color:red;font-size:9px;margin-left:5px;"></i></span>
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="drpUOM" class="form-control" onchange="fnUOMChange()">
+                                <option>--Choose UOM --</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>Product Cost</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control numbersOnly" id="txtProductCost" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Product Short Name</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtProductShortName" class="form-control" onblur="fnChkProShrtNameAvail()" />
+                            <div id="dvPrdShortNameCheck">
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>Ref Key 1</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtRefKey1" class="form-control" maxlength="50" />
+                            <div id="dvRefkey1validation"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Ref Key 2</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtRefKey2" class="form-control" maxlength="50" />
+                            <div id="dvRefkey2validation"></div>
+                        </div>
+                    </div>
+                    <div class="divNew" style="margin-top:5px;width:95%"></div>
+                    <div style="padding-bottom: 1%; padding-top: 1%; color: #378FD0;margin-left:28px;">
+                        <b>Product Description</b>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Effective From</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtEffFrom" class="datepick form-control" />
+                        </div>
+                        <div class="col-xs-3">
+                            <label>Effective To</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" id="txtEffTo" class="datepick form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 clearfix" style="margin-top:12px;">
+                        <div class="col-xs-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <textarea id="txtDescription" style="resize:none;width:auto;" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align:center;">
+                        @*TS- 825 - shiled was unable edit the product has Itran was being test sales drive is not supported any more since removing this check.*@
+                        <input type="button" value="Save" class="btn btn-success" onclick="fnSubmit()" />
+                        @*<input type="button" value="Save" class="btn btn-success" onclick="fnCheckItranProduts()" />*@
+                        <input id="btnReset" type="button" value="Reset" class="btn btn-primary" onclick="fnclear()" />
+                    </div>
+                </div>
+
+                <div id="divAttributes" style="float: left; border: 1px solid #efefef; width: 20%; height: 100%; -webkit-border-radius: 3px; border: 1px solid #efefef; margin-top:18px;">
+                    <table cellpadding="0" cellspacing="0" style="width:100%">
+                        <tr>
+                            <td style="font-weight: bold; background: #ECF0F3; text-align: center; height: 5%; width: 100%; padding: 3%">
+                                Add New Product Attributes
+                            </td>
+                        </tr>
+                        @*
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowSpecility()">
+                                    Add
+                                    new speciality
+                                </span>
+                            </td>
+                        </tr>*@
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowBrand()">
+                                    Add New Brand
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowCategory()">
+                                    Add New Category
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowUOMType()">
+                                    Add New UOM Type
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowUOM()">
+                                    Add New UOM
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowProductType()">
+                                    Add New Product Type
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" />
+                                <span style="cursor: pointer" onclick="fnShowProductGroup()">
+                                    Add New Product Group
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 3%">
+                                <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowCompetitor()">
+                                    Add New Competitor
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane active" id="ProductDetails">
+                <div id="dvAllProducts" style="float: left">
+                    @*<a href="#" onclick="runEffect();">Show Product list</a>*@
+                    <div id="dvProducts" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    ShowModalPopup('dvLoading');
+    debugger;
+    var isPopup = @Html.Raw(Json.Encode(ViewBag.IsPopUp));
+    var Product_Name = @Html.Raw(Json.Encode(ViewBag.Product_Name));
+    var Product_Type = @Html.Raw(Json.Encode(ViewBag.Product_Type));
+    var Emp_No = @Html.Raw(Json.Encode(ViewBag.Emp_No));
+    var Product_Ref_Key = @Html.Raw(Json.Encode(ViewBag.Product_Ref_Key));
+    $(document).ready(function () {
+        var PageStatus = 1;
+
+        $("#dvTab").tabs();
+
+        try {
+            if(isPopup == 1)
+            {
+                if(Product_Name.trim() != ""){
+                    $("#txtProductName").val(Product_Name);
+                    $("#txtProductName").prop("disabled","true");
+                }
+                else
+                    $("#txtProductName").prop("disabled","true");
+
+                $("#divAttributes").remove();
+                $("#btnReset").hide();
+                $("#dvLoading").hide();
+            }
+            else
+            {
+                $("#dvLoading").show();
+            }
+            AjaxGlobalHandler.Initiate();
+            fnGetProductAttributes();
+            $(".datepick").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+            });
+            HideModalPopup('dvLoading');
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            HideModalPopup('dvLoading');
+        }
+    });
+    $(".numbersOnly").keypress(function (e) {
+        //if the letter is not digit then display error and don't type anything
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
+    function runEffect() {
+        // get effect type from
+        var selectedEffect = "blind";
+
+        // most effect types need no options passed by default
+        var options = {};
+        // some effects have required parameters
+        if (selectedEffect === "scale") {
+            options = { percent: 0 };
+        } else if (selectedEffect === "size") {
+            options = { to: { width: 200, height: 60 } };
+        }
+
+        // run the effect
+        $("#dvProducts").toggle(selectedEffect, options, 500);
+    };
+    function fnclear() {
+        $("#txtProductName").val('');
+        $("#txtProductCost").val('');
+        $("#txtProductShortName").val('');
+        $("#txtEffFrom").val('');
+        $("#txtEffTo").val('');
+        $("#txtDescription").val('');
+        $('#drpSpeciality').val('');
+        $('#drpBrand').val('');
+        $('#drpComp').val('');
+        $('#trCompetitor').hide();
+        $('#drpCategory').val('');
+        $('#drpUOMType').val('');
+        $('#drpUOM').val('');
+        $('#drpProType').val('');
+        $('#drpProGroup').val('');
+        $('#txtRefKey1').val('');
+        $('#txtRefKey2').val('');
+
+    }
+    $("#txtProductName").attr("tabindex", "1");
+    $("#txtProductCost").attr("tabindex", "8");
+    $("#txtProductShortName").attr("tabindex", "9");
+    $("#txtEffFrom").attr("tabindex", "10");
+    $("#txtEffTo").attr("tabindex", "11");
+    $("#txtDescription").attr("tabindex", "12");
+    $('#drpSpeciality').attr("tabindex", "1");
+    $('#drpBrand').attr("tabindex", "2");
+    $('#drpCategory').attr("tabindex", "3");
+    $('#drpUOMType').attr("tabindex", "4");
+    $('#drpUOM').attr("tabindex", "5");
+    $('#drpProType').attr("tabindex", "6");
+    $('#drpProGroup').attr("tabindex", "7");
+</script>

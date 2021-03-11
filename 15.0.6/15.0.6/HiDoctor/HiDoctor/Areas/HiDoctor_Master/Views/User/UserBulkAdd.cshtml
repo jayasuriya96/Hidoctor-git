@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "UserBulkAdd";
+    Layout = null;
+}
+@*<link href="../../Areas/HiDoctor_Master/Content/HD_Master.css" rel="stylesheet" />*@
+<style>
+    .Mandatory {
+        color: red;
+    }
+
+    #tblUser th {
+        height: 25px;
+        background-color: #0072c6;
+        color: white;
+        font-size: 13px;
+        padding-left: 5px;
+        border-right: 1px solid #fff;
+        text-align: center;
+    }
+
+    #tblUser td input[type=text], input[type=password], textarea, select {
+        border: 1px solid white;
+        width: 90% !important;
+        padding-left: 5px;
+    }
+
+    #tblUser td {
+        border-right: 1px solid #EfEFEF;
+        border-bottom: 1px solid #EFEFEF;
+        height: 35px;
+        vertical-align: top;
+    }
+
+    .dvHeader {
+        width: 100%;
+        height: 30px;
+        background-color: #0072c6;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-top: 4px;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    .docProDelete {
+        background: url('../Content/images/cross.png') no-repeat !important;
+        height: 20px;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+
+    .addEmp {
+        /*background: url('../Content/images/Add.png') no-repeat !important;*/
+        height: 20px;
+        margin-left: 7px;
+        cursor: pointer;
+        /*margin-top: 10px;*/
+        font-weight: bold;
+        font-size: 20px;
+        /*color: #DDD;*/
+        color: black;
+    }
+</style>
+<div style="width: 100%;" id="dvUser">
+</div>
+<div style="width: 100%;">
+    <input type="button" class="btn small primary" onclick="fnBulkUserSubmit();" value="Save" />
+    <input type="button" class="btn small primary" value="Cancel" onclick="fnCreateTable();" />
+</div>
+<div id="dvEmp" class="simple_overlay">
+    @*
+    <div class="dvHeader" style="width: 98%;">
+        Add New Employee
+    </div>
+    *@
+    <div id="dvEmpDetailsPopUp" style="height: 500px; overflow-y: scroll;"></div>
+</div>
+<input type="hidden" id="hdnNewEmpCode" />
+<input id="hdnCurrentEmpName" type="hidden" />
+<script type="text/javascript" lang="ja" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/User.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script>
+    var rowNo = "6";
+    var divisionJson_g = "";
+    var employeeJson_g = "";
+    var expenseJson_g = "";
+    var userJson_g = "";
+    var regionJson_g = "";
+    var userTypeJson_g = "";
+    var allUserJson_g = "";
+
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        $(".datepicker").datepicker({ "dateFormat": "dd/mm/yy", "changeMonth": true, "changeYear": true });
+
+        $("#dvEmp").overlay({
+            onLoad: function () {
+
+            },
+            onBeforeLoad: function () {
+                $("#dvEmpDetailsPopUp").load('../HiDoctor_Master/User/Employee/?id=UserMasterBulkAdd');
+            }         
+        });
+        fnCreateTable();
+        $("#dvUser input[type=text]").blur(function () { fnRemoverErrorIndicator(this); });
+        $("#dvUser input[type=password]").blur(function () { fnRemoverErrorIndicator(this); });
+        $("#dvAjaxLoad").hide();
+    });
+
+</script>

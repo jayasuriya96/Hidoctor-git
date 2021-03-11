@@ -1,0 +1,15 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<div style="background-color:white;padding:10px;color:#C63828">
+    <span>Sorry, an error occurred while processing your request.
+    </span>
+    <p>Controller = @Model.ControllerName</p>
+    <p>Action = @Model.ActionName</p>
+    <p>Stack Trace = @Model.Exception.StackTrace</p>
+    <p>Message = @Model.Exception.Message</p>
+    <p>Inner exception = @Model.Exception.InnerException</p>
+</div>

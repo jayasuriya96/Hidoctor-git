@@ -1,0 +1,346 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<style>
+    #dvProd select {
+        width: 95%;
+    }
+</style>
+
+<script src="../../Scripts/popup.js" type="text/javascript" language="javascript"></script>
+<div style="font-family: 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif" id="dvPanel">
+    <div id="dvError" style="display: none" class="Information">
+    </div>
+    <div style="float: left; width: 75%;" id="dvProd">
+        <table style="width: 90%;">
+            <tr>
+                <td>
+                    Product Name
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtProductName" class="form-control" onblur="fnCheckAvailabilty()" />
+                    <div id="dvProductCheck">
+                    </div>
+                    <input type="hidden" id="hdnProductCode" />
+                    <input type="hidden" id="hdnProductName" />
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="6">
+                    <div class="separator">
+                    </div>
+                    <div style="padding-bottom: 1%; padding-top: 1%; color: #378FD0">
+                        <b>Product Attributes</b>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Speciality
+                </td>
+                <td>
+                    <select id="drpSpeciality" tabindex="2" onchange="fnSpecialityChange()"></select>
+                </td>
+                <td>
+                    Brand
+                </td>
+                <td>
+                    <select id="drpBrand" onchange="fnBrandChange()"></select>
+                </td>
+                <td>
+                    Category
+                </td>
+                <td>
+                    <select id="drpCategory" onchange="fnCategoryChange()"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    UOM Type
+                </td>
+                <td>
+                    <select id="drpUOMType" onchange="fnUOMTypeChange()"></select>
+                </td>
+                <td>
+                    UOM
+                </td>
+                <td>
+                    <select id="drpUOM" onchange="fnUOMChange()"></select>
+                </td>
+                <td>
+                    Product Type
+                </td>
+                <td>
+                    <select id="drpProType" onchange="fnProductTypeChange()"></select>
+                </td>
+            </tr>
+            <tr id="trCompetitor" style="display: none">
+                <td colspan="5" style="text-align: right;padding-right: 22px;">Competitor Name</td>
+
+                <td>
+                    @*<input type="text" id="txtCompetitorName" />*@
+
+                    <select id="drpComp" onchange="fnCompChange()"></select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Product Group
+                </td>
+                <td>
+                    <select id="drpProGroup" onchange="fnProductGroupChange()"></select>
+                </td>
+                <td>
+                    Product Cost
+                </td>
+                <td>
+                    <input type="text" id="txtProductCost" />
+                </td>
+                <td>
+                    Product Short Name
+                </td>
+                <td>
+                    <input type="text" id="txtProductShortName" onblur="fnChkProShrtNameAvail()" />
+                    <div id="dvPrdShortNameCheck">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Ref Key1</td>
+                <td>
+                    <input type="text" id="txtRefKey1" maxlength="50" />
+                    <div id="dvRefkey1validation"></div>
+                </td>
+                <td>Ref Key2</td>
+                <td>
+                    <input type="text" id="txtRefKey2" maxlength="50" />
+                    <div id="dvRefkey2validation"></div>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="separator">
+                    </div>
+                    <div style="padding-bottom: 1%; padding-top: 1%; color: #378FD0">
+                        <b>Product Description</b>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">
+                    Effective From
+                </td>
+                <td style="vertical-align: top">
+                    <input type="text" id="txtEffFrom" class="datepick" />
+                </td>
+                <td style="vertical-align: top">
+                    Effective To
+                </td>
+                <td style="vertical-align: top">
+                    <input type="text" id="txtEffTo" class="datepick" />
+                </td>
+                <td style="vertical-align: top">
+                    Description
+                </td>
+                <td>
+                    <textarea id="txtDescription" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="separator">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="button" value="Save" class="btn small primary" onclick="fnCheckItranProduts()" />
+        <input id="btnReset" type="button" value="Reset" class="btn small primary" onclick="fnclear()" />
+        <br />
+        <br />
+    </div>
+    <div id="dvLoading" style="text-align: center;display:none;">
+        <img src="../../Content/themes/base/images/hd/loader.gif" />
+    </div>
+    <div id="divAttributes" style="float: left; border: 1px solid #efefef; width: 20%; height: 100%; -webkit-border-radius: 3px; border: 1px solid #efefef">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td style="font-weight: bold; background: #ECF0F3; text-align: center; height: 5%; width: 100%; padding: 3%">
+                    Product Attributes
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowSpecility()">
+                        Add
+                        new speciality
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowBrand()">
+                        Add
+                        new brand
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowCategory()">
+                        Add
+                        new category
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowUOMType()">
+                        Add
+                        new UOM Type
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowUOM()">
+                        Add
+                        new UOM
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowProductType()">
+                        Add
+                        new product type
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowProductGroup()">
+                        Add
+                        new product group
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 3%">
+                    <img src="../../Content/images/add.png" /><span style="cursor: pointer" onclick="fnShowCompetitor()">
+                        Add
+                        new competitor
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="clear: both">
+    </div>
+    <div id="dvAllProducts" style="float: left">
+        @*<a href="#" onclick="runEffect();">Show Product list</a>*@
+        <div id="dvProducts" style="width: 100%;">
+        </div>
+    </div>
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    ShowModalPopup('dvLoading');
+    debugger;
+    var isPopup = @Html.Raw(Json.Encode(ViewBag.IsPopUp));
+    var Product_Name = @Html.Raw(Json.Encode(ViewBag.Product_Name));
+    var Product_Type = @Html.Raw(Json.Encode(ViewBag.Product_Type));
+    var Emp_No = @Html.Raw(Json.Encode(ViewBag.Emp_No));
+    var Product_Ref_Key = @Html.Raw(Json.Encode(ViewBag.Product_Ref_Key));
+    $(document).ready(function () {
+        var PageStatus = 1;
+        try {
+            if(isPopup == 1)
+            {
+                if(Product_Name.trim() != ""){
+                    $("#txtProductName").val(Product_Name);
+                    $("#txtProductName").prop("disabled","true");
+                }
+                else
+                    $("#txtProductName").prop("disabled","true");
+
+                $("#divAttributes").remove();
+                $("#btnReset").hide();
+                $("#dvLoading").hide();
+            }
+            else
+            {
+                $("#dvLoading").show();
+            }
+            AjaxGlobalHandler.Initiate();
+            fnGetProductAttributes();
+            $(".datepick").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+            });
+            HideModalPopup('dvLoading');
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            HideModalPopup('dvLoading');
+        }
+    });
+
+
+
+    function runEffect() {
+        // get effect type from
+        var selectedEffect = "blind";
+
+        // most effect types need no options passed by default
+        var options = {};
+        // some effects have required parameters
+        if (selectedEffect === "scale") {
+            options = { percent: 0 };
+        } else if (selectedEffect === "size") {
+            options = { to: { width: 200, height: 60 } };
+        }
+
+        // run the effect
+        $("#dvProducts").toggle(selectedEffect, options, 500);
+    };
+
+    function fnclear() {
+        $("#txtProductName").val('');
+        $("#txtProductCost").val('');
+        $("#txtProductShortName").val('');
+        $("#txtEffFrom").val('');
+        $("#txtEffTo").val('');
+        $("#txtDescription").val('');
+        $('#drpSpeciality').val('');
+        $('#drpBrand').val('');
+        $('#drpComp').val('');
+        $('#trCompetitor').hide();
+        $('#drpCategory').val('');
+        $('#drpUOMType').val('');
+        $('#drpUOM').val('');
+        $('#drpProType').val('');
+        $('#drpProGroup').val('');
+        $('#txtRefKey1').val('');
+        $('#txtRefKey2').val('');
+
+    }
+    $("#txtProductName").attr("tabindex", "1");
+    $("#txtProductCost").attr("tabindex", "8");
+    $("#txtProductShortName").attr("tabindex", "9");
+    $("#txtEffFrom").attr("tabindex", "10");
+    $("#txtEffTo").attr("tabindex", "11");
+    $("#txtDescription").attr("tabindex", "12");
+    $('#drpSpeciality').attr("tabindex", "1");
+    $('#drpBrand').attr("tabindex", "2");
+    $('#drpCategory').attr("tabindex", "3");
+    $('#drpUOMType').attr("tabindex", "4");
+    $('#drpUOM').attr("tabindex", "5");
+    $('#drpProType').attr("tabindex", "6");
+    $('#drpProGroup').attr("tabindex", "7");
+</script>

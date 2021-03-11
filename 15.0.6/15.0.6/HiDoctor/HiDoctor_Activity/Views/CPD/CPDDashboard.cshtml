@@ -1,0 +1,395 @@
+﻿@{
+    Layout = "~/Views/Shared/_batchMobileLayOut.cshtml";
+}
+<link href="~/Areas/HiDoctor_Activity/Content/mdtimepicker.css" rel="stylesheet" />
+<style>
+    .Dbox {
+        border-radius: 10px;
+        border: ridge;
+        height: 120px;
+        /*margin-left: 15px;*/
+        /*background-color: dodgerblue;*/
+        background-color: royalblue;
+        color: white;
+
+    }
+    .Lbox {
+        border-radius: 10px;
+        border: ridge;
+        height: 100px;
+        /*margin-left: 25px;*/
+        background-color: royalblue;
+        color: white;
+
+    }
+
+</style>
+<div style="background-color: lightgoldenrodyellow;">
+    <div class="col-xs-12 control-section" style="margin-top:5px">
+        <div class="form-group col-xs-3">
+            <label for="txtfrom">From</label>
+        </div>
+        <div class="form-group col-xs-8">
+            <div id="wrapper">
+                @*<input type="text" class="form-control" id="datepicker1" onchange="fngetcpddatas(1);">*@
+                <input type="text" class="form-control" id="datepicker1">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 control-section">
+        <div class="form-group col-xs-3">
+            <label for="txtto">To</label>
+        </div>
+        <div class="form-group col-xs-8">
+            <div id="wrapper">
+                <input type="text" class="form-control" id="datepicker2">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-lg-12 col-md-12 col-xs-12 clearfix" style="text-align: center;">
+        <button type="button" class="btn btn-info" style="background-color: blue;border-color: blue;" id="btngo" onclick="fngetcpddatas(1);">
+            Go
+        </button>
+    </div>
+
+    <div class="col-xs-12" style="margin-bottom: 5px;">
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-check-square-o"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Entered Users</p>
+                    <p id="spnendcr" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-times-circle-o"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Not Entered Users</p>
+                    <p id="spnndcr" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xs-12">
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-phone"></i></div>
+                <div>
+                    <label>Total Calls :</label>
+                    <span id="spntc"></span>
+                </div>
+            </div>
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-volume-control-phone"></i></div>
+                <div>
+                    <label>Productive Calls :</label>
+                    <span id="spnpc"></span>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="col-xs-12" style="margin-bottom: 5px;">
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-phone"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Total Calls</p>
+                    <p id="spntc" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-volume-control-phone"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Productive Calls</p>
+                    <p id="spnpc" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xs-12">
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-star-o"></i></div>
+                <div>
+                    <label>Bright Calls :</label>
+                    <span id="spnbrc"></span>
+                </div>
+            </div>
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-star"></i></div>
+                <div>
+                    <label>Shine Calls :</label>
+                    <span id="spnshc"></span>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="col-xs-12" style="margin-bottom: 5px;">
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-star-o"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Bright Calls</p>
+                    <p id="spnbrc" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-star"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Shine Calls</p>
+                    <p id="spnshc" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xs-12">
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-sun-o"></i></div>
+                <div>
+                    <label>Bright Product Value :</label>
+                    <span id="spnbpv"></span>
+                </div>
+            </div>
+            <div class="col-xs-5 Dbox">
+                <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-certificate"></i></div>
+                <div>
+                    <label>Shine Product Value :</label>
+                    <span id="spsspv"></span>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="col-xs-12" style="margin-bottom: 5px;">
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-sun-o"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Bright Product Value</p>
+                    <p id="spnbpv" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6" style="padding: 0px 2px;">
+            <div class="Dbox" style="padding: 5px 15px;">
+                <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                    <i style="font-size: 36px;" aria-hidden="true" class="fa fa-certificate"></i>
+                </div>
+                <div>
+                    <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Shine Product Value</p>
+                    <p id="spsspv" style="text-align: center;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xs-10 Lbox">
+            <div style="margin-top: 0px;padding: 0px;text-align: center;"><i style="font-size: 36px;" aria-hidden="true" class="fa fa-shopping-cart"></i></div>
+            <div>
+                <label>Total Product Value :</label>
+                <span id="spntpv"></span>
+            </div>
+        </div>*@
+
+    <div class="col-xs-12" style="margin-bottom: 5px;">
+
+        <div class="Dbox" style="padding: 5px 15px;">
+            <div class="col-sm-12" style="margin-top: 10px;text-align: center;">
+                <i style="font-size: 36px;" aria-hidden="true" class="fa fa-shopping-cart"></i>
+            </div>
+            <div>
+                <p style="font-size: 12px;margin-bottom: 0px;text-align: center;">Total Product Value</p>
+                <p id="spntpv" style="text-align: center;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12" style="margin-bottom: 5px;text-align: center;">
+        <p><b><a href='#' onclick="fnloadproductdetail()" style="text-decoration:underline">Get Product wise Details -->></a></b></p>
+    </div>
+
+</div>
+<script>
+    var Fromdate = '';
+    var Todate = '';
+    var subDomainName = '';
+    var CompanyId = '';
+    var LoginRegionCode = '';
+    var LoggedUserCode='';
+    var LoginUserName='';
+    var CPD_Date = '';
+    var LID='';
+    var FDate='';
+    var TDate='';
+    $(document).ready(function () {
+        debugger;
+        $( "#datepicker1" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate:0,
+        });
+        $( "#datepicker2" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate:0,
+        });
+        subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+        CompanyId=@Html.Raw(Json.Encode(ViewBag.CompanyId));
+        LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+        LoggedUserCode=@Html.Raw(Json.Encode(ViewBag.LoginUserCode));
+        LoginUserName=@Html.Raw(Json.Encode(ViewBag.LoginUserName));
+        Fromdate=@Html.Raw(Json.Encode(ViewBag.Fromdate));
+        Todate= @Html.Raw(Json.Encode(ViewBag.Todate));
+        LID=@Html.Raw(Json.Encode(ViewBag.LID));
+        fngetcpddatas(0);
+    })
+    function fnuserstatus()
+    {
+        var result='';
+        $.ajax({
+            type: 'POST',
+            data: 'subDomainName=' + subDomainName + "&CompanyId=" + CompanyId + "&Usercode=" +LoggedUserCode,
+            url: '../../HiDoctor_Activity/CPD/GetUserStatus',
+            async:false,
+            success: function (res) {
+                debugger;
+                if(res == 1)
+                    result = true;
+                else
+                    result = false;
+            }
+        })
+        return result;
+    }
+    function fngetcpddatas(val) {
+        debugger
+            if(val ==1){
+                var from=$( "#datepicker1" ).val();
+                var to=$( "#datepicker2" ).val();
+                Fromdate = from.split('/')[2] + '-' + from.split('/')[1] + '-' + from.split('/')[0];
+                Todate = to.split('/')[2] + '-' + to.split('/')[1] + '-' + to.split('/')[0];
+            }
+            else{
+                debugger
+                if(Fromdate == "null" && Todate== "null"){
+                    var today = new Date();
+                    var prior = new Date(new Date().setDate(today.getDate() - 30));
+                    var datefrom=("0" + prior.getDate()).slice(-2) + '/' +("0" + (prior.getMonth() + 1)).slice(-2) + '/' + prior.getFullYear();
+                    var dateto=("0" + today.getDate()).slice(-2) + '/' +("0" + (today.getMonth() + 1)).slice(-2) + '/' + today.getFullYear();
+                    $('#datepicker1').val(datefrom);
+                    $('#datepicker2').val(dateto);
+                    var from=$("#datepicker1").val();
+                    var to=$("#datepicker2").val();
+                    Fromdate =from.split('/')[2] + '-' + from.split('/')[1] + '-' + from.split('/')[0];
+                    Todate = to.split('/')[2] + '-' + to.split('/')[1] + '-' + to.split('/')[0];
+                }
+                else{
+                    var today = new Date(Fromdate);
+                    var prior =new Date(Todate);
+                    var datefrom=("0" + today.getDate()).slice(-2) + '/' +("0" + (today.getMonth() + 1)).slice(-2) + '/' + today.getFullYear();
+                    var dateto=("0" + prior.getDate()).slice(-2) + '/' +("0" + (prior.getMonth() + 1)).slice(-2) + '/' + prior.getFullYear();
+                    $('#datepicker1').val(datefrom);
+                    $('#datepicker2').val(dateto);
+                }
+            }
+            FDate=$('#datepicker1').val();
+            TDate = $('#datepicker2').val();
+            var Fromdt = new Date(new Date(FDate.split('/')[2] + '-' + FDate.split('/')[1] + '-' + FDate.split('/')[0]));
+            var Todt = new Date(new Date(TDate.split('/')[2] + '-' + TDate.split('/')[1] + '-' + TDate.split('/')[0]));
+            if (FDate=='') {
+                swal("Please select From Date", "");
+                return false;
+            }
+            if (TDate == '') {
+                swal("Please select To Date", "");
+                return false;
+            }
+            if (Fromdt > Todt) {
+                swal("To Date should be greater than From Date.", "");
+                return false;
+            }
+            if (true) {
+                if (navigator.onLine == true) {
+                    var Userstatus = fnuserstatus();
+                    debugger
+                    if (Userstatus) {
+                        $.ajax({
+                            type: "POST",
+                            data: "subDomainName=" + subDomainName + "&CompanyId=" + CompanyId + "&LoggedUserCode=" + LoggedUserCode + "&FromDate=" + Fromdate + "&Todate=" + Todate,
+                            url: '../../HiDoctor_Activity/CPD/GetCPDData',
+                            success: function (response) {
+                                debugger
+                                if (response.length>0) {
+                                    $('#spnendcr').html(response[0].DCREnteredCount);
+                                    $('#spnndcr').html(response[0].NotEnteredDcr);
+                                    $('#spntc').html(response[0].Totalcalls);
+                                    $('#spnpc').html(response[0].Prodcalls);
+                                    $('#spnbrc').html(response[0].brightcall);
+                                    $('#spnshc').html(response[0].shinecall);
+                                    $('#spntpv').html(response[0].Tcallvalue);
+                                    $('#spnbpv').html(response[0].Bcallvalue);
+                                    $('#spsspv').html(response[0].Scallvalue);
+                                }
+                                else{
+                                    $('#spnendcr').html('0');
+                                    $('#spnndcr').html('0');
+                                    $('#spntc').html('0');
+                                    $('#spnpc').html('0');
+                                    $('#spnbrc').html('0');
+                                    $('#spnshc').html('0');
+                                    $('#spntpv').html('0');
+                                    $('#spnbpv').html('0');
+                                    $('#spsspv').html('0');
+                                }
+
+                            }
+                        })
+                    }
+                    else {
+                        swal("Info!", "Your account has been deactivated.", "info");
+                    }
+                }
+                else{
+                    swal("Please connect to the internet", "", "");
+                    return false;
+                }
+            }
+    }
+        function fnloadproductdetail(){
+            debugger
+            if (navigator.onLine == true) {
+                var Userstatus = fnuserstatus();
+                debugger
+                if (Userstatus) {
+                    window.location.href = '../CPD/CPDProducts?FromDate=' + Fromdate + '&Todate=' + Todate + '&LID=' + LID;
+                }
+                else {
+                    swal("Info!", "Your account has been deactivated.", "info");
+                }
+            }
+            else{
+                swal("Please connect to the internet", "", "");
+                return false;
+            }
+        }
+</script>

@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Advanced Course";
+}
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/bootstrap.table.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Scripts/GlobalPlayer/GlobalPlayer.css" rel="stylesheet" />
+
+<link href="../../Areas/HDNextGen/Content/AdCourse/CourseCommon.css?" rel="stylesheet" />
+<link href="../../Areas/HDNextGen/Content/AdCourse/AssetMapping.css?" rel="stylesheet" />
+
+<form id="formCourseAssetMapping" onsubmit="return false;" method="post" action="/Course/InsertCourseAssetMapping">
+    <div id="dvCourseAssetMapping">
+        <div>
+            <div class="col-md-12 clsRoundMain">
+                <div class="clsWidget">
+                    <div class="clsDvHeader clsRoundHead">
+                        <div id="dvStep3" class="inactive-full-circle pull-right">
+                            <div class="clsPaddingNone clsSpnNumber">3</div>
+                            <div class="clsSpnNumbertext">Step</div>
+                        </div>
+                        <div id="dvStep2" class="active-full-circle pull-right">
+                            <div class="clsPaddingNone clsSpnNumber">2</div>
+                            <div class="clsSpnNumbertext">Step</div>
+                        </div>
+                        <div id="dvStep1" class="pull-right inactive-full-circle">
+                            <div class="clsPaddingNone clsSpnNumber">1</div>
+                            <div class="clsSpnNumbertext">Step</div>
+                        </div>
+                        <div class="clsRoundheadtext">
+                            Course Name: @ViewBag.Course_Name.ToString()
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="col-lg-12 clsCourseSurText" id="dvCourseAssetMappingName">
+            Course has been successfully created. For mapping digital assets to your course use the filters provided
+        </div>*@
+            <div class="col-lg-12">
+                @*<div class="clsDvHeader">
+                    <h4 class="heading am-big-font" id="assetMappingCourseName">Course Name: Loading...</h4>
+                </div>*@
+                @*<div class="clsDvHeader">
+                <h4 class="heading" id="assetMappingSectionName">Section Name: </h4>
+                <input type="text" class="form-control" placeholder="Search Category" id="txtSectionName" style="margin: 0px; border-radius: 0px !important;">
+            </div>*@
+                <div style="width: 100%; height: 30px;"></div>
+                <div class="clsDvHeader">
+                    <div class="input-group" style=" border: 2px solid #4688E8;">
+                        <span class="input-group-addon" id="basic-addon2" style="background-color: cornflowerblue; color: white;">Section Name<span class="mandatory-sign">*</span></span>
+                        <input id="txtSectionName" type="text" class="form-control" placeholder="Enter Section Name" aria-describedby="basic-addon2">
+                    </div>
+                </div>
+                @*<div class="clsDvHeader">
+                <h4 class="heading">Select Assets</h4>
+            </div>*@
+                <div class="col-md-3">
+                    <div class="clsWidget clearfix">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">@Resources.Course.Category</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <div class="hideifempty leftFilterSearch input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="Search Category" id="txtCategorySearch" style="margin: 0px; border-radius: 0px !important;">
+                                <span class="clear-all-div input-group-addon" id="dvClearAllCategory"><a href="#" class="clear-all-anchor fa fa-close"></a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-11 clsPaddingNone" id="dvCategoryList" style="max-height: 250px; overflow: auto;">
+                    </div>
+
+                    <div class="clsWidget clearfix">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <div class="clsDvHeader">
+                                <h4 class="heading">Tags</h4>
+                            </div>
+                            <div class="clsSeparator"></div>
+                            <div class="hideifempty leftFilterSearch input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="Search Tag" id="txtTagSearch" style="margin: 0px; border-radius: 0px !important;">
+                                <span class="clear-all-div input-group-addon" id="dvClearAllTag"><a href="#" class="clear-all-anchor fa fa-close"></a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-11 clsPaddingNone" id="dvTagList" style="max-height: 250px; overflow: auto;">
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="hideifempty clsWidget clearfix">
+                        <div class="clsDvHeader" style="height: 30px;">
+                            <h4 class="heading">Select Assets: </h4>
+                            <div class="hideifempty clsDvFiltered">
+                                <div class="filtered">All&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="clsSeparator"></div>
+                    </div>
+                    <div class="col-md-12 clsPaddingNone" id="dvAssetsMappings">
+                    </div>
+                    <div class="clsWidget  row">
+                        <div class="col-xs-11 clsPaddingNone">
+                            <a class="btn btn-primary pull-right" id="btnCreateAssetMappings" style="margin-left: 10px;"><i class="fa fa-floppy-o"></i>&nbsp;@Resources.Course.Course_Submit_Text</a>
+                            <a class="btn btn-primary pull-right" id="btnBackCreateCourse"><i class="fa fa-backward"></i>&nbsp;Back</a>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@*<script src="../../Areas/HDNextGen/Scripts/Course/jquery.highlight-4.closure.js"></script>*@
+<script src="../../Areas/HDNextGen/Scripts/AssetUpload/elAssetBrowse.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/elCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/AssetMapping.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/AdCourse/CourseCommon.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/CommonJs/ajaxHandler.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/GlobalPlayer/GlobalPlayer.js"></script>
+<script src="../../Areas/HDNextGen/Scripts/restHandler.js"></script>
+<script>
+    //var courseId_g =  "ViewBag.Course_ID.ToString()";
+    //var courseName_g = "ViewBag.Course_Name.ToString()";
+    //var sectionId_g = "ViewBag.Section_ID.ToString()";
+    //var sectionName_g = "ViewBag.Section_Name.ToString()";
+    
+    var courseId_g =  @Html.Raw(Json.Encode(ViewBag.Course_ID));
+    var courseName_g = @Html.Raw(Json.Encode(ViewBag.Course_Name))
+    var sectionId_g = @Html.Raw(Json.Encode(ViewBag.Section_ID)) 
+    var sectionName_g = @Html.Raw(Json.Encode(ViewBag.Section_Name)) 
+    
+    $(function () {
+        //advancedCourse.courseTitle_g = "Create Course";
+        //advancedCourse.init();
+        assetMapping.init(courseId_g, courseName_g);
+        //$("#dvPageHeader").html("Asset Mapping");
+    });
+</script>

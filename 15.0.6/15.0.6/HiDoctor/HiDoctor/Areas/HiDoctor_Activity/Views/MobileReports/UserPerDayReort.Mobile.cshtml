@@ -1,0 +1,249 @@
+﻿<style>
+    div.ui-input-text {
+        float: left;
+        width: 20%;
+    }
+
+    .ui-block-a {
+        margin: 3px !important;
+    }
+
+    .cls_floatleft {
+        float: left;
+    }
+
+    .cls_floatright {
+        float: right;
+    }
+
+    .cls_arrow {
+        font-size: 15px;
+    }
+
+    .cls_rptcnt {
+        margin: 5px;
+        margin-top: 10px;
+    }
+
+    .cls_usernameheader {
+        text-align: center;
+    }
+</style>
+
+<div style="clear: both"></div>
+<div data-role="header" data-mini="true" data-theme="b">
+    <h3>User Per Day Report
+    </h3>
+</div>
+<div data-role="content" data-theme="d">
+    <a href="#" class="ui-icon-home" data-icon="home" onclick="fnGoToMenu()">Menu
+    </a>
+    <div>
+        <div>
+            <h3 id="userPerDayUserName"></h3>
+            <div id="dvInput">
+                <div style="width: 100%; float: left">
+                    <span>DCR Date</span>
+                    <br />
+                    <input type="text" placeholder="dd" id="txtReportDate" maxlength="2" />
+                    <span style="float: left; padding: 6px;">/ </span>
+                    <input type="text" placeholder="mm" id="txtReportMonth" maxlength="2" />
+                    <span style="float: left; padding: 6px;">/ </span>
+                    <input type="text" placeholder="yyyy" id="txtReportYear" maxlength="4" />
+                    <div style="clear: both"></div>
+                    <br />
+                </div>
+                <div style="width: 100%; float: left">
+                    Flag
+            <select id="drpUserPerDayFlag" data-mini="true"></select>
+                </div>
+                <a data-role="button" id="btnGo" href="#page1" data-theme="b" class="ui-btn-left" onclick="fnBindMobileUserPerDayReport()">Go
+                </a>
+            </div>
+
+            <div id="dv-dcrdetails" class="cls_rptcnt" style="display: none">
+                <ul data-role="listview" data-divider-theme="b" data-inset="false" data-mini="true">
+                    <li data-role="list-divider" class="cls_usernameheader" role="heading">
+                        <span onclick="fnNextDate('P')" class="cls_arrow cls_floatleft" id="spnPrevious"><<</span>
+                        <span id="spnUsername"></span>
+                        <span onclick="fnNextDate('N')" id="spnNext" class="cls_arrow cls_floatright">>></span>
+                    </li>
+                    <li data-theme="c">
+                        <div class="ui-grid-a" id="dv-dcrSubDetails">
+                            <div class="ui-block-a" style="width: 100%" id="dvDCRDate">
+                                DCR Date : <span id="spnDCRDate"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvDCRStatus">
+                                DCR Status : <span id="spnDCRStatus"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvDCRActicity">
+                                Activity : <span id="spnDCRActicity"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvDCREnteredDate">
+                                DCR Entered Date : <span id="spnDCREnteredDate"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvCP">
+                                CP Name : <span id="spnCPName"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvcategory">
+                                Category : <span id="spnCategory"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dvworkplace">
+                                Work Place : <span id="spnWorkPlace"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dv-Accomp">
+                                Accompanist : <span id="spnAccompanist"></span>
+                            </div>
+
+                            <div class="ui-block-a" style="width: 100%" id="dvTime">
+                                Timing : <span id="spnTiming"></span>
+                            </div>
+                            <div class="ui-block-a" style="width: 100%" id="dv-DCRRemarks">
+                                DCR Common Remarks : <span id="spnDCRRemarks"></span>
+
+                            </div>
+                            <div style="width: 100%" id="dvSFC">
+                                <span style="text-decoration: underline;" class="dv-bold-width">SFC</span>
+                                <div id="dv-sfc" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvDoctor">
+                                <span style="text-decoration: underline;" class="dv-bold-width" id="dvdoctorname"></span>
+                                <div id="dv-doctors" style="width: 100%"></div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div style="width: 100%" id="dvChemist">
+                                @*<span style="text-decoration: underline;" class="dv-bold-width" id="chemistname"></span>*@
+                                <div id="dv-chemist" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvStockiest">
+                                <span style="text-decoration: underline;" class="dv-bold-width" id="stockistname"></span>
+                                <div id="dv-stockiest" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvactivity">
+                                <span style="text-decoration: underline;" class="dv-bold-width">Activity</span>
+                                <div id="dv-activity" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvExpense">
+                                <span style="text-decoration: underline;" class="dv-bold-width">Expenses</span>
+                                <div id="dv-expenses" style="width: 100%"></div>
+                            </div>
+                            <div style="width: 100%" id="dvLeave">
+                                <div id="dv-Leave-header" style="width: 100%"></div>
+                                <span style="text-decoration: underline;" class="dv-bold-width">Leave Type</span>
+                                <div id="dv-Leave" style="width: 100%"></div>
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                        <div id="dv-result" class="dv-comp-border" style="display: none; background: white; font-size: 13px;"></div>
+                    </li>
+                </ul>
+                <div style="clear: both"></div>
+            </div>
+            <input type="hidden" id="hdnUserPerDayUserName" />
+            <input type="hidden" id="hdnUserPerDayUserCode" />
+            <input type="hidden" id="hdnUserPerDayRegionCode" />
+            <input type="hidden" id="hdnUserPerDayDCRCode" />
+            <br />
+            <a data-role="button" id="btnBack" href="#page1" data-theme="b" class="ui-btn-left" onclick="fngoBackFromUserPerDayReport()">Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Mobile/mReports12.6.11.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var doctor_caption="";
+    var chemist_caption="";
+    var stockist_caption="";
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $("#txtReportDate").keydown(function (e) {
+            if (e.shiftKey)
+                e.preventDefault();
+            else {
+                var nKeyCode = e.keyCode;
+                //Ignore Backspace and Tab keys
+                if (nKeyCode == 8 || nKeyCode == 9)
+                    return;
+                if (nKeyCode < 95) {
+                    if (nKeyCode < 48 || nKeyCode > 57)
+                        e.preventDefault();
+                }
+                else {
+                    if (nKeyCode < 96 || nKeyCode > 105)
+                        e.preventDefault();
+                }
+            }
+        });
+        $("#txtReportMonth").keydown(function (e) {
+            if (e.shiftKey)
+                e.preventDefault();
+            else {
+                var nKeyCode = e.keyCode;
+                //Ignore Backspace and Tab keys
+                if (nKeyCode == 8 || nKeyCode == 9)
+                    return;
+                if (nKeyCode < 95) {
+                    if (nKeyCode < 48 || nKeyCode > 57)
+                        e.preventDefault();
+                }
+                else {
+                    if (nKeyCode < 96 || nKeyCode > 105)
+                        e.preventDefault();
+                }
+            }
+        });
+        $("#txtReportYear").keydown(function (e) {
+            if (e.shiftKey)
+                e.preventDefault();
+            else {
+                var nKeyCode = e.keyCode;
+                //Ignore Backspace and Tab keys
+                if (nKeyCode == 8 || nKeyCode == 9)
+                    return;
+                if (nKeyCode < 95) {
+                    if (nKeyCode < 48 || nKeyCode > 57)
+                        e.preventDefault();
+                }
+                else {
+                    if (nKeyCode < 96 || nKeyCode > 105)
+                        e.preventDefault();
+                }
+            }
+        });
+        //$("#dcruserPerDayloginUserName").html(loginUserName_g);
+        debugger;
+        var userCode=@Html.Raw(Json.Encode(ViewBag.User_Code)); 
+        var userName=@Html.Raw(Json.Encode(ViewBag.User_Name)); 
+         doctor_caption=@Html.Raw(Json.Encode(ViewBag.doctor_caption));
+         chemist_caption=@Html.Raw(Json.Encode(ViewBag.chemist_caption));
+         stockist_caption=@Html.Raw(Json.Encode(ViewBag.stockist_caption));
+        $("#dvdoctorname").html(doctor_caption +" visited");
+        $("#chemistname").html(chemist_caption +" visited");
+        $("#stockistname").html(stockist_caption+" visit");
+        $("#userPerDayUserName").html(userName);
+        $("#hdnUserPerDayUserName").val(userName);
+        $("#hdnUserPerDayUserCode").val(userCode);
+        $("#spnUsername").html(userName);
+        // User Name bind
+        $('span.cls_usernamespn').text(loginUserName_g);
+
+        var dcrOptions = "Attendance,Field,Leave";
+        var dcrOptArr = new Array();
+        dcrOptArr = dcrOptions.split(',');
+        for (var i = 0; i < dcrOptArr.length; i++) {
+            $('#drpUserPerDayFlag').append('<option value="' + dcrOptArr[i].toString().toUpperCase() + '" >' + dcrOptArr[i] + '</option>');
+        }
+
+
+       
+    });
+    function fngoBackFromUserPerDayReport() {
+        $.mobile.changePage("/HiDoctor_Activity/MobileReports/ReportsHome", {
+            type: "post",
+            reverse: false,
+            changeHash: false
+        });
+    }
+</script>
+

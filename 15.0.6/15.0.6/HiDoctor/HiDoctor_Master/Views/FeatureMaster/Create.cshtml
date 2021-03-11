@@ -1,0 +1,63 @@
+﻿@model MVCModels.FeatureMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js" type="text/javascript"></script>
+
+<div id="dvRules" class="col-lg-12 form-group">
+    <table>
+        <tr>
+            <td >
+                <label class="control-label">Feature Name:</label>
+            </td>
+            <td style="margin-top:10px">
+                <input type="hidden" name="FeatureCode" id="hdnFeaturecodeval" />
+                <input type="text" id="txtfeatureName" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Effective From:</label>
+            </td>
+            <td style="margin-top:10px">
+                <input type="text" id="txtEffectivefrom" class='datepicker form-control' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Description:</label>
+            </td>
+            <td style="margin-top:10px">
+                <textarea id="txtdescription" class='form-control' aria-multiline="true"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td style="margin-top:10px">
+                <input type="button" name="Save" value="Save" id="btnsave" class="btn btn-primary" />
+                <input type="hidden" name="Update" value="I" id="hdnMode" />
+            </td style="margin-top:10px">
+            <td>
+                <input type="button" name="Cancel" value="Cancel" id="btncancel" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+<br />
+ @Html.ActionLink("Download FeatureMaster details", "PutFeatureMasterIntoExcel",new {})
+<br />
+<div id="divFeatureMaster"></div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/FeatureMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        fnGetfeatureDetails();
+        $("#dvAjaxLoad").hide();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+        });
+    });
+</script>

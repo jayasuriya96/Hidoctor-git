@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "UOMType";
+    Layout = null;
+}
+<div id="message">
+</div>
+<div class="col-xs-12 clearfix">
+    <div class="col-xs-3">
+        <label>UOM Type Name</label>
+    </div>
+    <div class="col-xs-3">
+        <input type="text" id="txtUOMTypeName" class="form-control"/>
+        <input type="hidden" id="hdnUOMTypeCode" />
+        <input type="hidden" id="hdnMode" value="S" />
+        <input type="hidden" id="hdnUOMRowIndex" />
+    </div>
+</div>
+<div class="col-xs-12 clearfix" style="left: 13%;margin-top: 10px;margin-bottom: 10px;">
+    <input type="button" value="Save" class="btn  btn-success" onclick="fnInsertUOMType()" />
+    <input type="button" value="Reset" class="btn  primary" onclick="fnUOMTypeClearAll()" />
+</div>
+        
+<div class="separator">
+</div>
+<div id="divUOMType">
+</div>
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Product.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript" language="javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        $('#hdnUOMRowIndex').val(@Html.Raw(Json.Encode(ViewBag.RowIndex)));
+
+        fnGetAllUOMType();
+    });
+    var UOMTypelst_g = '';
+    function fnGetAllUOMType() {
+        $.ajax({
+            type: "POST",
+            url: "ProductMaster/GetAllUOMType",
+            data: "A",
+            success: function (result) {
+                result = eval('(' + result + ')');
+                UOMTypelst_g = result;
+                //var content = "";
+                //content += "<table class='data display' id='tblUOMType'>";
+                //content += "<thead><tr><td>UOM Type Name</td><td>Status</td><td>Action</td></tr></thead>";
+                //content += "<tbody>";
+                //for (var i = 0; i < result.Tables[0].Rows.length; i++) {
+                //    content += "<tr>";
+                //    content += "<td id='tdUOMType_" + i + "'>" + result.Tables[0].Rows[i].UOM_Type_Name + "</td>";
+                //    content += "<td>" + result.Tables[0].Rows[i].Status + "<input type='hidden' id='hdnUOMType_" + i + "' value='" + result.Tables[0].Rows[i].UOM_Type_Code + "' /></td>";
+                //    content += "<td><span style='cursor:pointer;text-decoration:underline' onclick='fnEditUOMType(" + i + ")'>Edit</span> | <span style='cursor:pointer;text-decoration:underline'  onclick='fnUOMTypeChangeStatus(" + i + ")'>Change status</span></td>";
+                //    content += "</tr>";
+                //}
+                //content += "<tbody>";
+                //content += "</tbody>";
+                //content += "</table>";
+                $("#divUOMType").html('');
+                var grid = new ej.grids.Grid({
+                    dataSource: result.Tables[0].Rows,
+                    //  rowSelected: fnRowSelected,
+                    showColumnChooser: true,
+                    allowPaging: true,
+                    allowGrouping: true,
+                    allowSorting: true,
+                    allowFiltering: true,
+                    allowResizing: true,
+                    allowCellMerging: true,
+                    allowScrolling: true,
+                    allowExcelExport: true,
+                    pageSettings: { pageSize: 10, pageSizes: [10, 20, 30, 40, 50], pageCount: 10 },
+                    filterSettings: { type: 'CheckBox' },
+                    width: '100%',
+                    toolbar: ['Search', 'ColumnChooser'],
+
+                    aggregates: [],
+                    columns: [
+                            { field: 'UOM_Type_Name', headerText: 'UOM Type Name', width: 200, textAlign: 'center' },
+                            { field: 'Status', headerText: 'Status', width: 200, textAlign: 'center' },
+                            { headerText: 'Edit', width: 200, textAlign: 'center' },
+                            { headerText: 'Change Status', width: 200, textAlign: 'center' },
+                    ],
+                    queryCellInfo: queryCellInfo,
+                });
+                grid.appendTo('#divUOMType');
+
+             //   if ($.fn.dataTable) { $('#tblUOMType').dataTable({ "sPaginationType": "full_numbers", "bDestroy": true }); };
+            }
+        });
+    }
+    function queryCellInfo(args) {
+        debugger;
+        if (args.column.headerText == "Edit") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnEditUOMType(" + args + ")'>Edit</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnEditUOMType(args);
+            })
+        }
+        if (args.column.headerText == "Change Status") {
+            debugger;
+            args.cell.style.cursor = "pointer";
+            args.cell.style.color = "blue";
+            args.cell.style.textDecoration = "underline";
+            args.cell.innerHTML = "<a onclick='fnUOMChangeStatus(" + args + ")'>Change Status</a>"
+            $(args.cell).bind("click", function () {
+                debugger;
+                fnUOMTypeChangeStatus(args);
+            })
+        }
+    }
+
+    function fnEditUOMType(rowIndex) {
+        $("#hdnMode").val("E");
+        var brandCode = rowIndex.data.UOM_Type_Code;
+        var brandName = rowIndex.data.UOM_Type_Name;
+
+        $("#hdnUOMTypeCode").val(brandCode);
+        $("#txtUOMTypeName").val(brandName);
+    }
+    function fnUOMTypeClearAll() {
+        $("#hdnUOMTypeCode").val('');
+        $("#txtUOMTypeName").val('');
+        $("#hdnMode").val('S');
+    }
+
+    $('#modal_close').click(function () {
+        fnEdit($('#hdnUOMRowIndex').val());
+    });
+
+</script>

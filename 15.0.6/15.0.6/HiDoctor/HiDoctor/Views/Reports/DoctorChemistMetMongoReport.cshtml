@@ -1,0 +1,375 @@
+﻿@{
+    ViewBag.Title = "Doctor chemist met";
+    Layout = "~/Views/Shared/_RptLayout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~/Content/Rpt.css" rel="stylesheet" />
+
+ <div class="container-fluid" style="margin-top:5px;">
+     <div class="col-sm-12 ReportHeading" style="text-align: center;">         
+         <span>Doctor Chemist Met Report</span>
+     </div>
+     <div class="col-sm-12">
+         <span style="font-size: 16px;font-weight: 600;border-bottom:1px solid">Input Parameters:</span>
+         <table class="table reporting_input">
+             <tbody>
+                 <tr>
+                     <td>Users:</td>
+                     <td><a data-toggle="modal" data-target="#showUserNamePopup">Show Users</a></td>
+                 </tr>
+                 <tr>
+                     <td>StartDate:</td>
+                     <td id="StartDate"></td>
+                 </tr>
+                 <tr>
+                     <td>EndDate:</td>
+                     <td id="EndDate"></td>
+                 </tr>
+             </tbody>
+         </table>
+     </div>
+    <div class="col-sm-12" id="dvDocChemistMetReports">
+    </div>     
+</div>
+<div class="modal fade" id="showUserNamePopup" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">UserName</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>UserName</th>
+                        </tr>
+                    </thead>
+                </table>
+                 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var companyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var userCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var startDate = @Html.Raw(Json.Encode(ViewBag.StartDate));
+    var endDate = @Html.Raw(Json.Encode(ViewBag.EndDate));
+    var result = "";
+    $(document).ready(function(){
+    debugger;
+    var urls='http://localhost:14829/DCR/DoctorVisit/GetDCRChemistMetTabular/'+companyCode+'/'+userCode+'/'+startDate+'/'+endDate;
+    $.ajax({
+        type: 'POST',
+        data: "",
+        url: urls,      
+        success: function (data) {
+            debugger;
+            $("#StartDate").text(startDate);
+            $("#EndDate").text(endDate);
+            if(data != null){
+                DoctorChemistMetTable(data);
+                console.log(data);
+            }
+            else{
+                result+="No Data Found";
+                $('#dvDocChemistMetReports').html(result);
+            }
+        },
+        error: function (e) {
+           // $("#dvDocCheMetRpt").unblock();
+        }
+        });
+    });
+    function formatDate(d) {
+        date = new Date(d)
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1;
+        var yyyy = date.getFullYear();
+        if (dd < 10) { dd = '0' + dd }
+        if (mm < 10) { mm = '0' + mm };
+        return d = dd + '/' + mm + '/' + yyyy
+    }
+    function DoctorChemistMetTable(data){
+        debugger;        
+        for (var i = 0; i < data.length; i++) {
+            var content = '';
+            content+=" <table class='table table-striped details'>";
+            content+="<thead style='background: #8585fb; color: #fff;'>";
+            content+="<tr>";
+            content+="<th style='text-align:left' colspan='3'>";
+            content+="User Details";
+            content+="<th>";
+            content+="</tr>";
+            content+="</thead>";
+
+            content+="<tbody>";
+            content+="<tr>";
+            content+="<td >User Name: </td>";
+            content+="<td>"+ data[i].objDCRHeader.UserName+"</td>";
+
+            content+="<td >Designation: </td>";
+            content += "<td >" + data[i].objDCRHeader.ReportingDetails.UserTypeName + "</td>";
+            content+="</tr>";
+
+            content+="<tr>";
+            content+="<td>Employee Name: </td>";
+            content += "<td>" + data[i].objDCRHeader.EmployeeName + "</td>";
+
+
+            content+="<td >Employee Number: </td>";
+            content+="<td>"+data[i].objDCRHeader.EmployeeNumber+"</td>";
+
+            content+="</tr>";
+
+            content+="<tr>";
+            content+="<td>Reporting HQ: </td>";
+            content+="<td>"+data[i].objDCRHeader.ReportingDetails.RegionName+"</td>";
+            content+="</td>";
+            content+="<td>Reporting Manager: </td>";
+            content+="<td>"+data[i].objDCRHeader.ReportingDetails.EmployeeName+"</td>";
+            content+="</tr>";
+
+            content+="<tr>";
+            content+="<td>Territory: </td>";
+            content += "<td>" + data[i].objDCRHeader.RegionName + "</td>";
+            content += "<td>Division: </td>";
+            if (data[i].objDCRHeader.DivisionDetail != null) {
+                for (var j = 0; j < data[i].objDCRHeader.DivisionDetails.length; j++) {
+                    content += "<td>" + data[i].objDCRHeader.DivisionDetails[j].DivisionName + "</td>";
+                }
+            }
+            content+="</tr>";
+            content += "<tr>";
+            content += "<td>Date of joining: </td>";
+            content+="<td>userDetailModel.DOJ</td>";
+            content+="</tr>";
+            content+="<tr>";
+            content+="<td>Periods: </td>";
+            content+="<td></td>";         
+            content+="<td>&nbsp;</td>";
+            content+="<td>";
+            content+="&nbsp;";
+            content+="</td>";
+            content+="</tr>";
+            content+="</tbody></table>";
+            content += "<table class='table table-striped details'><thead style='background: #8585fb; color: #fff;' >";
+            content+="<tr><th style='text-align:left'>DCR Date</th>";
+            content+="<th style='text-align:left'>Punched Date</th>";
+            content+="<th style='text-align:left'>Place Worked</th>";
+            content+="<th style='text-align:left'>Status</th>";
+            
+            content+="<th style='text-align:left'>Doctor Count</th>";           
+            content+="<th style='text-align:left'>Chemist Count</th></tr>";
+            content+="</thead><tbody>";
+            var totalDocCallsMade = 0;
+            var totalChemCallsMade = 0;
+            if (data[i].lstDCRDoctorChemistVisit == 0 || data[i].lstDCRDoctorChemistVisit == null)
+            {
+                content+="<tr><td colspan='8'> No DCRs Found.<td></tr>";
+            }
+            else
+            {
+                var totalDocCallsMade = 0;
+                var totalChemCallsMade = 0;
+
+                content += "<tr><td title='DCR Date'>" +formatDate(data[i].objDCRHeader.LocalDCRActualDate) + "</td>";
+                content += "<td title='Punched Date'>" + formatDate(data[i].objDCRHeader.LocalDCRActualDate) + "</td>";
+                content+="<td title='Place Worked'>"+data[i].objDCRHeader.PlaceWorked+"</td>";
+                var DCR_Status = data[i].objDCRHeader.DCRStatusName;
+                content+="<td title='Status'>"+DCR_Status+"</td>";
+                // Doctor Count.
+                content += "<td title='Doctors Count' style='vertical-align:top'>";
+                content+='<a class="" data-toggle="collapse" href="#OwnAndOtherMdl'+i+'" aria-expanded="false" aria-controls="OwnAndOtherMdl">';
+                if (data[i].lstDoctorVisitOtherMdl.length != 0 || data[i].lstDoctorVisitOwnMdl.length != 0) {
+                    totalDocCallsMade += data[i].lstDoctorVisitOtherMdl.length + data[i].lstDoctorVisitOwnMdl.length;
+                }
+                else {
+                    totalDocCallsMade += 0;
+                }
+                content+=totalDocCallsMade;
+                content+="</a>";
+                content+="<div class='collapse' id='OwnAndOtherMdl"+i+"'>";
+                content+="<div class='card card-block'>";  
+                //Own MDL.
+                if (data[i].lstDoctorVisitOwnMdl.length != 0)
+                {                 
+                    content += "<table class='table table-striped' title='OWN MDL Visited'><thead style='background: #8585fb; color: #fff;'><tr><th></th><th></th><th></th><th>Doctor Own MDL</th><th></th><th></th></tr><tr>";
+                    content+="<th style='text-align:left;'>Doctor</th>";
+                    content+="<th style='text-align:left;'>Category</th>";
+                    content+="<th style='text-align:left;'>Speciality</th>";
+                    content+="<th style='text-align:left;'>MDL Number</th>";
+                    content+="<th style='text-align:left;'>Chosen accompanist for that doctor visit</th>";
+                    content+="<th style='text-align:left;'>Remarks</th>";
+                    content+="</tr></thead>";
+                    content+="<tbody>";
+
+                    for (var k=0;k<data[i].lstDoctorVisitOwnMdl.length; k++)
+                    {
+                        content+="<tr><td title='OWN MDL Visited - Doctor Name'>";
+                        content+=data[i].lstDoctorVisitOwnMdl[k].DoctorName;
+                        content+="</td>";
+                        content+="<td title='OWN MDL Visited - Doctor Category'>";
+                        content+=data[i].lstDoctorVisitOwnMdl[k].CategoryName;
+                        content+="</td>";
+                        content+="<td title='OWN MDL Visited-Speciality'>";
+                        content+=data[i].lstDoctorVisitOwnMdl[k].SpecialityName;
+                        content+="</td>";
+                        content+="<td title='OWN MDL Visited-MDL Number'>";
+                        content+=data[i].lstDoctorVisitOwnMdl[k].MDLNo;
+                        content+="</td>";
+                        content+="<td title='OWN MDL Visited - Accompanist'>";
+                        //int count = 0;
+                        //foreach (DCRAccompanistDetail dcrAccompanist in lstacc)
+                        //{
+                        //    if (dcrDoctorVisit.DCR_Visit_Code == dcrAccompanist.DCR_Visit_Code)
+                        //    {
+                        //        if (count == 0)
+                        //        {
+                        //            strTableBuilder.Append(dcrAccompanist.Acc_User_Name);
+                        //        }
+                        //        else
+                        //        {
+                        //            content+="," + dcrAccompanist.Acc_User_Name);
+                        //        }
+                        //        count++;
+                        //    }
+
+                        //}
+                        content+="</td>";
+                        content+="<td title='OWN MDL Visited - Remarks'>";
+                        content+=data[i].lstDoctorVisitOwnMdl[k].Remarks;
+                        content+="</td>";
+                        content+="</tr>";
+                    }
+                    content+="</tbody></table>";
+                    
+                }
+                else
+                {
+                    content+="<table class='table table-striped' title='OWN MDL Visited'><thead style='background: #8585fb; color: #fff;'><tr><th></th><th></th><th></th><th>Doctor Own MDL</th><th></th><th></th></tr></thead><tbody><tr><td>No Doctor Met</td></tr></tbody></table>";
+                }
+
+                // Others MDL.
+                if (data[i].lstDoctorVisitOtherMdl.length != 0)
+                {
+                    
+                    content+="<table class='table table-striped' title='Others MDL Visited'><thead><tr>Doctor Other MDL</tr><tr>";
+                    content+="<th style='text-align:left;'>Doctor</th>";
+                    content+="<th style='text-align:left;'>Category</th>";
+                    content+="<th style='text-align:left;'>MDL Number</th>";
+                    content+="<th style='text-align:left;'>Speciality</th>";
+                    content+="<th style='text-align:left;'>Chosen accompanist for that doctor visit</th>";
+                    content+="<th style='text-align:left;'>Remarks</th>";
+                    content+="</tr></thead>";
+                    content+="<tbody>";
+                    for (var l=0;l<data[i].lstDoctorVisitOtherMdl.length;l++)//;DCRDoctorVisitReportModel dcrDoctorVisit in lstOthersDocVisit)
+                    {
+
+                        content+="<tr><td title='Others MDL Visited - Doctor Name'>";
+                        content+=data[i].lstDoctorVisitOtherMdl[l].DoctorName;
+                        content+="</td>";
+                        content+="<td title='Others MDL Visited - Category Name'>";
+                        content+=data[i].lstDoctorVisitOtherMdl[l].CategoryName;
+                        content+="</td>";
+                        content+="<td title='Others MDL Visited - MDL Number'>";
+                        content+=data[i].lstDoctorVisitOtherMdl[l].MDLNo;
+                        content+="</td>";
+                        content+="<td title='Others MDL Visited - Speciality'>";
+                        content+=data[i].lstDoctorVisitOtherMdl[l].SpecialityName;
+                        content+="</td>";
+                        content+="<td title='Others MDL Visited - Chosen accompanist'>";
+                        //int count1 = 0;
+                        //foreach (DCRAccompanistDetail dcrAccompanist in lstacc)
+                        //{
+
+                        //        if (dcrDoctorVisit.DCR_Visit_Code == dcrAccompanist.DCR_Visit_Code)
+                        //    {
+                        //        if (count1 == 0)
+                        //        {
+                        //            strTableBuilder.Append(dcrAccompanist.Acc_User_Name);
+                        //        }
+                        //        else
+                        //        {
+                        //            content+="," + dcrAccompanist.Acc_User_Name);
+                        //        }
+                        //        count1++;
+                        //    }
+                        //}
+
+                        content+="</td>";
+                        content+="<td title='Others MDL Visited - Remarks'>";
+                        content+=data[i].lstDoctorVisitOtherMdl[l].Remarks;
+                        content+="</td>";
+                        content+="</tr>";
+                    }
+                    content+="</tbody></table>";                   
+                }
+                else
+                {
+                    content+="<table class='table table-striped' title='OWN MDL Visited'><thead style='background: #8585fb; color: #fff;'><tr><th></th><th></th><th></th><th>Doctor Other MDL</th><th></th><th></th></tr> <tbody><tr><td>No Doctor Met</td></tr></tbody></table>";
+                }
+                content+="</td>";    
+
+                // Chemist Count.
+                content += "<td style='vertical-align:top' title='Chemist Met Count'><a class='' data-toggle='collapse' href='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample'>";
+                if (data[i].lstDCRDoctorChemistVisit != null) {
+                    totalChemCallsMade += data[i].lstDCRDoctorChemistVisit.length;
+                }
+                else {
+                    totalChemCallsMade += 0;
+                }
+
+                content+=data[i].lstDCRDoctorChemistVisit.length;
+                content+="</a>";
+                content+="<div class='collapse' id='collapseExample"+i+"'>";
+                content+="<div class='card card-block'>";   
+                content+="<table class='table table-striped' title='Chemist Met'><thead><tr>"
+                content+="<th style='text-align:left;background: #8585fb;color: #fff;'>Chemist</th>";
+                content+="</tr></thead>";
+                content+="<tbody>";
+
+                // Retrieve the Unique Chemist.
+
+                for (var m = 0; m < data[i].lstDCRDoctorChemistVisit.length;m++)
+                {
+                    content+="<tr><td title='Chemist Met - Chemist Name'>";
+                    content += data[i].lstDCRDoctorChemistVisit[m].ChemistName;
+                    content+="</td>";
+                    content+="</tr>";
+                }
+                content+="</tbody></table>";
+                content+="</div> </div>";
+                content+="</td>";
+                content+="</tr>";
+            }
+
+            // Total summary per user.
+            content+="<tr><td colspan='9'><table style='float:right'>";
+            content+="<tr>";
+            content+="<td > Total Number of Doctor Calls Made:&nbsp;" + totalDocCallsMade + "</td>";
+            content+="</tr>";
+            content+="<tr>";
+            content+="<td > Total Number of Chemist Calls Made:&nbsp;" + totalChemCallsMade + "</td>";
+            content+="</tr>";
+            content+="</table></td></tr>";
+            content+="</tbody></table>";
+            result += content;
+        }
+        $('#dvDocChemistMetReports').html(result);
+    }
+    //function fnUserNamePopUp(){
+
+    //}
+</script>
+ 

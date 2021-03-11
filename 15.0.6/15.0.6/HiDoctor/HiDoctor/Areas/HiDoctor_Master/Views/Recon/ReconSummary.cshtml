@@ -1,0 +1,215 @@
+﻿@{
+    Layout = null;
+}
+
+
+<script src="../../Scripts/Bootstrap/bootstrap.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<link href="../../Content/Bootstrap/bootstrap.css?v=@HiDoctor.BuildNumber.BuildNo" rel="stylesheet" />
+
+<script src="../../Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script type="text/javascript" src="../../Areas/HiDoctor_Master/Scripts/HD_Master/Recon.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<style>
+    .e-grid .e-groupdroparea {
+        background-color: #0072c6 !important;
+        color: white !important;
+        margin-top: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .e-headercelldiv {
+        font-size: 14px !important;
+        color: black !important;
+        margin-top: 3px !important;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    thead th, thead td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ActionContent {
+        padding-left: 40%;
+    }
+
+    #modal {
+        display: block;
+        /*top: 10px !important;*/
+        margin-left: -35% !important;
+        width: 70% !important;
+    }
+
+    #modal_content {
+        width: 100% !important;
+    }
+
+    #modal_close {
+        font-size: 26px !important;
+        right: 13px !important;
+        top: 15px !important;
+    }
+
+    input[type=button] {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.428571429;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+     .rl_shell {
+        overflow: auto; 
+        max-height: 500px;
+        width: 100%;
+        display: inline-block;
+    }
+</style>
+<div>
+    <div id="divReconSummary" style="display:none;">
+        <div style="margin-left: 93%;padding-bottom: 1%;">
+            <input type="button" class="btn btn-sucess" value="Add New" onclick="Recon.AddReconinitialize(1);" />
+        </div>
+
+
+        <div id="divSummary"></div>
+    </div>
+    <div id="divAddRecon" style="display:none;">
+        <div class="user_name" style="float:left;padding: 1%;">
+            <div>Select user name</div>
+            <div>
+                <input type="text" id="txtUserName" class="autoUser form-control" onblur="Recon.ValUserName(this);" />
+                <input type="hidden" id="hdnUserCode" />
+            </div>
+        </div>
+        <div class="monthcale" style="float:left;    padding: 1%;">
+            <div>Select Month</div>
+            <div>
+                <input type="text" id="txtMonth" class="form-control" />
+            </div>
+        </div>
+        <div style="float:left;padding: 1%;padding-top: 2%; margin-left: 2%;">
+            <input type="button" class="btn" id="btnGo" value="Go" onclick="Recon.fnAddNewRecon(1);" />
+
+        </div>
+        <div style="float:left;padding: 1%; padding-top: 2%; margin-left: 56%;">
+            <input type="button" class="btn" value="Back" onclick="Recon.fnHideRecon();" />
+            <div id="dvApprovalView" style="display:none">
+                <input type="button" class="btn-primary" value="Back" id="btnApprovalView" onclick="Recon.fnRedirectApprove();" />
+            </div>
+        </div>
+        <div class="addform rl_shell">
+
+            <table class="table" id="proTable">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Batch</th>
+                        <th>Quantity in system</th>
+                        <th>Quantity in hand</th>
+                        <th>Variation Qty</th>
+                        <th>Variation Type</th>
+                        <th>Remarks for variation</th>
+                    </tr>
+
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div style="float: left;margin-left: 40%;">
+            <div style="float: left;">
+                <input class="btn" type="button" value="" id="btnSave" style="margin-left: 50%;" onclick="Recon.fnFormAction(2);" />
+            </div>
+            <div style="float: left;position: relative; position: absolute;margin-left: 9%;">
+                <input class="btn" type="button" value="Save" id="btnDraft" style="margin-left: 50%;" onclick="Recon.fnFormAction(5);" />
+            </div>
+
+        </div>
+        <!--View Approval-->
+        <div id="dvActionForViewApprove" class="ActionContent">
+            <table>
+                <tr>
+                    <td style="vertical-align:middle;">
+                        Remarks :
+                    </td>
+                    <td>
+                        <textarea rows="4" cols="50" name="txtUnapproveRemarks" id="txtUnapproveRemarks"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <input type="button" id="btnApprove" class="btn-primary" value="Approve" onclick="Recon.fnViewApprove(1);" />&nbsp;&nbsp;
+
+                        <input type="button" value="Reject" class="btn-danger" id="btnUnapprove" onclick="Recon.fnViewApprove(0);" />
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+    </div>
+</div>
+<a href="#" class="scrollup">Scroll</a>
+<div id="dvView" style="display:none"></div>
+<script src="~/Areas/HiDoctor_Master/Scripts/HD_Master/Recon/ReconApprovalList.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        //try {
+
+        debugger;
+
+        Recon.defaults.Company_Code =@Html.Raw(Json.Encode(ViewBag.Compnay_Code));
+        Recon.defaults.IsEdit =@Html.Raw(Json.Encode(ViewBag.IsEdit));
+        Recon.defaults.EditHeaderId =@Html.Raw(Json.Encode(ViewBag.HeaderId));
+        Recon.defaults.loginUserCode=@Html.Raw(Json.Encode(ViewBag.loginUserCode));
+        Recon.defaults.LoginRegionCode=@Html.Raw(Json.Encode(ViewBag.LoginRegionCode));
+
+        // Recon Approve Properties
+        ReconApproval.defaults.CompanyCode =@Html.Raw(Json.Encode(ViewBag.Compnay_Code));
+        ReconApproval.defaults.UserCode=@Html.Raw(Json.Encode(ViewBag.loginUserCode));
+        ReconApproval.defaults.CompanyId =@Html.Raw(Json.Encode(ViewBag.Compnay_Id));
+        Recon.defaults.CompanyId =@Html.Raw(Json.Encode(ViewBag.Compnay_Id));
+        AjaxGlobalHandler.Initiate();
+        Recon.fngetreportingusers();
+        Recon.initialize();
+
+
+        $("#dvAjaxLoad").hide();
+
+        $('input[type="number"]').on("cut copy paste",function(e) {
+            e.preventDefault();
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+
+
+    });
+
+</script>

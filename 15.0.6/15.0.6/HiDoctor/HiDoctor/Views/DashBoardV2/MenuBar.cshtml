@@ -1,0 +1,223 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "MenuBar";
+    
+}
+
+
+<style>
+    .cls-back-dashboard {
+        background-color: #EEEEEE !important;
+        color: white !important;
+        flex: 6;
+    }
+
+    .cls-back-dash {
+    }
+
+    .cls-unapproved-main .panel-body ul {
+        display: inline-block;
+        list-style: none;
+        width: 100%;
+    }
+
+        .cls-unapproved-main .panel-body ul li {
+            float: left;
+            width: 30%;
+        }
+
+            .cls-unapproved-main .panel-body ul li p.numbers {
+                font-size: 25px;
+                margin-bottom: 4px !important;
+            }
+
+            .cls-unapproved-main .panel-body ul li p.text {
+                font-size: 13px;
+                margin-bottom: 0px !important;
+            }
+
+    #main {
+        margin: 0px !important;
+    }
+</style>
+
+<link href="~/Content/SideMenuBar.css" rel="stylesheet" />
+<link href="~/Content/DashBoard/DashBoardV2.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/font-awesome.min.css" rel="stylesheet" />
+<div>
+    <div class="col-xs-1">
+        <div class="" style="left: 0px; background-color: white; padding: 2px; position: fixed; flex: 1;">
+            <div id="mySidenav" class="sidenav" style="height: 100%; padding-top: 0px; top: -2px; background: none; position: relative;">
+                <a href="#" title="Dashboard-1" class="cls-back-dashboard" id="DashboardV2Menu" style="padding: 15px 10px; border-bottom: 1px solid #fff; background: none;">
+                    <img src="~/Images/dashboard-1.png" style="width: 75%; height: 75%; display: block;" /></a>
+                <a href="#" title="Dashboard-2" class="cls-back-dash" id="DashboardV2Phase2" style="padding: 15px 10px; border-bottom: 1px solid #fff; background: none;">
+                    <img src="~/Images/dashboard-2.png" style="width: 75%; height: 75%; display: block;" /></a>
+                <a href="#" title="Dashboard-3" class="cls-back-dash" id="DashboardV2Phase3" style="padding: 15px 10px; border-bottom: 1px solid #fff; background: none;">
+                    <img src="~/Images/dashboard-3.png" style="width: 75%; height: 75%; display: block;" /></a>
+                <a href="#" title="Insights" class="cls-back-dash" id="DashboardOld" style="padding: 15px 10px; border-bottom: 1px solid #fff; background: none;">
+                    <img src="~/Images/insights.png" style="width: 75%; height: 75%; display: block;" /></a>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xs-11" style="">
+        <div class="cls-notification_top" id="divMenu_top" style="display: none;">
+            <section class="dash-content_top  form-container_top">
+                <span class="dash-title_top">Insights - @DateTime.Now.ToString("MMMM")  @DateTime.Now.ToString("yyyy")</span>
+                <ul class="notifications_top" style="float: right !important;">
+                    <li>
+                        <div class="cls-dv-separator_top"></div>
+                    </li>
+                    <li>
+                        <a href="#" class="notification-icon messages-pop" data-toggle="dropdown" title="Message">
+                            @*   <i class="fa fa-envelope"></i>*@
+                            <img src="~/Content/images/Home/ic_message.png" />
+                            <span class="badge" id="spnMsg">0</span>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="#" class="notification-icon notify-pop" data-toggle="dropdown" title="Notification">
+                            @* <i class="fa fa-bell"></i>*@<img src="~/Content/images/Home/ic_Alert.png" />
+                            <span class="badge" id="spnNotify">0</span>
+                        </a>
+                    </li>
+                    <li id="ICEtask">
+                        <a href="#" class="notification-icon task-pop" data-toggle="dropdown" title="Task">
+                            <img src="~/Content/images/Home/ic_Task.png" style="width: 28px; height: 28px;" />
+                            <span class="badge" id="spntask">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="cls-dv-separator_top"></div>
+                    </li>
+                    <li>
+                        <a href="#" class="notification-icon birthday-pop" data-toggle="dropdown" title="Birthday">
+                            @*   <i class="fa fa-gift"></i>*@<img src="~/Content/images/Home/ic_birthday.png" />
+                            <span class="badge" id="spnBirthday">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="notification-icon anniversary-pop" data-toggle="dropdown" title="Anniversary">
+                            @* <i class="fa fa-calendar-o"></i>*@
+                            <img src="~/Content/images/Home/ic_anniversary.png" />
+                            <span class="badge" id="spnAnniversary">0</span>
+                        </a>
+                    </li>
+                    @*//For Admin only*@
+                    <li id="liEmpBir">
+                        <a href="#" class="notification-icon employee-pop" data-toggle="dropdown" title="Employee Birthday">
+                            @* <i class="fa fa-calendar-o"></i>*@
+                            <img style="width: 27px;" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDEzMS43NjIgMTMxLjc2MiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTMxLjc2MiAxMzEuNzYyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4Ij4KPGc+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZERUNDOyIgZD0iTTU0LjE0Myw3OC40NzdDMjguMTkxLDg5Ljg1NCwyMC40MDUsOTUuOTE5LDE3LjMyOCw5OC42NDMgICBjLTQuNzQyLDQuMTk2LTcuMzY1LDE5LjgzOC0xMC4xNjIsMzMuMTE5aDU4LjcxNWg1OC43MTVjLTIuNzk3LTEzLjI4MS01LjQyMS0yOC45MjMtMTAuMTYyLTMzLjExOSAgIGMtMy4wNzctMi43MjQtMTAuNTc3LTguNjMzLTM2LjUyOS0yMC4wMTFMNTQuMTQzLDc4LjQ3N3oiLz4KCTxwYXRoIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiM0OTcxOTQ7IiBkPSJNNTQuMTQyLDc4LjQ3N0MyOC4xOTEsODkuODU0LDIwLjQwNSw5NS45MTksMTcuMzI4LDk4LjY0MyAgIGMtNC43NDIsNC4xOTYtNy4zNjUsMTkuODM4LTEwLjE2MiwzMy4xMTloNTguNzE1aDU4LjcxNGMtMi43OTctMTMuMjgxLTUuNDItMjguOTIzLTEwLjE2Mi0zMy4xMTkgICBjLTMuMDc2LTIuNzI0LTEwLjU3Ni04LjYzMy0zNi41MjgtMjAuMDExTDU0LjE0Miw3OC40Nzd6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZERUNDOyIgZD0iTTc4LjQ4Miw1NS43OTh2MjguNzY3Yy02LjkzMSw4LjQ4OC0xOC4yNzEsOC4xOTQtMjUuMjAxLDAgICBWNTUuNzk4QzUzLjI4LDQwLjI2NSw3OC40ODIsNDAuMjY1LDc4LjQ4Miw1NS43OTh6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRjdDNUFBOyIgZD0iTTc4LjQ4Miw1NS43OTh2MTkuMjZjLTQuNzY5LDMuNDc2LTkuMzY0LDUuNDIzLTEyLjYwMSw1LjQyMyAgIGMtMy4yMzYsMC03LjgzMy0xLjk0Ny0xMi42MDEtNS40MjN2LTE5LjI2QzUzLjI4LDQwLjI2NSw3OC40ODIsNDAuMjY1LDc4LjQ4Miw1NS43OTh6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZERUNDOyIgZD0iTTY1Ljg4MSw0LjE1MmMtNDIuMjkyLDAtMjcuMDgzLDUxLjEwMS0yNC4zMiw1NS4xNjkgICBjMy4wNDYsNC40ODYsMTcuNDg3LDE2LjM3NiwyNC4zMiwxNi4zNzZTODcuMTU0LDYzLjgwNyw5MC4yLDU5LjMyMUM5Mi45NjQsNTUuMjUzLDEwOC4xNzMsNC4xNTIsNjUuODgxLDQuMTUyeiIvPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0Y3QzVBQTsiIGQ9Ik03Ny4xNDUsNjAuMTQ4Yy05LjkxNSwwLjQ1Ni0xOS43Mi0zLjE5NS0yNS43MTYtOC42MDkgICBDNTEuODAzLDU5Ljc0NCw3MC42OTMsNjYuMTMzLDc3LjE0NSw2MC4xNDh6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRjdDNUFBOyIgZD0iTTU0LjAzNSw1MC44MjVjLTIuMDY3LDAuODA0LTMuNzM5LDIuNDM3LTQuNDc2LDQuMDg0ICAgQzQ5LjA3Niw1Mi42NjYsNTIuMzcsNDkuNjE4LDU0LjAzNSw1MC44MjV6Ii8+CgkKCQk8ZWxsaXBzZSB0cmFuc2Zvcm09Im1hdHJpeCgtMC4zMTI3IC0wLjk0OTggMC45NDk4IC0wLjMxMjcgNC40MDIyIDkyLjUxMSkiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiNGRkRFQ0M7IiBjeD0iMzUuNjciIGN5PSI0NC42NjMiIHJ4PSI3LjMxNyIgcnk9IjQuMjMxIi8+CgkKCQk8ZWxsaXBzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjMxMjggLTAuOTQ5OCAwLjk0OTggMC4zMTI4IDIzLjUzNTkgMTIxLjg1NTMpIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZERUNDOyIgY3g9Ijk1Ljk4IiBjeT0iNDQuNjYyIiByeD0iNy4zMTYiIHJ5PSI0LjIzMSIvPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0ZGQzY1RDsiIGQ9Ik00Ni41NSwyMS4yNTNjLTIuNDUzLDEzLjQwMi04LjU5NywxMi4xNTEtOC4xMDksMjcuODc5ICAgYy0xLjk3NC0xMi4yNTgtNC45MjEtMjguNTcsMy40MTMtMzkuMzE1YzYuNjU5LTguNTg2LDI4LjcxNS0xNC43MjcsNDIuOTk3LTQuNDI2YzE1Ljc3NCwzLjM3LDEwLjg0MiwzNS40ODYsOC43MjcsNDEuNTU3ICAgYy0xLjQ3Ny05LjgzMi00Ljc4NC0xMy45MjgtOC45Ni0yNS40ODhDNzguOTUyLDI1LjUyMiw1My44MTIsMjYuNDI4LDQ2LjU1LDIxLjI1M3oiLz4KCTxwYXRoIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiNFNkU2RTY7IiBkPSJNNjUuOTQ2LDkwLjgyMWMwLDAtMTcuNTg1LDQuMTk4LTE3LjU4NSw1LjI2MyAgIGMwLDEuMDY0LDYuNjkxLDM1LjY3OSw2LjY5MSwzNS42NzloMjMuODc0bDIuNzM2LTM1LjUyNkw2NS45NDYsOTAuODIxeiIvPgoJPHBvbHlnb24gc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6Izg2QkNFQjsiIHBvaW50cz0iNTMuMjgsNzguODU2IDUzLjI4LDg0LjU2NSA1OC43NTQsMTMxLjc2MiAgICA0OS4zNDIsMTMxLjc2MiAzOC45ODcsMTEwLjc0IDQ4Ljg3MSwxMDQuMTUyIDM2Ljc5Miw5OC41MDQgNDcuOSw4MS4yNjkgICIvPgoJPHBvbHlnb24gc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6Izg2QkNFQjsiIHBvaW50cz0iNzguNDgyLDc4Ljg4NiA3OC40ODMsODQuNTY1IDcyLjk1NCwxMzEuNzYyICAgIDgyLjM2NiwxMzEuNzYyIDkyLjcyLDExMC43NCA4Mi44MzcsMTA0LjE1MiA5NC45MTYsOTguNTA0IDg1LjA0NCw4MS44ICAiLz4KCTxwYXRoIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiNGRkZGRkY7IiBkPSJNNTMuMjgsNzUuMDU4bC0xLjEwMiw0LjI4NGwzLjA4MywyMi4zMTRsMTAuNjg1LTEwLjgzNSAgIEw1My4yOCw3NS4wNTh6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojOUQzNDIxOyIgZD0iTTYwLjQ2Miw5Ni42NTdsMy4wNTIsNC43MjhjMS41NzcsMCwzLjE1NiwwLDQuNzMzLDAgICBsMy4wNTMtNC43MjhsLTUuMzU0LTUuODM3TDYwLjQ2Miw5Ni42NTd6Ii8+Cgk8cG9seWdvbiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojOUQzNDIxOyIgcG9pbnRzPSI2My41MTQsMTAxLjM4NSA1OS4xNjksMTMxLjc2MiA3Mi41OTMsMTMxLjc2MiAgICA2OC4yNDgsMTAxLjM4NSAgIi8+Cgk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZGRkZGOyIgZD0iTTc4LjQ4Miw3NS4wNThsMC44NjksNC4yMTVsLTIuODk2LDIyLjYwNkw2NS45NDYsOTAuODIyICAgTDc4LjQ4Miw3NS4wNTh6Ii8+Cgk8Zz4KCQk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMzA0RDY2OyIgZD0iTTMxLjA5NCwxMzEuNzYyaDIuMDExYy0wLjA5LTguOTQxLTAuMDktMTUuMzg2LTAuMDktMTUuMzg2ICAgIFMzMi4xMjQsMTIzLjA3MywzMS4wOTQsMTMxLjc2MnoiLz4KCQk8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMzA0RDY2OyIgZD0iTTEwMC42NjgsMTMxLjc2MmgtMi4wMTJjMC4wOS04Ljk0MSwwLjA5LTE1LjM4NiwwLjA5LTE1LjM4NiAgICBTOTkuNjM3LDEyMy4wNzMsMTAwLjY2OCwxMzEuNzYyeiIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+                            <span class="badge" id="spnEmployee">0</span>
+                        </a>
+                    </li>
+                    @*For useronly*@
+                    <li id="liholiday">
+                        <a href="#" class="notification-icon holiday-pop" data-toggle="dropdown" title="Holiday">
+                            @* <i class="fa fa-calendar-o"></i>*@
+                            <img src="~/Content/images/Home/ic_holiday.png" width="26px" height="27px" />
+                            <span class="badge" id="spnHoliday">0</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </section>
+        </div>
+        <div class="menuBar">
+
+
+            <div class="col-xs-11" style="padding-left: 2px;">
+                <div class="menuflip" id="dashboard1" style="width: 1022px;"></div>
+            </div>
+            <div class="" style="left: 87%; position: fixed;">
+                <div class="notification" id="dashNotification">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/HD/AdminDashboard.js"></script>
+<script src="~/Scripts/HD/Dashboard.js"></script>
+<script src="~/Scripts/HD/DashBoardV2.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        var g_user_type = "";
+        $("#dvAjaxLoad").hide();
+        $('#page-header').hide();
+        $('#main').css('margin', "0px !important");
+        AjaxGlobalHandler.Initiate();
+        //$('#notifyhide').hide();
+        debugger;
+        var user = AdmindashboardV2.getDashboardHome();
+        AdmindashboardV2.getNotificationPage();
+        if (user == 'FIELD_USER') {
+            //Field_user
+            $("#liEmpBir").hide();
+            User_Dashboard.getUserDashboardLiveCounts();
+            User_Dashboard.getUserTaskLiveCounts();
+        }
+        else {
+            //Admin
+            $("#liholiday").hide();
+            AdminDashboard.getAdminDashboardLiveCounts();
+        }
+
+
+        AdminDashboard.getDashboardHome();
+
+        $("#dashboard1").load('DashboardV2/DashBoardV2');
+        $('#DashboardV2Menu').unbind('click').bind('click', function () {
+            $(this).removeClass("cls-back-dash").addClass("cls-back-dashboard");
+            $("#DashboardV2Phase2").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardOld").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardV2Phase3").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $('#dashboard1').load('DashboardV2/DashBoardV2');
+        });
+
+        $('#DashboardV2Phase2').unbind('click').bind('click', function () {
+            $(this).removeClass("cls-back-dash").addClass("cls-back-dashboard");
+            $("#DashboardV2Menu").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardV2Phase3").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardOld").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $('#dashboard1').load('DashboardV2/Index');
+        });
+
+        $('#DashboardV2Phase3').unbind('click').bind('click', function () {
+            $(this).removeClass("cls-back-dash").addClass("cls-back-dashboard");
+            $("#DashboardV2Menu").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardV2Phase2").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardOld").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $('#dashboard1').load('DashboardV2/OzoneDashBoard');
+        });
+        $('#DashboardOld').unbind('click').bind('click', function () {
+
+            $(this).removeClass("cls-back-dash").addClass("cls-back-dashboard");
+            $("#DashboardV2Menu").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardV2Phase2").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            $("#DashboardV2Phase3").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+            AdmindashboardV2.loadDashboardPage();
+
+        });
+
+
+        //$("#DashboardV2Menu").hover(function () {
+
+        //});
+        //$("#DashboardV2Phase2").hover(function () {
+
+        //});
+
+
+
+        //    $(this).removeClass("cls-back-dash").addClass("cls-back-dashboard");
+        //    $("#DashboardV2Menu").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+        //    $("#DashboardV2Phase2").removeClass("cls-back-dashboard").addClass("cls-back-dash");
+        //    $('#dashboard1').load('Dashboard/AdminDashboard');
+        //});
+    });
+</script>

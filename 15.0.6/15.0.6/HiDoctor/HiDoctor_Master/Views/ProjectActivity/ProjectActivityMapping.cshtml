@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "ProjectActivityMapping";
+    Layout = null;
+}
+
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<style>
+    .Clstextleft {
+        text-align: left;
+    }
+</style>
+<div class="col-lg-12">
+    <div class="col-lg-2">
+        Project Name
+    </div>
+    <div class="col-lg-2 form-group">
+        <select id="drpProjectName" class="input-medium form-control"></select>
+    </div>
+</div>
+<div style="clear: both"></div>
+<div class="col-lg-12">
+    <div class="col-lg-2">
+        Activity Name
+    </div>
+    <div class="col-lg-2 form-group">
+        <select id="drpActivityName" class="input-medium form-control"></select>
+    </div>
+</div>
+<div style="clear: both"></div>
+<div class="col-lg-12">
+    <div class="col-lg-2">
+        Start Date
+    </div>
+    <div class="col-lg-2 form-group">
+        <input type="text" id="txtStartDate" placeholder="dd/mm/yyyy" class="datepicker input-large" maxlength="10" />
+    </div>
+</div>
+<div style="clear: both"></div>
+<div class="col-lg-12">
+    <div class="col-lg-2">
+        End Date
+    </div>
+    <div class="col-lg-2 form-group">
+        <input type="text" id="txtEndDate" placeholder="dd/mm/yyyy" class="datepicker input-large" maxlength="10" />
+    </div>
+</div>
+<div style="clear: both"></div>
+
+<button type="button" value="Save" id="btnSave" class="btn btn-primary" onclick="fnInsertProjectActivityMapping()">Save</button>
+&nbsp; &nbsp
+<button type="button" value="Save" class="btn btn-primary" onclick="fnClearAll()">Cancel</button>
+<br />
+<br />
+@Html.ActionLink("Download Project Activity Mapping Details", "PutProjectActivityIntoAzure", new {  })
+<br />
+<div id="dvProjActMappDet" class="table-responsive">
+</div>
+<input type="hidden" id="hdnMode" value="I" />
+
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ProjectActivityMapping.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        AjaxGlobalHandler.Initiate();
+        try
+        {
+            var curDate = @Html.Raw(Json.Encode(ViewBag.CurrentDate)); 
+            var curmonth = new Date(curDate).getMonth();
+            var curyear = new Date(curDate).getFullYear();
+
+            //$('#txtStartDate').datepicker('setDate', new Date(curyear, (curmonth-1), "1"));
+            //$('#txtEndDate').datepicker('setDate', new Date(curyear, (curmonth-1), "1"));
+            $('#txtStartDate').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+            $('#txtEndDate').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+            //$("#txtStartDate").bind("keypress", function (e) {
+            //    return false;
+            //});
+            //$("#txtEndDate").bind("keypress", function (e) {
+            //    return false;
+            //});
+            //$("#txtStartDate").bind("keydown", function (e) {
+            //    return false;
+            //});
+            //$("#txtEndDate").bind("keydown", function (e) {
+            //    return false;
+            //});
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                //showButtonPanel: true
+            });
+
+            fnGetProjectActivityDetails();
+            fnGetProjectActivityMappingDetails();
+
+            $("#dvAjaxLoad").hide();
+        }
+        catch (err) {
+            alert(err.message.toString());
+            $("#dvAjaxLoad").hide();
+        }
+    });
+</script>

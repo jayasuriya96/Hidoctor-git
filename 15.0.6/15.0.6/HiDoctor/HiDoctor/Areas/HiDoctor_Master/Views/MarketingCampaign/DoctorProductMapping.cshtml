@@ -1,0 +1,443 @@
+﻿@{
+    ViewBag.Title = "DoctorProductMapping";
+    Layout = null;
+}
+<script src="../../Scripts/Bootstrap/bootstrap.js"></script>
+<link href="../../Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<style type="text/css">
+    #dvDPMain #dvRegionTree {
+        height: 450px;
+    }
+
+    #dvDPMain #dvRightPanel {
+        min-height: 100px;
+        overflow: auto;
+    }
+
+    .dvCommon {
+        min-height: 35px !important;
+    }
+
+    #dvSFC {
+        padding-top: 1%;
+    }
+
+    #tblSFC thead {
+        color: #fff;
+        background-color: #428bca;
+        border-color: #428bca;
+        text-align: center;
+    }
+
+    #tblDoctors thead {
+        text-align: center;
+    }
+
+    .docProDelete {
+        background: url('../Content/images/cross.png') no-repeat !important;
+        height: 20px;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+
+    .errorIndicator {
+        background: #FFFFFF url(../Content/images/errorIcon.png) no-repeat 95% 4px !important;
+        border: 1px solid red !important;
+        text-align: left !important;
+        cursor: pointer;
+    }
+
+    #dvDoctor {
+        height: 400px;
+        overflow: auto;
+    }
+
+    #dvProduct {
+        height: 400px;
+        overflow: auto;
+    }
+
+    #dvDoctor a {
+        text-decoration: underline;
+    }
+
+    #dvProduct a {
+        text-decoration: underline;
+    }
+
+    .fixed-header thead {
+        position: fixed;
+    }
+
+    .fixed-header tbody {
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+    #dvDoctorMappedProducts {
+        height: 350px;
+        overflow: auto;
+    }
+
+    #dvMappingType {
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+    #spnDoctorTable {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+    }
+
+        #spnDoctorTable:hover {
+            text-decoration: underline;
+        }
+
+    a:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .mappedPro {
+        border: 1px solid #009900 !important;
+        background-color: #BBE3BB !important;
+    }
+
+    #spnTree {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #dvMapping a {
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+    }
+    #dvCampList{
+        display:none;
+    }
+    #dvMapTo{
+        display:none;
+    }
+    #dvMapType{
+        display:none;
+    }
+</style>
+<div class="col-lg-12 form-group" id="dvDPMain">
+    <div class="col-lg-12 form-group"><span id="spnTree" onclick="fnHideTree()">Hide Tree</span></div>
+    <div class="col-lg-12">
+        <div class="col-sm-4 form-group" id="dvLeftPanel">
+            <div id="dvRegionTree"></div>
+        </div>
+        <div class="col-lg-8" id="dvRightPanel">
+            <div class="col-lg-12 form-group" id="dvRegionDetails" style="display: none;">
+                <div class="col-sm-2 form-group">
+                    <label>Region Name  </label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <span id="spnSelectedRegion"></span>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <div class="col-sm-2 form-group">
+                    <label>Type Of Mapping</label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <input type="radio" id="rdGenMap" name="rdTypeMap" value="GEN_MAP" checked="checked" onclick="fnShowInputs('GEN_MAP');" />
+                   General Mapping
+                    <input type="radio" id="rdTarMap" name="rdTypeMap" value="TAR_MAP" onclick="fnShowInputs('TAR_MAP');" />
+                   Target Mapping
+                    <input type="radio" id="rdTarMap"  name="rdTypeMap" value="MARK_MAP" onclick="fnShowInputs('MARK_MAP');" />
+                    Marketing Campaign Mapping
+                    @*<input type="radio" id="rdTarMap" name="rdTypeMap" value="CME_MAP" onclick="fnShowInputs('CME_MAP');" />
+                    CME*@
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="dvMapType">
+                <div class="col-sm-2 form-group">
+                    <label>Mapping Mode</label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <input type="radio" name="rdMapping" value="DOCTOR_PRODUCT" checked="checked" onclick="fnHideProdDiv();"/>
+                    <span class="docLabel"></span> Product Mapping
+                    <input type="radio" name="rdMapping" value="PRODUCT_DOCTOR" onclick="fnHideProdDiv();"/>
+                    Product <span class="docLabel"></span> Mapping
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+          
+            <div class="col-lg-12 form-group" id="dvCampList">
+                <div class="col-sm-2 form-group">
+                    <label>Maketing Campaign</label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <select id="cboCampaign" onchange="fnOnChangeEventOfCampaigns(this.value); fnHideProdDiv();" style="width:30% !important;"></select>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12 form-group" id="dvCMECampList">
+                <div class="col-sm-2 form-group">
+                    <label>CME</label>
+                </div>
+                <div class="col-lg-10 form-group">
+                    <select id="cboCMECampaign" onchange="fnOnChangeEventOfCMECampaigns(this.value); fnHideProdDiv();" style="width:30% !important;"></select>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="dvMapTo">
+                <div class="col-sm-2 form-group">
+                    <label>Mapping For</label>
+                </div>
+                @*<div class="col-lg-10 form-group">
+                <input type="radio" name="rdMapTo" value="MapTo_Self" checked="checked" onclick="fnHideProdDiv();"/>
+                Self Mapping
+                <input type="radio" name="rdMapTo" value="MapTo_Region" onclick="fnHideProdDiv();"/>
+                Region Mapping
+            </div>*@
+                <div class="col-lg-10 form-group">
+                    <select class="form-group" id="MapTo" onchange="fnHideProdDiv();" style="width:30% !important;">
+                        <option value="0">-Please Select Region To Map-</option>
+                    </select>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="dvBtnGo">
+                <div class="col-lg-6 form-group">
+                    <input type="button" class="btn form-group" id="ButtonGo" value="GO" style="float:right;" onclick="fnGetGrids();" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="col-lg-12 form-group">
+                @*<div class="col-sm-2 form-group" ><span id="spnDoctorTable" onclick="fnHideDoctors()">Hide Doctors</span></div>*@
+                <div id="dvMappingType" class="col-lg-10 form-group"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="col-lg-12 form-group" id="dvProdDocTbls">
+                <div class="col-lg-12 form-group" style="text-align: right" >
+                    <input type="text" id="txtSearchKey" maxlength="300" />&nbsp;<input type="button" value="Go" class="btn small primary" onclick="fnGetDoctorProducts();" />
+                </div>
+                @*<div class="col-lg-12 form-group" style="text-align: right;color:red;">
+                    Note : Products with color are referred to CME Products 
+                </div>*@
+                <div class="col-lg-12 form-group" id="dvMapping"></div>
+            </div>
+            <div class="col-lg-12" style="padding:20px;padding-left:92%;" id="btnDPMSubmit">
+                <input type="button" class="btn btn-primary" value="Submit" onclick="fnSubmit();" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="dvProductPopUp" class="simple_overlay">
+    <a class="overlayclose" onclick="$('#dvProductPopUp').overlay().close();"></a>
+    <div class="popUpTitle" style="height: 45px;">
+        <span id="spnPopUpTitle">Mapped Products</span>
+    </div>
+    <div id="dvDoctorMappedProducts"></div>
+</div>
+<input type="hidden" id="hdnMode" value="INSERT" />
+
+<div id="DeleteModal" class="modal fade " role="dialog" style="display:none;overflow:hidden;">
+    <div class="modal-dialog modal-lg" style="-webkit-box-shadow:none;background:none;border:0px;margin:0px;margin-top:10%;margin-left:25%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body" id="deleteMappingBody" style="width:100%;">
+            </div>
+            <div class="modal-footer col-xs-12" style="padding: 5px 20px 20px;margin-top: 0px;">
+                <div id="confrmdelte" class="col-xs-10">
+
+                </div>
+                <div id="cncldelete" class="col-xs-1">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="../Areas/HiDoctor_Master/Scripts/HD_Master/MarketingCampaign.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script lang="ja">
+    var regionCode='';
+    var privval='';
+    var CompanyCode='';
+    $(document).ready(function () {
+        debugger;
+        AjaxGlobalHandler.Initiate();
+        $(document).ajaxStop($.unblockUI);
+        CompanyCode=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+        $("#dvRightPanel").tabs();
+        fnBindRegionTree("dvRegionTree");
+        $("#dvProductPopUp").overlay().load();
+        $("#dvRightPanel").hide();
+        $("#dvAjaxLoad").hide();
+        fnGetPrivilegevalue();
+        //fnGetCampaigns();
+        fnShowInputs('GEN_MAP');
+       // $("#MapTo").multiselect().multiselectfilter();
+        
+    });
+    function fnRegionTreeActivate(node) {
+        debugger;
+        regionCode = node.data.key;
+        //$('#main').block({
+        //    message: '<h3>Processing</h3>',
+        //    css: { border: '2px solid #ddd' }
+        //});
+        $('input:radio[name=rdMapping][value=DOCTOR_PRODUCT]').attr('checked', true);
+        //$('input:radio[name=rdMapTo][value=MapTo_Self]').attr('checked', true);
+        $('input:radio[name=rdTypeMap][value=GEN_MAP]').attr('checked', true);
+        $("#dvRegionDetails").show();
+        $("#spnSelectedRegion").html(node.data.title);
+        $("#dvRightPanel").show();
+        $("#dvLeftPanel").hide();
+        $('#dvProdDocTbls').hide();
+        $('#btnDPMSubmit').hide();
+        $("#dvRightPanel").removeClass('col-lg-8');
+        $("#dvRightPanel").addClass('col-lg-12');
+        $("#spnTree").html('Show Tree');
+        //fnGetParentHierarchyRegions();
+        var content = '';
+        content += ' <option value="0">-Please Select Region To Map-</option>';
+        $("#MapTo option").remove();
+        $('#MapTo').html(content);
+        $('#MapTo').val(0);
+        $('#dvCampList').hide();
+        $('#cboCampaign option').remove();
+        
+        var contentCamp = '';
+        contentCamp += ' <option value="0">-Please Select Campaign-</option>';
+        $('#cboCampaign').html(contentCamp);
+        $('#cboCampaign').val(0);
+        if (privval != '') {
+            $('.docLabel').html(privval);
+        } else {
+            $('.docLabel').html("Doctor");
+        }
+        fnHideProdDiv();
+        if ($('input:radio[name=rdTypeMap]:checked').val() == "GEN_MAP" || $('input:radio[name=rdTypeMap]:checked').val() == "TAR_MAP") {
+            fnGetParentHierarchyRegions();
+        }else{
+            var content = '';
+            content += ' <option value="0">-Please Select Region To Map-</option>';
+            $("#MapTo option").remove();
+            $('#MapTo').html(content);
+            $('#MapTo').val(0);
+        }
+    }
+
+    function fnRegionTreePostInit() {
+    }
+
+    function fnHideTree() {
+        if ($("#spnTree").html() == "Hide Tree") {
+            $("#dvLeftPanel").hide();
+            $("#dvRightPanel").removeClass('col-lg-8');
+            $("#dvRightPanel").addClass('col-lg-12');
+            $("#spnTree").html('Show Tree');
+        }
+        else if ($("#spnTree").html() == "Show Tree") {
+            $("#dvLeftPanel").show();
+            $("#dvLeftPanel").addClass('col-lg-4');
+            $("#dvRightPanel").removeClass('col-lg-12');
+            $("#dvRightPanel").addClass('col-lg-8');
+            $("#spnTree").html('Hide Tree');
+        }
+    }
+    function fnGetPrivilegevalue() {
+        debugger;        
+        privval = fnGetPrivilegeValue("DOCTOR_CAPTION_DISPLAY_NAME", "");
+        if (privval != '') {
+            $('.docLabel').html(privval);
+
+        } else {
+            $('.docLabel').html("Doctor");
+        }
+    }
+    function fnHideProdDiv() {
+        debugger;
+        $('#dvProdDocTbls').hide();
+        $('#btnDPMSubmit').hide();
+        $('#dvMappingType').hide();
+    }
+    function fnShowInputs(value) {
+        debugger;
+       
+        if (value == "GEN_MAP") {
+
+            var contentCamp = '';
+            contentCamp += ' <option value="0">-Please Select Campaign-</option>';
+            $('#cboCampaign').html(contentCamp);
+            $('#cboCampaign').val(0);
+            $('#dvMapType').show();
+            $('#dvMapTo').show();
+            $('#dvCampList').hide();
+            $("#dvCMECampList").hide();
+            $('input:radio[name=rdMapping][value=DOCTOR_PRODUCT]').attr('checked', true);
+            $('#MapTo').val(0);
+            fnHideProdDiv();
+            fnGetParentHierarchyRegions();
+           
+        } else if (value == "TAR_MAP") {
+
+            var contentCamp = '';
+            contentCamp += ' <option value="0">-Please Select Campaign-</option>';
+            $('#cboCampaign').html(contentCamp);
+            $('#cboCampaign').val(0);
+            $('#dvMapType').show();
+            $('#dvMapTo').show();
+            $('#dvCampList').hide();
+            $("#dvCMECampList").hide();
+            $('input:radio[name=rdMapping][value=DOCTOR_PRODUCT]').attr('checked', true);
+            $('#MapTo').val(0);
+            fnHideProdDiv();
+            fnGetParentHierarchyRegions();
+          
+        }
+        else if (value == "CME_MAP") {
+
+            var contentCamp = '';
+            contentCamp += ' <option value="0">-Please Select Campaign-</option>';
+            $('#cboCMECampaign').html(contentCamp);
+            $('#cboCMECampaign').val(0);
+            $('#dvMapType').show();
+            $('#dvMapTo').show();
+            $('#dvCampList').hide();
+            $("#dvCMECampList").show();
+            $('input:radio[name=rdMapping][value=DOCTOR_PRODUCT]').attr('checked', true);
+            $('#MapTo').val(0);
+            fnHideProdDiv();
+            fnGetCMECampaigns();
+
+        } else {
+
+            var contentCamp = '';
+            contentCamp += ' <option value="0">-Please Select Campaign-</option>';
+            $('#cboCampaign').html(contentCamp);
+            $('#cboCampaign').val(0);
+            $('#dvMapType').show();
+            $('#dvMapTo').show();
+            $('#dvCampList').show();
+            $("#dvCMECampList").hide();
+            $('input:radio[name=rdMapping][value=DOCTOR_PRODUCT]').attr('checked', true);
+            $('#MapTo').val(0);
+            fnHideProdDiv();
+            fnGetCampaigns();
+            //fnGetParentHierarchyRegions();
+           
+        }   
+    }
+
+  
+</script>

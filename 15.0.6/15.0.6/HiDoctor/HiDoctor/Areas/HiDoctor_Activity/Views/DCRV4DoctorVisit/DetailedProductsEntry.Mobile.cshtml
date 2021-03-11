@@ -1,0 +1,63 @@
+﻿<style>
+    .ui-listview-filter {
+        width: 250px !important;
+        margin: 5px !important;
+    }
+
+    .prdselected, .cheselected {
+        background-color: green !important;
+        color: #fff !important;
+    }
+
+    .duplicateProductHighlight, .duplicateChemistHighlight {
+        background-color: #FF9494;
+        border: 1px solid red;
+    }
+
+    a[rel=close] {
+        margin-left: 85% !important;
+    }
+    #dvCopyrights {
+display:none;
+    }
+</style>
+
+
+<div id="docnamelable" style="display: none;">Doctor Name</div>
+<div id="docnamevalue" style="display: none;"></div>
+<div id="detProductmodaldiv" style="overflow: scroll; padding: 5px; display: none;"
+    data-options='{"mode":"blank","headerText":"DetailedProducts","headerClose":true,"blankContent":true,"buttonInput":true,"blankContentAdopt":true,"top":5}'>
+    <div id="selecteddetProdsdiv" style="margin: 3px; border: 1px solid #aaa">
+        <ul id="selecteddetProdslist" data-role="listview" data-mini="true" data-split-icon="Delete" data-theme="b" data-split-theme="b" data-split-icon-postion="left" data-split-icon="Delete" data-inset="true">
+        </ul>
+        <input type="button" value="Done" onclick="fnAddDetailedProducts()" />
+    </div>
+    <ul id="Detailproductmodal" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search inputs...">
+    </ul>
+</div>
+
+
+
+<div><a href="#" style="padding-top: 5px; padding-bottom: 5px; margin-top: 15px" onclick="showDetailedProductSimpleDialog()">Add Detailed Products</a> </div>
+<div id="detailedProductlist" class="ui-collapsible-content ui-body-d ui-corner-bottom" style="margin: 0px; padding: 0px; border: 0px solid" aria-hidden="false">
+</div>
+<div id="dvBotAddInputs" style="display: none"><a href="#" style="padding-top: 5px; padding-bottom: 5px; margin-top: 15px" onclick="showDetailedProductDialog();">Add Detailed Products</a> </div>
+
+@Scripts.Render("~/bundles/mDCRDetailedProductsjs")
+<script>
+    $(document).ready(function () {
+        try {
+            var docName = @Html.Raw(Json.Encode(ViewBag.DoctorName));
+            $('#docnamevalue').html(docName);
+            $.mobile.loading('show');
+            fnGetDetailedProductsForADoctor();
+        }
+        // fnGetAutoFillData();
+        catch(e)
+        {
+            $.mobile.loading('hide');
+            fnMsgAlert('info', screenTitle, e.message);
+        }
+        
+    });
+</script>

@@ -1,0 +1,67 @@
+﻿@model HiDoctor_Master.Models.ActivityMasterModel
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Bootstrap/bootstrap.js"></script>
+<div>
+    <table>
+        <tr>
+            <td>
+                <label class="control-label">Activity Name:</label>
+            </td>
+            <td>
+                <input type="hidden" id="hdnActivitycode" name="ActivityCode" />
+                <input type="text" id="txtActivityName" class="input-large" maxlength="200"   />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Start Date:</label>
+            </td>
+            <td>
+                <input type="text" class='datepicker input-large' id="txtstartdate"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">End Date:</label>
+            </td>
+            <td >
+                <input type="text" id="txtEnddate" class="datepicker input-large"/>                
+            </td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td></div></td>
+            <td style="margin-top:10px">
+                <input type="button" name="Save" value="Save" id="btnsave" class="btn btn-primary" />
+                <input type="hidden" id="hdnMode" name="Update" value="I" />
+            </td>
+            <td>
+                <input type="button" name="Cancel" value="Cancel" id="btncancel" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+    <br />
+   @Html.ActionLink("Download Activity Master details", "PutActivityMasterIntoExcel",new {})
+<br />
+    <div id="divActivityMaster"></div>
+</div>
+
+<script src="../../Areas/HiDoctor_Master/Scripts/HD_Master/ActivityMaster.js?v=@HiDoctor.BuildNumber.BuildNo" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        AjaxGlobalHandler.Initiate();
+        fnGetActivityMaster();
+        $("#dvAjaxLoad").hide();
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            //showButtonPanel: true
+        });
+        $("#divPageHeader").html('Activity Master');
+    });
+</script>

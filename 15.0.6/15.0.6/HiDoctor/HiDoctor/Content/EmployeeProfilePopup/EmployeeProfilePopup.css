@@ -1,0 +1,112 @@
+﻿
+@media only screen and (min-width: 768px) {
+    
+ .EmpExcTP {
+         margin-left: 3% !important;
+     }
+     .HomemodalEmp {
+         margin-left: 30% !important;
+     }
+    .Dashboard {
+         margin-left: 30% !important;
+    }
+    .NewDash {
+         margin-left: 26% !important;
+    }
+    .Task {
+        margin-left: 2% !important;
+    }
+} 
+/*@media only screen and (min-width: 1200px) {
+     #modalEmployee {
+        left: 1% !important;
+    }
+}*/
+
+#dvTabs_Emp span {
+        display: block !important;
+        margin-left: 10px;
+        /*margin-left: 15px!important;*/
+    }
+ #modalEmployee {
+        top: 1px !important;
+        /*margin-left: 3% !important;*/
+        margin-top: 36px !important;
+    }
+ #modalEmployee.modal-dialog {
+            width: 600px !important;
+            padding: 0px !important;
+            height: 500px;
+            /*left: 28% !important;*/
+            top: 10% !important;
+    }
+ #modalEmployee .modal-header {
+        border-bottom: 0px !important;
+    }
+ #divEmployee .bx-viewport {
+        min-height: 330px !important;
+        max-height: 375px !important;
+        overflow: auto !important;
+    }
+  #divEmployee .bx-wrapper .bx-pager {
+        padding-top: 0px !important;
+    }
+  #divEmployee .bxslider li {
+        width: 100% !important;
+    }
+   .Mandatory {
+        color: red;
+    }
+
+    .Prof {
+        /*font-size: 16px;*/
+        text-align: center;
+        background-color: #4682B4;
+        font-size: 14.0pt;
+        color: #c5d9f1;
+        padding: 5px;
+        border: 1px solid #000000;
+    }
+
+    .AddProf {
+        text-align: center;
+        background-color: #00B050;
+        font-size: 10.0pt;
+        color: white;
+        padding: 5px;
+        border: 1px solid #000000;
+    }
+
+
+
+
+    /*New Css*/ 
+
+    .Label_3 {
+        width: 50%;
+        float: left;    
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .LabelTxt {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+   .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+   .Div_12 {
+        width: 100%;
+        float: left;    
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+   }

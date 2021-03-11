@@ -1,0 +1,248 @@
+﻿@{
+    string IsResponsive = Convert.ToString(HttpContext.Current.Session["IsResponsive"]);
+    switch (IsResponsive)
+    {
+        case "Yes":
+            Layout = "~/Views/Shared/_ResponsiveMobileLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_CCMCommonLayout.cshtml";
+            break;
+    }
+}
+<style>
+    .modal-backdrop {
+        background-color: transparent !important;
+    }
+
+    .modal-dialog {
+        max-width: 850px !important;
+    }
+
+    .modal-content {
+        border: none;
+    }
+
+    label {
+        font-weight: 500 !important;
+    }
+
+    .col-form-label {
+        font-size: small !important;
+    }
+
+    table {
+        font-size: 10px !important;
+    }
+
+    .link {
+        color: #007bff !important;
+        cursor: pointer;
+        text-decoration: underline !important;
+    }
+</style>
+<div class="startcss">
+    <div class="p-2" id="seconddiv" style="">
+
+        <div class="row p-2 mt-3">
+            <div class="col-sm-12 col-md-12 pl-0">
+                <form>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault01">Region Name</label>
+                            <div id="regions"><input type="text" class="form-control form-control-sm" id="region"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault01">Entity</label>
+                            <div>
+                                <input type="radio" id="DYes" name="entity" value="DOCTOR" checked="checked">
+                                <label>Doctor</label>
+                                <input type="radio" id="DNO" name="entity" value="CHEMIST">
+                                <label>Chemist</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Customer Name</label>
+                            <div id="customers"> <input type="text" class="form-control form-control-sm" id="customer"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Stockist Name</label>
+                            <div id="stockiests">
+                                <input type="text" class="form-control form-control-sm" id="stockiest">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Due Date</label>
+                            <input type="text" class="form-control" id="dueDate" placeholder="" value="" readonly="">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Remarks</label>
+                            <textarea id="remark" rows="2" cols="50" class="form-control form-control-sm"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-12 shadow-sm border border-info p-3 mt-3 mb-3 rounded" id="Produt">
+
+            <div class="form-row" id="row">
+                <div class="col-sm-12 col-md-4 col-lg-4 mb-3">
+                    <label for="validationDefault01">Product Name</label>
+                    <div id="Products_0"><input type="text" class="form-control form-control-sm Product" id="Product_0"></div>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 mb-3">
+                    <label for="validationDefault02"> Quantity</label>
+                    <input type="number" class="form-control form-control-sm dispatchQty" id="dispatchQty_0" min="1" placeholder="" value="" onkeyup="fngetamount(0)" onchange="fngetamount(0)" onkeypress="return fnValidateBudget(this,event);">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 mb-3">
+                    <label for="validationDefault02"> Unit Rate</label>
+                    <input type="number" class="form-control form-control-sm " id="rate_0" placeholder="" value="" onkeyup="fncalamount(0)" readonly>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 mb-3">
+                    <label for="validationDefault02"> Amount</label>
+                    <input type="number" class="form-control form-control-sm" id="amount_0" placeholder="" value="" readonly>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 mb-3" id="newProduct">
+                    <div class="d-flex justify-content-end">
+                        <div class="bd-highlight mr-1">
+                            <button type="button" class="btn btn-sm btn-outline-info" style="position:relative;top:27px;" id="Add" onclick="Order.fnAdd()"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-sm-12 row" style="padding:0px">
+            <div class="col-lg-3 col-sm-12"><label >Do you want to refer existing POB</label></div>
+            <div class="col-lg-4 col-sm-12">
+                <input type="radio" id="Yes" name="age" value="Yes">
+                <label>Yes</label>
+                <input type="radio" id="NO" name="age" value="NO" checked="checked">
+                <label>NO</label>
+            </div>
+        </div>
+        <div id="date">
+            <form>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">From Date</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="StartDate">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">To Date</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="EndDate">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <input type="button" class="btn btn-sm btn-outline-info" id="btnInvoice" value="Get Order Number" onclick="fngetPOBOrder()">
+                </div>
+                <div class="form-group row" id="orderdetails">
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Existing Order Number :</label>
+                    <div class="col-sm-4">
+                        <select class="form-control form-control-sm" id="Order"></select>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="link" onclick="fngetOrderDetails();">View Order Details</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 p-0">
+            <button type="button" class="btn btn-sm btn-outline-info" id="btnshipment" onclick="fnSave();">Save</button>
+            <button type="button" class="btn btn-sm btn-outline-info" onclick="fnCancel();">Cancel</button>
+        </div>
+    </div>
+</div>
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding:0px">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="modelbody" style="height:500px;overflow-y: auto; overflow-x: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/HiDoctor_Activity/Scripts/HD/OrderCreation.js?v=@HiDoctor.BuildNumber.BuildNo"></script>
+<script src="~/Areas/HiDoctor_Activity/Scripts/CoreREST.js"></script>
+<script src="~/Scripts/HD/CommonDateDetails.js?v=@HiDoctor.BuildNo.Build_No"></script>
+<link href="~/Areas/HiDoctor_Activity/Content/OrderFulfillment.css" rel="stylesheet" />
+<script>
+
+
+    var subDomainName=@Html.Raw(Json.Encode(ViewBag.subDomainName));
+    var RegionCode=@Html.Raw(Json.Encode(ViewBag.RegionCode));
+    var Company_Code=@Html.Raw(Json.Encode(ViewBag.CompanyCode));
+    var UserCode=@Html.Raw(Json.Encode(ViewBag.UserCode));
+    var Company_Id=@Html.Raw(Json.Encode(ViewBag.Company_Id));
+    $('#dvAjaxLoad').hide();
+
+
+    $(document).ready(function () {
+        debugger;
+        Order.init();
+        $('#date').hide();
+        date = new Date();
+        date = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
+        $("#dueDate").datepicker(
+              {
+                  dateFormat: 'dd-mm-yy',
+              });
+        $("#StartDate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+        });
+        $("#EndDate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+        });
+        var today = new Date();
+        var cdd = today.getDate();
+        var cmm = today.getMonth() + 1;
+        var cyy = today.getFullYear();
+        var currentDate =("0" + (cdd)).slice(-2) + '-' + ("0" + (cmm)).slice(-2) + '-' + cyy;
+        today.setDate(today.getDate() - 90);
+        var pdd = today.getDate();
+        var pmm = today.getMonth() + 1;
+        var pyy = today.getFullYear();
+        var prevDate =("0" + (pdd)).slice(-2) + '-' + ("0" + (pmm)).slice(-2) + '-' +pyy ;
+        $('#StartDate').val(prevDate);
+        $('#EndDate').val(currentDate);
+        $('#orderdetails').hide();
+        $("input[name='age']").click(function(){
+            if($('input:radio[name=age]:checked').val() == "Yes"){
+                $('#date').show();
+
+                //fngetPOBOrder();
+            }
+            else{
+                $('#date').hide();
+            }
+        });
+        $('input[type=radio][name=entity]').change(function() {
+            Order.GetCustomer($("#region_hidden").val());
+        });
+    });
+
+</script>
